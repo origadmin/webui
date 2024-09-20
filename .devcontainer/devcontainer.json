@@ -1,0 +1,4 @@
+{
+  "name": "OrigAdmin Frontend",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:latest"
+}
