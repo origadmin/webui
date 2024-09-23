@@ -3,11 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrigAdmin Frontend</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OrigAdmin Panel</title>
+    <script async src="/scripts/loading.js"></script>
 </head>
 <body>
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
 <div id="root"></div>
-
+<script>
+    // 这里放置你的脚本代码
+    // fetch asset-manifest.json and insert css and js into the page
+    fetch('asset-manifest.json').then(response => {
+        // const resp = response.json();
+        // console.log(resp);
+        return response.json();
+    }).then(manifest => {
+        Object.entries(manifest).forEach(([key, value]) => {
+            console.log(key, value);
+            if (key.endsWith('.css')) {
+                const link = document.createElement('link');
+                link.href = './' + value.toString();
+                link.rel = 'stylesheet';
+                document.head.appendChild(link);
+            }
+            if (key.endsWith('.js')) {
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = './' + value.toString();
+                document.body.appendChild(script);
+            }
+        })
+    }).catch(e => console.error("Error loading asset-manifest.json:", e));
+</script>
 </body>
 <script>
     // 这里放置你的脚本代码

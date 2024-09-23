@@ -2,11 +2,14 @@
   "name": "origadmin",
   "version": "1.0.0",
   "homepage": "https://origadmin.github.io/frontend",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "mako build --mode development --watch",
-    "build": "mako build --mode production",
-    "shadcn": "pnpm dlx shadcn@latest"
+    "shadcn": "pnpm dlx shadcn@latest",
+    "dev": "pnpm tailwind-dev && mako build --mode development --watch",
+    "build": "pnpm tailwind && mako build --mode production",
+    "tailwind-dev": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css",
+    "tailwind": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css --minify"
   },
   "browserslist": [
     "> 1%",
@@ -20,7 +23,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.441.0",
+    "lucide-react": "^0.445.0",
     "process": "^0.11.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -36,7 +39,8 @@
     "@umijs/mako": "^0.8.13",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.12"
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,11 +1,11 @@
-import './App.css';
-import {Button} from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 function App() {
-    console.log('Application Started');
+    console.log("Application Started")
     return <>
-        <div>Hello Mako!</div>
-        <Button>Hello World</Button>
+        <div>Hello OrigAdmin!</div>
+
+        <Button>New Button</Button>
     </>;
 }
 
