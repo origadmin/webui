@@ -22,8 +22,8 @@
             console.log(key, value);
             if (key.endsWith('.css')) {
                 const link = document.createElement('link');
-                link.rel = 'stylesheet';
                 link.href = './' + value.toString();
+                link.rel = 'stylesheet';
                 document.head.appendChild(link);
             }
             if (key.endsWith('.js')) {

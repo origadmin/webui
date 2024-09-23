@@ -27,6 +27,5 @@
     "modules": true
   },
   "manifest": {},
-  "plugins": [],
-  "minify": false
+  "plugins": []
 }
