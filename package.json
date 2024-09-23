@@ -6,8 +6,9 @@
   "private": true,
   "scripts": {
     "shadcn": "pnpm dlx shadcn@latest",
-    "dev": "mako build --mode development --watch",
-    "build": "mako build --mode production"
+    "dev": "pnpm tailwind && mako build --mode development --watch",
+    "build": "mako build --mode production",
+    "tailwind": "npx tailwindcss -i ./src/styles/globals.css -o ./src/assets/index.css"
   },
   "browserslist": [
     "> 1%",
@@ -21,6 +22,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.445.0",
     "process": "^0.11.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -39,6 +41,7 @@
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.9.1",
     "postcss": "^8.4.47",
+    "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.12",
     "typescript": "^5.6.2",
     "webpack-manifest-plugin": "^5.0.0"
