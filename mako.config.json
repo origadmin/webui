@@ -1,4 +1,14 @@
 {
+  "devServer": {
+    "host": "0.0.0.0",
+    "port": 3000
+  },
+  "entry": {
+    "index": "./src/index.tsx"
+  },
+  "hash": true,
+  "hmr": {},
+  "clean": true,
   "resolve": {
     "alias": [
       [
@@ -12,5 +22,10 @@
       "ts",
       "tsx"
     ]
-  }
+  },
+  "stats": {
+    "modules": true
+  },
+  "manifest": { },
+  "minify": false
 }

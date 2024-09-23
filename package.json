@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "mako build --mode development --watch",
-    "build": "mako build --mode production"
+    "build": "mako build --mode production",
+    "shadcn": "pnpm dlx shadcn@latest"
   },
   "browserslist": [
     "> 1%",
@@ -30,9 +31,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/react": "^18.3.7",
+    "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
-    "@umijs/mako": "^0.8.11",
+    "@umijs/mako": "^0.8.13",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.12"
