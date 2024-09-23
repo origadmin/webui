@@ -6,9 +6,10 @@
   "private": true,
   "scripts": {
     "shadcn": "pnpm dlx shadcn@latest",
-    "dev": "pnpm tailwind && mako build --mode development --watch",
-    "build": "mako build --mode production",
-    "tailwind": "npx tailwindcss -i ./src/styles/globals.css -o ./src/assets/index.css"
+    "dev": "pnpm tailwind-dev && mako build --mode development --watch",
+    "build": "pnpm tailwind && mako build --mode production",
+    "tailwind-dev": "npx tailwindcss -i ./src/styles/globals.css -o ./src/assets/index.css",
+    "tailwind": "npx tailwindcss -i ./src/styles/globals.css -o ./src/assets/index.css --minify"
   },
   "browserslist": [
     "> 1%",
