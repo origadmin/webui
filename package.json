@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "shadcn": "pnpm dlx shadcn@latest",
-    "jsbuild": "node ./mako.js build --watch",
+    "jsbuild": "node ./src/scripts/mako.js build --watch",
     "dev": "pnpm tailwind-dev && mako build --mode development --watch",
     "build": "pnpm tailwind && mako build --mode production",
     "tailwind-dev": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css",
