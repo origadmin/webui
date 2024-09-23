@@ -1,4 +1,5 @@
 {
+  "$schema": "https://ui.shadcn.com/schema.json",
   "style": "default",
   "tailwind": {
     "config": "tailwind.config.js",
@@ -9,7 +10,9 @@
   "rsc": false,
   "tsx": true,
   "aliases": {
+    "hooks": "@/hooks",
     "utils": "@/lib/utils",
-    "components": "@/components"
+    "components": "@/components",
+    "ui": "@/components/ui"
   }
 }
