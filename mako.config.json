@@ -26,8 +26,7 @@
   "stats": {
     "modules": true
   },
-  "plugins": [
-    "./plugins.config.js"
-  ],
+  "manifest": {},
+  "plugins": [],
   "minify": false
 }
