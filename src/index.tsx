@@ -2,7 +2,8 @@ import {ThemeProvider} from '@/components/theme-provider';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import '@/styles/globals.css';
+// import "./styles/globals.css";
+import "./assets/index.css"
 
 const rootElement = document.getElementById('root');
 
