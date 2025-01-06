@@ -1,12 +1,9 @@
-import { Button } from "@/components/ui/button";
+import LoginPage from "@/app/login/page";
+import DashboardPage from "@/app/dashboard/page";
 
 function App() {
     console.log("Application Started")
-    return <>
-        <div>Hello OrigAdmin!</div>
-
-        <Button>New Button</Button>
-    </>;
+    return <DashboardPage></DashboardPage>;
 }
 
 export default App;
