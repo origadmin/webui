@@ -12,7 +12,9 @@
     "allowSyntheticDefaultImports": true,
     "target": "esnext",
     "moduleResolution": "node",
+    "exportStatic": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
@@ -25,5 +27,7 @@
     "./**/*.ts",
     "./**/*.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
