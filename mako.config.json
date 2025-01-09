@@ -4,30 +4,24 @@
     "port": 3000
   },
   "entry": {
-    "index": "./src/index.tsx"
+    "index": "./src/index.tsx",
+    "dashboard": "./src/app/dashboard/page.tsx",
+    "login": "./src/app/login/page.tsx"
   },
   "hash": true,
   "hmr": {},
   "clean": true,
   "resolve": {
     "alias": [
-      [
-        "@",
-        "./src"
-      ]
+      ["@", "./src"]
     ],
-    "extensions": [
-      "js",
-      "jsx",
-      "ts",
-      "tsx"
-    ]
+    "extensions": ["js", "jsx", "ts", "tsx"]
   },
   "stats": {
     "modules": true
   },
   "plugins": [
-    "./plugins.config.js"
+    "./plugins.config.js.bak"
   ],
   "minify": false
 }

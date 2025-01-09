@@ -22,7 +22,7 @@ build({
     console.error(e);
     process.exit(1);
 }).finally(() => {
-    injectAssetsIntoHTML();
+    // injectAssetsIntoHTML();
     console.log('> mako build done');
 });
 
@@ -55,36 +55,3 @@ function getMakoConfig() {
     });
     return makoConfig;
 }
-//
-// function injectAssetsIntoHTML() {
-//     const assetManifestPath = path.join(cwd, 'dist', 'asset-manifest.json');
-//     if (!fs.existsSync(assetManifestPath)) {
-//         console.error('asset-manifest.json not found.');
-//         return;
-//     }
-//
-//     const assetManifest = JSON.parse(fs.readFileSync(assetManifestPath, 'utf-8'));
-//
-//     const indexPath = path.join(cwd, 'dist', 'index.html');
-//     if (!fs.existsSync(indexPath)) {
-//         console.error('index.html not found.');
-//         return;
-//     }
-//
-//     const indexHtmlContent = fs.readFileSync(indexPath, 'utf-8');
-//
-//     let updatedHtmlContent = indexHtmlContent;
-//
-//     Object.entries(assetManifest).forEach(([key, value]) => {
-//         if (key.endsWith('.css')) {
-//             const linkTag = `    <link rel="stylesheet" href="./${value}">\n`;
-//             updatedHtmlContent = updatedHtmlContent.replace('</head>', `${linkTag}</head>`);
-//         } else if (key.endsWith('.js')) {
-//             const scriptTag = `<script type="module" src="./${value}"></script>\n`;
-//             updatedHtmlContent = updatedHtmlContent.replace('</body>', `${scriptTag}</body>`);
-//         }
-//     });
-//
-//     fs.writeFileSync(indexPath, updatedHtmlContent, 'utf-8');
-//     console.log('Assets injected into index.html successfully.');
-// }

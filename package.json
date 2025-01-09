@@ -12,7 +12,9 @@
     "dev": "pnpm tailwind:dev && mako build --mode development --watch",
     "build": "pnpm tailwind && mako build --mode production",
     "tailwind:dev": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css",
-    "tailwind": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css --minify"
+    "tailwind": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css --minify",
+    "lint": "biome check src",
+    "eslint": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix --max-warnings 0 --color"
   },
   "browserslist": [
     "> 1%",
@@ -53,16 +55,17 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@umijs/mako": "^0.11.1",
+    "@vitejs/plugin-react-swc": "^3.6.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
-    "vite": "^5.2.9",
-    "@vitejs/plugin-react-swc": "^3.6.0"
+    "vite": "^5.2.9"
   },
   "engines": {
     "node": ">=18.0.0"
