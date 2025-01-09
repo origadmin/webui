@@ -1,4 +1,4 @@
-import {createBrowserRouter} from 'react-router-dom'
+import {createBrowserRouter, Navigate} from 'react-router-dom'
 import LoginPage from "@/app/login/page";
 import DashboardPage from "@/app/dashboard/page";
 
@@ -6,9 +6,7 @@ const router = createBrowserRouter([
     // Auth routes
     {
         path: '/',
-        lazy: async () => ({
-            Component: DashboardPage,
-        }),
+        element: <Navigate to="/dashborad" replace/>
     },
     {
         path: '/dashboard',
