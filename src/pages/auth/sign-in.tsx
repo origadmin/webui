@@ -1,5 +1,5 @@
+// import ViteLogo from '@/assets/vite.svg';
 import { UserAuthForm } from './components/user-auth-form';
-import ViteLogo from '@/assets/vite.svg';
 
 export default function SignIn() {
   return (
@@ -23,7 +23,7 @@ export default function SignIn() {
             Shadcn Admin
           </div>
 
-          <img src={ViteLogo} className="relative m-auto" width={301} height={60} alt="Vite" />
+          {/*<img src={ViteLogo} className="relative m-auto" width={301} height={60} alt="Vite" />*/}
 
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">

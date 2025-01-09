@@ -1,3 +1,8 @@
+import { Layout } from '@/components/custom/layout';
+import { Search } from '@/components/search';
+import ThemeSwitch from '@/components/theme-switch';
+import { Separator } from '@/components/ui/separator';
+import { UserNav } from '@/components/user-nav';
 import {
   IconBrowserCheck,
   IconExclamationCircle,
@@ -6,13 +11,9 @@ import {
   IconTool,
   IconUser,
 } from '@tabler/icons-react';
-import { Separator } from '@/components/ui/separator';
-import { Layout } from '@/components/custom/layout';
-import ThemeSwitch from '@/components/theme-switch';
-import SidebarNav from './components/sidebar-nav';
-import { UserNav } from '@/components/user-nav';
-import { Search } from '@/components/search';
 import { Outlet } from 'react-router-dom';
+
+import SidebarNav from './components/sidebar-nav';
 
 export default function Settings() {
   return (

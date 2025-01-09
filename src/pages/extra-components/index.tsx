@@ -1,17 +1,19 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Breadcrumb, BreadcrumbItem } from '@/components/custom/breadcrumb';
-import { PinInput, PinInputField } from '@/components/custom/pin-input';
-import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { IconChevronRight } from '@tabler/icons-react';
-import { Separator } from '@/components/ui/separator';
 import { Layout } from '@/components/custom/layout';
-import ThemeSwitch from '@/components/theme-switch';
-import { UserNav } from '@/components/user-nav';
-import { Input } from '@/components/ui/input';
+import { PinInput, PinInputField } from '@/components/custom/pin-input';
 import { Search } from '@/components/search';
-import { Link } from 'react-router-dom';
+import ThemeSwitch from '@/components/theme-switch';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { UserNav } from '@/components/user-nav';
 import { useState } from 'react';
+import { ChevronRight } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+// const { nord } = SyntaxHighlighter;
 
 export default function ExtraComponents() {
   const items = [{ title: 'Extra Components', href: '/extra-components' }, { title: 'Breadcrumb' }].map(
@@ -50,7 +52,7 @@ export default function ExtraComponents() {
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Extra Components</h1>
         </div>
         <h2 className="text-lg font-bold md:text-xl">Breadcrumbs</h2>
-        <Breadcrumb separator={<IconChevronRight size={18} />}>{items}</Breadcrumb>
+        <Breadcrumb separator={<ChevronRight size={18} />}>{items}</Breadcrumb>
         <Breadcrumb>{items}</Breadcrumb>
 
         <Separator />

@@ -1,14 +1,13 @@
 'use client';
 
-import { DateRange } from 'react-day-picker';
-import { CalendarIcon } from 'lucide-react';
-import { addDays, format } from 'date-fns';
-import * as React from 'react';
-
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { addDays, format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+import * as React from 'react';
+import { DateRange } from 'react-day-picker';
 
 export function CalendarDateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>({

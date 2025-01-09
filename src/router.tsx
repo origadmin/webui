@@ -1,7 +1,8 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import MaintenanceError from '@/pages/errors/maintenance-error';
-import NotFoundError from './pages/errors/not-found-error';
 import GeneralError from '@/pages/errors/general-error';
+import MaintenanceError from '@/pages/errors/maintenance-error';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+
+import NotFoundError from './pages/errors/not-found-error';
 
 const router = createBrowserRouter([
   // Auth routes

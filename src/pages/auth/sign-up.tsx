@@ -1,6 +1,7 @@
-import { SignUpForm } from './components/sign-up-form';
 import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+
+import { SignUpForm } from './components/sign-up-form';
 
 export default function SignUp() {
   return (

@@ -1,6 +1,6 @@
 import { Button } from '@/components/custom/button';
-import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface GeneralErrorProps extends React.HTMLAttributes<HTMLDivElement> {
   minimal?: boolean;

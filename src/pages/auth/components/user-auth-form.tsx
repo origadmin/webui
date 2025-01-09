@@ -1,16 +1,16 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react';
-import { PasswordInput } from '@/components/custom/password-input';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/custom/button';
-import { HTMLAttributes, useState } from 'react';
+import { PasswordInput } from '@/components/custom/password-input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react';
+import { HTMLAttributes, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { cn } from '@/lib/utils';
 import { z } from 'zod';
 
-interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
+type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
 const formSchema = z.object({
   email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),

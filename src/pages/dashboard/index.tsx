@@ -1,13 +1,14 @@
+import { Button } from '@/components/custom/button';
+import { Layout } from '@/components/custom/layout';
+import { Search } from '@/components/search';
+import ThemeSwitch from '@/components/theme-switch';
+import { TopNav } from '@/components/top-nav';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RecentSales } from './components/recent-sales';
-import { Layout } from '@/components/custom/layout';
-import { Button } from '@/components/custom/button';
-import ThemeSwitch from '@/components/theme-switch';
-import { Overview } from './components/overview';
 import { UserNav } from '@/components/user-nav';
-import { TopNav } from '@/components/top-nav';
-import { Search } from '@/components/search';
+
+import { Overview } from './components/overview';
+import { RecentSales } from './components/recent-sales';
 
 export default function Dashboard() {
   return (

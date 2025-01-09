@@ -1,6 +1,7 @@
-import { ForgotForm } from './components/forgot-form';
 import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+
+import { ForgotForm } from './components/forgot-form';
 
 export default function ForgotPassword() {
   return (

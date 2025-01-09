@@ -1,9 +1,10 @@
 import { Layout } from '@/components/custom/layout';
-import ThemeSwitch from '@/components/theme-switch';
-import { DataTable } from './components/data-table';
-import { UserNav } from '@/components/user-nav';
-import { columns } from './components/columns';
 import { Search } from '@/components/search';
+import ThemeSwitch from '@/components/theme-switch';
+import { UserNav } from '@/components/user-nav';
+
+import { columns } from './components/columns';
+import { DataTable } from './components/data-table';
 import { tasks } from './data/tasks';
 
 export default function Tasks() {

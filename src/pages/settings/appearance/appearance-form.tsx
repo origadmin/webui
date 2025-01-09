@@ -1,13 +1,12 @@
-import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
+import { Button, buttonVariants } from '@/components/custom/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Button, buttonVariants } from '@/components/custom/button';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const appearanceFormSchema = z.object({
   theme: z.enum(['light', 'dark'], {

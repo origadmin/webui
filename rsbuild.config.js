@@ -7,7 +7,7 @@ const config = defineConfig({
     htmlFallback: 'index',
   },
   dev: {
-    writeToDisk: false,
+    writeToDisk: true,
   },
   html: {
     template: './src/assets/index.html',
@@ -15,8 +15,8 @@ const config = defineConfig({
   source: {
     entry: {
       index: './src/index.tsx',
-      dashboard: './src/index.tsx',
-      login: './src/index.tsx',
+      // dashboard: './src/index.tsx',
+      // login: './src/index.tsx',
     },
   },
   output: {
@@ -27,5 +27,4 @@ const config = defineConfig({
   },
   plugins: [pluginReact()],
 });
-
 export default config;

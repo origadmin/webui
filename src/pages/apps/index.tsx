@@ -1,13 +1,14 @@
-import { IconAdjustmentsHorizontal, IconSortAscendingLetters, IconSortDescendingLetters } from '@tabler/icons-react';
+import { Button } from '@/components/custom/button';
+import { Layout } from '@/components/custom/layout';
+import { Search } from '@/components/search';
+import ThemeSwitch from '@/components/theme-switch';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Layout } from '@/components/custom/layout';
-import { Button } from '@/components/custom/button';
-import ThemeSwitch from '@/components/theme-switch';
 import { UserNav } from '@/components/user-nav';
-import { Input } from '@/components/ui/input';
-import { Search } from '@/components/search';
+import { IconAdjustmentsHorizontal, IconSortAscendingLetters, IconSortDescendingLetters } from '@tabler/icons-react';
 import { useState } from 'react';
+
 import { apps } from './data';
 
 const appText = new Map<string, string>([

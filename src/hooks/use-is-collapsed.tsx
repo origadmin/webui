@@ -1,5 +1,6 @@
-import useLocalStorage from './use-local-storage';
 import { useEffect } from 'react';
+
+import useLocalStorage from './use-local-storage';
 
 export default function useIsCollapsed() {
   const [isCollapsed, setIsCollapsed] = useLocalStorage({
