@@ -19,7 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
-    "declaration": true,
+    "declaration": false,
     "skipLibCheck": true,
     "isolatedModules": true,
     "resolveJsonModule": true,

@@ -2,7 +2,7 @@ import {defineConfig} from '@rspack/cli';
 
 const config = defineConfig({
     entry: {
-        main: './src/index.js',
+        main: './src/index.tsx',
     },
     module: {
         rules: [
