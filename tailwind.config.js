@@ -1,5 +1,4 @@
 const tailwindcssAnimate = require("tailwindcss-animate")
-import {Config} from "tailwindcss";
 
 /** @type {import('tailwindcss').Config} */
 const config = {
