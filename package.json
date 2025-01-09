@@ -7,9 +7,11 @@
   "scripts": {
     "shadcn": "pnpm dlx shadcn@latest",
     "jsbuild": "node ./src/scripts/mako.js build --watch",
-    "dev": "pnpm tailwind-dev && mako build --mode development --watch",
+    "start": "pnpm run dev",
+    "vite": "vite",
+    "dev": "pnpm tailwind:dev && mako build --mode development --watch",
     "build": "pnpm tailwind && mako build --mode production",
-    "tailwind-dev": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css",
+    "tailwind:dev": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css",
     "tailwind": "npx tailwindcss --postcss -i ./src/styles/globals.css -o src/assets/index.css --minify"
   },
   "browserslist": [
@@ -31,6 +33,7 @@
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.4",
     "@radix-ui/react-tooltip": "^1.1.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -57,7 +60,9 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite": "^5.2.9",
+    "@vitejs/plugin-react-swc": "^3.6.0"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -53,86 +53,86 @@ const data = {
     navMain: [
         {
             title: "Playground",
-            url: "#",
+            url: "/login",
             icon: SquareTerminal,
             isActive: true,
             items: [
                 {
                     title: "History",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Starred",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Settings",
-                    url: "#",
+                    url: "/login",
                 },
             ],
         },
         {
             title: "Models",
-            url: "#",
+            url: "/login",
             icon: Bot,
             items: [
                 {
                     title: "Genesis",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Explorer",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Quantum",
-                    url: "#",
+                    url: "/login",
                 },
             ],
         },
         {
             title: "Documentation",
-            url: "#",
+            url: "/login",
             icon: BookOpen,
             items: [
                 {
                     title: "Introduction",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Get Started",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Tutorials",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Changelog",
-                    url: "#",
+                    url: "/login",
                 },
             ],
         },
         {
             title: "Settings",
-            url: "#",
+            url: "/login",
             icon: Settings2,
             items: [
                 {
                     title: "General",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Team",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Billing",
-                    url: "#",
+                    url: "/login",
                 },
                 {
                     title: "Limits",
-                    url: "#",
+                    url: "/login",
                 },
             ],
         },
@@ -140,17 +140,17 @@ const data = {
     projects: [
         {
             name: "Design Engineering",
-            url: "#",
+            url: "/login",
             icon: Frame,
         },
         {
             name: "Sales & Marketing",
-            url: "#",
+            url: "/login",
             icon: PieChart,
         },
         {
             name: "Travel",
-            url: "#",
+            url: "/login",
             icon: Map,
         },
     ],

@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom
 function App() {
     console.log("Application Started")
     return (
-        <Router>
+        <Router basename="/">
             <Routes>
                 <Route path="/" element={
                     <Navigate to="/dashboard" replace/>
