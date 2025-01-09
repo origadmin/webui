@@ -4,7 +4,6 @@ about: "If something isn't working as expected \U0001F914."
 title: ''
 labels: 'i: bug, i: needs triage'
 assignees: ''
-
 ---
 
 **Describe the bug**

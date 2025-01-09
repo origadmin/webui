@@ -10,7 +10,7 @@ Do the checklist before filing an issue:
 
 ## None of the above, create a bug report
 
-------------------------------------------------------------------
+---
 
 Make sure to add **all the information needed to understand the bug** so that someone can help. If the info is missing we'll add the 'Needs more information' label and close the issue until there is enough information.
 

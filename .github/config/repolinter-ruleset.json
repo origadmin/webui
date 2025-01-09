@@ -8,10 +8,7 @@
       "rule": {
         "type": "file-contents",
         "options": {
-          "globsAll": [
-            "LICENSE*",
-            "COPYING*"
-          ],
+          "globsAll": ["LICENSE*", "COPYING*"],
           "nocase": true,
           "fail-on-non-existant": true,
           "content": "MIT License"
@@ -35,9 +32,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "README*"
-          ],
+          "globsAny": ["README*"],
           "nocase": true
         }
       },
@@ -58,11 +53,7 @@
       "rule": {
         "type": "file-existence",
         "options": {
-          "globsAny": [
-            "CODEOWNERS*",
-            "*/CODEOWNERS*",
-            ".github/CODEOWNERS*"
-          ],
+          "globsAny": ["CODEOWNERS*", "*/CODEOWNERS*", ".github/CODEOWNERS*"],
           "nocase": true
         }
       },

@@ -3,9 +3,7 @@
     "baseUrl": ".",
     "jsx": "react-jsx",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "target": "ES2020",
     "lib": ["DOM", "ES2020"],
@@ -26,14 +24,6 @@
     "useDefineForClassFields": true,
     "outDir": "./dist"
   },
-  "include": [
-    "src",
-    "eslint.config.js",
-    "./**/*.d.ts",
-    "./**/*.ts",
-    "./**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "eslint.config.js", "./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "exclude": ["node_modules"]
 }
