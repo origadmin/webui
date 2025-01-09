@@ -1,5 +1,5 @@
-const { defineConfig } = require('@rsbuild/core');
 const { pluginReact } = require('@rsbuild/plugin-react');
+const { defineConfig } = require('@rsbuild/core');
 
 const config = defineConfig({
   server: {

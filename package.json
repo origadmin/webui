@@ -7,8 +7,9 @@
   "scripts": {
     "start": "bun run dev",
     "dev": "bun tailwind:dev && rsbuild dev --open",
+    "dev:web": "bun tailwind && rsbuild dev --open",
     "build": "bun tailwind && rsbuild build",
-    "preview": "bun tailwind:dev && rsbuild preview",
+    "preview": "bun tailwind && rsbuild build && rsbuild preview",
     "rsbuild": "bun run build",
     "tailwind:dev": "bunx tailwindcss --postcss -i ./src/styles/globals.css -o public/index.css",
     "tailwind": "bunx tailwindcss --postcss -i ./src/styles/globals.css -o public/index.css --minify",
@@ -79,6 +80,7 @@
     "postcss-import": "^16.1.0",
     "postcss-loader": "^8.1.1",
     "prettier": "^3.4.2",
+    "prettier-plugin-sort-imports": "^1.8.6",
     "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",

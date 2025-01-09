@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import {
   AudioWaveform,
   BookOpen,
@@ -13,12 +12,13 @@ import {
   Settings2,
   SquareTerminal,
 } from 'lucide-react';
+import * as React from 'react';
 
-import { MainNav } from '@/components/main-nav';
-import { NavProjects } from '@/components/nav-projects';
-import { UserNav } from '@/components/user-nav';
-import { TeamSwitcher } from '@/components/team-switcher';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { TeamSwitcher } from '@/components/team-switcher';
+import { NavProjects } from '@/components/nav-projects';
+import { MainNav } from '@/components/main-nav';
+import { UserNav } from '@/components/user-nav';
 
 // This is sample data.
 const data = {

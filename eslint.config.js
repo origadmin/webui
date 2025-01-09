@@ -1,13 +1,13 @@
-import { fixupConfigRules } from '@eslint/compat';
-import js from '@eslint/js';
 import reactHooks from 'eslint-plugin-react-hooks';
-import pluginReact from 'eslint-plugin-react';
-import globals from 'globals';
 import ts from '@typescript-eslint/eslint-plugin';
+import { fixupConfigRules } from '@eslint/compat';
 import prettier from 'eslint-config-prettier';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import pluginReact from 'eslint-plugin-react';
 import { FlatCompat } from '@eslint/eslintrc';
+import { fileURLToPath } from 'url';
+import globals from 'globals';
+import js from '@eslint/js';
+import path from 'path';
 
 // mimic CommonJS variables -- not needed if using CommonJS
 const __filename = fileURLToPath(import.meta.url);

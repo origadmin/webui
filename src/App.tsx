@@ -1,7 +1,7 @@
-import LoginPage from '@/app/login/page';
-import DashboardPage from '@/app/dashboard/page';
 import { Navigate, Route, BrowserRouter as Router, RouterProvider, Routes } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
+import DashboardPage from '@/app/dashboard/page';
+import LoginPage from '@/app/login/page';
 
 function App() {
   console.log('Application Started');
