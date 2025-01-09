@@ -5,7 +5,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "shadcn": "bun dlx shadcn@latest",
     "start": "bun run dev",
     "dev": "bun tailwind:dev && rsbuild dev --open",
     "build": "bun tailwind && rsbuild build",
@@ -13,6 +12,7 @@
     "rsbuild": "bun run build",
     "tailwind:dev": "bunx tailwindcss --postcss -i ./src/styles/globals.css -o public/index.css",
     "tailwind": "bunx tailwindcss --postcss -i ./src/styles/globals.css -o public/index.css --minify",
+    "shadcn": "bun x --bun shadcn@latest",
     "lint": "biome check src",
     "eslint": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix --max-warnings 0 --color"
   },
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@eslint/js": "^9.17.0",
     "@rsbuild/core": "^1.1.13",
     "@rsbuild/plugin-react": "^1.1.0",
     "@rspack/cli": "^1.1.8",
@@ -65,14 +66,20 @@
     "cssnano": "^7.0.6",
     "esbuild": "^0.24.2",
     "esbuild-register": "^3.6.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react": "^7.37.3",
+    "globals": "^15.14.0",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",
     "postcss-loader": "^8.1.1",
     "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.19.1"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "module": "index.ts",
+  "type": "module"
 }

@@ -23,9 +23,12 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "outDir": "./dist"
   },
   "include": [
+    "src",
+    "eslint.config.js",
     "./**/*.d.ts",
     "./**/*.ts",
     "./**/*.tsx"

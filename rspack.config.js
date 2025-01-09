@@ -1,4 +1,6 @@
-import {defineConfig} from '@rspack/cli';
+// @ts-check
+
+const {defineConfig} = require('@rspack/cli');
 
 const config = defineConfig({
     entry: {
@@ -12,7 +14,7 @@ const config = defineConfig({
                     {
                         loader: 'postcss-loader',
                         options: {
-                            postcssOptions: "postcss.config.ts",
+                            postcssOptions: "postcss.config.js",
                         },
                     },
                 ],

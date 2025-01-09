@@ -1,10 +1,13 @@
 import LoginPage from "@/app/login/page";
 import DashboardPage from "@/app/dashboard/page";
-import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import {Navigate, Route, BrowserRouter as Router, RouterProvider, Routes} from "react-router-dom";
+import {Toaster} from "@/components/ui/toaster";
 
 function App() {
     console.log("Application Started")
-    return (
+    return (<>
+        {/*<RouterProvider router={router}/>*/}
+        {/*<Toaster/>*/}
         <Router basename="/">
             <Routes>
                 <Route path="/" element={
@@ -15,7 +18,7 @@ function App() {
 
             </Routes>
         </Router>
-    )
+    </>)
 }
 
 export default App;

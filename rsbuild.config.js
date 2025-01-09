@@ -1,7 +1,7 @@
-import {defineConfig} from '@rsbuild/core';
-import {pluginReact} from '@rsbuild/plugin-react';
+const {defineConfig} = require('@rsbuild/core');
+const {pluginReact} = require('@rsbuild/plugin-react');
 
-export default defineConfig({
+const config = defineConfig({
     server: {
         base: '/',
         htmlFallback: 'index',
@@ -27,3 +27,5 @@ export default defineConfig({
     },
     plugins: [pluginReact()],
 });
+
+export default config;
