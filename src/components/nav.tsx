@@ -42,7 +42,7 @@ export default function Nav({ links, isCollapsed, className, closeNav }: NavProp
       )}
     >
       <TooltipProvider delayDuration={0}>
-        <nav className="grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+        <nav className='grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
           {links.map(renderLink)}
         </nav>
       </TooltipProvider>
@@ -71,9 +71,9 @@ function NavLink({ title, icon, label, href, closeNav, subLink = false }: NavLin
       )}
       aria-current={checkActiveNav(href) ? 'page' : undefined}
     >
-      <div className="mr-2">{icon}</div>
+      <div className='mr-2'>{icon}</div>
       {title}
-      {label && <div className="ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground">{label}</div>}
+      {label && <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>{label}</div>}
     </Link>
   );
 }
@@ -93,19 +93,19 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
           'group h-12 w-full justify-start rounded-none px-6',
         )}
       >
-        <div className="mr-2">{icon}</div>
+        <div className='mr-2'>{icon}</div>
         {title}
         {label && (
-          <div className="ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground">{label}</div>
+          <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>{label}</div>
         )}
         <span className={cn('ml-auto transition-all group-data-[state="open"]:-rotate-180')}>
           <IconChevronDown stroke={1} />
         </span>
       </CollapsibleTrigger>
-      <CollapsibleContent className="collapsibleDropdown" asChild>
+      <CollapsibleContent className='collapsibleDropdown' asChild>
         <ul>
           {sub!.map((sublink) => (
-            <li key={sublink.title} className="my-1 ml-8">
+            <li key={sublink.title} className='my-1 ml-8'>
               <NavLink {...sublink} subLink closeNav={closeNav} />
             </li>
           ))}
@@ -131,12 +131,12 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
           )}
         >
           {icon}
-          <span className="sr-only">{title}</span>
+          <span className='sr-only'>{title}</span>
         </Link>
       </TooltipTrigger>
-      <TooltipContent side="right" className="flex items-center gap-4">
+      <TooltipContent side='right' className='flex items-center gap-4'>
         {title}
-        {label && <span className="ml-auto text-muted-foreground">{label}</span>}
+        {label && <span className='ml-auto text-muted-foreground'>{label}</span>}
       </TooltipContent>
     </Tooltip>
   );
@@ -154,17 +154,17 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
-            <Button variant={isChildActive ? 'secondary' : 'ghost'} size="icon" className="h-12 w-12">
+            <Button variant={isChildActive ? 'secondary' : 'ghost'} size='icon' className='h-12 w-12'>
               {icon}
             </Button>
           </DropdownMenuTrigger>
         </TooltipTrigger>
-        <TooltipContent side="right" className="flex items-center gap-4">
-          {title} {label && <span className="ml-auto text-muted-foreground">{label}</span>}
-          <IconChevronDown size={18} className="-rotate-90 text-muted-foreground" />
+        <TooltipContent side='right' className='flex items-center gap-4'>
+          {title} {label && <span className='ml-auto text-muted-foreground'>{label}</span>}
+          <IconChevronDown size={18} className='-rotate-90 text-muted-foreground' />
         </TooltipContent>
       </Tooltip>
-      <DropdownMenuContent side="right" align="start" sideOffset={4}>
+      <DropdownMenuContent side='right' align='start' sideOffset={4}>
         <DropdownMenuLabel>
           {title} {label ? `(${label})` : ''}
         </DropdownMenuLabel>
@@ -172,8 +172,8 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
         {sub!.map(({ title, icon, label, href }) => (
           <DropdownMenuItem key={`${title}-${href}`} asChild>
             <Link to={href} className={`${checkActiveNav(href) ? 'bg-secondary' : ''}`}>
-              {icon} <span className="ml-2 max-w-52 text-wrap">{title}</span>
-              {label && <span className="ml-auto text-xs">{label}</span>}
+              {icon} <span className='ml-2 max-w-52 text-wrap'>{title}</span>
+              {label && <span className='ml-auto text-xs'>{label}</span>}
             </Link>
           </DropdownMenuItem>
         ))}

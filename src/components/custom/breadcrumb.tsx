@@ -23,7 +23,7 @@ const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
 
     return (
       <BreadcrumbContext.Provider value={true}>
-        <nav ref={ref} aria-label="breadcrumb" className={className} {...props}>
+        <nav ref={ref} aria-label='breadcrumb' className={className} {...props}>
           <ol className={cn(`flex`)}>{clones}</ol>
         </nav>
       </BreadcrumbContext.Provider>
@@ -52,7 +52,7 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemProps>(
     return (
       <li ref={ref} className={cn(`group`, className)} {...rest}>
         {children}
-        {!isLastChild && <span className="mx-2 *:!inline-block">{separator ?? '/'}</span>}
+        {!isLastChild && <span className='mx-2 *:!inline-block'>{separator ?? '/'}</span>}
       </li>
     );
   },

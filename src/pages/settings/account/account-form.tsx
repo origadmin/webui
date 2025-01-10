@@ -59,8 +59,8 @@ export function AccountForm() {
     toast({
       title: 'You submitted the following values:',
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     });
@@ -68,15 +68,15 @@ export function AccountForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name="name"
+          name='name'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your name" {...field} />
+                <Input placeholder='Your name' {...field} />
               </FormControl>
               <FormDescription>This is the name that will be displayed on your profile and in emails.</FormDescription>
               <FormMessage />
@@ -85,9 +85,9 @@ export function AccountForm() {
         />
         <FormField
           control={form.control}
-          name="dob"
+          name='dob'
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className='flex flex-col'>
               <FormLabel>Date of birth</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -97,13 +97,13 @@ export function AccountForm() {
                       className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                     >
                       {field.value ? dayjs(field.value).format('MMM D, YYYY') : <span>Pick a date</span>}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className='w-auto p-0' align='start'>
                   <Calendar
-                    mode="single"
+                    mode='single'
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date: Date) => date > new Date() || date < new Date('1900-01-01')}
@@ -118,28 +118,28 @@ export function AccountForm() {
         />
         <FormField
           control={form.control}
-          name="language"
+          name='language'
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className='flex flex-col'>
               <FormLabel>Language</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant="outline"
-                      role="combobox"
+                      variant='outline'
+                      role='combobox'
                       className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}
                     >
                       {field.value
                         ? languages.find((language) => language.value === field.value)?.label
                         : 'Select language'}
-                      <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className='w-[200px] p-0'>
                   <Command>
-                    <CommandInput placeholder="Search language..." />
+                    <CommandInput placeholder='Search language...' />
                     <CommandEmpty>No language found.</CommandEmpty>
                     <CommandGroup>
                       {languages.map((language) => (
@@ -165,7 +165,7 @@ export function AccountForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update account</Button>
+        <Button type='submit'>Update account</Button>
       </form>
     </Form>
   );

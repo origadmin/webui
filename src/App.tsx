@@ -10,13 +10,6 @@ function App() {
     <>
       <RouterProvider router={router} />
       <Toaster />
-      {/*<Router basename="/">*/}
-      {/*  <Routes>*/}
-      {/*    <Route path="/" element={<Navigate to="/dashboard" replace />} />*/}
-      {/*    <Route path="/dashboard" element={<DashboardPage />} />*/}
-      {/*    <Route path="/login" element={<LoginPage />} />*/}
-      {/*  </Routes>*/}
-      {/*</Router>*/}
     </>
   );
 }

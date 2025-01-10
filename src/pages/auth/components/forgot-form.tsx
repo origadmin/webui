@@ -34,21 +34,21 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
     <div className={cn('grid gap-6', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+          <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
-                <FormItem className="space-y-1">
+                <FormItem className='space-y-1'>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input placeholder='name@example.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="mt-2" loading={isLoading}>
+            <Button className='mt-2' loading={isLoading}>
               Continue
             </Button>
           </div>

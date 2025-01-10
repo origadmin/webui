@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import * as React from 'react';
+import { JSX } from 'react';
 
 interface PinInputProps {
   children: React.ReactElement<typeof PinInputField> | React.ReactElement<typeof PinInputField>[];
@@ -167,9 +168,9 @@ const PinInput = React.forwardRef<HTMLDivElement, PinInputProps>(({ className, c
 
   return (
     <PinInputContext.Provider value={true}>
-      <div ref={ref} aria-label="Pin Input" className={className} {...rest}>
+      <div ref={ref} aria-label='Pin Input' className={className} {...rest}>
         {clones}
-        <input type="hidden" name={name} form={form} value={pinValue} />
+        <input type='hidden' name={name} form={form} value={pinValue} />
       </div>
     </PinInputContext.Provider>
   );
@@ -317,6 +318,7 @@ const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly 
   }
 
   const pastedVal = React.useRef<null | string>(null);
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     const inputValue = e.target.value;
     const pastedValue = pastedVal.current;

@@ -48,15 +48,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     <div className={cn('grid gap-6', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+          <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
-                <FormItem className="space-y-1">
+                <FormItem className='space-y-1'>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input placeholder='name@example.com' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -64,51 +64,51 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
-                <FormItem className="space-y-1">
-                  <div className="flex items-center justify-between">
+                <FormItem className='space-y-1'>
+                  <div className='flex items-center justify-between'>
                     <FormLabel>Password</FormLabel>
-                    <Link to="/forgot-password" className="text-sm font-medium text-muted-foreground hover:opacity-75">
+                    <Link to='/forgot-password' className='text-sm font-medium text-muted-foreground hover:opacity-75'>
                       Forgot password?
                     </Link>
                   </div>
                   <FormControl>
-                    <PasswordInput placeholder="********" {...field} />
+                    <PasswordInput placeholder='********' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="mt-2" loading={isLoading}>
+            <Button className='mt-2' loading={isLoading}>
               Login
             </Button>
 
-            <div className="relative my-2">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
+            <div className='relative my-2'>
+              <div className='absolute inset-0 flex items-center'>
+                <span className='w-full border-t' />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              <div className='relative flex justify-center text-xs uppercase'>
+                <span className='bg-background px-2 text-muted-foreground'>Or continue with</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <Button
-                variant="outline"
-                className="w-full"
-                type="button"
+                variant='outline'
+                className='w-full'
+                type='button'
                 loading={isLoading}
-                leftSection={<IconBrandGithub className="h-4 w-4" />}
+                leftSection={<IconBrandGithub className='h-4 w-4' />}
               >
                 GitHub
               </Button>
               <Button
-                variant="outline"
-                className="w-full"
-                type="button"
+                variant='outline'
+                className='w-full'
+                type='button'
                 loading={isLoading}
-                leftSection={<IconBrandFacebook className="h-4 w-4" />}
+                leftSection={<IconBrandFacebook className='h-4 w-4' />}
               >
                 Facebook
               </Button>

@@ -5,7 +5,7 @@ const config = {
   darkMode: ['class'],
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './src/**/*.{ts,tsx}', './app/**/*.{ts,tsx}'],
   tailwind: {
-    baseColor: 'gray', // "gray" / "neutral" | "slate" | "stone" | "zinc"
+    baseColor: 'sky', // "gray" / "neutral" | "slate" | "stone" | "zinc"
   },
   theme: {
     extend: {

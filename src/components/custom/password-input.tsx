@@ -9,7 +9,7 @@ export type PasswordInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(({ className, ...props }, ref) => {
   const [showPassword, setShowPassword] = React.useState(false);
   return (
-    <div className="relative rounded-md">
+    <div className='relative rounded-md'>
       <input
         type={showPassword ? 'text' : 'password'}
         className={cn(
@@ -20,10 +20,10 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(({ 
         {...props}
       />
       <Button
-        type="button"
-        size="icon"
-        variant="ghost"
-        className="absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-md text-muted-foreground"
+        type='button'
+        size='icon'
+        variant='ghost'
+        className='absolute right-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-md text-muted-foreground'
         onClick={() => setShowPassword((prev) => !prev)}
       >
         {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}

@@ -165,7 +165,7 @@ const PinInputOg = ({
           }}
         />
       ))}
-      <input type="hidden" name={name} form={form} value={pinValue} />
+      <input type='hidden' name={name} form={form} value={pinValue} />
     </div>
   );
 };

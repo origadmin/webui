@@ -58,8 +58,8 @@ export default function ProfileForm() {
     toast({
       title: 'You submitted the following values:',
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
     });
@@ -67,15 +67,15 @@ export default function ProfileForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name="username"
+          name='username'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder='shadcn' {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a pseudonym. You can only change this once
@@ -87,24 +87,24 @@ export default function ProfileForm() {
         />
         <FormField
           control={form.control}
-          name="email"
+          name='email'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder='Select a verified email to display' />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  <SelectItem value='m@example.com'>m@example.com</SelectItem>
+                  <SelectItem value='m@google.com'>m@google.com</SelectItem>
+                  <SelectItem value='m@support.com'>m@support.com</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                You can manage verified email addresses in your <Link to="/examples/forms">email settings</Link>.
+                You can manage verified email addresses in your <Link to='/examples/forms'>email settings</Link>.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -112,12 +112,12 @@ export default function ProfileForm() {
         />
         <FormField
           control={form.control}
-          name="bio"
+          name='bio'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Bio</FormLabel>
               <FormControl>
-                <Textarea placeholder="Tell us a little bit about yourself" className="resize-none" {...field} />
+                <Textarea placeholder='Tell us a little bit about yourself' className='resize-none' {...field} />
               </FormControl>
               <FormDescription>
                 You can <span>@mention</span> other users and organizations to link to them.
@@ -146,11 +146,11 @@ export default function ProfileForm() {
               )}
             />
           ))}
-          <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => append({ value: '' })}>
+          <Button type='button' variant='outline' size='sm' className='mt-2' onClick={() => append({ value: '' })}>
             Add URL
           </Button>
         </div>
-        <Button type="submit">Update profile</Button>
+        <Button type='submit'>Update profile</Button>
       </form>
     </Form>
   );

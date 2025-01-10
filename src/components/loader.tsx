@@ -1,4 +1,4 @@
-import { IconLoader } from '@tabler/icons-react'
+import { IconLoader } from '@tabler/icons-react';
 
 export default function Loader() {
   return (
@@ -6,5 +6,5 @@ export default function Loader() {
       <IconLoader className='animate-spin' size={32} />
       <span className='sr-only'>loading</span>
     </div>
-  )
+  );
 }

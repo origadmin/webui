@@ -65,12 +65,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {((leftSection && loading) || (!leftSection && !rightSection && loading)) && (
-          <Loader className="mr-2 h-4 w-4 animate-spin" />
+          <Loader className='mr-2 h-4 w-4 animate-spin' />
         )}
-        {!loading && leftSection && <div className="mr-2">{leftSection}</div>}
+        {!loading && leftSection && <div className='mr-2'>{leftSection}</div>}
         {children}
-        {!loading && rightSection && <div className="ml-2">{rightSection}</div>}
-        {rightSection && loading && <Loader className="ml-2 h-4 w-4 animate-spin" />}
+        {!loading && rightSection && <div className='ml-2'>{rightSection}</div>}
+        {rightSection && loading && <Loader className='ml-2 h-4 w-4 animate-spin' />}
       </Comp>
     );
   },

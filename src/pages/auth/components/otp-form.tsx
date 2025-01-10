@@ -38,21 +38,21 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
     <div className={cn('grid gap-6', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+          <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name="otp"
+              name='otp'
               render={({ field }) => (
-                <FormItem className="space-y-1">
+                <FormItem className='space-y-1'>
                   <FormControl>
                     <PinInput
                       {...field}
-                      className="flex h-10 justify-between"
+                      className='flex h-10 justify-between'
                       onComplete={() => setDisabledBtn(false)}
                       onIncomplete={() => setDisabledBtn(true)}
                     >
                       {Array.from({ length: 7 }, (_, i) => {
-                        if (i === 3) return <Separator key={i} orientation="vertical" />;
+                        if (i === 3) return <Separator key={i} orientation='vertical' />;
                         return (
                           <PinInputField
                             key={i}
@@ -67,7 +67,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
                 </FormItem>
               )}
             />
-            <Button className="mt-2" disabled={disabledBtn} loading={isLoading}>
+            <Button className='mt-2' disabled={disabledBtn} loading={isLoading}>
               Verify
             </Button>
           </div>

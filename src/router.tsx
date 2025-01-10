@@ -6,10 +6,14 @@ import NotFoundError from './pages/errors/not-found-error';
 
 const router = createBrowserRouter([
   // Auth routes
-  // {
-  //   path: '/',
-  //   element: <Navigate to="/dashborad" replace />,
-  // },
+  {
+    path: '/',
+    lazy: async () => {
+      const Login = await import('@/app/login/page');
+      return { Component: Login.default };
+    },
+    errorElement: <GeneralError />,
+  },
   {
     path: '/dashboard',
     lazy: async () => ({
@@ -53,7 +57,6 @@ const router = createBrowserRouter([
       Component: (await import('./pages/auth/otp')).default,
     }),
   },
-
   // Main routes
   {
     path: '/',
@@ -147,7 +150,7 @@ const router = createBrowserRouter([
             lazy: async () => ({
               Component: (await import('./pages/settings/error-example')).default,
             }),
-            errorElement: <GeneralError className="h-[50svh]" minimal />,
+            errorElement: <GeneralError className='h-[50svh]' minimal />,
           },
         ],
       },

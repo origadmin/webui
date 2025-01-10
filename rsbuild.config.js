@@ -1,5 +1,6 @@
 const { pluginReact } = require('@rsbuild/plugin-react');
 const { defineConfig } = require('@rsbuild/core');
+const postcssOptions = require('./postcss.config');
 
 const config = defineConfig({
   server: {
@@ -12,11 +13,25 @@ const config = defineConfig({
   html: {
     template: './src/assets/index.html',
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: postcssOptions,
+            },
+          },
+        ],
+        type: 'css/auto',
+      },
+    ],
+  },
   source: {
     entry: {
       index: './src/index.tsx',
-      // dashboard: './src/index.tsx',
-      // login: './src/index.tsx',
     },
   },
   output: {
