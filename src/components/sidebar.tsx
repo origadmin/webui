@@ -1,3 +1,4 @@
+import { AppSidebar } from '@/components/app-sidebar';
 import { sidelinks } from '@/data/sidelinks';
 import { cn } from '@/lib/utils';
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
@@ -6,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Button } from './custom/button';
 import { Layout } from './custom/layout';
 import Nav from './nav';
+import { SidebarProvider, SidebarTrigger } from './ui/sidebar';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
@@ -27,7 +29,7 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
+        `sidebar fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
         className,
       )}
     >
@@ -92,14 +94,19 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
         </Layout.Header>
 
         {/* Navigation links */}
-        <Nav
-          id='sidebar-menu'
-          className={`z-40 h-full flex-1 overflow-auto ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}
-          closeNav={() => setNavOpened(false)}
-          isCollapsed={isCollapsed}
-          links={sidelinks}
-        />
-
+        {/*<Nav*/}
+        {/*  id='sidebar-menu'*/}
+        {/*  className={`z-40 h-full flex-1 overflow-auto ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}*/}
+        {/*  closeNav={() => setNavOpened(false)}*/}
+        {/*  isCollapsed={isCollapsed}*/}
+        {/*  links={sidelinks}*/}
+        {/*/>*/}
+        <SidebarProvider>
+          <AppSidebar />
+          <main>
+            <SidebarTrigger />
+          </main>
+        </SidebarProvider>
         {/* Scrollbar width toggle button */}
         <Button
           onClick={() => setIsCollapsed((prev) => !prev)}

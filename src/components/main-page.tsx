@@ -1,10 +1,19 @@
 import useIsCollapsed from '@/hooks/use-is-collapsed';
-import { Outlet } from 'react-router-dom';
+import { authenticated } from '@/utils/auth';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import Sidebar from './sidebar';
 
-export default function AppShell() {
+export default function MainPage() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed();
+  const navigate = useNavigate();
+  const isAuthenticated = authenticated();
+
+  if (!isAuthenticated) {
+    navigate('/login');
+    return null;
+  }
+
   return (
     <div className='relative h-full overflow-hidden bg-background'>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />

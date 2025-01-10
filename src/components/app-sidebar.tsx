@@ -3,7 +3,14 @@
 import { MainNav } from '@/components/main-nav';
 import { NavProjects } from '@/components/nav-projects';
 import { TeamSwitcher } from '@/components/team-switcher';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarProvider,
+  SidebarRail,
+} from '@/components/ui/sidebar';
 import { UserNav } from '@/components/user-nav';
 import {
   AudioWaveform,

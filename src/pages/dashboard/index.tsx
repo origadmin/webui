@@ -1,6 +1,7 @@
 import { Button } from '@/components/custom/button';
 import { Layout } from '@/components/custom/layout';
 import { Search } from '@/components/search';
+import ThemeController from '@/components/theme-controller';
 import ThemeSwitch from '@/components/theme-switch';
 import { TopNav } from '@/components/top-nav';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +19,7 @@ export default function Dashboard() {
         <TopNav links={topNav} />
         <div className='ml-auto flex items-center space-x-4'>
           <Search />
+          {/*<ThemeController />*/}
           <ThemeSwitch />
           <UserNav />
         </div>

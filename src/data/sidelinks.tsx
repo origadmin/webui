@@ -21,6 +21,7 @@ import {
   IconUserShield,
   IconUsers,
 } from '@tabler/icons-react';
+import {JSX} from "react";
 
 export interface NavLink {
   title: string;

@@ -85,6 +85,7 @@
     "@umijs/mako": "^0.11.1",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
+    "daisyui": "^4.12.23",
     "esbuild": "^0.24.2",
     "esbuild-register": "^3.6.0",
     "eslint": "^9.17.0",
