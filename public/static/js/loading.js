@@ -34,7 +34,7 @@
           justify-content: center;
           padding: 26px;
         }
-        .ant-spin {
+        .loading-spin {
           position: absolute;
           display: none;
           -webkit-box-sizing: border-box;
@@ -44,7 +44,7 @@
           color: rgba(0, 0, 0, 0.65);
           color: #1890ff;
           font-size: 14px;
-          font-variant: tabular-nums;
+          font-variloading: tabular-nums;
           line-height: 1.5;
           text-align: center;
           list-style: none;
@@ -60,13 +60,13 @@
           font-feature-settings: "tnum";
         }
 
-        .ant-spin-spinning {
+        .loading-spin-spinning {
           position: static;
           display: inline-block;
           opacity: 1;
         }
 
-        .ant-spin-dot {
+        .loading-spin-dot {
           position: relative;
           display: inline-block;
           width: 20px;
@@ -74,7 +74,7 @@
           font-size: 20px;
         }
 
-        .ant-spin-dot-item {
+        .loading-spin-dot-item {
           position: absolute;
           display: block;
           width: 9px;
@@ -88,83 +88,83 @@
           -ms-transform-origin: 50% 50%;
           transform-origin: 50% 50%;
           opacity: 0.3;
-          -webkit-animation: antspinmove 1s infinite linear alternate;
-          animation: antSpinMove 1s infinite linear alternate;
+          -webkit-animation: loadingspinmove 1s infinite linear alternate;
+          animation: loadingSpinMove 1s infinite linear alternate;
         }
 
-        .ant-spin-dot-item:nth-child(1) {
+        .loading-spin-dot-item:nth-child(1) {
           top: 0;
           left: 0;
         }
 
-        .ant-spin-dot-item:nth-child(2) {
+        .loading-spin-dot-item:nth-child(2) {
           top: 0;
           right: 0;
           -webkit-animation-delay: 0.4s;
           animation-delay: 0.4s;
         }
 
-        .ant-spin-dot-item:nth-child(3) {
+        .loading-spin-dot-item:nth-child(3) {
           right: 0;
           bottom: 0;
           -webkit-animation-delay: 0.8s;
           animation-delay: 0.8s;
         }
 
-        .ant-spin-dot-item:nth-child(4) {
+        .loading-spin-dot-item:nth-child(4) {
           bottom: 0;
           left: 0;
           -webkit-animation-delay: 1.2s;
           animation-delay: 1.2s;
         }
 
-        .ant-spin-dot-spin {
+        .loading-spin-dot-spin {
           -webkit-transform: rotate(45deg);
           -ms-transform: rotate(45deg);
           transform: rotate(45deg);
-          -webkit-animation: antrotate 1.2s infinite linear;
-          animation: antRotate 1.2s infinite linear;
+          -webkit-animation: loadingrotate 1.2s infinite linear;
+          animation: loadingRotate 1.2s infinite linear;
         }
 
-        .ant-spin-lg .ant-spin-dot {
+        .loading-spin-lg .loading-spin-dot {
           width: 32px;
           height: 32px;
           font-size: 32px;
         }
 
-        .ant-spin-lg .ant-spin-dot i {
+        .loading-spin-lg .loading-spin-dot i {
           width: 14px;
           height: 14px;
         }
 
         @media all and (-ms-high-contrast: none), (-ms-high-contrast: active), (forced-colors: none), (forced-colors: active) {
-          .ant-spin-blur {
+          .loading-spin-blur {
             forced-color-adjust: none;
             background: #fff;
             opacity: 0.5;
           }
         }
 
-        @-webkit-keyframes antSpinMove {
+        @-webkit-keyframes loadingSpinMove {
           to {
             opacity: 1;
           }
         }
 
-        @keyframes antSpinMove {
+        @keyframes loadingSpinMove {
           to {
             opacity: 1;
           }
         }
 
-        @-webkit-keyframes antRotate {
+        @-webkit-keyframes loadingRotate {
           to {
             -webkit-transform: rotate(405deg);
             transform: rotate(405deg);
           }
         }
 
-        @keyframes antRotate {
+        @keyframes loadingRotate {
           to {
             -webkit-transform: rotate(405deg);
             transform: rotate(405deg);
@@ -181,12 +181,12 @@
         min-height: 362px;
       ">
         <div class="page-loading-warp">
-          <div class="ant-spin ant-spin-lg ant-spin-spinning">
-            <span class="ant-spin-dot ant-spin-dot-spin">
-              <i class="ant-spin-dot-item"></i>
-              <i class="ant-spin-dot-item"></i>
-              <i class="ant-spin-dot-item"></i>
-              <i class="ant-spin-dot-item"></i>
+          <div class="loading-spin loading-spin-lg loading-spin-spinning">
+            <span class="loading-spin-dot loading-spin-dot-spin">
+              <i class="loading-spin-dot-item"></i>
+              <i class="loading-spin-dot-item"></i>
+              <i class="loading-spin-dot-item"></i>
+              <i class="loading-spin-dot-item"></i>
             </span>
           </div>
         </div>
