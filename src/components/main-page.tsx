@@ -1,17 +1,19 @@
 import useIsCollapsed from '@/hooks/use-is-collapsed';
-import { authenticated } from '@/utils/auth';
+import { userAuthenticated } from '@/utils/auth';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import Sidebar from './sidebar';
 
 export default function MainPage() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed();
+  const isAuthenticated = userAuthenticated();
   const navigate = useNavigate();
-  const isAuthenticated = authenticated();
 
   if (!isAuthenticated) {
-    navigate('/login');
+    navigate('/login', { replace: true });
     return null;
+  } else {
+    navigate('/dashboard', { replace: true });
   }
 
   return (

@@ -1,12 +1,10 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import { sidelinks } from '@/data/sidelinks';
+import { AppSidebar } from '@/components/layout/app-sidebar';
 import { cn } from '@/lib/utils';
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
 import { Button } from './custom/button';
 import { Layout } from './custom/layout';
-import Nav from './nav';
 import { SidebarProvider, SidebarTrigger } from './ui/sidebar';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {

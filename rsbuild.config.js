@@ -11,7 +11,11 @@ const config = defineConfig({
     writeToDisk: true,
   },
   html: {
-    template: './src/assets/index.html',
+    template: 'index.html',
+    templateParameters: {
+      APP_TITLE: 'OrigAdmin Panel',
+      BASE_URL: process.env.BASE_URL || '',
+    },
   },
   module: {
     rules: [
@@ -42,4 +46,5 @@ const config = defineConfig({
   },
   plugins: [pluginReact()],
 });
+
 export default config;

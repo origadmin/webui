@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-ignore
 import { parseParams } from '@/utils/pagination';
 import request from '@/utils/request';
 

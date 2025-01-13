@@ -1,4 +1,4 @@
-'use client';
+
 
 import { cn } from '@/lib/utils';
 import * as ToastPrimitives from '@radix-ui/react-toast';

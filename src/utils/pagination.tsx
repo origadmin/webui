@@ -1,3 +1,6 @@
+/* eslint-disable */
+// @ts-ignore
+
 /**
  * Transfer pagination parameter by converting page size to a different key.
  *

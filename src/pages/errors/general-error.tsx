@@ -1,8 +1,9 @@
-import { Button } from '@/components/custom/button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { HTMLAttributes } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface GeneralErrorProps extends React.HTMLAttributes<HTMLDivElement> {
+interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
   minimal?: boolean;
 }
 
@@ -21,7 +22,7 @@ export default function GeneralError({ className, minimal = false }: GeneralErro
             <Button variant='outline' onClick={() => navigate(-1)}>
               Go Back
             </Button>
-            <Button onClick={() => navigate('/')}>Back to Home</Button>
+            <Button onClick={() => navigate('/', { replace: true })}>Back to Home</Button>
           </div>
         )}
       </div>

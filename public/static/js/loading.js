@@ -17,157 +17,91 @@
           background-repeat: no-repeat;
           background-size: 100% auto;
         }
-
-        .loading-title {
-          font-size: 1.1rem;
+        .loading-spinner {
+          /* change color here */
+          /* color: #46dff0 */
         }
-
-        .loading-sub-title {
-          margin-top: 20px;
-          font-size: 1rem;
-          color: #888;
-        }
-
-        .page-loading-warp {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 26px;
-        }
-        .loading-spin {
-          position: absolute;
-          display: none;
-          -webkit-box-sizing: border-box;
+        .loading-spinner,
+        .loading-spinner div,
+        .loading-spinner div:after {
           box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-          color: rgba(0, 0, 0, 0.65);
-          color: #1890ff;
-          font-size: 14px;
-          font-variloading: tabular-nums;
-          line-height: 1.5;
-          text-align: center;
-          list-style: none;
-          opacity: 0;
-          -webkit-transition: -webkit-transform 0.3s
-            cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          transition: -webkit-transform 0.3s
-            cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86),
-            -webkit-transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          -webkit-font-feature-settings: "tnum";
-          font-feature-settings: "tnum";
         }
-
-        .loading-spin-spinning {
-          position: static;
+        .loading-spinner {
+          color: currentColor;
           display: inline-block;
-          opacity: 1;
-        }
-
-        .loading-spin-dot {
           position: relative;
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          font-size: 20px;
+          width: 80px;
+          height: 80px;
         }
-
-        .loading-spin-dot-item {
-          position: absolute;
+        .loading-spinner div {
+          transform-origin: 40px 40px;
+          animation: loading-spinner 1.2s linear infinite;
+        }
+        .loading-spinner div:after {
+          content: " ";
           display: block;
-          width: 9px;
-          height: 9px;
-          background-color: #1890ff;
-          border-radius: 100%;
-          -webkit-transform: scale(0.75);
-          -ms-transform: scale(0.75);
-          transform: scale(0.75);
-          -webkit-transform-origin: 50% 50%;
-          -ms-transform-origin: 50% 50%;
-          transform-origin: 50% 50%;
-          opacity: 0.3;
-          -webkit-animation: loadingspinmove 1s infinite linear alternate;
-          animation: loadingSpinMove 1s infinite linear alternate;
+          position: absolute;
+          top: 3.2px;
+          left: 36.8px;
+          width: 6.4px;
+          height: 17.6px;
+          border-radius: 20%;
+          background: currentColor;
         }
-
-        .loading-spin-dot-item:nth-child(1) {
-          top: 0;
-          left: 0;
+        .loading-spinner div:nth-child(1) {
+          transform: rotate(0deg);
+          animation-delay: -1.1s;
         }
-
-        .loading-spin-dot-item:nth-child(2) {
-          top: 0;
-          right: 0;
-          -webkit-animation-delay: 0.4s;
-          animation-delay: 0.4s;
+        .loading-spinner div:nth-child(2) {
+          transform: rotate(30deg);
+          animation-delay: -1s;
         }
-
-        .loading-spin-dot-item:nth-child(3) {
-          right: 0;
-          bottom: 0;
-          -webkit-animation-delay: 0.8s;
-          animation-delay: 0.8s;
+        .loading-spinner div:nth-child(3) {
+          transform: rotate(60deg);
+          animation-delay: -0.9s;
         }
-
-        .loading-spin-dot-item:nth-child(4) {
-          bottom: 0;
-          left: 0;
-          -webkit-animation-delay: 1.2s;
-          animation-delay: 1.2s;
+        .loading-spinner div:nth-child(4) {
+          transform: rotate(90deg);
+          animation-delay: -0.8s;
         }
-
-        .loading-spin-dot-spin {
-          -webkit-transform: rotate(45deg);
-          -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
-          -webkit-animation: loadingrotate 1.2s infinite linear;
-          animation: loadingRotate 1.2s infinite linear;
+        .loading-spinner div:nth-child(5) {
+          transform: rotate(120deg);
+          animation-delay: -0.7s;
         }
-
-        .loading-spin-lg .loading-spin-dot {
-          width: 32px;
-          height: 32px;
-          font-size: 32px;
+        .loading-spinner div:nth-child(6) {
+          transform: rotate(150deg);
+          animation-delay: -0.6s;
         }
-
-        .loading-spin-lg .loading-spin-dot i {
-          width: 14px;
-          height: 14px;
+        .loading-spinner div:nth-child(7) {
+          transform: rotate(180deg);
+          animation-delay: -0.5s;
         }
-
-        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active), (forced-colors: none), (forced-colors: active) {
-          .loading-spin-blur {
-            forced-color-adjust: none;
-            background: #fff;
-            opacity: 0.5;
-          }
+        .loading-spinner div:nth-child(8) {
+          transform: rotate(210deg);
+          animation-delay: -0.4s;
         }
-
-        @-webkit-keyframes loadingSpinMove {
-          to {
+        .loading-spinner div:nth-child(9) {
+          transform: rotate(240deg);
+          animation-delay: -0.3s;
+        }
+        .loading-spinner div:nth-child(10) {
+          transform: rotate(270deg);
+          animation-delay: -0.2s;
+        }
+        .loading-spinner div:nth-child(11) {
+          transform: rotate(300deg);
+          animation-delay: -0.1s;
+        }
+        .loading-spinner div:nth-child(12) {
+          transform: rotate(330deg);
+          animation-delay: 0s;
+        }
+        @keyframes loading-spinner {
+          0% {
             opacity: 1;
           }
-        }
-
-        @keyframes loadingSpinMove {
-          to {
-            opacity: 1;
-          }
-        }
-
-        @-webkit-keyframes loadingRotate {
-          to {
-            -webkit-transform: rotate(405deg);
-            transform: rotate(405deg);
-          }
-        }
-
-        @keyframes loadingRotate {
-          to {
-            -webkit-transform: rotate(405deg);
-            transform: rotate(405deg);
+          100% {
+            opacity: 0;
           }
         }
       </style>
@@ -180,16 +114,7 @@
         height: 100%;
         min-height: 362px;
       ">
-        <div class="page-loading-warp">
-          <div class="loading-spin loading-spin-lg loading-spin-spinning">
-            <span class="loading-spin-dot loading-spin-dot-spin">
-              <i class="loading-spin-dot-item"></i>
-              <i class="loading-spin-dot-item"></i>
-              <i class="loading-spin-dot-item"></i>
-              <i class="loading-spin-dot-item"></i>
-            </span>
-          </div>
-        </div>
+        <div class="loading-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         <div class="loading-title">
           Loading resources...
         </div>

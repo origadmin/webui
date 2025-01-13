@@ -1,30 +1,33 @@
+/* eslint-disable */
+// @ts-ignore
+import { HOST } from '@/types';
 import axios from 'axios';
 
 const request = axios.create({
-  baseURL: '/', // 替换为你的 API 基础 URL
-  timeout: 1000, // 请求超时时间
+  baseURL: HOST + '/', // Replace with your API base URL
+  timeout: 1000, // The request timeout period
 });
 
-// 请求拦截器
+// Request an interceptor
 request.interceptors.request.use(
   (config) => {
-    // 在发送请求之前做些什么
+    // What to do before sending a request
     return config;
   },
   (error) => {
-    // 对请求错误做些什么
+    // What to do about request errors
     return Promise.reject(error);
   },
 );
 
-// 响应拦截器
+// Respond to the interceptor
 request.interceptors.response.use(
-  (response) => {
-    // 对响应数据做点什么
+  (response: API.ResponseResult<any>) => {
+    // Do something about the response data
     return response.data;
   },
-  (error) => {
-    // 对响应错误做点什么
+  (error: API.ResponseResult<any>) => {
+    // Do something about response errors
     return Promise.reject(error);
   },
 );

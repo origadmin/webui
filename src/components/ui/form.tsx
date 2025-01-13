@@ -1,4 +1,3 @@
-'use client';
 
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';

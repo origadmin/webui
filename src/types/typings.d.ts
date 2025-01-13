@@ -27,10 +27,22 @@ declare namespace API {
     parent_id?: string;
     disabled?: boolean;
     children?: TreeItem[];
-    [key: string]: never;
+    [key: string]: unknown;
   };
 
   type Route = {
     path: string;
+  };
+
+  type SideBarUser = {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+
+  type Sidebar = {
+    user: SideBarUser;
+    teams: Team[];
+    navGroups: NavGroup[];
   };
 }

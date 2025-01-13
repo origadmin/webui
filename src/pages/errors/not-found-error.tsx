@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button';
+import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 export default function NotFoundError() {
@@ -16,7 +16,7 @@ export default function NotFoundError() {
           <Button variant='outline' onClick={() => navigate(-1)}>
             Go Back
           </Button>
-          <Button onClick={() => navigate('/')}>Back to Home</Button>
+          <Button onClick={() => navigate('/', { replace: true })}>Back to Home</Button>
         </div>
       </div>
     </div>
