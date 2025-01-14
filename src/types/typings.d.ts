@@ -1,3 +1,6 @@
+import { Icons } from '@/components/icons';
+import { TablerIcon } from '@tabler/icons-react';
+
 declare namespace API {
   type Params = {
     current?: number;
@@ -34,15 +37,45 @@ declare namespace API {
     path: string;
   };
 
+  type MenuItem = {
+    title: string;
+    url?: string;
+    disabled?: boolean;
+    external?: boolean;
+    shortcut?: [string, string];
+    icon?: TablerIcon | LucideIcon;
+    label?: string;
+    description?: string;
+    isActive?: boolean;
+    items?: MenuItem[];
+  };
+
+  type FooterItem = {
+    title: string;
+    href: string;
+    external?: boolean;
+  };
+
+  type Footer = {
+    title: string;
+    items: FooterItem[];
+  };
+
   type SideBarUser = {
     name: string;
     email: string;
     avatar: string;
   };
 
-  type Sidebar = {
+  type SidebarData = {
     user: SideBarUser;
     teams: Team[];
-    navGroups: NavGroup[];
+    menuItems: MenuItem[];
+  };
+
+  type TopNav = {
+    title: string;
+    href: string;
+    isActive: boolean;
   };
 }

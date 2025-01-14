@@ -1,4 +1,5 @@
-import { NavItem } from '@/types';
+import { Icons } from '@/components/icons';
+import { API } from '@/types/typings';
 
 export type Product = {
   photo_url: string;
@@ -12,11 +13,11 @@ export type Product = {
 };
 
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
-export const navItems: NavItem[] = [
+export const menuItems: API.MenuItem[] = [
   {
     title: 'Dashboard',
     url: '/dashboard/overview',
-    icon: 'dashboard',
+    icon: Icons['dashboard'],
     isActive: false,
     shortcut: ['d', 'd'],
     items: [], // Empty array as there are no child items for Dashboard
@@ -24,7 +25,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Product',
     url: '/dashboard/product',
-    icon: 'product',
+    icon: Icons['product'],
     shortcut: ['p', 'p'],
     isActive: false,
     items: [], // No child items
@@ -32,30 +33,31 @@ export const navItems: NavItem[] = [
   {
     title: 'Account',
     url: '#', // Placeholder as there is no direct link for the parent
-    icon: 'billing',
+    icon: Icons['billing'],
     isActive: true,
 
     items: [
       {
         title: 'Profile',
         url: '/dashboard/profile',
-        icon: 'userPen',
+        icon: Icons['userPen'],
         shortcut: ['m', 'm'],
       },
       {
         title: 'Login',
         shortcut: ['l', 'l'],
         url: '/',
-        icon: 'login',
+        icon: Icons['login'],
       },
     ],
   },
   {
     title: 'Kanban',
     url: '/dashboard/kanban',
-    icon: 'kanban',
+    icon: Icons['kanban'],
     shortcut: ['k', 'k'],
     isActive: false,
     items: [], // No child items
   },
 ];
+

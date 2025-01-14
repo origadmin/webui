@@ -11,7 +11,7 @@ import { ChevronRight } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import ThemeSwitch from "@/components/layout/Theme/theme-switch";
+import ThemeSwitch from "@/components/Theme/theme-switch";
 
 export default function ExtraComponents() {
   const items = [{ title: 'Extra Components', href: '/extra-components' }, { title: 'Breadcrumb' }].map(

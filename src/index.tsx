@@ -1,5 +1,5 @@
 import App from '@/App';
-import { ThemeProvider } from '@/components/layout/Theme/theme-provider';
+import { ThemeProvider } from '@/components/Theme/theme-provider';
 import '@/index.css';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';

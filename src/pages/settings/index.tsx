@@ -13,7 +13,7 @@ import {
 import { Outlet } from 'react-router-dom';
 
 import SidebarNav from './components/sidebar-nav';
-import ThemeSwitch from "@/components/layout/Theme/theme-switch";
+import ThemeSwitch from "@/components/Theme/theme-switch";
 
 export default function Settings() {
   return (

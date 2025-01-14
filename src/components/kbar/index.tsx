@@ -1,5 +1,5 @@
-import { navItems } from '@/mocks/data';
-import { NavItem } from '@/types';
+import { menuItems } from '@/mocks/data';
+import { MenuItem } from '@/types';
 import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from 'kbar';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
   // These action are for the navigation
   const actions = useMemo(
     () =>
-      navItems.flatMap((navItem) => {
+      menuItems.flatMap((navItem) => {
         // Only include base action if the navItem has a real URL and is not just a container
         const baseAction =
           navItem.url !== '#'
@@ -30,7 +30,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
 
         // Map child items into actions
         const childActions =
-          navItem.items?.map((childItem: NavItem) => ({
+          navItem.items?.map((childItem: MenuItem) => ({
             id: `${childItem.title.toLowerCase()}Action`,
             name: childItem.title,
             shortcut: childItem.shortcut,

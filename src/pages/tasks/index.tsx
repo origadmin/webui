@@ -1,5 +1,5 @@
 import { Content } from '@/components/content';
-import ThemeSwitch from '@/components/layout/Theme/theme-switch';
+import ThemeSwitch from '@/components/Theme/theme-switch';
 import { Search } from '@/components/search';
 import { UserNav } from '@/components/user-nav';
 

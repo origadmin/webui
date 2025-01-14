@@ -1,72 +1,54 @@
+import { SidebarContentItem, SidebarFooterItem, SidebarHeaderItem, SidebarProps } from '@/components/Sidebar';
+import { ThemeToggle } from '@/components/Theme';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import KBar from '@/components/kbar';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
-import { Home, Settings, Users } from 'lucide-react';
+import SearchInput from '@/components/search-input';
+import { TopNav } from '@/components/top-nav';
+import { Separator } from '@/components/ui/separator';
+import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from '@/components/ui/sidebar';
+import { UserNav } from '@/components/user-nav';
+import { API } from '@/types/typings';
 import * as React from 'react';
-import {TeamSwitcher} from "@/components/team-switcher";
-import {data} from "@/mocks/sidebar-data";
-import {NavUser} from "@/components/layout/nav-user";
 
-interface LayoutProps {
-  header?: React.ReactNode;
+type LayoutProps = {
+  topNav?: API.TopNav[];
+  sidebarProps?: SidebarProps;
   children: React.ReactNode;
-}
+};
 
-export function Layout({ children }: LayoutProps) {
+export function Layout(props: LayoutProps) {
+  const { sidebarProps } = props;
   return (
     <KBar>
       <SidebarProvider>
-        <div className='flex h-screen'>
-          <Sidebar className='border-r'>
-            <SidebarHeader>
-                <TeamSwitcher teams={data.teams} />
-            </SidebarHeader>
-            <SidebarContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href='/'>
-                      <Home />
-                      <span>Home</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href='/settings'>
-                      <Settings />
-                      <span>Settings</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarContent>
-            {/*<SidebarFooter>/!* Add footer content here if needed *!/</SidebarFooter>*/}
-            <SidebarFooter>
-              <NavUser user={data.user} />
-            </SidebarFooter>
-            <SidebarRail />
-          </Sidebar>
-          <SidebarInset className='flex-1'>
-            <header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-6'>
-              <SidebarTrigger />
-              <div className='font-semibold'>Page Title</div>
-            </header>
-            {children}
-          </SidebarInset>
-        </div>
+        <Sidebar className='border-r' collapsible='icon' {...(sidebarProps?.props || {})}>
+          {sidebarProps?.header && <SidebarHeaderItem {...sidebarProps.header} />}
+          {sidebarProps?.content && <SidebarContentItem {...sidebarProps.content} />}
+          {sidebarProps?.footer && <SidebarFooterItem {...sidebarProps.footer} />}
+          <SidebarRail />
+        </Sidebar>
+        <SidebarInset className='flex-1'>
+          {/*<header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-6'>*/}
+          {/*  <SidebarTrigger />*/}
+          {/*  <div className='font-semibold'>Page Title</div>*/}
+          {/*</header>*/}
+          <header className='flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'>
+            <div className='flex items-center gap-2 px-4'>
+              <SidebarTrigger className='-ml-1' />
+              <Separator orientation='vertical' className='mr-2 h-4' />
+              <Breadcrumbs />
+            </div>
+            <div className='flex gap-2 px-4'>{props.topNav && <TopNav links={props.topNav} />}</div>
+            <div className='flex items-center gap-2 px-4'>
+              <div className='hidden md:flex'>
+                <SearchInput />
+              </div>
+              <ThemeToggle />
+              <UserNav />
+            </div>
+          </header>
+          {props.children}
+        </SidebarInset>
       </SidebarProvider>
     </KBar>
   );

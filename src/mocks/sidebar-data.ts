@@ -1,3 +1,4 @@
+import { API, TopNav } from '@/types/typings';
 import {
   IconBarrierBlock,
   IconBrowserCheck,
@@ -21,32 +22,20 @@ import {
 } from '@tabler/icons-react';
 import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react';
 
-import Sidebar = API.Sidebar;
-
-export const data: Sidebar = {
+export const data: API.SidebarData = {
   user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
+    name: 'OrigAdmin',
+    email: 'origadminpanelwebui@gmail.com',
+    avatar: '/static/logo.svg',
   },
   teams: [
     {
-      name: 'Shadcn Admin',
+      name: 'OrigAdmin Panel',
       logo: Command,
-      plan: 'Vite + ShadcnUI',
-    },
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
+      plan: 'React + ShadcnUI',
     },
   ],
-  navGroups: [
+  menuItems: [
     {
       title: 'General',
       items: [
@@ -68,7 +57,6 @@ export const data: Sidebar = {
         {
           title: 'Chats',
           url: '/chats',
-          badge: '3',
           icon: IconMessages,
         },
         {
@@ -183,3 +171,26 @@ export const data: Sidebar = {
     },
   ],
 };
+
+export const topNav: TopNav[] = [
+  {
+    title: 'Overview',
+    href: 'dashboard/overview',
+    isActive: true,
+  },
+  {
+    title: 'Customers',
+    href: 'dashboard/customers',
+    isActive: false,
+  },
+  {
+    title: 'Products',
+    href: 'dashboard/products',
+    isActive: false,
+  },
+  {
+    title: 'Settings',
+    href: 'dashboard/settings',
+    isActive: false,
+  },
+];

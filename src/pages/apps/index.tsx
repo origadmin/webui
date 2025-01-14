@@ -9,7 +9,7 @@ import { IconAdjustmentsHorizontal, IconSortAscendingLetters, IconSortDescending
 import { useState } from 'react';
 
 import { apps } from './data';
-import ThemeSwitch from "@/components/layout/Theme/theme-switch";
+import ThemeSwitch from "@/components/Theme/theme-switch";
 
 const appText = new Map<string, string>([
   ['all', 'All Apps'],

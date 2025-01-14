@@ -52,7 +52,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     lazy: async () => {
-      const MainPage = await import('@/components/main-page');
+      const MainPage = await import('@/app/MainPage');
       return { Component: MainPage.default };
     },
     children: [
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
       {
         path: 'chats',
         lazy: async () => ({
-          Component: (await import('@/components/coming-soon')).default,
+          Component: (await import('@/pages/errors/coming-soon')).default,
         }),
       },
       {
@@ -92,13 +92,13 @@ const router = createBrowserRouter([
       {
         path: 'users',
         lazy: async () => ({
-          Component: (await import('@/components/coming-soon')).default,
+          Component: (await import('@/pages/errors/coming-soon')).default,
         }),
       },
       {
         path: 'analysis',
         lazy: async () => ({
-          Component: (await import('@/components/coming-soon')).default,
+          Component: (await import('@/pages/errors/coming-soon')).default,
         }),
       },
       {
