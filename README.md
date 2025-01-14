@@ -2,9 +2,9 @@
 
 ## Preview
 
-![dashboard](resources/dashboard.jpg)
 ![signin](resources/signin.jpg)
 ![signup](resources/signup.jpg)
+![dashboard](resources/dashboard.jpg)
 
 ## Tech stack
 
