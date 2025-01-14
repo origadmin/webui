@@ -5,7 +5,7 @@ import { userAuthenticated } from '@/utils/auth';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-const getSidebarData = () => {
+const getSidebarMockData = () => {
   return {
     header: {
       teams: data.teams,
@@ -19,7 +19,8 @@ const getSidebarData = () => {
   } as SidebarProps;
 };
 
-export default function MainPage() {
+export default function MainPage(title: string) {
+  console.log(title);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function MainPage() {
     }
   });
 
-  const sidebarData = getSidebarData();
+  const sidebarData = getSidebarMockData();
 
   return (
     <Layout sidebarProps={sidebarData} topNav={topNav}>

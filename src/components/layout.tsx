@@ -28,17 +28,14 @@ export function Layout(props: LayoutProps) {
           <SidebarRail />
         </Sidebar>
         <SidebarInset className='flex-1'>
-          {/*<header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-6'>*/}
-          {/*  <SidebarTrigger />*/}
-          {/*  <div className='font-semibold'>Page Title</div>*/}
-          {/*</header>*/}
           <header className='flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'>
             <div className='flex items-center gap-2 px-4'>
               <SidebarTrigger className='-ml-1' />
               <Separator orientation='vertical' className='mr-2 h-4' />
+              {props.topNav && <TopNav links={props.topNav} />}
               <Breadcrumbs />
             </div>
-            <div className='flex gap-2 px-4'>{props.topNav && <TopNav links={props.topNav} />}</div>
+            <div className='flex items-center gap-2 px-4'></div>
             <div className='flex items-center gap-2 px-4'>
               <div className='hidden md:flex'>
                 <SearchInput />

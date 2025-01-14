@@ -1,3 +1,4 @@
+import { API } from '@/types/typings';
 import MD5 from 'crypto-js/md5';
 import SHA256 from 'crypto-js/sha256';
 
@@ -34,7 +35,7 @@ export function getUsername(): string {
   return localStorage.getItem('username') || '';
 }
 
-export function convertTreeData<T>(
+export function convertMenuItem<T>(
   data: T[],
   convertT?: (item: T) => {
     id: string;
@@ -43,8 +44,8 @@ export function convertTreeData<T>(
     disabled?: boolean;
     children: T[];
   },
-): API.TreeItem[] {
-  const treeData: API.TreeItem[] = [];
+): API.MenuItem[] {
+  const menuItems: API.MenuItem[] = [];
   data.forEach((item) => {
     const dataItem = convertT
       ? convertT(item)
@@ -56,20 +57,21 @@ export function convertTreeData<T>(
           children: T[];
         });
 
-    const treeItem: API.TreeItem = {
-      id: dataItem.id,
+    // todo: fix this
+    const menuItem: API.MenuItem = {
+      // id: dataItem.id,
       key: dataItem.id,
       title: dataItem.name,
-      value: dataItem.id,
+      // value: dataItem.id,
       label: dataItem.name,
-      parent_id: dataItem.parent_id,
-      children: dataItem.children ? convertTreeData(dataItem.children, convertT) : [],
+      // parent_id: dataItem.parent_id,
+      items: dataItem.children ? convertMenuItem(dataItem.children, convertT) : [],
     };
 
     if (dataItem.disabled) {
-      treeItem.disabled = dataItem.disabled!;
+      menuItem.disabled = dataItem.disabled!;
     }
-    treeData.push(treeItem);
+    menuItems.push(menuItem);
   });
-  return treeData;
+  return menuItems;
 }

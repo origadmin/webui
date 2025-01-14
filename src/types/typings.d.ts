@@ -38,6 +38,7 @@ declare namespace API {
   };
 
   type MenuItem = {
+    key?: string;
     title: string;
     url?: string;
     disabled?: boolean;

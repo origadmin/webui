@@ -1,4 +1,4 @@
-import { API, TopNav } from '@/types/typings';
+import { API } from '@/types/typings';
 import {
   IconBarrierBlock,
   IconBrowserCheck,
@@ -20,7 +20,7 @@ import {
   IconUserOff,
   IconUsers,
 } from '@tabler/icons-react';
-import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react';
+import { Command } from 'lucide-react';
 
 export const data: API.SidebarData = {
   user: {
@@ -172,7 +172,7 @@ export const data: API.SidebarData = {
   ],
 };
 
-export const topNav: TopNav[] = [
+export const topNav: API.TopNav[] = [
   {
     title: 'Overview',
     href: 'dashboard/overview',

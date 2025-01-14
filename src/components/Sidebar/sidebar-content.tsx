@@ -9,6 +9,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { API } from '@/types/typings';
 import { ChevronRight } from 'lucide-react';
@@ -19,6 +20,14 @@ type SidebarContentProps = {
 };
 
 function SidebarContentItem(props: SidebarContentProps) {
+  const { state } = useSidebar();
+
+  function renderIcon(item: API.MenuItem, state: string) {
+    console.log('state', state);
+    // state === 'collapsed' ? <item.icon size={18} /> :
+    return item.icon && <item.icon />;
+  }
+
   function onlyTitle(item: API.MenuItem) {
     return item.title !== undefined && item.icon === undefined && item.url === undefined;
   }
@@ -34,7 +43,7 @@ function SidebarContentItem(props: SidebarContentProps) {
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={item.title} isActive={false}>
-                {item.icon && <item.icon />}
+                {renderIcon(item, state)}
                 <span>{item.title}</span>
                 <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
               </SidebarMenuButton>
@@ -45,7 +54,7 @@ function SidebarContentItem(props: SidebarContentProps) {
                   <SidebarMenuSubItem key={subItem.title}>
                     <SidebarMenuSubButton asChild isActive={false}>
                       <Link to={subItem.url || '#'}>
-                        {subItem.icon && <subItem.icon />}
+                        {renderIcon(subItem, state)}
                         <span>{subItem.title}</span>
                       </Link>
                     </SidebarMenuSubButton>
@@ -59,7 +68,7 @@ function SidebarContentItem(props: SidebarContentProps) {
         <SidebarMenuItem>
           <SidebarMenuButton asChild tooltip={item.title} isActive={false}>
             <Link to={item.url || '#'}>
-              {item.icon && <item.icon />}
+              {renderIcon(item, state)}
               <span>{item.title}</span>
             </Link>
           </SidebarMenuButton>
