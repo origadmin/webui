@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from '@/components/user-nav';
 import { API } from '@/types/typings';
+import { Slash } from 'lucide-react';
 import * as React from 'react';
 
 type LayoutProps = {
@@ -32,8 +33,9 @@ export function Layout(props: LayoutProps) {
             <div className='flex items-center gap-2 px-4'>
               <SidebarTrigger className='-ml-1' />
               <Separator orientation='vertical' className='mr-2 h-4' />
-              {props.topNav && <TopNav links={props.topNav} />}
               <Breadcrumbs />
+              <Separator orientation='vertical' className='mr-2 h-4' />
+              {props.topNav && <TopNav navs={props.topNav} />}
             </div>
             <div className='flex items-center gap-2 px-4'></div>
             <div className='flex items-center gap-2 px-4'>

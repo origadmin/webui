@@ -10,7 +10,12 @@ import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
 import { Slash } from 'lucide-react';
 import { Fragment } from 'react';
 
-export function Breadcrumbs() {
+export type BreadcrumbProps = {
+  slash?: boolean;
+};
+
+export function Breadcrumbs(props?: BreadcrumbProps) {
+  const { slash = false } = props || {};
   const items = useBreadcrumbs();
   if (items.length === 0) return null;
 
@@ -24,11 +29,14 @@ export function Breadcrumbs() {
                 <BreadcrumbLink href={item.link}>{item.title}</BreadcrumbLink>
               </BreadcrumbItem>
             )}
-            {index < items.length - 1 && (
-              <BreadcrumbSeparator className='hidden md:block'>
-                <Slash />
-              </BreadcrumbSeparator>
-            )}
+            {index < items.length - 1 &&
+              (slash ? (
+                <BreadcrumbSeparator className='hidden md:block'>
+                  <Slash />
+                </BreadcrumbSeparator>
+              ) : (
+                <BreadcrumbSeparator className='hidden md:block' />
+              ))}
             {index === items.length - 1 && <BreadcrumbPage>{item.title}</BreadcrumbPage>}
           </Fragment>
         ))}
