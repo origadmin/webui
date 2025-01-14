@@ -19,8 +19,7 @@ const getSidebarMockData = () => {
   } as SidebarProps;
 };
 
-export default function MainPage(title: string) {
-  console.log(title);
+export default function MainPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
