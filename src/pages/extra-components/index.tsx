@@ -1,8 +1,7 @@
 import { Breadcrumb, BreadcrumbItem } from '@/components/custom/breadcrumb';
-import { Layout } from '@/components/custom/layout';
+import { Content } from '@/components/content';
 import { PinInput, PinInputField } from '@/components/custom/pin-input';
 import { Search } from '@/components/search';
-import ThemeSwitch from '@/components/theme-switch';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,6 +11,7 @@ import { ChevronRight } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ThemeSwitch from "@/components/layout/Theme/theme-switch";
 
 export default function ExtraComponents() {
   const items = [{ title: 'Extra Components', href: '/extra-components' }, { title: 'Breadcrumb' }].map(
@@ -34,18 +34,18 @@ export default function ExtraComponents() {
   const [pinInput, setPinInput] = useState('');
 
   return (
-    <Layout>
+    <Content>
       {/* ===== Top Heading ===== */}
-      <Layout.Header>
+      <Content.Header>
         <div className='ml-auto flex items-center space-x-4'>
           <Search />
           <ThemeSwitch />
           <UserNav />
         </div>
-      </Layout.Header>
+      </Content.Header>
 
       {/* className='space-y-4' */}
-      <Layout.Body className='space-y-4'>
+      <Content.Body className='space-y-4'>
         <div className='flex items-center justify-between space-y-2'>
           <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>Extra Components</h1>
         </div>
@@ -144,7 +144,7 @@ export default function ExtraComponents() {
             </Tabs>
           </div>
         </div>
-      </Layout.Body>
-    </Layout>
+      </Content.Body>
+    </Content>
   );
 }

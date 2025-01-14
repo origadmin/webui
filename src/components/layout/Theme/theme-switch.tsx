@@ -1,7 +1,7 @@
+import { Button } from '@/components/ui/button';
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import { useEffect } from 'react';
-import { Moon, Sun } from 'react-feather';
 
-import { Button } from './custom/button';
 import { useTheme } from './theme-provider';
 
 export default function ThemeSwitch() {
@@ -12,7 +12,9 @@ export default function ThemeSwitch() {
   useEffect(() => {
     const themeColor = theme === 'dark' ? '#020817' : '#fff';
     const metaThemeColor = document.querySelector("meta[name='theme-color']");
-    metaThemeColor?.setAttribute('content', themeColor);
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', themeColor);
+    }
   }, [theme]);
 
   return (
@@ -22,7 +24,7 @@ export default function ThemeSwitch() {
       className='rounded-full'
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
-      {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+      {theme === 'light' ? <IconMoon size={20} /> : <IconSun size={20} />}
     </Button>
   );
 }

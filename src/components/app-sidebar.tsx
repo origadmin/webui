@@ -1,10 +1,26 @@
 import { NavUser } from '@/components/layout/nav-user';
 import { TeamSwitcher } from '@/components/team-switcher';
-import { Sidebar, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarRail,
+} from '@/components/ui/sidebar';
 import { data } from '@/mocks/sidebar-data';
-import * as React from 'react';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type SidebarItem = {
+  title: string;
+  icon: React.ReactNode;
+  href: string;
+};
+
+type SidebarProps = {
+  // items: SidebarItem[];
+} & React.ComponentProps<typeof Sidebar>;
+
+export function AppSidebar({ ...props }: SidebarProps) {
   return (
     <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>

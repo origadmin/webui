@@ -1,10 +1,10 @@
+import ThemeSwitch from '@/components/layout/Theme/theme-switch';
 import React from 'react';
 
 import { Breadcrumbs } from '../breadcrumbs';
 import SearchInput from '../search-input';
 import { Separator } from '../ui/separator';
 import { SidebarTrigger } from '../ui/sidebar';
-import ThemeToggle from './ThemeToggle/theme-toggle';
 import { NavUser } from './nav-user';
 
 export default function Header() {
@@ -20,8 +20,16 @@ export default function Header() {
         <div className='hidden md:flex'>
           <SearchInput />
         </div>
-        <NavUser {...{ user: { name: 'John Doe', email: 'john@doe.com', avatar: 'https://avatars.githubusercontent.com/u/10214304?v=4' } }} />
-        <ThemeToggle />
+        <NavUser
+          {...{
+            user: {
+              name: 'John Doe',
+              email: 'john@doe.com',
+              avatar: 'https://avatars.githubusercontent.com/u/10214304?v=4',
+            },
+          }}
+        />
+        <ThemeSwitch />
       </div>
     </header>
   );

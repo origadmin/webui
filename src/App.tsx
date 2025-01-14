@@ -1,7 +1,9 @@
+import { LoadingSpinner } from '@/components/Loading';
 import { Toaster } from '@/components/ui/toaster';
 import router from '@/router';
-import { userAuthenticated } from '@/utils/auth';
-import {RouterProvider, useNavigate} from 'react-router-dom';
+import { Suspense } from 'react';
+import { RouterProvider } from 'react-router-dom';
+
 //
 // type InitialStateProps = {
 //   fetch?: () => Promise<{
@@ -26,8 +28,10 @@ function App() {
   console.log('Application Started');
   return (
     <>
-      <RouterProvider router={router} />
-      <Toaster />
+      <Suspense fallback={<LoadingSpinner />}>
+        <RouterProvider router={router} />
+        <Toaster />
+      </Suspense>
     </>
   );
 }

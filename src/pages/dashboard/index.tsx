@@ -1,8 +1,6 @@
 import { Button } from '@/components/custom/button';
-import { Layout } from '@/components/custom/layout';
+import { Content } from '@/components/content';
 import { Search } from '@/components/search';
-import ThemeController from '@/components/theme-controller';
-import ThemeSwitch from '@/components/theme-switch';
 import { TopNav } from '@/components/top-nav';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,23 +8,23 @@ import { UserNav } from '@/components/user-nav';
 
 import { Overview } from './components/overview';
 import { RecentSales } from './components/recent-sales';
+import ThemeSwitch from "@/components/layout/Theme/theme-switch";
 
 export default function Dashboard() {
   return (
-    <Layout>
+    <Content>
       {/* ===== Top Heading ===== */}
-      <Layout.Header>
+      <Content.Header>
         <TopNav links={topNav} />
         <div className='ml-auto flex items-center space-x-4'>
           <Search />
-          {/*<ThemeController />*/}
           <ThemeSwitch />
           <UserNav />
         </div>
-      </Layout.Header>
+      </Content.Header>
 
       {/* ===== Main ===== */}
-      <Layout.Body>
+      <Content.Body>
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
           <div className='flex items-center space-x-2'>
@@ -153,8 +151,8 @@ export default function Dashboard() {
             </div>
           </TabsContent>
         </Tabs>
-      </Layout.Body>
-    </Layout>
+      </Content.Body>
+    </Content>
   );
 }
 

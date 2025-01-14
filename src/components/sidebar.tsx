@@ -4,8 +4,9 @@ import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
 import { Button } from './custom/button';
-import { Layout } from './custom/layout';
+import { Content } from './content';
 import { SidebarProvider, SidebarTrigger } from './ui/sidebar';
+import Header from "@/components/layout/header";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
@@ -37,9 +38,9 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
         className={`absolute inset-0 transition-[opacity] delay-100 duration-700 ${navOpened ? 'h-svh opacity-50' : 'h-0 opacity-0'} w-full bg-black md:hidden`}
       />
 
-      <Layout fixed className={navOpened ? 'h-svh' : ''}>
+      <Content fixed className={navOpened ? 'h-svh' : ''}>
         {/* Header */}
-        <Layout.Header sticky className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'>
+        <Content.Header sticky className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'>
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -89,7 +90,7 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
           >
             {navOpened ? <IconX /> : <IconMenu2 />}
           </Button>
-        </Layout.Header>
+        </Content.Header>
 
         {/* Navigation links */}
         {/*<Nav*/}
@@ -100,6 +101,7 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
         {/*  links={sidelinks}*/}
         {/*/>*/}
         <SidebarProvider>
+          <Header />
           <AppSidebar />
           <main>
             <SidebarTrigger />
@@ -114,7 +116,7 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
         >
           <IconChevronsLeft stroke={1.5} className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`} />
         </Button>
-      </Layout>
+      </Content>
     </aside>
   );
 }

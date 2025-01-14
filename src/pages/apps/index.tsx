@@ -1,7 +1,6 @@
 import { Button } from '@/components/custom/button';
-import { Layout } from '@/components/custom/layout';
+import { Content } from '@/components/content';
 import { Search } from '@/components/search';
-import ThemeSwitch from '@/components/theme-switch';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
@@ -10,6 +9,7 @@ import { IconAdjustmentsHorizontal, IconSortAscendingLetters, IconSortDescending
 import { useState } from 'react';
 
 import { apps } from './data';
+import ThemeSwitch from "@/components/layout/Theme/theme-switch";
 
 const appText = new Map<string, string>([
   ['all', 'All Apps'],
@@ -28,9 +28,9 @@ export default function Apps() {
     .filter((app) => app.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <Layout fixed>
+    <Content fixed>
       {/* ===== Top Heading ===== */}
-      <Layout.Header>
+      <Content.Header>
         <div className='flex w-full items-center justify-between'>
           <Search />
           <div className='flex items-center space-x-4'>
@@ -38,10 +38,10 @@ export default function Apps() {
             <UserNav />
           </div>
         </div>
-      </Layout.Header>
+      </Content.Header>
 
       {/* ===== Content ===== */}
-      <Layout.Body className='flex flex-col'>
+      <Content.Body className='flex flex-col'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>App Integrations</h1>
           <p className='text-muted-foreground'>Here&apos;s a list of your apps for the integration!</p>
@@ -109,7 +109,7 @@ export default function Apps() {
             </li>
           ))}
         </ul>
-      </Layout.Body>
-    </Layout>
+      </Content.Body>
+    </Content>
   );
 }

@@ -1,32 +1,22 @@
 import type { ActionId, ActionImpl } from 'kbar';
 import * as React from 'react';
 
+type ResultItemProps = {
+  action: ActionImpl;
+  active: boolean;
+  currentRootActionId: ActionId;
+};
+
 const ResultItem = React.forwardRef(
-  (
-    {
-      action,
-      active,
-      currentRootActionId
-    }: {
-      action: ActionImpl;
-      active: boolean;
-      currentRootActionId: ActionId;
-    },
-    ref: React.Ref<HTMLDivElement>
-  ) => {
+  ({ action, active, currentRootActionId }: ResultItemProps, ref: React.Ref<HTMLDivElement>) => {
     const ancestors = React.useMemo(() => {
       if (!currentRootActionId) return action.ancestors;
-      const index = action.ancestors.findIndex(
-        (ancestor) => ancestor.id === currentRootActionId
-      );
+      const index = action.ancestors.findIndex((ancestor) => ancestor.id === currentRootActionId);
       return action.ancestors.slice(index + 1);
     }, [action.ancestors, currentRootActionId]);
 
     return (
-      <div
-        ref={ref}
-        className={`relative z-10 flex cursor-pointer items-center justify-between px-4 py-3`}
-      >
+      <div ref={ref} className={`relative z-10 flex cursor-pointer items-center justify-between px-4 py-3`}>
         {active && (
           <div
             id='kbar-result-item'
@@ -46,11 +36,7 @@ const ResultItem = React.forwardRef(
                 ))}
               <span>{action.name}</span>
             </div>
-            {action.subtitle && (
-              <span className='text-sm text-muted-foreground'>
-                {action.subtitle}
-              </span>
-            )}
+            {action.subtitle && <span className='text-sm text-muted-foreground'>{action.subtitle}</span>}
           </div>
         </div>
         {action.shortcut?.length ? (
@@ -67,7 +53,7 @@ const ResultItem = React.forwardRef(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 ResultItem.displayName = 'KBarResultItem';

@@ -1,6 +1,5 @@
-import { Layout } from '@/components/custom/layout';
+import { Content } from '@/components/content';
 import { Search } from '@/components/search';
-import ThemeSwitch from '@/components/theme-switch';
 import { Separator } from '@/components/ui/separator';
 import { UserNav } from '@/components/user-nav';
 import {
@@ -14,20 +13,21 @@ import {
 import { Outlet } from 'react-router-dom';
 
 import SidebarNav from './components/sidebar-nav';
+import ThemeSwitch from "@/components/layout/Theme/theme-switch";
 
 export default function Settings() {
   return (
-    <Layout fixed>
+    <Content fixed>
       {/* ===== Top Heading ===== */}
-      <Layout.Header>
+      <Content.Header>
         <Search />
         <div className='ml-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <UserNav />
         </div>
-      </Layout.Header>
+      </Content.Header>
 
-      <Layout.Body className='flex flex-col'>
+      <Content.Body className='flex flex-col'>
         <div className='space-y-0.5'>
           <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>Settings</h1>
           <p className='text-muted-foreground'>Manage your account settings and set e-mail preferences.</p>
@@ -41,8 +41,8 @@ export default function Settings() {
             <Outlet />
           </div>
         </div>
-      </Layout.Body>
-    </Layout>
+      </Content.Body>
+    </Content>
   );
 }
 

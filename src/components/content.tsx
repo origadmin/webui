@@ -10,7 +10,7 @@ interface LayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   fixed?: boolean;
 }
 
-const Layout = ({ className, fixed = false, ...props }: LayoutProps) => {
+const Content = ({ className, fixed = false, ...props }: LayoutProps) => {
   const divRef = React.useRef<HTMLDivElement>(null);
   const [offset, setOffset] = React.useState(0);
 
@@ -37,7 +37,7 @@ const Layout = ({ className, fixed = false, ...props }: LayoutProps) => {
     </LayoutContext.Provider>
   );
 };
-Layout.displayName = 'Layout';
+Content.displayName = 'Content';
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   sticky?: boolean;
@@ -47,7 +47,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ className, stick
   // Check if Layout.Header is used within Layout
   const contextVal = React.useContext(LayoutContext);
   if (contextVal === null) {
-    throw new Error(`Layout.Header must be used within ${Layout.displayName}.`);
+    throw new Error(`Layout.Header must be used within ${Content.displayName}.`);
   }
 
   return (
@@ -71,7 +71,7 @@ const Body = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
   // Check if Layout.Body is used within Layout
   const contextVal = React.useContext(LayoutContext);
   if (contextVal === null) {
-    throw new Error(`Layout.Body must be used within ${Layout.displayName}.`);
+    throw new Error(`Layout.Body must be used within ${Content.displayName}.`);
   }
 
   return (
@@ -85,7 +85,7 @@ const Body = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 });
 Body.displayName = 'Body';
 
-Layout.Header = Header;
-Layout.Body = Body;
+Content.Header = Header;
+Content.Body = Body;
 
-export { Layout };
+export { Content };
