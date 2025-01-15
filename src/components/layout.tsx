@@ -1,6 +1,7 @@
 import { SidebarContentItem, SidebarFooterItem, SidebarHeaderItem, SidebarProps } from '@/components/Sidebar';
 import { ThemeToggle } from '@/components/Theme';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Footer } from '@/components/footer';
 import KBar from '@/components/kbar';
 import SearchInput from '@/components/search-input';
 import { TopNav } from '@/components/top-nav';
@@ -49,7 +50,9 @@ export function Layout(props: LayoutProps) {
           </header>
           {props.children}
         </SidebarInset>
+
       </SidebarProvider>
+      <Footer />
     </KBar>
   );
 }

@@ -1,11 +1,15 @@
 import { SidebarContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from '@/components/Sidebar';
 import Layout from '@/components/layout';
-import { data, topNav } from '@/mocks/sidebar-data';
+import { data, topNav } from '@/mocks/data';
 import { userAuthenticated } from '@/utils/auth';
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useRoutes } from 'react-router-dom';
 
-const getSidebarMockData = () => {
+
+
+
+
+const getMockData = () => {
   return {
     header: {
       teams: data.teams,
@@ -29,7 +33,7 @@ export default function MainPage() {
     }
   });
 
-  const sidebarData = getSidebarMockData();
+  const sidebarData = getMockData();
 
   return (
     <Layout sidebarProps={sidebarData} topNav={topNav}>

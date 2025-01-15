@@ -7,7 +7,7 @@ import SearchInput from './search-input';
 import { Separator } from './ui/separator';
 import { SidebarTrigger } from './ui/sidebar';
 import {TopNav} from "@/components/top-nav";
-import {topNav} from "@/mocks/sidebar-data";
+import {topNav} from "@/mocks/data";
 
 export default function Header() {
   return (

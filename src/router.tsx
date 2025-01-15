@@ -1,7 +1,7 @@
 import GeneralError from '@/pages/errors/general-error';
 import MaintenanceError from '@/pages/errors/maintenance-error';
 import NotFoundError from '@/pages/errors/not-found-error';
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
   // Auth routes
@@ -48,6 +48,7 @@ const router = createBrowserRouter([
       const MainPage = await import('@/app/MainPage');
       return { Component: MainPage.default };
     },
+    element: <Navigate to='/dashboard' replace />,
     children: [
       {
         index: true,
