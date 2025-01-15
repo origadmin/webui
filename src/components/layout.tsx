@@ -24,7 +24,7 @@ export function Layout(props: LayoutProps) {
   return (
     <KBar>
       <SidebarProvider>
-        <Sidebar className='border-r' collapsible='icon' {...(sidebarProps?.props || {})}>
+        <Sidebar className='border-r' collapsible='icon' {...(sidebarProps ? sidebarProps.props : {})}>
           {sidebarProps?.header && <SidebarHeaderItem {...sidebarProps.header} />}
           {sidebarProps?.content && <SidebarContentItem {...sidebarProps.content} />}
           {sidebarProps?.footer && <SidebarFooterItem {...sidebarProps.footer} />}
@@ -50,7 +50,6 @@ export function Layout(props: LayoutProps) {
           </header>
           {props.children}
         </SidebarInset>
-
       </SidebarProvider>
       <Footer />
     </KBar>
