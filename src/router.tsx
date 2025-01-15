@@ -51,12 +51,25 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        path: 'dashboard',
         lazy: async () => ({
           Component: (await import('@/pages/dashboard')).default,
           metadata: {
             hidden: true,
             title: 'Dashboard',
             icon: 'dashboard',
+          },
+        }),
+      },
+      {
+        index: true,
+        path: 'monitor',
+        lazy: async () => ({
+          Component: (await import('@/pages/monitor')).default,
+          metadata: {
+            hidden: true,
+            title: 'Monitor',
+            icon: 'monitor',
           },
         }),
       },

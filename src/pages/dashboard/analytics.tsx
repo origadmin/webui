@@ -1,5 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { TabsContent } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { UserActivityChart } from "./user-activity-chart"
+import { RevenueChart } from "./revenue-chart"
+import { ProductPerformance } from "./product-performance"
+import { GeographicDistribution } from "./geographic-distribution"
+import { ConversionFunnel } from "./conversion-funnel"
+import { MetricsOverview } from "./metrics-overview"
 
 const invoices = [
   {
@@ -31,24 +37,28 @@ const invoices = [
 
 export default function AnalyticsContent() {
   return (
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className='w-[100px]'>Product</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Sales</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.product}>
-              <TableCell className='font-medium'>{invoice.product}</TableCell>
-              <TableCell>{invoice.status}</TableCell>
-              <TableCell className='text-right'>{invoice.sales}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <>
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+        <MetricsOverview />
+      </div>
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-7'>
+        <Card className='col-span-4'>
+          <CardHeader>
+            <CardTitle>User Activity</CardTitle>
+          </CardHeader>
+          <CardContent className='pl-2'>
+            <UserActivityChart />
+          </CardContent>
+        </Card>
+        <Card className='col-span-3'>
+          <CardHeader>
+            <CardTitle>Conversion Funnel</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ConversionFunnel />
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

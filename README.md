@@ -97,7 +97,8 @@ bun lint
 
 ### Project features:
 
-- **High Performance**: Use Bun as a build tool to provide a fast build and hot reload experience.
+- **Fast Load**: Currently, the main page loads in less than 300ms, ensuring very strong performance.
+- **High Performance**: Use Bun as a build tool to provide a fast build and hot reload experience. 
 - **Responsive Design**: Based on Tailwind CSS, it ensures a good user experience on a wide range of devices.
 - **Scalability**: The project is clearly structured and easy to scale and maintain.
 - **Modern Development**: Use TypeScript and ESLint to improve code quality and development efficiency.

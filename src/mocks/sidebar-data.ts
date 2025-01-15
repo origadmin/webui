@@ -41,8 +41,13 @@ export const data: API.SidebarData = {
       items: [
         {
           title: 'Dashboard',
-          url: '/',
+          url: '/dashboard',
           icon: IconLayoutDashboard,
+        },
+        {
+          title: 'Monitor',
+          url: '/monitor',
+          icon: IconMessages,
         },
         {
           title: 'Tasks',
