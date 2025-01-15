@@ -1,9 +1,12 @@
+// const { pluginReact } = require('@rsbuild/plugin-react');
+// const { defineConfig } = require('@rsbuild/core');
+// const postcssOptions = require('./postcss.config');
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
-import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 
-import postcssOptions from './postcss.config';
+import postcssOptions from './postcss.config.js';
 
+/** @type {import('@rsbuild/core').RsbuildConfig} */
 const config = defineConfig({
   server: {
     base: '/',
@@ -46,7 +49,7 @@ const config = defineConfig({
       { from: './public' },
     ],
   },
-  plugins: [pluginReact(), pluginTailwindCSS()],
+  plugins: [pluginReact()],
 });
 
 export default config;

@@ -5,19 +5,12 @@ import { createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
   // Auth routes
-  // {
-  //   path: '/dashboard',
-  //   lazy: async () => ({
-  //     Component: (await import('@/app/dashboard/page')).default,
-  //   }),
-  // },
   {
     path: '/login',
     lazy: async () => ({
       Component: (await import('@/pages/login')).default,
     }),
   },
-  // Auth routes
   {
     path: '/sign-in',
     lazy: async () => ({

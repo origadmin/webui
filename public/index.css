@@ -5429,6 +5429,10 @@ body {
   background-color: rgb(24 24 27 / var(--tw-bg-opacity, 1));
 }
 
+.bg-opacity-75 {
+  --tw-bg-opacity: 0.75;
+}
+
 .fill-current {
   fill: currentColor;
 }
@@ -5610,6 +5614,10 @@ body {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .align-middle {
@@ -6115,14 +6123,6 @@ body {
 
 .file\:font-medium::file-selector-button {
   font-weight: 500;
-}
-
-.file\:text-foreground::-webkit-file-upload-button {
-  color: hsl(var(--foreground));
-}
-
-.file\:text-foreground::file-selector-button {
-  color: hsl(var(--foreground));
 }
 
 .placeholder\:text-muted-foreground::-webkit-input-placeholder {

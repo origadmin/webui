@@ -1,4 +1,3 @@
-import { Icons } from '@/components/icons';
 import { TablerIcon } from '@tabler/icons-react';
 
 declare namespace API {

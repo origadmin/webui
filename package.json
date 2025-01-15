@@ -71,7 +71,6 @@
     "react-router-dom": "^7.1.1",
     "react-syntax-highlighter": "^15.6.1",
     "recharts": "^2.15.0",
-    "rsbuild-plugin-tailwindcss": "^0.1.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
@@ -117,6 +116,5 @@
     "node": ">=18.0.0"
   },
   "module": "./src/index.tsx",
-  "main": "rsbuild.config.js",
   "type": "module"
 }

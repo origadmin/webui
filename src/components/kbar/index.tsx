@@ -1,5 +1,5 @@
 import { menuItems } from '@/mocks/data';
-import { MenuItem } from '@/types';
+import { API } from '@/types/typings';
 import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from 'kbar';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -24,20 +24,20 @@ export default function KBar({ children }: { children: React.ReactNode }) {
                 keywords: navItem.title.toLowerCase(),
                 section: 'Navigation',
                 subtitle: `Go to ${navItem.title}`,
-                perform: () => navigate(navItem.url),
+                perform: () => navigate(navItem.url || '#'),
               }
             : null;
 
         // Map child items into actions
         const childActions =
-          navItem.items?.map((childItem: MenuItem) => ({
+          navItem.items?.map((childItem: API.MenuItem) => ({
             id: `${childItem.title.toLowerCase()}Action`,
             name: childItem.title,
             shortcut: childItem.shortcut,
             keywords: childItem.title.toLowerCase(),
             section: navItem.title,
             subtitle: `Go to ${childItem.title}`,
-            perform: () => navigate(childItem.url),
+            perform: () => navigate(childItem.url || '#'),
           })) ?? [];
 
         // Return only valid actions (ignoring null base actions for containers)

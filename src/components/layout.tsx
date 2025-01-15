@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from '@/components/user-nav';
 import { API } from '@/types/typings';
-import { Slash } from 'lucide-react';
 import * as React from 'react';
 
 type LayoutProps = {
