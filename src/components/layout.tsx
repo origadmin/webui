@@ -7,6 +7,7 @@ import { TopNav } from '@/components/top-nav';
 import { Separator } from '@/components/ui/separator';
 import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from '@/components/user-nav';
+import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
 import { API } from '@/types/typings';
 import * as React from 'react';
 
@@ -17,6 +18,7 @@ type LayoutProps = {
 };
 
 export function Layout(props: LayoutProps) {
+  const items = useBreadcrumbs();
   const { sidebarProps } = props;
   return (
     <KBar>
@@ -33,7 +35,7 @@ export function Layout(props: LayoutProps) {
               <SidebarTrigger className='-ml-1' />
               <Separator orientation='vertical' className='mr-2 h-4' />
               <Breadcrumbs />
-              <Separator orientation='vertical' className='mr-2 h-4' />
+              {items.length > 0 && <Separator orientation='vertical' className='mr-2 h-4' />}
               {props.topNav && <TopNav navs={props.topNav} />}
             </div>
             <div className='flex items-center gap-2 px-4'></div>

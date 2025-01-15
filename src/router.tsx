@@ -74,6 +74,50 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'examples/form',
+        children: [
+          {
+            index: true,
+            path: 'basic',
+            lazy: async () => ({
+              Component: (await import('@/pages/examples/form/basic')).default,
+              metadata: {
+                title: 'Basic Form',
+                icon: 'form',
+              },
+            }),
+          },
+          {
+            path: 'simple',
+            lazy: async () => ({
+              Component: (await import('@/pages/examples/form/simple')).default,
+              metadata: {
+                title: 'Detailed Form',
+                icon: 'form',
+              },
+            }),
+          },
+          {
+            path: 'advanced',
+            lazy: async () => ({
+              Component: (await import('@/pages/examples/form/advanced')).default,
+            }),
+          },
+        ],
+      },
+      {
+        path: 'examples',
+        children: [
+          {
+            index: true,
+            path: 'list',
+            lazy: async () => ({
+              Component: (await import('@/pages/examples/list')).default,
+            }),
+          },
+        ],
+      },
+      {
         path: 'tasks',
         lazy: async () => ({
           Component: (await import('@/pages/tasks')).default,

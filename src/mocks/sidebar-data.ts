@@ -50,6 +50,11 @@ export const data: API.SidebarData = {
           icon: IconMessages,
         },
         {
+          title: 'Notifications',
+          url: '/notifications',
+          icon: IconNotification,
+        },
+        {
           title: 'Tasks',
           url: '/tasks',
           icon: IconChecklist,
@@ -68,6 +73,37 @@ export const data: API.SidebarData = {
           title: 'Users',
           url: '/users',
           icon: IconUsers,
+        },
+      ],
+    },
+    {
+      title: 'Examples',
+      items: [
+        {
+          title: 'Form',
+          icon: IconHelp,
+          items: [
+            {
+              title: 'Advanced',
+              url: '/examples/form/advanced',
+              icon: IconHelp,
+            },
+            {
+              title: 'Basic',
+              url: '/examples/form/basic',
+              icon: IconHelp,
+            },
+            {
+              title: 'Simple',
+              url: '/examples/form/simple',
+              icon: IconHelp,
+            },
+          ],
+        },
+        {
+          title: 'List',
+          url: '/examples/list',
+          icon: IconHelp,
         },
       ],
     },
