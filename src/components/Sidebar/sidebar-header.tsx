@@ -17,8 +17,8 @@ const DefaultTeam = {
   plan: 'RSBuild + React + ShadcnUI + ',
 };
 
-function SidebarHeaderItem(props: SidebarHeaderProps) {
-  const teams = props.teams || [DefaultTeam];
+function SidebarHeaderItem(props?: SidebarHeaderProps) {
+  const { teams = [DefaultTeam] } = props || {};
   return (
     <SidebarHeader>
       <TeamSwitcher teams={teams} />
