@@ -36,10 +36,14 @@ declare namespace API {
     path: string;
   };
 
+  type User = {
+    id: string;
+  }
+
   type MenuItem = {
-    key?: string;
+    keyword?: string;
     title: string;
-    url?: string;
+    path?: string;
     disabled?: boolean;
     external?: boolean;
     shortcut?: [string, string];
