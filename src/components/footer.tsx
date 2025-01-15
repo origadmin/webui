@@ -31,10 +31,10 @@ export function Footer(props?: FooterProps) {
   console.log(links, 'copyright:', copyright);
 
   return (
-    <footer className='border-grid border-t flex flex-col gap-2 p-2 items-center justify-center px-4 py-4 md:px-8 md:py-2'>
-      <div className='flex w-full flex-col items-center justify-center px-1 pb-4 pt-2 xl:flex-row'>
+    <footer className='border-grid border-t flex flex-col gap-2 p-2 items-center justify-center md:px-8 md:py-2'>
+      <div className='flex w-full flex-col items-center justify-end gap-2 p-2 xl:flex-row'>
         <div>
-          <ul className='flex flex-wrap items-center justify-end gap-3 sm:flex-nowrap md:gap-10'>
+          <ul className='flex w-full flex-wrap items-center justify-center gap-3 sm:flex-nowrap md:gap-10'>
             {links?.flatMap((link: { key?: string; title: React.ReactNode; href?: string; blank?: boolean }) => (
               <li>
                 <a
