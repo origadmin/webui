@@ -75,38 +75,6 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'examples/form',
-        children: [
-          {
-            index: true,
-            path: 'basic',
-            lazy: async () => ({
-              Component: (await import('@/pages/examples/form/basic')).default,
-              metadata: {
-                title: 'Basic Form',
-                icon: 'form',
-              },
-            }),
-          },
-          {
-            path: 'simple',
-            lazy: async () => ({
-              Component: (await import('@/pages/examples/form/simple')).default,
-              metadata: {
-                title: 'Detailed Form',
-                icon: 'form',
-              },
-            }),
-          },
-          {
-            path: 'advanced',
-            lazy: async () => ({
-              Component: (await import('@/pages/examples/form/advanced')).default,
-            }),
-          },
-        ],
-      },
-      {
         path: 'examples',
         children: [
           {
@@ -115,6 +83,42 @@ const router = createBrowserRouter([
             lazy: async () => ({
               Component: (await import('@/pages/examples/list')).default,
             }),
+          },
+          {
+            path: 'form',
+            children: [
+              // 添加默认重定向到 'basic'
+              {
+                index: true,
+                element: <Navigate to='basic' replace />,
+              },
+              {
+                path: 'basic',
+                lazy: async () => ({
+                  Component: (await import('@/pages/examples/form/basic')).default,
+                  metadata: {
+                    title: 'Basic Form',
+                    icon: 'form',
+                  },
+                }),
+              },
+              {
+                path: 'simple',
+                lazy: async () => ({
+                  Component: (await import('@/pages/examples/form/simple')).default,
+                  metadata: {
+                    title: 'Detailed Form',
+                    icon: 'form',
+                  },
+                }),
+              },
+              {
+                path: 'advanced',
+                lazy: async () => ({
+                  Component: (await import('@/pages/examples/form/advanced')).default,
+                }),
+              },
+            ],
           },
         ],
       },
