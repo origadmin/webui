@@ -1,6 +1,8 @@
-const { pluginReact } = require('@rsbuild/plugin-react');
-const { defineConfig } = require('@rsbuild/core');
-const postcssOptions = require('./postcss.config');
+import { defineConfig } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
+import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
+
+import postcssOptions from './postcss.config';
 
 const config = defineConfig({
   server: {
@@ -44,7 +46,7 @@ const config = defineConfig({
       { from: './public' },
     ],
   },
-  plugins: [pluginReact()],
+  plugins: [pluginReact(), pluginTailwindCSS()],
 });
 
 export default config;

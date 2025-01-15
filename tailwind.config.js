@@ -1,5 +1,5 @@
-const tailwindcssAnimate = require('tailwindcss-animate');
-const daisyui = require('daisyui');
+import daisyui from 'daisyui';
+import tailwindcssAnimate from 'tailwindcss-animate';
 
 /** @type {import('tailwindcss').Config} */
 const config = {

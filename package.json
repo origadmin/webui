@@ -52,6 +52,7 @@
     "@tabler/icons-react": "^3.28.1",
     "@tanstack/react-table": "^8.20.6",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -70,6 +71,7 @@
     "react-router-dom": "^7.1.1",
     "react-syntax-highlighter": "^15.6.1",
     "recharts": "^2.15.0",
+    "rsbuild-plugin-tailwindcss": "^0.1.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
@@ -114,6 +116,7 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "module": "index.ts",
+  "module": "./src/index.tsx",
+  "main": "rsbuild.config.js",
   "type": "module"
 }
