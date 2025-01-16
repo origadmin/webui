@@ -1,37 +1,37 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/hooks/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 
 const taskSchema = z.object({
-  name: z.string().min(1, 'Task name is required'),
+  name: z.string().min(1, "Task name is required"),
   description: z.string().optional(),
-  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
-  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
-  owner: z.string().min(1, 'Task owner is required'),
-  type: z.enum(['private', 'public']),
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
+  owner: z.string().min(1, "Task owner is required"),
+  type: z.enum(["private", "public"]),
 });
 
 const memberSchema = z.object({
-  name: z.string().min(1, 'Member name is required'),
-  role: z.string().min(1, 'Role is required'),
+  name: z.string().min(1, "Member name is required"),
+  role: z.string().min(1, "Role is required"),
 });
 
 const formSchema = z.object({
-  projectName: z.string().min(1, 'Project name is required'),
+  projectName: z.string().min(1, "Project name is required"),
   projectDescription: z.string().optional(),
-  client: z.string().min(1, 'Client name is required'),
-  contractType: z.enum(['fixed', 'hourly']),
-  tasks: z.array(taskSchema).min(1, 'At least one task is required'),
+  client: z.string().min(1, "Client name is required"),
+  contractType: z.enum(["fixed", "hourly"]),
+  tasks: z.array(taskSchema).min(1, "At least one task is required"),
   members: z.array(memberSchema),
 });
 
@@ -39,12 +39,12 @@ export default function AdvancedFormExample() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      projectName: '',
-      projectDescription: '',
-      client: '',
-      contractType: 'fixed',
-      tasks: [{ name: '', description: '', startDate: '', endDate: '', owner: '', type: 'private' }],
-      members: [{ name: '', role: '' }],
+      projectName: "",
+      projectDescription: "",
+      client: "",
+      contractType: "fixed",
+      tasks: [{ name: "", description: "", startDate: "", endDate: "", owner: "", type: "private" }],
+      members: [{ name: "", role: "" }],
     },
   });
 
@@ -53,7 +53,7 @@ export default function AdvancedFormExample() {
     append: appendTask,
     remove: removeTask,
   } = useFieldArray({
-    name: 'tasks',
+    name: "tasks",
     control: form.control,
   });
 
@@ -62,13 +62,13 @@ export default function AdvancedFormExample() {
     append: appendMember,
     remove: removeMember,
   } = useFieldArray({
-    name: 'members',
+    name: "members",
     control: form.control,
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     toast({
-      title: 'You submitted the following values:',
+      title: "You submitted the following values:",
       description: (
         <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
           <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
@@ -278,12 +278,12 @@ export default function AdvancedFormExample() {
                       className='mt-2'
                       onClick={() =>
                         appendTask({
-                          name: '',
-                          description: '',
-                          startDate: '',
-                          endDate: '',
-                          owner: '',
-                          type: 'private',
+                          name: "",
+                          description: "",
+                          startDate: "",
+                          endDate: "",
+                          owner: "",
+                          type: "private",
                         })
                       }
                     >
@@ -344,7 +344,7 @@ export default function AdvancedFormExample() {
                       variant='outline'
                       size='sm'
                       className='mt-2'
-                      onClick={() => appendMember({ name: '', role: '' })}
+                      onClick={() => appendMember({ name: "", role: "" })}
                     >
                       Add Team Member
                     </Button>

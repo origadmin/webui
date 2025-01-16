@@ -1,17 +1,16 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useState } from 'react';
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ListItem, listItems } from "./data";
 
-import { ListItem, listItems } from './data';
-
-type ViewType = 'card' | 'basic' | 'table';
+type ViewType = "card" | "basic" | "table";
 
 export default function VersatileList() {
-  const [view, setView] = useState<ViewType>('card');
+  const [view, setView] = useState<ViewType>("card");
 
   return (
     <div className='container mx-auto py-10'>
@@ -52,7 +51,7 @@ function CardView({ items }: { items: ListItem[] }) {
             <Progress value={item.progress} className='w-full' />
           </CardContent>
           <CardFooter className='flex justify-between'>
-            <Badge variant={item.status === 'active' ? 'default' : 'secondary'}>{item.status}</Badge>
+            <Badge variant={item.status === "active" ? "default" : "secondary"}>{item.status}</Badge>
             <Button variant='outline'>View Details</Button>
           </CardFooter>
         </Card>
@@ -70,7 +69,7 @@ function BasicView({ items }: { items: ListItem[] }) {
             <h3 className='text-lg font-medium'>{item.title}</h3>
             <p className='text-sm text-gray-500'>{item.description}</p>
             <div className='mt-2'>
-              <Badge variant={item.status === 'active' ? 'default' : 'secondary'}>{item.status}</Badge>
+              <Badge variant={item.status === "active" ? "default" : "secondary"}>{item.status}</Badge>
             </div>
           </div>
           <div className='text-right'>
@@ -104,7 +103,7 @@ function TableView({ items }: { items: ListItem[] }) {
           <TableRow key={item.id}>
             <TableCell className='font-medium'>{item.title}</TableCell>
             <TableCell>
-              <Badge variant={item.status === 'active' ? 'default' : 'secondary'}>{item.status}</Badge>
+              <Badge variant={item.status === "active" ? "default" : "secondary"}>{item.status}</Badge>
             </TableCell>
             <TableCell>{item.owner}</TableCell>
             <TableCell>{item.createdAt}</TableCell>

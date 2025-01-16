@@ -1,17 +1,17 @@
-import { Button } from '@/components/custom/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Switch } from '@/components/ui/switch';
-import { toast } from '@/hooks/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { z } from "zod";
+import { toast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/custom/button";
 
 const notificationsFormSchema = z.object({
-  type: z.enum(['all', 'mentions', 'none'], {
-    required_error: 'You need to select a notification type.',
+  type: z.enum(["all", "mentions", "none"], {
+    required_error: "You need to select a notification type.",
   }),
   mobile: z.boolean().default(false).optional(),
   communication_emails: z.boolean().default(false).optional(),
@@ -38,7 +38,7 @@ export function NotificationsForm() {
 
   function onSubmit(data: NotificationsFormValues) {
     toast({
-      title: 'You submitted the following values:',
+      title: "You submitted the following values:",
       description: (
         <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
           <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
@@ -162,13 +162,13 @@ export function NotificationsForm() {
               <div className='space-y-1 leading-none'>
                 <FormLabel>Use different settings for my mobile devices</FormLabel>
                 <FormDescription>
-                  You can manage your mobile notifications in the{' '}
+                  You can manage your mobile notifications in the{" "}
                   <Link
                     to='/settings'
                     className='underline decoration-dashed underline-offset-4 hover:decoration-solid'
                   >
                     mobile settings
-                  </Link>{' '}
+                  </Link>{" "}
                   page.
                 </FormDescription>
               </div>

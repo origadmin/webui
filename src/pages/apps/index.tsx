@@ -1,30 +1,29 @@
-import { Button } from '@/components/custom/button';
-import { Content } from '@/components/content';
-import { Search } from '@/components/search';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { UserNav } from '@/components/user-nav';
-import { IconAdjustmentsHorizontal, IconSortAscendingLetters, IconSortDescendingLetters } from '@tabler/icons-react';
-import { useState } from 'react';
-
-import { apps } from './data';
+import { useState } from "react";
+import { IconAdjustmentsHorizontal, IconSortAscendingLetters, IconSortDescendingLetters } from "@tabler/icons-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import ThemeSwitch from "@/components/Theme/theme-switch";
+import { Content } from "@/components/content";
+import { Button } from "@/components/custom/button";
+import { Search } from "@/components/search";
+import { UserNav } from "@/components/user-nav";
+import { apps } from "./data";
 
 const appText = new Map<string, string>([
-  ['all', 'All Apps'],
-  ['connected', 'Connected'],
-  ['notConnected', 'Not Connected'],
+  ["all", "All Apps"],
+  ["connected", "Connected"],
+  ["notConnected", "Not Connected"],
 ]);
 
 export default function Apps() {
-  const [sort, setSort] = useState('ascending');
-  const [appType, setAppType] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [sort, setSort] = useState("ascending");
+  const [appType, setAppType] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredApps = apps
-    .sort((a, b) => (sort === 'ascending' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)))
-    .filter((app) => (appType === 'connected' ? app.connected : appType === 'notConnected' ? !app.connected : true))
+    .sort((a, b) => (sort === "ascending" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)))
+    .filter((app) => (appType === "connected" ? app.connected : appType === "notConnected" ? !app.connected : true))
     .filter((app) => app.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
@@ -97,9 +96,9 @@ export default function Apps() {
                 <Button
                   variant='outline'
                   size='sm'
-                  className={`${app.connected ? 'border border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:hover:bg-blue-900' : ''}`}
+                  className={`${app.connected ? "border border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:hover:bg-blue-900" : ""}`}
                 >
-                  {app.connected ? 'Connected' : 'Connect'}
+                  {app.connected ? "Connected" : "Connect"}
                 </Button>
               </div>
               <div>

@@ -1,7 +1,6 @@
-import { Card } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
-
-import { OtpForm } from './components/otp-form';
+import { Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { OtpForm } from "./components/otp-form";
 
 export default function Otp() {
   return (
@@ -32,7 +31,7 @@ export default function Otp() {
             </div>
             <OtpForm />
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
-              Haven't received it?{' '}
+              Haven't received it?{" "}
               <Link to='/resent-new-code' className='underline underline-offset-4 hover:text-primary'>
                 Resend a new code.
               </Link>

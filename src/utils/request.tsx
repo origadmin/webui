@@ -1,10 +1,11 @@
 /* eslint-disable */
 // @ts-ignore
-import { HOST } from '@/types';
-import axios from 'axios';
+import { HOST } from "@/types";
+import axios from "axios";
+import { API } from "@/types/typings";
 
 const request = axios.create({
-  baseURL: HOST + '/', // Replace with your API base URL
+  baseURL: HOST + "/", // Replace with your API base URL
   timeout: 1000, // The request timeout period
 });
 

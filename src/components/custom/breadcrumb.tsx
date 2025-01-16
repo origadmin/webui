@@ -1,7 +1,7 @@
-import { cn } from '@/lib/utils';
-import * as React from 'react';
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-interface BreadcrumbProps extends React.ComponentPropsWithoutRef<'nav'> {
+interface BreadcrumbProps extends React.ComponentPropsWithoutRef<"nav"> {
   children: React.ReactElement<typeof BreadcrumbItem> | React.ReactElement<typeof BreadcrumbItem>[];
   separator?: React.ReactNode;
 }
@@ -30,14 +30,14 @@ const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
     );
   },
 );
-Breadcrumb.displayName = 'Breadcrumb';
+Breadcrumb.displayName = "Breadcrumb";
 
 interface InternalBreadcrumbItemProps {
   separator?: React.ReactNode;
   isLastChild: boolean;
 }
 
-interface BreadcrumbItemProps extends Omit<React.ComponentPropsWithoutRef<'li'>, keyof InternalBreadcrumbItemProps> {}
+interface BreadcrumbItemProps extends Omit<React.ComponentPropsWithoutRef<"li">, keyof InternalBreadcrumbItemProps> {}
 
 const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   ({ className, children, ...props }, ref) => {
@@ -52,12 +52,12 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemProps>(
     return (
       <li ref={ref} className={cn(`group`, className)} {...rest}>
         {children}
-        {!isLastChild && <span className='mx-2 *:!inline-block'>{separator ?? '/'}</span>}
+        {!isLastChild && <span className='mx-2 *:!inline-block'>{separator ?? "/"}</span>}
       </li>
     );
   },
 );
-BreadcrumbItem.displayName = 'BreadcrumbItem';
+BreadcrumbItem.displayName = "BreadcrumbItem";
 
 /* ========== Util Func ========== */
 

@@ -1,26 +1,26 @@
-import { Button } from '@/components/custom/button';
-import { PasswordInput } from '@/components/custom/password-input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react';
-import { HTMLAttributes, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { z } from 'zod';
+import { HTMLAttributes, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/custom/button";
+import { PasswordInput } from "@/components/custom/password-input";
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
 const formSchema = z.object({
-  email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
+  email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(1, {
-      message: 'Please enter your password',
+      message: "Please enter your password",
     })
     .min(7, {
-      message: 'Password must be at least 7 characters long',
+      message: "Password must be at least 7 characters long",
     }),
 });
 
@@ -30,8 +30,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
@@ -45,7 +45,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>

@@ -1,16 +1,15 @@
-import { Button } from '@/components/custom/button';
-import PageContainer from '@/components/page-container';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import NotificationsContent from '@/pages/dashboard/notifications';
-import ReportsContent from '@/pages/dashboard/reports';
-
-import AnalyticsContent from './analytics';
-import { GeographicDistribution } from './geographic-distribution';
-import OverviewContent from './overview';
-import { ProductPerformance } from './product-performance';
-import { RevenueChart } from './revenue-chart';
-import { UserActivityChart } from './user-activity-chart';
+import NotificationsContent from "@/pages/dashboard/notifications";
+import ReportsContent from "@/pages/dashboard/reports";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/custom/button";
+import PageContainer from "@/components/page-container";
+import AnalyticsContent from "./analytics";
+import { GeographicDistribution } from "./geographic-distribution";
+import OverviewContent from "./overview";
+import { ProductPerformance } from "./product-performance";
+import { RevenueChart } from "./revenue-chart";
+import { UserActivityChart } from "./user-activity-chart";
 
 export default function Dashboard() {
   return (

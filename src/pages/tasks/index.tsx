@@ -1,11 +1,10 @@
-import { Content } from '@/components/content';
-import ThemeSwitch from '@/components/Theme/theme-switch';
-import { Search } from '@/components/search';
-import { UserNav } from '@/components/user-nav';
-
-import { columns } from './components/columns';
-import { DataTable } from './components/data-table';
-import { tasks } from './data/tasks';
+import ThemeSwitch from "@/components/Theme/theme-switch";
+import { Content } from "@/components/content";
+import { Search } from "@/components/search";
+import { UserNav } from "@/components/user-nav";
+import { columns } from "./components/columns";
+import { DataTable } from "./components/data-table";
+import { tasks } from "./data/tasks";
 
 export default function Tasks() {
   return (

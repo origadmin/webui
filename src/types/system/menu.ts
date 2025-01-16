@@ -1,13 +1,14 @@
 /* eslint-disable */
 // @ts-ignore
-import { parseParams } from '@/utils/pagination';
-import request from '@/utils/request';
+import { parseParams } from "@/utils/pagination";
+import request from "@/utils/request";
+import { API } from "@/types/typings";
 
 /** Query menu list GET /api/v1/sys/menus */
 export async function listMenu(params: API.Params, options?: { [key: string]: any }) {
   params = parseParams(params);
-  return request<API.ResponseResult<API.Menu[]>>('/api/v1/sys/menus', {
-    method: 'GET',
+  return request<API.ResponseResult<API.Menu[]>>("/api/v1/sys/menus", {
+    method: "GET",
     params: {
       ...params,
     },
@@ -17,8 +18,8 @@ export async function listMenu(params: API.Params, options?: { [key: string]: an
 
 /** Create menu record POST /api/v1/sys/menus */
 export async function addMenu(body: API.Menu, options?: { [key: string]: any }) {
-  return request<API.ResponseResult<API.Menu>>('/api/v1/sys/menus', {
-    method: 'POST',
+  return request<API.ResponseResult<API.Menu>>("/api/v1/sys/menus", {
+    method: "POST",
     data: body,
     ...(options || {}),
   });
@@ -27,7 +28,7 @@ export async function addMenu(body: API.Menu, options?: { [key: string]: any }) 
 /** Get menu record by ID GET /api/v1/sys/menus/${id} */
 export async function getMenu(id: string, options?: { [key: string]: any }) {
   return request<API.ResponseResult<API.Menu>>(`/api/v1/sys/menus/${id}`, {
-    method: 'GET',
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -35,7 +36,7 @@ export async function getMenu(id: string, options?: { [key: string]: any }) {
 /** Update menu record by ID PUT /api/v1/sys/menus/${id} */
 export async function updateMenu(id: string, body: API.Menu, options?: { [key: string]: any }) {
   return request<API.ResponseResult<any>>(`/api/v1/sys/menus/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     data: body,
     ...(options || {}),
   });
@@ -44,7 +45,7 @@ export async function updateMenu(id: string, body: API.Menu, options?: { [key: s
 /** Delete menu record by ID DELETE /api/v1/sys/menus/${id} */
 export async function deleteMenu(id: string, options?: { [key: string]: any }) {
   return request<API.ResponseResult<any>>(`/api/v1/sys/menus/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     ...(options || {}),
   });
 }

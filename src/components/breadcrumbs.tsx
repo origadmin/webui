@@ -1,3 +1,6 @@
+import { Fragment } from "react";
+import { Slash } from "lucide-react";
+import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -5,10 +8,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
-import { Slash } from 'lucide-react';
-import { Fragment } from 'react';
+} from "@/components/ui/breadcrumb";
 
 export type BreadcrumbProps = {
   slash?: boolean;

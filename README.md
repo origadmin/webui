@@ -67,7 +67,7 @@ This project implements the front-end Admin design based on the following techno
     "lint:fix": "eslint ./src --fix && bun format",
     "lint:strict": "eslint --max-warnings=0 ./src",
     "style": "stylelint ./src/**/*.{css}"
-```    
+```
 
 - Build the project
 
@@ -98,7 +98,7 @@ bun lint
 ### Project features:
 
 - **Fast Load**: Currently, the main page loads in less than 300ms, ensuring very strong performance.
-- **High Performance**: Use Bun as a build tool to provide a fast build and hot reload experience. 
+- **High Performance**: Use Bun as a build tool to provide a fast build and hot reload experience.
 - **Responsive Design**: Based on Tailwind CSS, it ensures a good user experience on a wide range of devices.
 - **Scalability**: The project is clearly structured and easy to scale and maintain.
 - **Modern Development**: Use TypeScript and ESLint to improve code quality and development efficiency.
@@ -115,4 +115,3 @@ bun lint
 This project is licensed under [MIT License](https://opensource.org/licenses/MIT). Feel free to use and modify it, but
 please
 keep the original author information.
-

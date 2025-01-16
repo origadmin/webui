@@ -1,25 +1,24 @@
 // const { pluginReact } = require('@rsbuild/plugin-react');
 // const { defineConfig } = require('@rsbuild/core');
 // const postcssOptions = require('./postcss.config');
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
-
-import postcssOptions from './postcss.config.js';
+import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
+import postcssOptions from "./postcss.config.js";
 
 /** @type {import('@rsbuild/core').RsbuildConfig} */
 const config = defineConfig({
   server: {
-    base: '/',
-    htmlFallback: 'index',
+    base: "/",
+    htmlFallback: "index",
   },
   dev: {
     writeToDisk: true,
   },
   html: {
-    template: 'index.html',
+    template: "index.html",
     templateParameters: {
-      APP_TITLE: 'OrigAdmin Panel',
-      BASE_URL: process.env.BASE_URL || '',
+      APP_TITLE: "OrigAdmin Panel",
+      BASE_URL: process.env.BASE_URL || "",
     },
   },
   module: {
@@ -28,25 +27,25 @@ const config = defineConfig({
         test: /\.css$/,
         use: [
           {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
             options: {
               postcssOptions: postcssOptions,
             },
           },
         ],
-        type: 'css/auto',
+        type: "css/auto",
       },
     ],
   },
   source: {
     entry: {
-      index: './src/index.tsx',
+      index: "./src/index.tsx",
     },
   },
   output: {
     copy: [
       // `./src/assets/image.png` -> `./dist/image.png`
-      { from: './public' },
+      { from: "./public" },
     ],
   },
   plugins: [pluginReact()],

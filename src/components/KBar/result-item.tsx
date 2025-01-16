@@ -1,5 +1,5 @@
-import type { ActionId, ActionImpl } from 'kbar';
-import * as React from 'react';
+import * as React from "react";
+import type { ActionId, ActionImpl } from "kbar";
 
 type ResultItemProps = {
   action: ActionImpl;
@@ -56,6 +56,6 @@ const ResultItem = React.forwardRef(
   },
 );
 
-ResultItem.displayName = 'KBarResultItem';
+ResultItem.displayName = "KBarResultItem";
 
 export default ResultItem;

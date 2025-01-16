@@ -1,16 +1,16 @@
-import { Button } from '@/components/custom/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { HTMLAttributes, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { HTMLAttributes, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/custom/button";
 
 interface ForgotFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z.object({
-  email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
+  email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
 });
 
 export function ForgotForm({ className, ...props }: ForgotFormProps) {
@@ -18,7 +18,7 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '' },
+    defaultValues: { email: "" },
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
@@ -31,7 +31,7 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>

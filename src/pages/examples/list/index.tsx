@@ -1,4 +1,4 @@
-import VersatileList from './versatile-list';
+import VersatileList from "./versatile-list";
 
 export default function ListPage() {
   return (

@@ -1,4 +1,7 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { API } from "@/types/typings";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarContent,
   SidebarGroup,
@@ -10,10 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from '@/components/ui/sidebar';
-import { API } from '@/types/typings';
-import { ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+} from "@/components/ui/sidebar";
 
 type SidebarContentProps = {
   items?: API.MenuItem[];
@@ -23,7 +23,7 @@ function SidebarContentItem(props: SidebarContentProps) {
   const { state } = useSidebar();
 
   function renderIcon(item: API.MenuItem, state: string) {
-    console.log('state', state);
+    console.log("state", state);
     // state === 'collapsed' ? <item.icon size={18} /> :
     return item.icon && <item.icon />;
   }
@@ -53,7 +53,7 @@ function SidebarContentItem(props: SidebarContentProps) {
                 {item.items?.map((subItem) => (
                   <SidebarMenuSubItem key={subItem.title}>
                     <SidebarMenuSubButton asChild isActive={false}>
-                      <Link to={subItem.url || '#'}>
+                      <Link to={subItem.url || "#"}>
                         {renderIcon(subItem, state)}
                         <span>{subItem.title}</span>
                       </Link>
@@ -67,7 +67,7 @@ function SidebarContentItem(props: SidebarContentProps) {
       ) : (
         <SidebarMenuItem>
           <SidebarMenuButton asChild tooltip={item.title} isActive={false}>
-            <Link to={item.url || '#'}>
+            <Link to={item.url || "#"}>
               {renderIcon(item, state)}
               <span>{item.title}</span>
             </Link>
@@ -87,7 +87,7 @@ function SidebarContentItem(props: SidebarContentProps) {
               {!onlyTitle(item) && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url || '#'}>
+                    <Link to={item.url || "#"}>
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                     </Link>

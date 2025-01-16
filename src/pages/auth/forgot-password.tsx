@@ -1,7 +1,6 @@
-import { Card } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
-
-import { ForgotForm } from './components/forgot-form';
+import { Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { ForgotForm } from "./components/forgot-form";
 
 export default function ForgotPassword() {
   return (
@@ -32,7 +31,7 @@ export default function ForgotPassword() {
             </div>
             <ForgotForm />
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <Link to='/sign-up' className='underline underline-offset-4 hover:text-primary'>
                 Sign up
               </Link>

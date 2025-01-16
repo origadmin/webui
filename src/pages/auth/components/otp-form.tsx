@@ -1,18 +1,18 @@
-import { Button } from '@/components/custom/button';
-import { PinInput, PinInputField } from '@/components/custom/pin-input';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { HTMLAttributes, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { HTMLAttributes, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/custom/button";
+import { PinInput, PinInputField } from "@/components/custom/pin-input";
 
 interface OtpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z.object({
-  otp: z.string().min(1, { message: 'Please enter your otp code.' }),
+  otp: z.string().min(1, { message: "Please enter your otp code." }),
 });
 
 export function OtpForm({ className, ...props }: OtpFormProps) {
@@ -21,7 +21,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { otp: '' },
+    defaultValues: { otp: "" },
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
@@ -35,7 +35,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>
@@ -57,7 +57,7 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
                           <PinInputField
                             key={i}
                             component={Input}
-                            className={`${form.getFieldState('otp').invalid ? 'border-red-500' : ''}`}
+                            className={`${form.getFieldState("otp").invalid ? "border-red-500" : ""}`}
                           />
                         );
                       })}

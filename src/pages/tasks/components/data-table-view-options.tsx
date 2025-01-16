@@ -1,14 +1,14 @@
-import { Button } from '@/components/custom/button';
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import { Table } from "@tanstack/react-table";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { MixerHorizontalIcon } from '@radix-ui/react-icons';
-import { Table } from '@tanstack/react-table';
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/custom/button";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -28,7 +28,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
-          .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
+          .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
           .map((column) => {
             return (
               <DropdownMenuCheckboxItem

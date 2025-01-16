@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const data = [
   { month: "Jan", revenue: 4000 },
@@ -15,30 +15,23 @@ const data = [
   { month: "Oct", revenue: 10000 },
   { month: "Nov", revenue: 11000 },
   { month: "Dec", revenue: 12000 },
-]
+];
 
 export function RevenueChart() {
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width='100%' height={350}>
       <BarChart data={data}>
-        <XAxis
-          dataKey="month"
-          stroke="#888888"
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-        />
+        <XAxis dataKey='month' stroke='#888888' fontSize={12} tickLine={false} axisLine={false} />
         <YAxis
-          stroke="#888888"
+          stroke='#888888'
           fontSize={12}
           tickLine={false}
           axisLine={false}
           tickFormatter={(value) => `$${value}`}
         />
-        <Bar dataKey="revenue" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+        <Bar dataKey='revenue' fill='#adfa1d' radius={[4, 4, 0, 0]} />
         <Tooltip />
       </BarChart>
     </ResponsiveContainer>
-  )
+  );
 }
-

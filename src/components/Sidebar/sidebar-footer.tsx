@@ -1,5 +1,5 @@
-import { NavUserItem } from '@/components/NavUser';
-import { SidebarFooter, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarFooter, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import { NavUserItem } from "@/components/NavUser";
 
 type SidebarFooterProps = {
   user?: {

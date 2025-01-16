@@ -1,14 +1,13 @@
-import { ThemeToggle } from '@/components/Theme';
-import { TopNav } from '@/components/top-nav';
-import { UserNav } from '@/components/user-nav';
-import { useBreadcrumbs } from '@/hooks/use-breadcrumbs';
-import { topNav } from '@/mocks/data';
-import React from 'react';
-
-import { Breadcrumbs } from './breadcrumbs';
-import SearchInput from './search-input';
-import { Separator } from './ui/separator';
-import { SidebarTrigger } from './ui/sidebar';
+import React from "react";
+import { topNav } from "@/mocks/data";
+import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
+import { ThemeToggle } from "@/components/Theme";
+import { TopNav } from "@/components/top-nav";
+import { UserNav } from "@/components/user-nav";
+import { Breadcrumbs } from "./breadcrumbs";
+import SearchInput from "./search-input";
+import { Separator } from "./ui/separator";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export type HeaderProps = {
   topNav?: typeof topNav;

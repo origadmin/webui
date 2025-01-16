@@ -1,9 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 🛑 Nothing in here has anything to do with Nextjs, it's just a fake database
 ////////////////////////////////////////////////////////////////////////////////
+import { faker } from "@faker-js/faker";
+import { matchSorter } from "match-sorter";
 
-import { faker } from '@faker-js/faker';
-import { matchSorter } from 'match-sorter'; // For filtering
+// For filtering
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -26,29 +27,28 @@ export const fakeProducts = {
   // Initialize with sample data
   initialize() {
     const sampleProducts: Product[] = [];
+
     function generateRandomProductData(id: number): Product {
       const categories = [
-        'Electronics',
-        'Furniture',
-        'Clothing',
-        'Toys',
-        'Groceries',
-        'Books',
-        'Jewelry',
-        'Beauty Products'
+        "Electronics",
+        "Furniture",
+        "Clothing",
+        "Toys",
+        "Groceries",
+        "Books",
+        "Jewelry",
+        "Beauty Products",
       ];
 
       return {
         id,
         name: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
-        created_at: faker.date
-          .between({ from: '2022-01-01', to: '2023-12-31' })
-          .toISOString(),
+        created_at: faker.date.between({ from: "2022-01-01", to: "2023-12-31" }).toISOString(),
         price: parseFloat(faker.commerce.price({ min: 5, max: 500, dec: 2 })),
         photo_url: `https://api.slingacademy.com/public/sample-products/${id}.png`,
         category: faker.helpers.arrayElement(categories),
-        updated_at: faker.date.recent().toISOString()
+        updated_at: faker.date.recent().toISOString(),
       };
     }
 
@@ -61,26 +61,18 @@ export const fakeProducts = {
   },
 
   // Get all products with optional category filtering and search
-  async getAll({
-    categories = [],
-    search
-  }: {
-    categories?: string[];
-    search?: string;
-  }) {
+  async getAll({ categories = [], search }: { categories?: string[]; search?: string }) {
     let products = [...this.records];
 
     // Filter products based on selected categories
     if (categories.length > 0) {
-      products = products.filter((product) =>
-        categories.includes(product.category)
-      );
+      products = products.filter((product) => categories.includes(product.category));
     }
 
     // Search functionality across multiple fields
     if (search) {
       products = matchSorter(products, search, {
-        keys: ['name', 'description', 'category']
+        keys: ["name", "description", "category"],
       });
     }
 
@@ -92,7 +84,7 @@ export const fakeProducts = {
     page = 1,
     limit = 10,
     categories,
-    search
+    search,
   }: {
     page?: number;
     limit?: number;
@@ -100,10 +92,10 @@ export const fakeProducts = {
     search?: string;
   }) {
     await delay(1000);
-    const categoriesArray = categories ? categories.split('.') : [];
+    const categoriesArray = categories ? categories.split(".") : [];
     const allProducts = await this.getAll({
       categories: categoriesArray,
-      search
+      search,
     });
     const totalProducts = allProducts.length;
 
@@ -118,11 +110,11 @@ export const fakeProducts = {
     return {
       success: true,
       time: currentTime,
-      message: 'Sample data for testing and learning purposes',
+      message: "Sample data for testing and learning purposes",
       total_products: totalProducts,
       offset,
       limit,
-      products: paginatedProducts
+      products: paginatedProducts,
     };
   },
 
@@ -136,7 +128,7 @@ export const fakeProducts = {
     if (!product) {
       return {
         success: false,
-        message: `Product with ID ${id} not found`
+        message: `Product with ID ${id} not found`,
       };
     }
 
@@ -147,9 +139,9 @@ export const fakeProducts = {
       success: true,
       time: currentTime,
       message: `Product with ID ${id} found`,
-      product
+      product,
     };
-  }
+  },
 };
 
 // Initialize sample products

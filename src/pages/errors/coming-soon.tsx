@@ -1,4 +1,4 @@
-import { IconGlobe } from '@tabler/icons-react';
+import { IconGlobe } from "@tabler/icons-react";
 
 export default function ComingSoon() {
   return (

@@ -1,20 +1,20 @@
-import { Breadcrumb, BreadcrumbItem } from '@/components/custom/breadcrumb';
-import { Content } from '@/components/content';
-import { PinInput, PinInputField } from '@/components/custom/pin-input';
-import { Search } from '@/components/search';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UserNav } from '@/components/user-nav';
-import { useState } from 'react';
-import { ChevronRight } from 'react-feather';
-import { Link } from 'react-router-dom';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useState } from "react";
+import { ChevronRight } from "react-feather";
+import { Link } from "react-router-dom";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { nord } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ThemeSwitch from "@/components/Theme/theme-switch";
+import { Content } from "@/components/content";
+import { Breadcrumb, BreadcrumbItem } from "@/components/custom/breadcrumb";
+import { PinInput, PinInputField } from "@/components/custom/pin-input";
+import { Search } from "@/components/search";
+import { UserNav } from "@/components/user-nav";
 
 export default function ExtraComponents() {
-  const items = [{ title: 'Extra Components', href: '/extra-components' }, { title: 'Breadcrumb' }].map(
+  const items = [{ title: "Extra Components", href: "/extra-components" }, { title: "Breadcrumb" }].map(
     ({ href, title }) => (
       <BreadcrumbItem key={title}>
         {href ? (
@@ -31,7 +31,7 @@ export default function ExtraComponents() {
     ),
   );
 
-  const [pinInput, setPinInput] = useState('');
+  const [pinInput, setPinInput] = useState("");
 
   return (
     <Content>
@@ -68,7 +68,7 @@ export default function ExtraComponents() {
                 <div className='flex min-h-56 items-center justify-center rounded border'>
                   <PinInput
                     className='flex h-10 space-x-4'
-                    onComplete={(str) => console.log('completed', str)}
+                    onComplete={(str) => console.log("completed", str)}
                     autoFocus
                   >
                     <PinInputField component={Input} />
@@ -113,7 +113,7 @@ export default function ExtraComponents() {
                     className='flex h-10 space-x-4'
                     value={pinInput}
                     onChange={setPinInput}
-                    onComplete={(str) => console.log('completed', str)}
+                    onComplete={(str) => console.log("completed", str)}
                   >
                     {Array.from({ length: 4 }, (_, i) => (
                       <PinInputField key={i} component={Input} />

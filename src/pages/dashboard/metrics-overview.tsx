@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowUpIcon, ArrowDownIcon, DollarSign, Users, ShoppingCart, Activity } from 'lucide-react'
+import { Activity, ArrowDownIcon, ArrowUpIcon, DollarSign, ShoppingCart, Users } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const metrics = [
   {
@@ -26,24 +26,26 @@ const metrics = [
     change: "+5.4%",
     icon: Activity,
   },
-]
+];
 
 export function MetricsOverview() {
   return (
     <>
       {metrics.map((metric, index) => (
         <Card key={index}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {metric.title}
-            </CardTitle>
-            <metric.icon className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>{metric.title}</CardTitle>
+            <metric.icon className='h-4 w-4 text-muted-foreground' />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metric.value}</div>
-            <p className="text-xs text-muted-foreground">
-              <span className={metric.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}>
-                {metric.change.startsWith('+') ? <ArrowUpIcon className="inline h-4 w-4" /> : <ArrowDownIcon className="inline h-4 w-4" />}
+            <div className='text-2xl font-bold'>{metric.value}</div>
+            <p className='text-xs text-muted-foreground'>
+              <span className={metric.change.startsWith("+") ? "text-green-500" : "text-red-500"}>
+                {metric.change.startsWith("+") ? (
+                  <ArrowUpIcon className='inline h-4 w-4' />
+                ) : (
+                  <ArrowDownIcon className='inline h-4 w-4' />
+                )}
                 {metric.change}
               </span>
             </p>
@@ -51,6 +53,5 @@ export function MetricsOverview() {
         </Card>
       ))}
     </>
-  )
+  );
 }
-

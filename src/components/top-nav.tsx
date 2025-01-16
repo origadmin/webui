@@ -1,15 +1,14 @@
+import { IconMenu } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+import { API } from "@/types/typings";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
-import { API } from '@/types/typings';
-import { IconMenu } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
-
-import { Button } from './custom/button';
+} from "@/components/ui/dropdown-menu";
+import { Button } from "./custom/button";
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
   navs?: API.TopNav[];
@@ -28,7 +27,7 @@ export function TopNav({ className, navs, ...props }: TopNavProps) {
           <DropdownMenuContent side='bottom' align='start'>
             {navs?.map(({ title, href, isActive }) => (
               <DropdownMenuItem key={`${title}-${href}`} asChild>
-                <Link to={href} className={!isActive ? 'text-muted-foreground' : ''}>
+                <Link to={href} className={!isActive ? "text-muted-foreground" : ""}>
                   {title}
                 </Link>
               </DropdownMenuItem>
@@ -37,12 +36,12 @@ export function TopNav({ className, navs, ...props }: TopNavProps) {
         </DropdownMenu>
       </div>
 
-      <nav className={cn('hidden items-center space-x-4 md:flex lg:space-x-6', className)} {...props}>
+      <nav className={cn("hidden items-center space-x-4 md:flex lg:space-x-6", className)} {...props}>
         {navs?.map(({ title, href, isActive }) => (
           <Link
             key={`${title}-${href}`}
             to={href}
-            className={`text-sm font-medium transition-colors hover:text-primary ${isActive ? '' : 'text-muted-foreground'}`}
+            className={`text-sm font-medium transition-colors hover:text-primary ${isActive ? "" : "text-muted-foreground"}`}
           >
             {title}
           </Link>

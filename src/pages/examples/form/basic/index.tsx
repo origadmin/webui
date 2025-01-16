@@ -1,29 +1,29 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/hooks/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  url: z.string().url({ message: 'Please enter a valid URL.' }).optional().or(z.literal('')),
-  description: z.string().max(500, { message: 'Description must not be longer than 500 characters.' }),
-  gender: z.enum(['male', 'female', 'other'], { required_error: 'Please select a gender.' }),
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  url: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal("")),
+  description: z.string().max(500, { message: "Description must not be longer than 500 characters." }),
+  gender: z.enum(["male", "female", "other"], { required_error: "Please select a gender." }),
   notifications: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'You have to select at least one item.',
+    message: "You have to select at least one item.",
   }),
-  country: z.string({ required_error: 'Please select a country.' }),
+  country: z.string({ required_error: "Please select a country." }),
   agreement: z.boolean().refine((value) => value === true, {
-    message: 'You must agree to the terms and conditions.',
+    message: "You must agree to the terms and conditions.",
   }),
   publicProfile: z.boolean().optional(),
 });
@@ -32,13 +32,13 @@ export default function DetailedFormExample() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      url: '',
-      description: '',
+      name: "",
+      email: "",
+      url: "",
+      description: "",
       gender: undefined,
       notifications: [],
-      country: '',
+      country: "",
       agreement: false,
       publicProfile: false,
     },
@@ -46,7 +46,7 @@ export default function DetailedFormExample() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     toast({
-      title: 'You submitted the following values:',
+      title: "You submitted the following values:",
       description: (
         <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
           <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
@@ -168,7 +168,7 @@ export default function DetailedFormExample() {
                       <FormLabel className='text-base'>Notifications</FormLabel>
                       <FormDescription>Select the types of notifications you'd like to receive.</FormDescription>
                     </div>
-                    {['email', 'push', 'sms'].map((item) => (
+                    {["email", "push", "sms"].map((item) => (
                       <FormField
                         key={item}
                         control={form.control}

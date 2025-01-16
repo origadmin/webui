@@ -1,4 +1,3 @@
-import { API } from '@/types/typings';
 import {
   IconBarrierBlock,
   IconBrowserCheck,
@@ -19,11 +18,12 @@ import {
   IconUserCog,
   IconUserOff,
   IconUsers,
-} from '@tabler/icons-react';
-import { Command } from 'lucide-react';
+} from "@tabler/icons-react";
+import { Command } from "lucide-react";
+import { API } from "@/types/typings";
 
 export type Product = {
-  photo_url: string;
+  photo_path: string;
   name: string;
   description: string;
   created_at: string;
@@ -35,154 +35,154 @@ export type Product = {
 
 export const data: API.SidebarData = {
   user: {
-    name: 'OrigAdmin',
-    email: 'origadminpanelwebui@gmail.com',
-    avatar: '/static/logo.svg',
+    name: "OrigAdmin",
+    email: "origadminpanelwebui@gmail.com",
+    avatar: "/static/logo.svg",
   },
   teams: [
     {
-      name: 'OrigAdmin Panel',
+      name: "OrigAdmin Panel",
       logo: Command,
-      plan: 'React + ShadcnUI',
+      plan: "React + ShadcnUI",
     },
   ],
   menuItems: [
     {
-      title: 'General',
+      title: "General",
       items: [
         {
-          title: 'Dashboard',
-          url: '/dashboard',
+          title: "Dashboard",
+          path: "/dashboard",
           icon: IconLayoutDashboard,
           isActive: false,
-          shortcut: ['d', 'd'],
+          shortcut: ["d", "d"],
         },
         {
-          title: 'Monitor',
-          url: '/monitor',
+          title: "Monitor",
+          path: "/monitor",
           icon: IconMessages,
-          shortcut: ['m', 'm'],
+          shortcut: ["m", "m"],
           isActive: false,
         },
         {
-          title: 'Notifications',
-          url: '/notifications',
+          title: "Notifications",
+          path: "/notifications",
           icon: IconNotification,
-          shortcut: ['n', 'n'],
+          shortcut: ["n", "n"],
         },
         {
-          title: 'Tasks',
-          url: '/tasks',
+          title: "Tasks",
+          path: "/tasks",
           icon: IconChecklist,
-          shortcut: ['t', 't'],
+          shortcut: ["t", "t"],
         },
         {
-          title: 'Apps',
-          url: '/apps',
+          title: "Apps",
+          path: "/apps",
           icon: IconPackages,
-          shortcut: ['a', 'a'],
+          shortcut: ["a", "a"],
         },
         {
-          title: 'Chats',
-          url: '/chats',
+          title: "Chats",
+          path: "/chats",
           icon: IconMessages,
-          shortcut: ['c', 'c'],
+          shortcut: ["c", "c"],
         },
         {
-          title: 'Users',
-          url: '/users',
+          title: "Users",
+          path: "/users",
           icon: IconUsers,
-          shortcut: ['u', 'u'],
+          shortcut: ["u", "u"],
         },
       ],
     },
     {
-      title: 'Examples',
+      title: "Examples",
       items: [
         {
-          title: 'Form',
+          title: "Form",
           icon: IconHelp,
           items: [
             {
-              title: 'Advanced',
-              url: '/examples/form/advanced',
+              title: "Advanced",
+              path: "/examples/form/advanced",
               icon: IconHelp,
             },
             {
-              title: 'Basic',
-              url: '/examples/form/basic',
+              title: "Basic",
+              path: "/examples/form/basic",
               icon: IconHelp,
             },
             {
-              title: 'Simple',
-              url: '/examples/form/simple',
+              title: "Simple",
+              path: "/examples/form/simple",
               icon: IconHelp,
             },
           ],
         },
         {
-          title: 'List',
-          url: '/examples/list',
+          title: "List",
+          path: "/examples/list",
           icon: IconHelp,
         },
       ],
     },
     {
-      title: 'Pages',
+      title: "Pages",
       items: [
         {
-          title: 'Auth',
+          title: "Auth",
           icon: IconLockAccess,
           items: [
             {
-              title: 'Sign In',
-              url: '/sign-in',
+              title: "Sign In",
+              path: "/sign-in",
             },
             {
-              title: 'Sign In (2 Col)',
-              url: '/sign-in-2',
+              title: "Sign In (2 Col)",
+              path: "/sign-in-2",
             },
             {
-              title: 'Sign Up',
-              url: '/sign-up',
+              title: "Sign Up",
+              path: "/sign-up",
             },
             {
-              title: 'Forgot Password',
-              url: '/forgot-password',
+              title: "Forgot Password",
+              path: "/forgot-password",
             },
             {
-              title: 'OTP',
-              url: '/otp',
+              title: "OTP",
+              path: "/otp",
             },
           ],
         },
         {
-          title: 'Errors',
+          title: "Errors",
           icon: IconBug,
           items: [
             {
-              title: 'Unauthorized',
-              url: '/401',
+              title: "Unauthorized",
+              path: "/401",
               icon: IconLock,
             },
             {
-              title: 'Forbidden',
-              url: '/403',
+              title: "Forbidden",
+              path: "/403",
               icon: IconUserOff,
             },
             {
-              title: 'Not Found',
-              url: '/404',
+              title: "Not Found",
+              path: "/404",
               icon: IconError404,
             },
             {
-              title: 'Internal Server Error',
-              url: '/500',
+              title: "Internal Server Error",
+              path: "/500",
               icon: IconServerOff,
             },
             {
-              title: 'Maintenance Error',
-              url: '/503',
+              title: "Maintenance Error",
+              path: "/503",
               icon: IconBarrierBlock,
             },
           ],
@@ -190,42 +190,42 @@ export const data: API.SidebarData = {
       ],
     },
     {
-      title: 'Other',
+      title: "Other",
       items: [
         {
-          title: 'Settings',
+          title: "Settings",
           icon: IconSettings,
           items: [
             {
-              title: 'Profile',
-              url: '/settings',
+              title: "Profile",
+              path: "/settings",
               icon: IconUserCog,
             },
             {
-              title: 'Account',
-              url: '/settings/account',
+              title: "Account",
+              path: "/settings/account",
               icon: IconTool,
             },
             {
-              title: 'Appearance',
-              url: '/settings/appearance',
+              title: "Appearance",
+              path: "/settings/appearance",
               icon: IconPalette,
             },
             {
-              title: 'Notifications',
-              url: '/settings/notifications',
+              title: "Notifications",
+              path: "/settings/notifications",
               icon: IconNotification,
             },
             {
-              title: 'Display',
-              url: '/settings/display',
+              title: "Display",
+              path: "/settings/display",
               icon: IconBrowserCheck,
             },
           ],
         },
         {
-          title: 'Help Center',
-          url: '/help-center',
+          title: "Help Center",
+          path: "/help-center",
           icon: IconHelp,
         },
       ],
@@ -235,23 +235,23 @@ export const data: API.SidebarData = {
 
 export const topNav: API.TopNav[] = [
   {
-    title: 'Overview',
-    href: 'dashboard/overview',
+    title: "Overview",
+    href: "dashboard/overview",
     isActive: true,
   },
   {
-    title: 'Customers',
-    href: 'dashboard/customers',
+    title: "Customers",
+    href: "dashboard/customers",
     isActive: false,
   },
   {
-    title: 'Products',
-    href: 'dashboard/products',
+    title: "Products",
+    href: "dashboard/products",
     isActive: false,
   },
   {
-    title: 'Settings',
-    href: 'dashboard/settings',
+    title: "Settings",
+    href: "dashboard/settings",
     isActive: false,
   },
 ];

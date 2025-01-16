@@ -1,8 +1,8 @@
-import { buttonVariants } from '@/components/custom/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { buttonVariants } from "@/components/custom/button";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -15,7 +15,7 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 export default function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const [val, setVal] = useState(pathname ?? '/settings');
+  const [val, setVal] = useState(pathname ?? "/settings");
 
   const handleSelect = (e: string) => {
     setVal(e);
@@ -43,15 +43,15 @@ export default function SidebarNav({ className, items, ...props }: SidebarNavPro
       </div>
 
       <div className='hidden w-full overflow-x-auto bg-background px-1 py-2 md:block'>
-        <nav className={cn('flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1', className)} {...props}>
+        <nav className={cn("flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1", className)} {...props}>
           {items.map((item) => (
             <Link
               key={item.href}
               to={item.href}
               className={cn(
-                buttonVariants({ variant: 'ghost' }),
-                pathname === item.href ? 'bg-muted hover:bg-muted' : 'hover:bg-transparent hover:underline',
-                'justify-start',
+                buttonVariants({ variant: "ghost" }),
+                pathname === item.href ? "bg-muted hover:bg-muted" : "hover:bg-transparent hover:underline",
+                "justify-start",
               )}
             >
               <span className='mr-2'>{item.icon}</span>

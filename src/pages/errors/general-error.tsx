@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { HTMLAttributes } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { HTMLAttributes } from "react";
+import { useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
   minimal?: boolean;
@@ -10,7 +10,7 @@ interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
 export default function GeneralError({ className, minimal = false }: GeneralErrorProps) {
   const navigate = useNavigate();
   return (
-    <div className={cn('h-svh w-full', className)}>
+    <div className={cn("h-svh w-full", className)}>
       <div className='m-auto flex h-full w-full flex-col items-center justify-center gap-2'>
         {!minimal && <h1 className='text-[7rem] font-bold leading-tight'>500</h1>}
         <span className='font-medium'>Oops! Something went wrong {`:')`}</span>
@@ -22,7 +22,7 @@ export default function GeneralError({ className, minimal = false }: GeneralErro
             <Button variant='outline' onClick={() => navigate(-1)}>
               Go Back
             </Button>
-            <Button onClick={() => navigate('/', { replace: true })}>Back to Home</Button>
+            <Button onClick={() => navigate("/", { replace: true })}>Back to Home</Button>
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
-import { TeamSwitcher } from '@/components/team-switcher';
-import { SidebarHeader } from '@/components/ui/sidebar';
-import { Command } from 'lucide-react';
-import React, { ElementType } from 'react';
+import React, { ElementType } from "react";
+import { Command } from "lucide-react";
+import { SidebarHeader } from "@/components/ui/sidebar";
+import { TeamSwitcher } from "@/components/team-switcher";
 
 type SidebarHeaderProps = {
   teams?: {
@@ -12,9 +12,9 @@ type SidebarHeaderProps = {
 };
 
 const DefaultTeam = {
-  name: 'OrigAdmin WebUI',
+  name: "OrigAdmin WebUI",
   logo: Command,
-  plan: 'RSBuild + React + ShadcnUI + ',
+  plan: "RSBuild + React + ShadcnUI + ",
 };
 
 function SidebarHeaderItem(props?: SidebarHeaderProps) {

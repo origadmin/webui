@@ -1,36 +1,36 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { UserActivityChart } from "./user-activity-chart"
-import { RevenueChart } from "./revenue-chart"
-import { ProductPerformance } from "./product-performance"
-import { GeographicDistribution } from "./geographic-distribution"
-import { ConversionFunnel } from "./conversion-funnel"
-import { MetricsOverview } from "./metrics-overview"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ConversionFunnel } from "./conversion-funnel";
+import { GeographicDistribution } from "./geographic-distribution";
+import { MetricsOverview } from "./metrics-overview";
+import { ProductPerformance } from "./product-performance";
+import { RevenueChart } from "./revenue-chart";
+import { UserActivityChart } from "./user-activity-chart";
 
 const invoices = [
   {
-    product: 'Landing Page Template',
-    status: 'Paid',
+    product: "Landing Page Template",
+    status: "Paid",
     sales: 1800,
   },
   {
-    product: 'Dashboard UI Kit',
-    status: 'Pending',
+    product: "Dashboard UI Kit",
+    status: "Pending",
     sales: 1350,
   },
   {
-    product: 'Icon Set',
-    status: 'Paid',
+    product: "Icon Set",
+    status: "Paid",
     sales: 900,
   },
   {
-    product: 'Marketing Templates',
-    status: 'Paid',
+    product: "Marketing Templates",
+    status: "Paid",
     sales: 750,
   },
   {
-    product: 'Font Collection',
-    status: 'Pending',
+    product: "Font Collection",
+    status: "Pending",
     sales: 500,
   },
 ];

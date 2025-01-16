@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { IconMoon, IconSun } from '@tabler/icons-react';
-import { useEffect } from 'react';
-import { useTheme } from './theme-provider';
+import { useEffect } from "react";
+import { IconMoon, IconSun } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "./theme-provider";
 
 export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme();
@@ -9,10 +9,10 @@ export default function ThemeSwitch() {
   /* Update theme-color meta tag
    * when theme is updated */
   useEffect(() => {
-    const themeColor = theme === 'dark' ? '#020817' : '#fff';
+    const themeColor = theme === "dark" ? "#020817" : "#fff";
     const metaThemeColor = document.querySelector("meta[name='theme-color']");
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', themeColor);
+      metaThemeColor.setAttribute("content", themeColor);
     }
   }, [theme]);
 
@@ -21,9 +21,9 @@ export default function ThemeSwitch() {
       size='icon'
       variant='ghost'
       className='rounded-full'
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
-      {theme === 'light' ? <IconMoon size={20} /> : <IconSun size={20} />}
+      {theme === "light" ? <IconMoon size={20} /> : <IconSun size={20} />}
     </Button>
   );
 }

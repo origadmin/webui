@@ -1,6 +1,6 @@
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import * as React from 'react';
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 interface PinInputOgProps {
   /**
@@ -34,7 +34,7 @@ interface PinInputOgProps {
   /**
    * The type of value pin input should allow, `alphanumeric` by default
    */
-  type?: 'numeric' | 'alphanumeric';
+  type?: "numeric" | "alphanumeric";
   /**
    * Placeholder for input fields, `○` by default
    */
@@ -82,8 +82,8 @@ const PinInputOg = ({
   containerClassName,
   id,
   className,
-  type = 'alphanumeric',
-  placeholder = '○',
+  type = "alphanumeric",
+  placeholder = "○",
   length = 4,
   name,
   form,
@@ -99,11 +99,11 @@ const PinInputOg = ({
   ariaLabel,
 }: PinInputOgProps) => {
   if (length < 1 || length > 12) {
-    throw new Error('input length cannot be more than 12 or less than 1');
+    throw new Error("input length cannot be more than 12 or less than 1");
   }
 
   if ((value !== undefined && !onChange) || (value === undefined && onChange)) {
-    throw new Error('if one of value or onChange is specified, both props must be set.');
+    throw new Error("if one of value or onChange is specified, both props must be set.");
   }
 
   const { pins, pinValue, refMap, ...handlers } = usePinInput({
@@ -137,7 +137,7 @@ const PinInputOg = ({
   }, [autoFocus, refMap]);
 
   return (
-    <div className={cn('flex gap-2', containerClassName)}>
+    <div className={cn("flex gap-2", containerClassName)}>
       {pins.map((pin, i) => (
         <PinInputField
           key={i}
@@ -152,7 +152,7 @@ const PinInputOg = ({
           className={className}
           type={type}
           mask={mask}
-          autoComplete={otp ? 'one-time-code' : 'off'}
+          autoComplete={otp ? "one-time-code" : "off"}
           disabled={disabled}
           readOnly={readOnly}
           aria-label={ariaLabel}
@@ -169,20 +169,20 @@ const PinInputOg = ({
     </div>
   );
 };
-PinInputOg.displayName = 'PinInputOg';
+PinInputOg.displayName = "PinInputOg";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   mask?: boolean;
 }
 
 const PinInputField = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, mask, ...props }, ref) => {
-  const inputType = mask ? 'password' : type === 'numeric' ? 'tel' : 'text';
+  const inputType = mask ? "password" : type === "numeric" ? "tel" : "text";
   return (
     <Input
       ref={ref}
       type={inputType}
-      inputMode={type === 'numeric' ? 'numeric' : 'text'}
-      className={cn('size-10 text-center', className)}
+      inputMode={type === "numeric" ? "numeric" : "text"}
+      className={cn("size-10 text-center", className)}
       {...props}
     />
   );
@@ -194,17 +194,17 @@ interface UsePinInputProps {
   value: string | undefined;
   defaultValue: string | undefined;
   placeholder: string;
-  type: 'numeric' | 'alphanumeric';
+  type: "numeric" | "alphanumeric";
   length: number;
   readOnly: boolean;
 }
 
 const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly }: UsePinInputProps) => {
   const pinInputs = Array.from({ length }, (_, index) =>
-    defaultValue ? defaultValue.charAt(index) : value ? value.charAt(index) : '',
+    defaultValue ? defaultValue.charAt(index) : value ? value.charAt(index) : "",
   );
   const [pins, setPins] = React.useState<(string | number)[]>(pinInputs);
-  const pinValue = pins.join('').trim();
+  const pinValue = pins.join("").trim();
 
   const itemsRef = React.useRef<Map<number, HTMLInputElement> | null>(null);
 
@@ -226,7 +226,7 @@ const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly 
     const node = getNode(itemId);
     if (node) {
       node.focus();
-      node.placeholder = '';
+      node.placeholder = "";
     }
   }
 
@@ -263,11 +263,12 @@ const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly 
   function validate(value: string) {
     const NUMERIC_REGEX = /^[0-9]+$/;
     const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]+$/i;
-    const regex = type === 'alphanumeric' ? ALPHA_NUMERIC_REGEX : NUMERIC_REGEX;
+    const regex = type === "alphanumeric" ? ALPHA_NUMERIC_REGEX : NUMERIC_REGEX;
     return regex.test(value);
   }
 
   const pastedVal = React.useRef<null | string>(null);
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     const inputValue = e.target.value;
     const pastedValue = pastedVal.current;
@@ -284,8 +285,8 @@ const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly 
 
   function handlePaste(event: React.ClipboardEvent<HTMLInputElement>) {
     event.preventDefault();
-    const copyValue = event.clipboardData.getData('text/plain').replace(/[\n\r\s]+/g, '');
-    const copyArr = copyValue.split('').slice(0, length);
+    const copyValue = event.clipboardData.getData("text/plain").replace(/[\n\r\s]+/g, "");
+    const copyArr = copyValue.split("").slice(0, length);
 
     const isValid = copyArr.every((c) => validate(c));
 
@@ -304,14 +305,14 @@ const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly 
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>, index: number) {
     const { ctrlKey, key, shiftKey, metaKey } = event;
 
-    if (type === 'numeric') {
+    if (type === "numeric") {
       const canTypeSign =
-        key === 'Backspace' ||
-        key === 'Tab' ||
-        key === 'Control' ||
-        key === 'Delete' ||
-        (ctrlKey && key === 'v') ||
-        (metaKey && key === 'v')
+        key === "Backspace" ||
+        key === "Tab" ||
+        key === "Control" ||
+        key === "Delete" ||
+        (ctrlKey && key === "v") ||
+        (metaKey && key === "v")
           ? true
           : !Number.isNaN(Number(key));
 
@@ -320,18 +321,18 @@ const usePinInput = ({ value, defaultValue, placeholder, type, length, readOnly 
       }
     }
 
-    if (key === 'ArrowLeft' || (shiftKey && key === 'Tab')) {
+    if (key === "ArrowLeft" || (shiftKey && key === "Tab")) {
       event.preventDefault();
       focusInput(index - 1);
-    } else if (key === 'ArrowRight' || key === 'Tab' || key === ' ') {
+    } else if (key === "ArrowRight" || key === "Tab" || key === " ") {
       event.preventDefault();
       focusInput(index + 1);
-    } else if (key === 'Delete') {
+    } else if (key === "Delete") {
       event.preventDefault();
-    } else if (key === 'Backspace') {
+    } else if (key === "Backspace") {
       event.preventDefault();
-      updateInputField('', index);
-      if ((event.target as HTMLInputElement).value === '') {
+      updateInputField("", index);
+      if ((event.target as HTMLInputElement).value === "") {
         focusInput(index - 1);
       }
     }

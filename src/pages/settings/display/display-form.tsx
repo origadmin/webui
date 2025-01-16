@@ -1,41 +1,41 @@
-import { Button } from '@/components/custom/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { toast } from '@/hooks/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { toast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/custom/button";
 
 const items = [
   {
-    id: 'recents',
-    label: 'Recents',
+    id: "recents",
+    label: "Recents",
   },
   {
-    id: 'home',
-    label: 'Home',
+    id: "home",
+    label: "Home",
   },
   {
-    id: 'applications',
-    label: 'Applications',
+    id: "applications",
+    label: "Applications",
   },
   {
-    id: 'desktop',
-    label: 'Desktop',
+    id: "desktop",
+    label: "Desktop",
   },
   {
-    id: 'downloads',
-    label: 'Downloads',
+    id: "downloads",
+    label: "Downloads",
   },
   {
-    id: 'documents',
-    label: 'Documents',
+    id: "documents",
+    label: "Documents",
   },
 ] as const;
 
 const displayFormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'You have to select at least one item.',
+    message: "You have to select at least one item.",
   }),
 });
 
@@ -43,7 +43,7 @@ type DisplayFormValues = z.infer<typeof displayFormSchema>;
 
 // This can come from your database or API.
 const defaultValues: Partial<DisplayFormValues> = {
-  items: ['recents', 'home'],
+  items: ["recents", "home"],
 };
 
 export function DisplayForm() {
@@ -54,7 +54,7 @@ export function DisplayForm() {
 
   function onSubmit(data: DisplayFormValues) {
     toast({
-      title: 'You submitted the following values:',
+      title: "You submitted the following values:",
       description: (
         <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
           <code className='text-white'>{JSON.stringify(data, null, 2)}</code>

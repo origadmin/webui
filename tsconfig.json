@@ -24,6 +24,6 @@
     "useDefineForClassFields": true,
     "outDir": "./dist"
   },
-  "include": ["src", "eslint.config.js", "./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "include": ["./src", "./eslint.config.js", "./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules"]
 }

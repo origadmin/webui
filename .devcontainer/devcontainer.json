@@ -1,4 +1,4 @@
 {
-  "name": "OrigAdmin Frontend",
+  "name": "OrigAdmin Panel",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:latest"
 }

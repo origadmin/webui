@@ -1,4 +1,5 @@
-import { TablerIcon } from '@tabler/icons-react';
+import { TablerIcon } from "@tabler/icons-react";
+import { API } from "@/types/system/typings";
 
 declare namespace API {
   type Params = {
@@ -38,7 +39,7 @@ declare namespace API {
 
   type User = {
     id: string;
-  }
+  };
 
   type MenuItem = {
     keyword?: string;

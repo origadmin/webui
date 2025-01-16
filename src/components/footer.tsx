@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type LinkProps = {
   key?: string;
@@ -16,19 +16,19 @@ export function Footer(props?: FooterProps) {
   const {
     links = [
       {
-        title: 'FAQs',
+        title: "FAQs",
       },
       {
-        title: 'Privacy Policy',
+        title: "Privacy Policy",
       },
       {
-        title: 'Terms & Conditions',
+        title: "Terms & Conditions",
       },
       {
-        title: 'Refund Policy',
+        title: "Refund Policy",
       },
     ],
-    copyright = 'OrigAdmin',
+    copyright = "OrigAdmin",
   } = props || {};
 
   return (
@@ -40,8 +40,8 @@ export function Footer(props?: FooterProps) {
               <li>
                 <a
                   className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
-                  target={link.blank ? 'blank' : undefined}
-                  href={link.href || '#'}
+                  target={link.blank ? "blank" : undefined}
+                  href={link.href || "#"}
                 >
                   {link.title}
                 </a>

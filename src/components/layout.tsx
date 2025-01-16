@@ -1,14 +1,13 @@
-import { SidebarContentItem, SidebarFooterItem, SidebarHeaderItem, SidebarProps } from '@/components/Sidebar';
-import { Footer, FooterProps } from '@/components/footer';
-import KBar from '@/components/kbar';
-import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from '@/components/ui/sidebar';
-import { API } from '@/types/typings';
-import * as React from 'react';
-
-import Header from './header';
+import * as React from "react";
+import KBar from "src/components/KBar";
+import { API } from "@/types/typings";
+import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarContentItem, SidebarFooterItem, SidebarHeaderItem, SidebarProps } from "@/components/Sidebar";
+import { Footer, FooterProps } from "@/components/footer";
+import Header from "./header";
 
 type LayoutProps = {
-  footer: FooterProps;
+  footer?: FooterProps;
   topNav?: API.TopNav[];
   sidebarProps?: SidebarProps;
   children: React.ReactNode;

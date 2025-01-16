@@ -1,4 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,10 +9,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { SidebarMenuButton, useSidebar } from '@/components/ui/sidebar';
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
+} from "@/components/ui/dropdown-menu";
+import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 
 type NavUserProps = {
   user?: {
@@ -21,9 +21,9 @@ type NavUserProps = {
 };
 
 const DefaultUser = {
-  name: 'John Doe',
-  email: 'john@doe.com',
-  avatar: 'https://avatars.githubusercontent.com/u/10214304?v=4',
+  name: "John Doe",
+  email: "john@doe.com",
+  avatar: "https://avatars.githubusercontent.com/u/10214304?v=4",
 };
 
 function NavUserItem(props: NavUserProps) {
@@ -49,7 +49,7 @@ function NavUserItem(props: NavUserProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className='w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg'
-        side={isMobile ? 'bottom' : 'right'}
+        side={isMobile ? "bottom" : "right"}
         align='end'
         sideOffset={4}
       >

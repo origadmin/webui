@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
-import * as React from 'react';
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 const ContentContext = React.createContext<{
   offset: number;
@@ -21,9 +21,9 @@ const Content = ({ className, fixed = false, ...props }: ContentProps) => {
     const onScroll = () => setOffset(div.scrollTop);
 
     // clean up code
-    div.removeEventListener('scroll', onScroll);
-    div.addEventListener('scroll', onScroll, { passive: true });
-    return () => div.removeEventListener('scroll', onScroll);
+    div.removeEventListener("scroll", onScroll);
+    div.addEventListener("scroll", onScroll, { passive: true });
+    return () => div.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -31,13 +31,13 @@ const Content = ({ className, fixed = false, ...props }: ContentProps) => {
       <div
         ref={divRef}
         data-layout='layout'
-        className={cn('h-full overflow-auto', fixed && 'flex flex-col', className)}
+        className={cn("h-full overflow-auto", fixed && "flex flex-col", className)}
         {...props}
       />
     </ContentContext.Provider>
   );
 };
-Content.displayName = 'Content';
+Content.displayName = "Content";
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   sticky?: boolean;
@@ -56,16 +56,16 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ className, stick
       data-layout='header'
       className={cn(
         `z-10 flex h-[var(--header-height)] items-center gap-4 bg-background p-4 md:px-8`,
-        contextVal.offset > 10 && sticky ? 'shadow' : 'shadow-none',
-        contextVal.fixed && 'flex-none',
-        sticky && 'sticky top-0',
+        contextVal.offset > 10 && sticky ? "shadow" : "shadow-none",
+        contextVal.fixed && "flex-none",
+        sticky && "sticky top-0",
         className,
       )}
       {...props}
     />
   );
 });
-Header.displayName = 'Header';
+Header.displayName = "Header";
 
 const Body = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => {
   // Check if Layout.Body is used within Layout
@@ -78,12 +78,12 @@ const Body = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
     <div
       ref={ref}
       data-layout='body'
-      className={cn('px-4 py-6 md:overflow-hidden md:px-8', contextVal && contextVal.fixed && 'flex-1', className)}
+      className={cn("px-4 py-6 md:overflow-hidden md:px-8", contextVal && contextVal.fixed && "flex-1", className)}
       {...props}
     />
   );
 });
-Body.displayName = 'Body';
+Body.displayName = "Body";
 
 Content.Header = Header;
 Content.Body = Body;

@@ -1,6 +1,6 @@
-import { API } from '@/types/typings';
-import MD5 from 'crypto-js/md5';
-import SHA256 from 'crypto-js/sha256';
+import MD5 from "crypto-js/md5";
+import SHA256 from "crypto-js/sha256";
+import { API } from "@/types/typings";
 
 /**
  * The function exports a TypeScript implementation of the MD5 hashing algorithm for a given string.
@@ -23,7 +23,7 @@ export function sha256(str: string) {
  * @param {string} username - A string representing the username that needs to be set.
  */
 export function setUsername(username: string) {
-  localStorage.setItem('username', username);
+  localStorage.setItem("username", username);
 }
 
 /**
@@ -32,7 +32,7 @@ export function setUsername(username: string) {
  * @returns a string value or null.
  */
 export function getUsername(): string {
-  return localStorage.getItem('username') || '';
+  return localStorage.getItem("username") || "";
 }
 
 export function convertMenuItem<T>(
@@ -60,7 +60,7 @@ export function convertMenuItem<T>(
     // todo: fix this
     const menuItem: API.MenuItem = {
       // id: dataItem.id,
-      key: dataItem.id,
+      keyword: dataItem.id,
       title: dataItem.name,
       // value: dataItem.id,
       label: dataItem.name,

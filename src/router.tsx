@@ -1,91 +1,95 @@
-import GeneralError from '@/pages/errors/general-error';
-import MaintenanceError from '@/pages/errors/maintenance-error';
-import NotFoundError from '@/pages/errors/not-found-error';
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+import GeneralError from "@/pages/errors/general-error";
+import MaintenanceError from "@/pages/errors/maintenance-error";
+import NotFoundError from "@/pages/errors/not-found-error";
+import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 
-const router = createBrowserRouter([
+type RouterConfig = RouteObject & {
+  keyword?: string;
+};
+
+export const routes: RouterConfig[] = [
   // Auth routes
   {
-    path: '/login',
+    path: "/login",
     lazy: async () => ({
-      Component: (await import('@/pages/login')).default,
+      Component: (await import("@/pages/login")).default,
     }),
   },
   {
-    path: '/sign-in',
+    path: "/sign-in",
     lazy: async () => ({
-      Component: (await import('@/pages/auth/sign-in')).default,
+      Component: (await import("@/pages/auth/sign-in")).default,
     }),
   },
   {
-    path: '/sign-in-2',
+    path: "/sign-in-2",
     lazy: async () => ({
-      Component: (await import('@/pages/auth/sign-in-2')).default,
+      Component: (await import("@/pages/auth/sign-in-2")).default,
     }),
   },
   {
-    path: '/sign-up',
+    path: "/sign-up",
     lazy: async () => ({
-      Component: (await import('@/pages/auth/sign-up')).default,
+      Component: (await import("@/pages/auth/sign-up")).default,
     }),
   },
   {
-    path: '/forgot-password',
+    path: "/forgot-password",
     lazy: async () => ({
-      Component: (await import('@/pages/auth/forgot-password')).default,
+      Component: (await import("@/pages/auth/forgot-password")).default,
     }),
   },
   {
-    path: '/otp',
+    path: "/otp",
     lazy: async () => ({
-      Component: (await import('@/pages/auth/otp')).default,
+      Component: (await import("@/pages/auth/otp")).default,
     }),
   },
   // Main routes
   {
-    path: '/',
+    path: "/",
     lazy: async () => {
-      const MainPage = await import('@/app/MainPage');
+      const MainPage = await import("@/app/MainPage");
       return { Component: MainPage.default };
     },
     element: <Navigate to='/dashboard' replace />,
     children: [
       {
         index: true,
-        path: 'dashboard',
+        path: "dashboard",
         lazy: async () => ({
-          Component: (await import('@/pages/dashboard')).default,
+          Component: (await import("@/pages/dashboard")).default,
           metadata: {
             hidden: true,
-            title: 'Dashboard',
-            icon: 'dashboard',
+            title: "Dashboard",
+            icon: "dashboard",
           },
         }),
       },
       {
         index: true,
-        path: 'monitor',
+        path: "monitor",
         lazy: async () => ({
-          Component: (await import('@/pages/monitor')).default,
+          Component: (await import("@/pages/monitor")).default,
           metadata: {
             hidden: true,
-            title: 'Monitor',
-            icon: 'monitor',
+            title: "Monitor",
+            icon: "monitor",
           },
         }),
       },
       {
-        path: 'examples',
+        path: "examples",
         children: [
           {
             index: true,
-            path: 'list',
+            path: "list",
             lazy: async () => ({
-              Component: (await import('@/pages/examples/list')).default,
+              Component: (await import("@/pages/examples/list")).default,
             }),
           },
           {
-            path: 'form',
+            path: "form",
             children: [
               // 添加默认重定向到 'basic'
               {
@@ -93,29 +97,29 @@ const router = createBrowserRouter([
                 element: <Navigate to='basic' replace />,
               },
               {
-                path: 'basic',
+                path: "basic",
                 lazy: async () => ({
-                  Component: (await import('@/pages/examples/form/basic')).default,
+                  Component: (await import("@/pages/examples/form/basic")).default,
                   metadata: {
-                    title: 'Basic Form',
-                    icon: 'form',
+                    title: "Basic Form",
+                    icon: "form",
                   },
                 }),
               },
               {
-                path: 'simple',
+                path: "simple",
                 lazy: async () => ({
-                  Component: (await import('@/pages/examples/form/simple')).default,
+                  Component: (await import("@/pages/examples/form/simple")).default,
                   metadata: {
-                    title: 'Detailed Form',
-                    icon: 'form',
+                    title: "Detailed Form",
+                    icon: "form",
                   },
                 }),
               },
               {
-                path: 'advanced',
+                path: "advanced",
                 lazy: async () => ({
-                  Component: (await import('@/pages/examples/form/advanced')).default,
+                  Component: (await import("@/pages/examples/form/advanced")).default,
                 }),
               },
             ],
@@ -123,86 +127,86 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'tasks',
+        path: "tasks",
         lazy: async () => ({
-          Component: (await import('@/pages/tasks')).default,
+          Component: (await import("@/pages/tasks")).default,
           metadata: {
-            title: 'Tasks',
-            icon: 'tasks',
+            title: "Tasks",
+            icon: "tasks",
           },
         }),
       },
       {
-        path: 'chats',
+        path: "chats",
         lazy: async () => ({
-          Component: (await import('@/pages/errors/coming-soon')).default,
+          Component: (await import("@/pages/errors/coming-soon")).default,
         }),
       },
       {
-        path: 'apps',
+        path: "apps",
         lazy: async () => ({
-          Component: (await import('@/pages/apps')).default,
+          Component: (await import("@/pages/apps")).default,
         }),
       },
       {
-        path: 'users',
+        path: "users",
         lazy: async () => ({
-          Component: (await import('@/pages/errors/coming-soon')).default,
+          Component: (await import("@/pages/errors/coming-soon")).default,
         }),
       },
       {
-        path: 'analysis',
+        path: "analysis",
         lazy: async () => ({
-          Component: (await import('@/pages/errors/coming-soon')).default,
+          Component: (await import("@/pages/errors/coming-soon")).default,
         }),
       },
       {
-        path: 'extra-components',
+        path: "extra-components",
         lazy: async () => ({
-          Component: (await import('@/pages/extra-components')).default,
+          Component: (await import("@/pages/extra-components")).default,
         }),
       },
       {
-        path: 'settings',
+        path: "settings",
         lazy: async () => ({
-          Component: (await import('@/pages/settings')).default,
+          Component: (await import("@/pages/settings")).default,
         }),
         errorElement: <GeneralError />,
         children: [
           {
             index: true,
             lazy: async () => ({
-              Component: (await import('@/pages/settings/profile')).default,
+              Component: (await import("@/pages/settings/profile")).default,
             }),
           },
           {
-            path: 'account',
+            path: "account",
             lazy: async () => ({
-              Component: (await import('@/pages/settings/account')).default,
+              Component: (await import("@/pages/settings/account")).default,
             }),
           },
           {
-            path: 'appearance',
+            path: "appearance",
             lazy: async () => ({
-              Component: (await import('@/pages/settings/appearance')).default,
+              Component: (await import("@/pages/settings/appearance")).default,
             }),
           },
           {
-            path: 'notifications',
+            path: "notifications",
             lazy: async () => ({
-              Component: (await import('@/pages/settings/notifications')).default,
+              Component: (await import("@/pages/settings/notifications")).default,
             }),
           },
           {
-            path: 'display',
+            path: "display",
             lazy: async () => ({
-              Component: (await import('@/pages/settings/display')).default,
+              Component: (await import("@/pages/settings/display")).default,
             }),
           },
           {
-            path: 'error-example',
+            path: "error-example",
             lazy: async () => ({
-              Component: (await import('@/pages/settings/error-example')).default,
+              Component: (await import("@/pages/settings/error-example")).default,
             }),
             errorElement: <GeneralError className='h-[50svh]' minimal />,
           },
@@ -211,12 +215,14 @@ const router = createBrowserRouter([
     ],
   },
   // Error routes
-  { path: '/500', Component: GeneralError },
-  { path: '/404', Component: NotFoundError },
-  { path: '/503', Component: MaintenanceError },
+  { path: "/500", Component: GeneralError },
+  { path: "/404", Component: NotFoundError },
+  { path: "/503", Component: MaintenanceError },
 
   // Fallback 404 route
-  { path: '*', Component: NotFoundError },
-]);
+  { path: "*", Component: NotFoundError },
+];
+
+const router = createBrowserRouter(routes);
 
 export default router;

@@ -1,3 +1,4 @@
+
 declare namespace API {
   type FakeCaptcha = {
     code?: number;

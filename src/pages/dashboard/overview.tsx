@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RecentSales } from '@/pages/dashboard/components/recent-sales';
-import {Overview} from "@/pages/dashboard/components/overview";
+import { Overview } from "@/pages/dashboard/components/overview";
+import { RecentSales } from "@/pages/dashboard/components/recent-sales";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function OverviewContent() {
   return (

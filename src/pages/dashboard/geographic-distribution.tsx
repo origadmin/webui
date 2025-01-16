@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const data = [
   { country: "United States", revenue: "$12,345", users: "1,234" },
@@ -6,7 +6,7 @@ const data = [
   { country: "Germany", revenue: "$6,543", users: "654" },
   { country: "Japan", revenue: "$5,432", users: "543" },
   { country: "France", revenue: "$4,321", users: "432" },
-]
+];
 
 export function GeographicDistribution() {
   return (
@@ -28,6 +28,5 @@ export function GeographicDistribution() {
         ))}
       </TableBody>
     </Table>
-  )
+  );
 }
-

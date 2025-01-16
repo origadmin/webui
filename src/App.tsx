@@ -1,9 +1,9 @@
-import { LoadingSpinner } from '@/components/Loading';
-import { Toaster } from '@/components/ui/toaster';
-import router from '@/router';
-import { API } from '@/types/typings';
-import { Suspense } from 'react';
-import { RouterProvider } from 'react-router-dom';
+import { Suspense } from "react";
+import router from "@/router";
+import { RouterProvider } from "react-router-dom";
+import { API } from "@/types/typings";
+import { Toaster } from "@/components/ui/toaster";
+import { LoadingSpinner } from "@/components/Loading";
 
 type UserResource = {
   user?: API.User;
@@ -20,26 +20,26 @@ type InitialStateProps = {
 
 export async function getInitialState(): Promise<InitialStateProps> {
   const fetchInitData = async (): Promise<UserResource> => {
-    const convertToMenuItems = (menus?: API.MenuItem[], parent_code?: string): API.MenuItem[] | undefined => {
-      if (!menus) {
-        return undefined;
-      }
-      const result: API.MenuItem[] = [];
-      menus.forEach((menu) => {
-        if (!menu.keyword) {
-          return;
-        }
-        const code = parent_code ? `${parent_code}.${menu.keyword}` : `${menu.keyword}`;
-        const menuItem: API.MenuItem = {
-          keyword: code,
-          path: menu.path,
-          title: menu.title,
-          items: convertToMenuItems(menu.items, code),
-        };
-        result.push(menuItem);
-      });
-      return result;
-    };
+    // const convertToMenuItems = (menus?: API.MenuItem[], parent_code?: string): API.MenuItem[] | undefined => {
+    //   if (!menus) {
+    //     return undefined;
+    //   }
+    //   const result: API.MenuItem[] = [];
+    //   menus.forEach((menu) => {
+    //     if (!menu.keyword) {
+    //       return;
+    //     }
+    //     const code = parent_code ? `${parent_code}.${menu.keyword}` : `${menu.keyword}`;
+    //     const menuItem: API.MenuItem = {
+    //       keyword: code,
+    //       path: menu.path,
+    //       title: menu.title,
+    //       items: convertToMenuItems(menu.items, code),
+    //     };
+    //     result.push(menuItem);
+    //   });
+    //   return result;
+    // };
     //   try {
     //     // const userRes = await queryCurrentUser();
     //     const currentUser = {};
@@ -92,7 +92,7 @@ export async function getInitialState(): Promise<InitialStateProps> {
   };
 }
 
-export const RuntimeConfig = ({ initialState, setInitialState }) => {
+export const RuntimeLayoutConfig = ({ initialState, setInitialState }) => {
   const loopMenuItems = (menus?: API.MenuItem[]): API.MenuItem[] => {
     if (!menus || menus.length === 0) {
       return [];
@@ -172,7 +172,7 @@ export const RuntimeConfig = ({ initialState, setInitialState }) => {
 };
 
 function App() {
-  console.log('Application Started');
+  console.log("Application Started");
   return (
     <>
       <Suspense fallback={<LoadingSpinner />}>

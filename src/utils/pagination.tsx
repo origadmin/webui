@@ -1,5 +1,6 @@
 /* eslint-disable */
 // @ts-ignore
+import { API } from "@/types/typings";
 
 /**
  * Transfer pagination parameter by converting page size to a different key.

@@ -1,7 +1,3 @@
-import { Content } from '@/components/content';
-import { Search } from '@/components/search';
-import { Separator } from '@/components/ui/separator';
-import { UserNav } from '@/components/user-nav';
 import {
   IconBrowserCheck,
   IconExclamationCircle,
@@ -9,11 +5,14 @@ import {
   IconPalette,
   IconTool,
   IconUser,
-} from '@tabler/icons-react';
-import { Outlet } from 'react-router-dom';
-
-import SidebarNav from './components/sidebar-nav';
+} from "@tabler/icons-react";
+import { Outlet } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
 import ThemeSwitch from "@/components/Theme/theme-switch";
+import { Content } from "@/components/content";
+import { Search } from "@/components/search";
+import { UserNav } from "@/components/user-nav";
+import SidebarNav from "./components/sidebar-nav";
 
 export default function Settings() {
   return (
@@ -48,33 +47,33 @@ export default function Settings() {
 
 const sidebarNavItems = [
   {
-    title: 'Profile',
+    title: "Profile",
     icon: <IconUser size={18} />,
-    href: '/settings',
+    href: "/settings",
   },
   {
-    title: 'Account',
+    title: "Account",
     icon: <IconTool size={18} />,
-    href: '/settings/account',
+    href: "/settings/account",
   },
   {
-    title: 'Appearance',
+    title: "Appearance",
     icon: <IconPalette size={18} />,
-    href: '/settings/appearance',
+    href: "/settings/appearance",
   },
   {
-    title: 'Notifications',
+    title: "Notifications",
     icon: <IconNotification size={18} />,
-    href: '/settings/notifications',
+    href: "/settings/notifications",
   },
   {
-    title: 'Display',
+    title: "Display",
     icon: <IconBrowserCheck size={18} />,
-    href: '/settings/display',
+    href: "/settings/display",
   },
   {
-    title: 'Error Example',
+    title: "Error Example",
     icon: <IconExclamationCircle size={18} />,
-    href: '/settings/error-example',
+    href: "/settings/error-example",
   },
 ];

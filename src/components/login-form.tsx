@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
-import { setToken } from '@/utils/auth';
-import { GalleryVerticalEnd } from 'lucide-react';
-import React, { useTransition } from 'react';
-import { ResolverSuccess, useForm } from 'react-hook-form';
+import React, { useTransition } from "react";
+import { setToken } from "@/utils/auth";
+import { GalleryVerticalEnd } from "lucide-react";
+import { ResolverSuccess, useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type LoginFormValue = {
   id?: string;
@@ -19,8 +19,8 @@ const signIn = (credentials: string, param: { email: string | undefined; callbac
     setTimeout(() => {
       // 模拟登录成功
       const user = {
-        id: '1',
-        email: 'test@gmail.com',
+        id: "1",
+        email: "test@gmail.com",
       };
 
       if (param.email) {
@@ -29,20 +29,20 @@ const signIn = (credentials: string, param: { email: string | undefined; callbac
         window.location.href = param.callbackUrl;
         resolve(user);
       } else {
-        reject(new Error('Email is required'));
+        reject(new Error("Email is required"));
       }
     }, 3000); // 等待 3 秒
   });
 };
 
-export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [loading, startTransition] = useTransition();
   const { toast } = useToast();
   const urlParams = new URLSearchParams(window.location.search);
-  const redirectUrl = urlParams.get('redirect') || '/';
+  const redirectUrl = urlParams.get("redirect") || "/";
   const value: LoginFormValue = {
-    id: '1',
-    email: 'test@gmail.com',
+    id: "1",
+    email: "test@gmail.com",
   };
   const form = useForm<LoginFormValue>({
     resolver: function (values) {
@@ -57,18 +57,18 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 
   const onSubmit = async (data: LoginFormValue) => {
     startTransition(() => {
-      signIn('credentials', {
+      signIn("credentials", {
         email: data.email,
         callbackUrl: redirectUrl,
       });
       toast({
-        description: 'Signed In Successfully!',
+        description: "Signed In Successfully!",
       });
     });
   };
 
   return (
-    <div className={cn('flex flex-col gap-6', className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='flex flex-col gap-6'>
@@ -81,7 +81,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               </a>
               <h1 className='text-xl font-bold'>Welcome to Acme Inc.</h1>
               <div className='text-center text-sm'>
-                Don&apos;t have an account?{' '}
+                Don&apos;t have an account?{" "}
                 <a href='#' className='underline underline-offset-4'>
                   Sign up
                 </a>

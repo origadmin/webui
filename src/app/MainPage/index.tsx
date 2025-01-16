@@ -1,13 +1,9 @@
-import { SidebarContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from '@/components/Sidebar';
-import Layout from '@/components/layout';
-import { data, topNav } from '@/mocks/data';
-import { userAuthenticated } from '@/utils/auth';
-import { useEffect } from 'react';
-import { Outlet, useNavigate, useRoutes } from 'react-router-dom';
-
-
-
-
+import { useEffect } from "react";
+import { data, topNav } from "@/mocks/data";
+import { userAuthenticated } from "@/utils/auth";
+import { Outlet, useNavigate } from "react-router-dom";
+import { SidebarContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from "@/components/Sidebar";
+import Layout from "@/components/layout";
 
 const getMockData = () => {
   return {
@@ -29,7 +25,7 @@ export default function MainPage() {
   useEffect(() => {
     const isAuthenticated = userAuthenticated();
     if (!isAuthenticated) {
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
     }
   });
 
