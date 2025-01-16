@@ -99,7 +99,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 className='w-full'
                 type='button'
                 loading={isLoading}
-                leftSection={<IconBrandGithub className='h-4 w-4' />}
+                leftSection={<IconBrandGithub className='size-4' />}
               >
                 GitHub
               </Button>
@@ -108,7 +108,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 className='w-full'
                 type='button'
                 loading={isLoading}
-                leftSection={<IconBrandFacebook className='h-4 w-4' />}
+                leftSection={<IconBrandFacebook className='size-4' />}
               >
                 Facebook
               </Button>

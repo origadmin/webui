@@ -21,7 +21,7 @@ const buttonVariants = cva(
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        icon: "size-9",
       },
     },
     defaultVariants: {
@@ -65,12 +65,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {((leftSection && loading) || (!leftSection && !rightSection && loading)) && (
-          <Loader className='mr-2 h-4 w-4 animate-spin' />
+          <Loader className='mr-2 size-4 animate-spin' />
         )}
         {!loading && leftSection && <div className='mr-2'>{leftSection}</div>}
         {children}
         {!loading && rightSection && <div className='ml-2'>{rightSection}</div>}
-        {rightSection && loading && <Loader className='ml-2 h-4 w-4 animate-spin' />}
+        {rightSection && loading && <Loader className='ml-2 size-4 animate-spin' />}
       </Comp>
     );
   },

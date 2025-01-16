@@ -3,10 +3,10 @@ import { NavUserItem } from "@/components/NavUser";
 
 type SidebarFooterProps = {
   user?: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+    name: string,
+    email: string,
+    avatar: string,
+  },
 };
 
 function SidebarFooterItem(props: SidebarFooterProps) {

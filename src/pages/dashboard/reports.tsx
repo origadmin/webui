@@ -20,7 +20,7 @@ export default function ReportsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3' />
             </svg>
@@ -41,7 +41,7 @@ export default function ReportsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
             </svg>
@@ -62,7 +62,7 @@ export default function ReportsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M22 12h-4l-3 9L9 3l-3 9H2' />
             </svg>
@@ -83,7 +83,7 @@ export default function ReportsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
             </svg>

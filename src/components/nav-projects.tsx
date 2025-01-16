@@ -20,10 +20,10 @@ export function NavProjects({
   projects,
 }: {
   projects: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
+    name: string,
+    url: string,
+    icon: LucideIcon,
+  }[],
 }) {
   const { isMobile } = useSidebar();
 

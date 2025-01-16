@@ -4,7 +4,7 @@ export function ReportsList() {
   return (
     <div className='space-y-8'>
       <div className='flex items-center'>
-        <Avatar className='h-9 w-9'>
+        <Avatar className='size-9'>
           <AvatarImage src='/avatars/01.png' alt='Avatar' />
           <AvatarFallback>OM</AvatarFallback>
         </Avatar>
@@ -15,7 +15,7 @@ export function ReportsList() {
         <div className='ml-auto font-medium'>Open</div>
       </div>
       <div className='flex items-center'>
-        <Avatar className='flex h-9 w-9 items-center justify-center space-y-0 border'>
+        <Avatar className='flex size-9 items-center justify-center space-y-0 border'>
           <AvatarImage src='/avatars/02.png' alt='Avatar' />
           <AvatarFallback>JL</AvatarFallback>
         </Avatar>
@@ -26,7 +26,7 @@ export function ReportsList() {
         <div className='ml-auto font-medium'>In Progress</div>
       </div>
       <div className='flex items-center'>
-        <Avatar className='h-9 w-9'>
+        <Avatar className='size-9'>
           <AvatarImage src='/avatars/03.png' alt='Avatar' />
           <AvatarFallback>IN</AvatarFallback>
         </Avatar>
@@ -37,7 +37,7 @@ export function ReportsList() {
         <div className='ml-auto font-medium'>Closed</div>
       </div>
       <div className='flex items-center'>
-        <Avatar className='h-9 w-9'>
+        <Avatar className='size-9'>
           <AvatarImage src='/avatars/04.png' alt='Avatar' />
           <AvatarFallback>WK</AvatarFallback>
         </Avatar>
@@ -48,7 +48,7 @@ export function ReportsList() {
         <div className='ml-auto font-medium'>Open</div>
       </div>
       <div className='flex items-center'>
-        <Avatar className='h-9 w-9'>
+        <Avatar className='size-9'>
           <AvatarImage src='/avatars/05.png' alt='Avatar' />
           <AvatarFallback>SD</AvatarFallback>
         </Avatar>

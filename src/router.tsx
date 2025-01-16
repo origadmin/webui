@@ -4,7 +4,7 @@ import NotFoundError from "@/pages/errors/not-found-error";
 import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 
 type RouterConfig = RouteObject & {
-  keyword?: string;
+  keyword?: string,
 };
 
 export const routes: RouterConfig[] = [

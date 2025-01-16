@@ -15,10 +15,10 @@ export function TeamSwitcher({
   teams,
 }: {
   teams: {
-    name: string;
-    logo: React.ElementType;
-    plan: string;
-  }[];
+    name: string,
+    logo: React.ElementType,
+    plan: string,
+  }[],
 }) {
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);

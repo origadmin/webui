@@ -20,7 +20,7 @@ export default function NotificationsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6' />
               <polyline points='15 3 21 3 21 9' />
@@ -43,7 +43,7 @@ export default function NotificationsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2' />
               <circle cx='9' cy='7' r='4' />
@@ -66,7 +66,7 @@ export default function NotificationsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M22 12h-4l-3 9L9 3l-3 9H2' />
             </svg>
@@ -87,7 +87,7 @@ export default function NotificationsContent() {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeWidth='2'
-              className='h-4 w-4 text-muted-foreground'
+              className='size-4 text-muted-foreground'
             >
               <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
             </svg>

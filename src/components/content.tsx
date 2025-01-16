@@ -2,8 +2,8 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const ContentContext = React.createContext<{
-  offset: number;
-  fixed: boolean;
+  offset: number,
+  fixed: boolean,
 } | null>(null);
 
 interface ContentProps extends React.HTMLAttributes<HTMLDivElement> {

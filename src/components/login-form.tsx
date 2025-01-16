@@ -10,11 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 type LoginFormValue = {
-  id?: string;
-  email?: string;
+  id?: string,
+  email?: string,
 };
 
-const signIn = (credentials: string, param: { email: string | undefined; callbackUrl: string }) => {
+const signIn = (credentials: string, param: { email: string | undefined, callbackUrl: string }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       // 模拟登录成功
@@ -74,7 +74,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col items-center gap-2'>
               <a href='#' className='flex flex-col items-center gap-2 font-medium'>
-                <div className='flex h-8 w-8 items-center justify-center rounded-md'>
+                <div className='flex size-8 items-center justify-center rounded-md'>
                   <GalleryVerticalEnd className='size-6' />
                 </div>
                 <span className='sr-only'>Acme Inc.</span>

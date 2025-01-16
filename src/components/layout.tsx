@@ -1,16 +1,16 @@
 import * as React from "react";
 import KBar from "src/components/KBar";
 import { API } from "@/types/typings";
-import { Sidebar, SidebarInset, SidebarProvider, SidebarRail, SidebarTrigger } from "@/components/ui/sidebar";
+import { Sidebar, SidebarInset, SidebarProvider, SidebarRail } from "@/components/ui/sidebar";
 import { SidebarContentItem, SidebarFooterItem, SidebarHeaderItem, SidebarProps } from "@/components/Sidebar";
 import { Footer, FooterProps } from "@/components/footer";
 import Header from "./header";
 
 type LayoutProps = {
-  footer?: FooterProps;
-  topNav?: API.TopNav[];
-  sidebarProps?: SidebarProps;
-  children: React.ReactNode;
+  footer?: FooterProps,
+  topNav?: API.TopNav[],
+  sidebarProps?: SidebarProps,
+  children: React.ReactNode,
 };
 
 export function Layout(props: LayoutProps) {

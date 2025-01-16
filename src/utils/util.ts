@@ -38,11 +38,11 @@ export function getUsername(): string {
 export function convertMenuItem<T>(
   data: T[],
   convertT?: (item: T) => {
-    id: string;
-    name: string;
-    parent_id?: string;
-    disabled?: boolean;
-    children: T[];
+    id: string,
+    name: string,
+    parent_id?: string,
+    disabled?: boolean,
+    children: T[],
   },
 ): API.MenuItem[] {
   const menuItems: API.MenuItem[] = [];
@@ -50,11 +50,11 @@ export function convertMenuItem<T>(
     const dataItem = convertT
       ? convertT(item)
       : (item as {
-          id: string;
-          name: string;
-          parent_id?: string;
-          disabled?: boolean;
-          children: T[];
+          id: string,
+          name: string,
+          parent_id?: string,
+          disabled?: boolean,
+          children: T[],
         });
 
     // todo: fix this
@@ -69,7 +69,7 @@ export function convertMenuItem<T>(
     };
 
     if (dataItem.disabled) {
-      menuItem.disabled = dataItem.disabled!;
+      menuItem.disabled = dataItem.disabled;
     }
     menuItems.push(menuItem);
   });

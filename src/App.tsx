@@ -6,16 +6,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 
 type UserResource = {
-  user?: API.User;
-  menus?: Record<string, API.MenuItem>;
+  user?: API.User,
+  menus?: Record<string, API.MenuItem>,
 };
 
 type InitialStateProps = {
-  fetch?: () => Promise<UserResource>;
+  fetch?: () => Promise<UserResource>,
   // routePathCodeMap?: Record<string, string>;
-  user?: API.User;
-  menus?: Record<string, API.MenuItem>;
-  loading?: boolean;
+  user?: API.User,
+  menus?: Record<string, API.MenuItem>,
+  loading?: boolean,
 };
 
 export async function getInitialState(): Promise<InitialStateProps> {

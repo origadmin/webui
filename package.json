@@ -21,6 +21,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint ./src --fix && bun format",
     "lint:strict": "eslint --max-warnings=0 ./src",
+    "lint:inspector": "bun x @eslint/config-inspector@latest",
     "style": "stylelint ./src/**/*.{css}"
   },
   "browserslist": [

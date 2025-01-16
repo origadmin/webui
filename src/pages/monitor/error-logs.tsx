@@ -24,7 +24,7 @@ export function ErrorLogs() {
             <TableCell>{log.timestamp}</TableCell>
             <TableCell>
               <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                className={`rounded-full px-2 py-1 text-xs font-medium ${
                   log.level === "ERROR"
                     ? "bg-red-100 text-red-800"
                     : log.level === "WARNING"

@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 const Breadcrumb = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"nav"> & {
-    separator?: React.ReactNode;
-  }
+    separator?: React.ReactNode,
+  },
 >(({ ...props }, ref) => <nav ref={ref} aria-label='breadcrumb' {...props} />);
 Breadcrumb.displayName = "Breadcrumb";
 
@@ -35,8 +35,8 @@ BreadcrumbItem.displayName = "BreadcrumbItem";
 const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
   React.ComponentPropsWithoutRef<"a"> & {
-    asChild?: boolean;
-  }
+    asChild?: boolean,
+  },
 >(({ asChild, className, ...props }, ref) => {
   const Comp = asChild ? Slot : "a";
 
@@ -59,7 +59,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
 BreadcrumbPage.displayName = "BreadcrumbPage";
 
 const BreadcrumbSeparator = ({ children, className, ...props }: React.ComponentProps<"li">) => (
-  <li role='presentation' aria-hidden='true' className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)} {...props}>
+  <li role='presentation' aria-hidden='true' className={cn("[&>svg]:size-3.5", className)} {...props}>
     {children ?? <ChevronRight />}
   </li>
 );
@@ -69,10 +69,10 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<"span"
   <span
     role='presentation'
     aria-hidden='true'
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn("flex size-9 items-center justify-center", className)}
     {...props}
   >
-    <MoreHorizontal className='h-4 w-4' />
+    <MoreHorizontal className='size-4' />
     <span className='sr-only'>More</span>
   </span>
 );

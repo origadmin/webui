@@ -36,15 +36,15 @@ export default function VersatileList() {
 
 function CardView({ items }: { items: ListItem[] }) {
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+    <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
       {items.map((item) => (
         <Card key={item.id}>
           <CardHeader>
             <CardTitle>{item.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className='text-sm text-gray-500 mb-4'>{item.description}</p>
-            <div className='flex justify-between items-center mb-2'>
+            <p className='mb-4 text-sm text-gray-500'>{item.description}</p>
+            <div className='mb-2 flex items-center justify-between'>
               <span className='text-sm font-medium'>Progress</span>
               <span className='text-sm font-medium'>{item.progress}%</span>
             </div>
@@ -64,7 +64,7 @@ function BasicView({ items }: { items: ListItem[] }) {
   return (
     <div className='space-y-6'>
       {items.map((item) => (
-        <div key={item.id} className='flex items-center justify-between p-6 bg-white rounded-lg shadow'>
+        <div key={item.id} className='flex items-center justify-between rounded-lg bg-white p-6 shadow'>
           <div>
             <h3 className='text-lg font-medium'>{item.title}</h3>
             <p className='text-sm text-gray-500'>{item.description}</p>

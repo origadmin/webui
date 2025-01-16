@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export type BreadcrumbProps = {
-  slash?: boolean;
+  slash?: boolean,
 };
 
 export function Breadcrumbs(props?: BreadcrumbProps) {

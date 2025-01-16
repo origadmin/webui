@@ -5,10 +5,10 @@ import { TeamSwitcher } from "@/components/team-switcher";
 
 type SidebarHeaderProps = {
   teams?: {
-    name: string;
-    logo: ElementType;
-    plan: string;
-  }[];
+    name: string,
+    logo: ElementType,
+    plan: string,
+  }[],
 };
 
 const DefaultTeam = {

@@ -1,10 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConversionFunnel } from "./conversion-funnel";
-import { GeographicDistribution } from "./geographic-distribution";
 import { MetricsOverview } from "./metrics-overview";
-import { ProductPerformance } from "./product-performance";
-import { RevenueChart } from "./revenue-chart";
 import { UserActivityChart } from "./user-activity-chart";
 
 const invoices = [

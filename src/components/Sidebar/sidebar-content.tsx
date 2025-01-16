@@ -23,7 +23,7 @@ function SidebarContentItem(props: SidebarContentProps) {
   const { state } = useSidebar();
 
   function renderIcon(item: API.MenuItem, state: string) {
-    console.log("state", state);
+    // console.log("state", state);
     // state === 'collapsed' ? <item.icon size={18} /> :
     return item.icon && <item.icon />;
   }
@@ -53,7 +53,7 @@ function SidebarContentItem(props: SidebarContentProps) {
                 {item.items?.map((subItem) => (
                   <SidebarMenuSubItem key={subItem.title}>
                     <SidebarMenuSubButton asChild isActive={false}>
-                      <Link to={subItem.url || "#"}>
+                      <Link to={subItem.path || "#"}>
                         {renderIcon(subItem, state)}
                         <span>{subItem.title}</span>
                       </Link>
