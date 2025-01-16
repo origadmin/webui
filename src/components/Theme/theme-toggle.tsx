@@ -7,10 +7,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "./theme-provider";
+import type { Theme } from "./theme-provider";
 
-export type ThemeToggleProps = {};
+export type ThemeToggleProps = {
+  items?: {
+    label: string;
+    value: Theme;
+  }[];
+};
 
-export default function ThemeToggle({}: ThemeToggleProps) {
+export default function ThemeToggle(props: ThemeToggleProps) {
+  const {
+    items = [
+      {
+        label: "Dark",
+        value: "dark",
+      },
+      {
+        label: "Light",
+        value: "light",
+      },
+      {
+        label: "System",
+        value: "system",
+      },
+    ],
+  } = props;
   const { setTheme } = useTheme();
   return (
     <DropdownMenu>
@@ -22,9 +44,11 @@ export default function ThemeToggle({}: ThemeToggleProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+        {items.map((item) => (
+          <DropdownMenuItem key={item.value} onClick={() => setTheme(item.value)}>
+            {item.label}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

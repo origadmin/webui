@@ -10,7 +10,7 @@ import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
 
 export type HeaderProps = {
-  topNav?: typeof topNav,
+  topNav?: typeof topNav;
 };
 
 export default function Header(props?: HeaderProps) {

@@ -1,15 +1,15 @@
 import React from "react";
 
 type LinkProps = {
-  key?: string,
-  title: React.ReactNode,
-  href?: string,
-  blank?: boolean,
+  key?: string;
+  title: React.ReactNode;
+  href?: string;
+  blank?: boolean;
 };
 
 export type FooterProps = {
-  links?: LinkProps[],
-  copyright?: string,
+  links?: LinkProps[];
+  copyright?: string;
 };
 
 export function Footer(props?: FooterProps) {

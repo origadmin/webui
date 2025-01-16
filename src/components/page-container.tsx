@@ -5,8 +5,8 @@ export default function PageContainer({
   children,
   scrollable = true,
 }: {
-  children: React.ReactNode,
-  scrollable?: boolean,
+  children: React.ReactNode;
+  scrollable?: boolean;
 }) {
   return (
     <>

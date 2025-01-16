@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 type BreadcrumbItem = {
-  title: string,
-  link: string,
+  title: string;
+  link: string;
 };
 
 // This allows to add custom title as well

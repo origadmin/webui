@@ -2,9 +2,9 @@ import * as React from "react";
 import type { ActionId, ActionImpl } from "kbar";
 
 type ResultItemProps = {
-  action: ActionImpl,
-  active: boolean,
-  currentRootActionId: ActionId,
+  action: ActionImpl;
+  active: boolean;
+  currentRootActionId: ActionId;
 };
 
 const ResultItem = React.forwardRef(

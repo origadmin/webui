@@ -14,10 +14,10 @@ import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 
 type NavUserProps = {
   user?: {
-    name: string,
-    email: string,
-    avatar: string,
-  },
+    name: string;
+    email: string;
+    avatar: string;
+  };
 };
 
 const DefaultUser = {

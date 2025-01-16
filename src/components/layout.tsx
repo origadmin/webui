@@ -7,10 +7,10 @@ import { Footer, FooterProps } from "@/components/footer";
 import Header from "./header";
 
 type LayoutProps = {
-  footer?: FooterProps,
-  topNav?: API.TopNav[],
-  sidebarProps?: SidebarProps,
-  children: React.ReactNode,
+  footer?: FooterProps;
+  topNav?: API.TopNav[];
+  sidebarProps?: SidebarProps;
+  children: React.ReactNode;
 };
 
 export function Layout(props: LayoutProps) {

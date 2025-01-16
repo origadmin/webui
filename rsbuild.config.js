@@ -18,6 +18,7 @@ const config = defineConfig({
     template: "index.html",
     templateParameters: {
       APP_TITLE: "OrigAdmin Panel",
+      // eslint-disable-next-line no-undef
       BASE_URL: process.env.BASE_URL || "",
     },
   },

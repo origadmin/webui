@@ -2,7 +2,7 @@
 // @ts-ignore
 import { parseParams } from "@/utils/pagination";
 import request from "@/utils/request";
-import { API } from "@/types/system/typings";
+import { API } from "@/types/typings";
 
 /** Query user list GET /api/v1/sys/users */
 export async function listUser(params: API.Params, options?: { [key: string]: any }) {

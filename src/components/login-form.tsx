@@ -10,11 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 type LoginFormValue = {
-  id?: string,
-  email?: string,
+  id?: string;
+  email?: string;
 };
 
-const signIn = (credentials: string, param: { email: string | undefined, callbackUrl: string }) => {
+const signIn = (credentials: string, param: { email: string | undefined; callbackUrl: string }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       // 模拟登录成功

@@ -23,14 +23,14 @@ import { Command } from "lucide-react";
 import { API } from "@/types/typings";
 
 export type Product = {
-  photo_path: string,
-  name: string,
-  description: string,
-  created_at: string,
-  price: number,
-  id: number,
-  category: string,
-  updated_at: string,
+  photo_path: string;
+  name: string;
+  description: string;
+  created_at: string;
+  price: number;
+  id: number;
+  category: string;
+  updated_at: string;
 };
 
 export const data: API.SidebarData = {

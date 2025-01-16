@@ -5,10 +5,10 @@ import { SidebarFooterItem, SidebarFooterProps } from "@/components/Sidebar/side
 import { SidebarHeaderItem, SidebarHeaderProps } from "@/components/Sidebar/sidebar-header";
 
 type SidebarProps = {
-  props?: React.ComponentProps<typeof Sidebar>,
-  header: SidebarHeaderProps,
-  content: SidebarContentProps,
-  footer: SidebarFooterProps,
+  props?: React.ComponentProps<typeof Sidebar>;
+  header: SidebarHeaderProps;
+  content: SidebarContentProps;
+  footer: SidebarFooterProps;
 };
 
 export type { SidebarProps, SidebarHeaderProps, SidebarFooterProps, SidebarContentProps };

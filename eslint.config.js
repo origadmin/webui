@@ -9,15 +9,13 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const reactConfig = {
-  files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
   ...reactPlugin.configs.flat.recommended,
+  files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
   plugins: {
     react: reactPlugin,
     "react-hooks": reactPluginHooks,
   },
   rules: {
-    // ...reactPlugin.rules.all,
-    // ...reactPluginHooks.rules,
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
     "react/jsx-uses-react": "error",
@@ -34,8 +32,7 @@ const reactConfig = {
       ...globals.serviceworker,
       ...globals.browser,
     },
-  },
-  // settings: {
+  }, // settings: {
   //   react: {
   //     createClass: "createReactClass", // Regex for Component Factory to use,
   //     // default to "createReactClass"
@@ -78,7 +75,9 @@ const reactConfig = {
   // },
 };
 
-const eslintConfig = {};
+const eslintConfig = {
+  files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+};
 
 const tseslintConfig = {
   plugins: {
@@ -135,12 +134,70 @@ const tailwindcssConfig = {
       tags: [], // can be set to e.g. ['tw'] for use in tw`bg-blue`
       classRegex: "^class(Name)?$", // can be modified to support custom attributes. E.g. "^tw$" for `twin.macro`
     },
-    rules: tailwindcss.rules,
+    rules: {
+      "classnames-order": "warn",
+      "enforces-negative-arbitrary-values": "warn",
+      "enforces-shorthand": "warn",
+      "migration-from-tailwind-2": "warn",
+      "no-arbitrary-value": "off",
+      "no-contradicting-classname": "error",
+      "no-custom-classname": "warn",
+      "no-unnecessary-arbitrary-value": "warn",
+      //recommended
+      // "stylelint/annotation-no-unknown": "error",
+      // "stylelint/at-rule-descriptor-no-unknown": "error",
+      // "stylelint/at-rule-descriptor-value-no-unknown": "error",
+      // "stylelint/at-rule-no-deprecated": "error",
+      // "stylelint/at-rule-no-unknown": "error",
+      // "stylelint/at-rule-prelude-no-invalid": ["error", { ignoreAtRules: ["media"] }],
+      // "stylelint/block-no-empty": "error",
+      // "stylelint/comment-no-empty": "error",
+      // "stylelint/custom-property-no-missing-var-function": "error",
+      // "stylelint/declaration-block-no-duplicate-custom-properties": "error",
+      // "stylelint/declaration-block-no-duplicate-properties": [
+      //   "error",
+      //   {
+      //     ignore: ["consecutive-duplicates-with-different-syntaxes"],
+      //   },
+      // ],
+      // "stylelint/declaration-block-no-shorthand-property-overrides": "error",
+      // "stylelint/declaration-property-value-keyword-no-deprecated": "error",
+      // "stylelint/declaration-property-value-no-unknown": "error",
+      // "stylelint/font-family-no-duplicate-names": "error",
+      // "stylelint/font-family-no-missing-generic-family-keyword": "error",
+      // "stylelint/function-calc-no-unspaced-operator": "error",
+      // "stylelint/keyframe-block-no-duplicate-selectors": "error",
+      // "stylelint/keyframe-declaration-no-important": "error",
+      // "stylelint/media-feature-name-no-unknown": "error",
+      // "stylelint/media-feature-name-value-no-unknown": "error",
+      // "stylelint/media-query-no-invalid": "error",
+      // "stylelint/named-grid-areas-no-invalid": "error",
+      // "stylelint/no-descending-specificity": "error",
+      // "stylelint/no-duplicate-at-import-rules": "error",
+      // "stylelint/no-duplicate-selectors": "error",
+      // "stylelint/no-empty-source": "error",
+      // "stylelint/no-invalid-double-slash-comments": "error",
+      // "stylelint/no-invalid-position-at-import-rule": "error",
+      // "stylelint/no-irregular-whitespace": "error",
+      // "stylelint/property-no-unknown": "error",
+      // "stylelint/selector-anb-no-unmatchable": "error",
+      // "stylelint/selector-pseudo-class-no-unknown": "error",
+      // "stylelint/selector-pseudo-element-no-unknown": "error",
+      // "stylelint/selector-type-no-unknown": [
+      //   "error",
+      //   {
+      //     ignore: ["custom-elements"],
+      //   },
+      // ],
+      // "stylelint/string-no-newline": ["error", { ignore: ["at-rule-preludes", "declaration-values"] }],
+    },
   },
 };
 
 const prettierPluginConfig = {
+  ...prettierConfig,
   plugins: {
+    ...prettierConfig.plugins,
     prettier: prettierPlugin,
   },
   languageOptions: {
@@ -148,18 +205,13 @@ const prettierPluginConfig = {
       ecmaVersion: 2020,
       sourceType: "module",
       ecmaFeatures: {
-        jsx: true,
+        jsx: false,
       },
     },
   },
   rules: {
     ...prettierConfig.rules,
-    "prettier/prettier": [
-      "error",
-      {
-        parser: "flow",
-      },
-    ],
+    "prettier/prettier": ["error"],
   },
 };
 
@@ -167,16 +219,15 @@ export default tseslint.config([
   {
     ignores: ["dist/", "node_modules/"],
   },
-  prettierConfig,
-  prettierPluginConfig,
-  // reactPlugin.configs.recommended,
-  reactConfig,
   eslint.configs.recommended,
   eslintConfig,
-  tseslint.configs.recommended,
+  ...tseslint.configs.recommended,
   tseslintConfig,
-  ...tailwindcss.configs["flat/recommended"],
-  tailwindcssConfig,
+  prettierConfig, // prettierPlugin.configs.recommended,
+  prettierPluginConfig, // reactPlugin.configs.recommended,
+  reactConfig,
+  // ...tailwindcss.configs["flat/recommended"],
+  // tailwindcssConfig,
   {
     plugins: {
       "unused-imports": unusedImports,

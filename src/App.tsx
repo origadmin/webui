@@ -6,16 +6,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 
 type UserResource = {
-  user?: API.User,
-  menus?: Record<string, API.MenuItem>,
+  user?: API.User;
+  menus?: Record<string, API.MenuItem>;
 };
 
 type InitialStateProps = {
-  fetch?: () => Promise<UserResource>,
+  fetch?: () => Promise<UserResource>;
   // routePathCodeMap?: Record<string, string>;
-  user?: API.User,
-  menus?: Record<string, API.MenuItem>,
-  loading?: boolean,
+  user?: API.User;
+  menus?: Record<string, API.MenuItem>;
+  loading?: boolean;
 };
 
 export async function getInitialState(): Promise<InitialStateProps> {
@@ -92,84 +92,84 @@ export async function getInitialState(): Promise<InitialStateProps> {
   };
 }
 
-export const RuntimeLayoutConfig = ({ initialState, setInitialState }) => {
-  const loopMenuItems = (menus?: API.MenuItem[]): API.MenuItem[] => {
-    if (!menus || menus.length === 0) {
-      return [];
-    }
-
-    const result: API.MenuItem[] = [];
-    menus.forEach((menu) => {
-      if (!menu.path || !initialState || !initialState.routePathCodeMap || !initialState.flatMenus) {
-        return;
-      }
-
-      // const code = initialState.routePathCodeMap[menu.path];
-      if (menu.keyword && initialState.flatMenus.hasOwnProperty(menu.keyword)) {
-        const menuItem: API.MenuItem = {
-          ...menu,
-        };
-        const items = loopMenuItems(menu.items);
-        menuItem.items = items;
-        // menuItem.routes = items;
-        result.push(menuItem);
-      }
-    });
-    console.log(result);
-    return result;
-  };
-
-  return {
-    // actionsRender: () => [<Question key='doc' />, <SelectLang key='SelectLang' />],
-    avatarProps: {
-      src: initialState?.currentUser?.avatar,
-      // title: <AvatarName />,
-      // render: (_, avatarChildren) => {
-      //   return <AvatarDropdown menu={true}>{avatarChildren}</AvatarDropdown>;
-      // },
-    },
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
-    // rightContentRender: () => <AvatarDropdown />,
-    // footerRender: () => <Footer />,
-    // onPageChange: () => {
-    //   const { location } = history;
-    //   // 如果没有登录，重定向到 login
-    //   if (!initialState?.currentUser && location.pathname !== loginPath) {
-    //     history.push(loginPath);
-    //   }
-    // },
-    menu: {
-      params: {
-        userId: initialState?.currentUser?.id,
-      },
-      // request: async () => {
-      //   const data = loopMenuItems(transformRoute(routes).menuData);
-      //   patchRoutes({ routes: data });
-      //   return data;
-      // },
-    },
-    // links: isDev
-    //   ? [
-    //       <Link key='openapi' to='/umi/plugin/openapi' target='_blank'>
-    //         <LinkOutlined />
-    //         <span>OpenAPI 文档</span>
-    //       </Link>,
-    //     ]
-    //   : [],
-    // menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <Forbidden/>,
-    // noFound: NoFoundPage,
-    // 增加一个 loading 的状态
-    childrenRender: (children: any) => {
-      if (initialState?.loading) return <LoadingSpinner />;
-      return <>{children}</>;
-    },
-    ...initialState?.settings,
-  };
-};
+// export const RuntimeLayoutConfig = ({ initialState, setInitialState }) => {
+//   const loopMenuItems = (menus?: API.MenuItem[]): API.MenuItem[] => {
+//     if (!menus || menus.length === 0) {
+//       return [];
+//     }
+//
+//     const result: API.MenuItem[] = [];
+//     menus.forEach((menu) => {
+//       if (!menu.path || !initialState || !initialState.routePathCodeMap || !initialState.flatMenus) {
+//         return;
+//       }
+//
+//       // const code = initialState.routePathCodeMap[menu.path];
+//       if (menu.keyword && initialState.flatMenus.hasOwnProperty(menu.keyword)) {
+//         const menuItem: API.MenuItem = {
+//           ...menu,
+//         };
+//         const items = loopMenuItems(menu.items);
+//         menuItem.items = items;
+//         // menuItem.routes = items;
+//         result.push(menuItem);
+//       }
+//     });
+//     console.log(result);
+//     return result;
+//   };
+//
+//   return {
+//     // actionsRender: () => [<Question key='doc' />, <SelectLang key='SelectLang' />],
+//     avatarProps: {
+//       src: initialState?.currentUser?.avatar,
+//       // title: <AvatarName />,
+//       // render: (_, avatarChildren) => {
+//       //   return <AvatarDropdown menu={true}>{avatarChildren}</AvatarDropdown>;
+//       // },
+//     },
+//     waterMarkProps: {
+//       content: initialState?.currentUser?.name,
+//     },
+//     // rightContentRender: () => <AvatarDropdown />,
+//     // footerRender: () => <Footer />,
+//     // onPageChange: () => {
+//     //   const { location } = history;
+//     //   // 如果没有登录，重定向到 login
+//     //   if (!initialState?.currentUser && location.pathname !== loginPath) {
+//     //     history.push(loginPath);
+//     //   }
+//     // },
+//     menu: {
+//       params: {
+//         userId: initialState?.currentUser?.id,
+//       },
+//       // request: async () => {
+//       //   const data = loopMenuItems(transformRoute(routes).menuData);
+//       //   patchRoutes({ routes: data });
+//       //   return data;
+//       // },
+//     },
+//     // links: isDev
+//     //   ? [
+//     //       <Link key='openapi' to='/umi/plugin/openapi' target='_blank'>
+//     //         <LinkOutlined />
+//     //         <span>OpenAPI 文档</span>
+//     //       </Link>,
+//     //     ]
+//     //   : [],
+//     // menuHeaderRender: undefined,
+//     // 自定义 403 页面
+//     // unAccessible: <Forbidden/>,
+//     // noFound: NoFoundPage,
+//     // 增加一个 loading 的状态
+//     childrenRender: (children: any) => {
+//       if (initialState?.loading) return <LoadingSpinner />;
+//       return <>{children}</>;
+//     },
+//     ...initialState?.settings,
+//   };
+// };
 
 function App() {
   console.log("Application Started");

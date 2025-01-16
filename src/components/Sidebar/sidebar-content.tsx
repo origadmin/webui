@@ -29,7 +29,7 @@ function SidebarContentItem(props: SidebarContentProps) {
   }
 
   function onlyTitle(item: API.MenuItem) {
-    return item.title !== undefined && item.icon === undefined && item.url === undefined;
+    return item.title !== undefined && item.icon === undefined && item.path === undefined;
   }
 
   function hasSub(item: API.MenuItem) {
@@ -67,7 +67,7 @@ function SidebarContentItem(props: SidebarContentProps) {
       ) : (
         <SidebarMenuItem>
           <SidebarMenuButton asChild tooltip={item.title} isActive={false}>
-            <Link to={item.url || "#"}>
+            <Link to={item.path || "#"}>
               {renderIcon(item, state)}
               <span>{item.title}</span>
             </Link>
@@ -87,7 +87,7 @@ function SidebarContentItem(props: SidebarContentProps) {
               {!onlyTitle(item) && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url || "#"}>
+                    <Link to={item.path || "#"}>
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                     </Link>

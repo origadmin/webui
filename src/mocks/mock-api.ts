@@ -10,14 +10,14 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Define the shape of Product data
 export type Product = {
-  photo_url: string,
-  name: string,
-  description: string,
-  created_at: string,
-  price: number,
-  id: number,
-  category: string,
-  updated_at: string,
+  photo_url: string;
+  name: string;
+  description: string;
+  created_at: string;
+  price: number;
+  id: number;
+  category: string;
+  updated_at: string;
 };
 
 // Mock product data store
@@ -61,7 +61,7 @@ export const fakeProducts = {
   },
 
   // Get all products with optional category filtering and search
-  async getAll({ categories = [], search }: { categories?: string[], search?: string }) {
+  async getAll({ categories = [], search }: { categories?: string[]; search?: string }) {
     let products = [...this.records];
 
     // Filter products based on selected categories
@@ -86,10 +86,10 @@ export const fakeProducts = {
     categories,
     search,
   }: {
-    page?: number,
-    limit?: number,
-    categories?: string,
-    search?: string,
+    page?: number;
+    limit?: number;
+    categories?: string;
+    search?: string;
   }) {
     await delay(1000);
     const categoriesArray = categories ? categories.split(".") : [];

@@ -1,205 +1,205 @@
 declare namespace API {
   type FakeCaptcha = {
-    code?: number,
-    status?: string,
+    code?: number;
+    status?: string;
   };
 
   type Captcha = {
     /** Captcha ID */
-    captcha_id?: string,
+    captcha_id?: string;
   };
 
   type CaptchaResource = {
     /** ID */
-    id?: string,
+    id?: string;
   };
 
   type LoginForm = {
     /** Captcha verify code */
-    captcha_code: string,
+    captcha_code: string;
     /** Captcha verify id */
-    captcha_id: string,
+    captcha_id: string;
     /** Login password (md5 hash) */
-    password: string,
+    password: string;
     /** Login name */
-    username: string,
+    username: string;
   };
 
   type LoginToken = {
     /** Access token (JWT) */
-    access_token?: string,
+    access_token?: string;
     /** Expired time (Unit: second) */
-    expires_at?: number,
+    expires_at?: number;
     /** Token type (Usage: Authorization=${token_type} ${access_token}) */
-    token_type?: string,
+    token_type?: string;
   };
 
   type UpdateLoginPassword = {
     /** New password (md5 hash) */
-    new_password: string,
+    new_password: string;
     /** Confirm password (md5 hash) */
-    confirm_password?: string,
+    confirm_password?: string;
     /** Old password (md5 hash) */
-    old_password: string,
+    old_password: string;
   };
 
   type Menu = {
     /** Child menus */
-    children?: Menu[],
+    children?: Menu[];
     /** Code of menu (unique for each level) */
-    code?: string,
+    code?: string;
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Details about menu */
-    description?: string,
+    description?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** Display name of menu */
-    name?: string,
+    name?: string;
     /** I18n of menu */
-    name_i18n?: string,
+    name_i18n?: string;
     /** Parent ID (From Menu.ID) */
-    parent_id?: string,
+    parent_id?: string;
     /** Parent path (split by .) */
-    parent_path?: string,
+    parent_path?: string;
     /** Access path of menu */
-    path?: string,
+    path?: string;
     /** Properties of menu (JSON) */
-    properties?: string,
+    properties?: string;
     /** Resources of menu */
-    resources?: MenuResource[],
+    resources?: MenuResource[];
     /** Sequence for sorting */
-    sequence?: number,
+    sequence?: number;
     /** Status of menu (disabled, enabled) */
-    status?: string,
+    status?: string;
     /** Type of menu (page, button) */
-    type?: string,
+    type?: string;
     /** Update time */
-    updated_at?: string,
-    status_checked?: boolean,
-    parent_name?: string,
+    updated_at?: string;
+    status_checked?: boolean;
+    parent_name?: string;
   };
 
   type MenuResource = {
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** From Menu.ID */
-    menu_id?: string,
+    menu_id?: string;
     /** HTTP method */
-    method?: string,
+    method?: string;
     /** API request path (e.g. /api/v1/users/:id) */
-    path?: string,
+    path?: string;
     /** Update time */
-    updated_at?: string,
+    updated_at?: string;
   };
 
   type Role = {
     /** Code of role (unique) */
-    code?: string,
+    code?: string;
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Details about role */
-    description?: string,
+    description?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** Role menu list */
-    menus?: RoleMenu[],
+    menus?: RoleMenu[];
     /** Display name of role */
-    name?: string,
+    name?: string;
     /** Sequence for sorting */
-    sequence?: number,
+    sequence?: number;
     /** Status of role (disabled, enabled) */
-    status?: string,
+    status?: string;
     /** Update time */
-    updated_at?: string,
-    status_checked?: boolean,
+    updated_at?: string;
+    status_checked?: boolean;
   };
 
   type RoleMenu = {
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** From Menu.ID */
-    menu_id?: string,
+    menu_id?: string;
     /** From Role.ID */
-    role_id?: string,
+    role_id?: string;
     /** Update time */
-    updated_at?: string,
+    updated_at?: string;
   };
 
   type User = {
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** Avatar of user */
-    avatar?: string,
+    avatar?: string;
     /** Username for login */
-    username?: string,
+    username?: string;
     /** Name of user */
-    name?: string,
+    name?: string;
     /** Email of user */
-    email?: string,
+    email?: string;
     /** Phone number of user */
-    phone?: string,
+    phone?: string;
     /** Remark of user */
-    remark?: string,
+    remark?: string;
     /** Roles of user */
-    roles?: UserRole[],
+    roles?: UserRole[];
     /** Status of user (activated, freezed) */
-    status?: string,
+    status?: string;
     /** Login password */
-    password?: string,
+    password?: string;
     /** Update time */
-    updated_at?: string,
+    updated_at?: string;
     /** status_checked */
-    status_checked?: boolean,
+    status_checked?: boolean;
   };
 
   type UserRole = {
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** From Role.ID */
-    role_id?: string,
+    role_id?: string;
     /** From Role.Name */
-    role_name?: string,
+    role_name?: string;
     /** Update time */
-    updated_at?: string,
+    updated_at?: string;
     /** From User.ID */
-    user_id?: string,
+    user_id?: string;
   };
 
   type Logger = {
     /** Create time */
-    created_at?: string,
+    created_at?: string;
     /** Log data */
-    data?: string,
+    data?: string;
     /** Unique ID */
-    id?: string,
+    id?: string;
     /** Log level */
-    level?: string,
+    level?: string;
     /** Log message */
-    message?: string,
+    message?: string;
     /** Error stack */
-    stack?: string,
+    stack?: string;
     /** Log tag */
-    tag?: string,
+    tag?: string;
     /** Trace ID */
-    trace_id?: string,
+    trace_id?: string;
     /** User ID */
-    user_id?: string,
+    user_id?: string;
     /** From User.Name */
-    user_name?: string,
+    user_name?: string;
     /** Login name From User.Username */
-    login_name?: string,
+    login_name?: string;
   };
 
   type CurrentUser = {
-    access?: string,
+    access?: string;
   };
 }
