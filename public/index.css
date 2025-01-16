@@ -4984,6 +4984,10 @@ body {
   min-height: 100svh;
 }
 
+.w-10 {
+  width: 2.5rem;
+}
+
 .w-11 {
   width: 2.75rem;
 }
@@ -5022,6 +5026,10 @@ body {
 
 .w-56 {
   width: 14rem;
+}
+
+.w-7 {
+  width: 1.75rem;
 }
 
 .w-72 {
