@@ -15,7 +15,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
       data.menuItems.flatMap((navItem) => {
         // Only include base action if the navItem has a real URL and is not just a container
         const baseAction =
-          navItem.url !== "#"
+          navItem.path !== "#"
             ? {
                 id: `${navItem.title.toLowerCase()}Action`,
                 name: navItem.title,
@@ -23,7 +23,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
                 keywords: navItem.title.toLowerCase(),
                 section: "Navigation",
                 subtitle: `Go to ${navItem.title}`,
-                perform: () => navigate(navItem.url || "#"),
+                perform: () => navigate(navItem.path || "#"),
               }
             : null;
 
@@ -36,7 +36,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
             keywords: childItem.title.toLowerCase(),
             section: navItem.title,
             subtitle: `Go to ${childItem.title}`,
-            perform: () => navigate(childItem.url || "#"),
+            perform: () => navigate(childItem.path || "#"),
           })) ?? [];
 
         // Return only valid actions (ignoring null base actions for containers)

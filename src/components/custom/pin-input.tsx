@@ -109,7 +109,9 @@ const PinInput = React.forwardRef<HTMLDivElement, PinInputProps>(({ className, c
 
   /* call onChange func if pinValue changes */
   React.useEffect(() => {
-    onChange && onChange(pinValue);
+    if (onChange && pinValue.length !== length) {
+      onChange(pinValue);
+    }
   }, [onChange, pinValue]);
 
   /* call onComplete func if pinValue is valid and completed */
@@ -138,7 +140,7 @@ const PinInput = React.forwardRef<HTMLDivElement, PinInputProps>(({ className, c
       const pinIndex = counter;
       counter = counter + 1;
       return React.cloneElement(child, {
-        name,
+        name: name || "",
         inputKey: `input-${pinIndex}`,
         value: length > pinIndex ? pins[pinIndex] : "",
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => handlers.handleChange(e, pinIndex),
