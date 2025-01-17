@@ -1,86 +1,139 @@
-import { TablerIcon } from "@tabler/icons-react";
-import { API } from "@/types/system/typings";
+/* eslint-disable */
+// @ts-ignore
+import {TablerIcon} from "@tabler/icons-react";
+import {LucideIcon} from "lucide-react";
 
-declare namespace API {
-  type Params = {
-    current?: number;
-    page_size?: number;
-    [key: string]: unknown;
-  };
+declare global {
+  namespace API {
+    type Params = {
+      current?: number;
+      page_size?: number;
+      [key: string]: any;
+    };
 
-  type ResponseResult<T> = {
-    success?: boolean;
-    data?: T;
-    total?: number;
-    error?: ErrorResult;
-  };
+    type RequestOptions = Map<string, any>;
 
-  type ErrorResult = {
-    id?: string;
-    code?: number;
-    detail?: string;
-    status?: string;
-  };
+    type Error = {
+      id?: string;
+      code?: number;
+      detail?: string;
+      status?: string;
+    };
 
-  type TreeItem = {
-    id: string;
-    key: string;
-    value: string;
-    title: string;
-    parent_id?: string;
-    disabled?: boolean;
-    children?: TreeItem[];
-    [key: string]: unknown;
-  };
+    type Result<T> = {
+      success?: boolean;
+      data?: T;
+      total?: number;
+      error?: Error;
+    };
 
-  type Route = {
-    path: string;
-  };
+    type Token = {
+      client_id?: string;
+      user_id?: string;
+      access_token: string;
+      refresh_token?: string;
+      expiration_time?: string;
+    };
 
-  type User = {
-    id: string;
-  };
+    type TreeItem = {
+      id: string;
+      key: string;
+      value: string;
+      title: string;
+      parent_id?: string;
+      disabled?: boolean;
+      children?: TreeItem[];
+      [key: string]: unknown;
+    };
 
-  type MenuItem = {
-    keyword?: string;
-    title: string;
-    path?: string;
-    disabled?: boolean;
-    external?: boolean;
-    shortcut?: [string, string];
-    icon?: TablerIcon | LucideIcon;
-    label?: string;
-    description?: string;
-    isActive?: boolean;
-    items?: MenuItem[];
-  };
+    type Route = {
+      path: string;
+    };
 
-  type FooterItem = {
-    title: string;
-    href: string;
-    external?: boolean;
-  };
+    type User = {
+      id: string;
+    };
 
-  type Footer = {
-    title: string;
-    items: FooterItem[];
-  };
+    type MenuItem = {
+      keyword?: string;
+      title: string;
+      path?: string;
+      disabled?: boolean;
+      external?: boolean;
+      shortcut?: [string, string];
+      icon?: TablerIcon | LucideIcon;
+      label?: string;
+      description?: string;
+      isActive?: boolean;
+      items?: MenuItem[];
+    };
 
-  type SideBarUser = {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+    type Resource = {
+      id?: string;
+      name?: string;
+      keyword?: string;
+      i18n_key?: string;
+      type?: string;
+      status?: number;
+      uri?: string;
+      operation?: string;
+      method?: string;
+      component?: string;
+      icon?: string;
+      sequence?: number;
+      visible?: boolean;
+      tree_path?: string;
+      properties?: Map<string, string>;
+      description?: string;
+      parent_id?: string;
+      children?: Resource[];
+      parent?: Resource;
+    };
 
-  type SidebarData = {
-    user: SideBarUser;
-    teams: Team[];
-    menuItems: MenuItem[];
-  };
+    type FooterItem = {
+      title: string;
+      href: string;
+      external?: boolean;
+    };
 
-  type TopNav = {
-    title: string;
-    href: string;
-    isActive: boolean;
-  };
+    type Footer = {
+      title: string;
+      items: FooterItem[];
+    };
+
+    type SideBarUser = {
+      name: string;
+      email: string;
+      avatar: string;
+    };
+
+    type Team = {
+      id: string;
+      name: string;
+      avatar: string;
+    };
+
+    type SidebarData = {
+      user: SideBarUser;
+      teams: Team[];
+      menuItems: MenuItem[];
+    };
+
+    type TopNav = {
+      title: string;
+      href: string;
+      isActive: boolean;
+    };
+
+    type MenuItemWithChildren = MenuItem & {
+      items: MenuItemWithChildren[];
+    };
+
+    type MenuItemWithOptionalChildren = MenuItem & {
+      items?: MenuItemWithChildren[];
+    };
+
+    type MainMenuItem = MenuItemWithOptionalChildren;
+    type SidebarMenuItem = MenuItemWithChildren;
+  }
 }

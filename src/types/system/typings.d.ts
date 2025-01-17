@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-ignore
 declare namespace API {
   type FakeCaptcha = {
     code?: number;
@@ -201,5 +203,27 @@ declare namespace API {
 
   type CurrentUser = {
     access?: string;
+  };
+
+  type Resource = {
+    id: number;
+    create_time: string;
+    update_time: string;
+    name: string;
+    keyword: string;
+    i18n_key: string;
+    type: "M" | "A" | "B" | "P";
+    status: number;
+    uri: string;
+    operation: string;
+    method: string;
+    component: string;
+    icon: string;
+    sequence: number;
+    visible: number;
+    tree_path: string;
+    properties: map<string, string>;
+    description: string;
+    parent_id: number | null;
   };
 }
