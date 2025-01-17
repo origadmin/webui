@@ -88,12 +88,6 @@ export const data: API.SidebarData = {
           icon: IconMessages,
           shortcut: ["c", "c"],
         },
-        {
-          title: "Users",
-          path: "/users",
-          icon: IconUsers,
-          shortcut: ["u", "u"],
-        },
       ],
     },
     {
