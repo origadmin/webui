@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "jsx": "react-jsx",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "target": "ES2020",
-    "lib": ["DOM", "ES2020"],
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "module": "ESNext",
-    "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
@@ -19,11 +20,21 @@
     "noImplicitAny": true,
     "declaration": false,
     "skipLibCheck": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
     "useDefineForClassFields": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["./src", "./eslint.config.js", "./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }

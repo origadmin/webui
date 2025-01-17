@@ -1,7 +1,7 @@
 import { request } from "@/utils/service";
 
 /** Get captcha ID GET /api/v1/captcha/id */
-export async function getCaptchaID(options?: { [key: string]: any }) {
+export async function getCaptchaID(options?: API.RequestOptions) {
   return request<API.Result<API.Captcha>>("/api/v1/captcha/id", {
     method: "GET",
     ...(options || {}),
@@ -14,7 +14,7 @@ export function getCaptchaImageURL(id: string) {
 }
 
 /** Login system with username and password POST /api/v1/login */
-export async function login(body: API.LoginForm, options?: { [key: string]: any }) {
+export async function login(body: API.LoginForm, options?: API.RequestOptions) {
   return request<API.Result<API.LoginToken>>("/api/v1/login", {
     method: "POST",
     data: body,
@@ -23,7 +23,7 @@ export async function login(body: API.LoginForm, options?: { [key: string]: any 
 }
 
 /** Logout system POST /api/v1/personal/logout */
-export async function logout(options?: { [key: string]: any }) {
+export async function logout(options?: API.RequestOptions) {
   return request<API.Result<any>>("/api/v1/personal/logout", {
     method: "POST",
     ...(options || {}),
@@ -31,7 +31,7 @@ export async function logout(options?: { [key: string]: any }) {
 }
 
 /** Query personal user menus based on the personal user role GET /api/v1/personal/menus */
-export async function listpersonalMenus(options?: { [key: string]: any }) {
+export async function listpersonalMenus(options?: API.RequestOptions) {
   return request<API.Result<API.Menu[]>>("/api/v1/personal/menus", {
     method: "GET",
     ...(options || {}),
@@ -39,7 +39,7 @@ export async function listpersonalMenus(options?: { [key: string]: any }) {
 }
 
 /** Change personal user password PUT /api/v1/personal/password */
-export async function updatepersonalPassword(body: API.UpdateLoginPassword, options?: { [key: string]: any }) {
+export async function updatepersonalPassword(body: API.UpdateLoginPassword, options?: API.RequestOptions) {
   return request<API.Result<any>>("/api/v1/personal/password", {
     method: "PUT",
     data: body,
@@ -48,7 +48,7 @@ export async function updatepersonalPassword(body: API.UpdateLoginPassword, opti
 }
 
 /** Refresh personal access token POST /api/v1/personal/refresh/token */
-export async function refreshToken(options?: { [key: string]: any }) {
+export async function refreshToken(options?: API.RequestOptions) {
   return request<API.Result<API.LoginToken>>("/api/v1/personal/refresh/token", {
     method: "POST",
     ...(options || {}),
@@ -56,7 +56,7 @@ export async function refreshToken(options?: { [key: string]: any }) {
 }
 
 /** Get personal user info GET /api/v1/personal/user */
-export async function getpersonalUser(options?: { [key: string]: any }) {
+export async function getpersonalUser(options?: API.RequestOptions) {
   return request<API.Result<API.User>>("/api/v1/personal/user", {
     method: "GET",
     ...(options || {}),
@@ -64,7 +64,7 @@ export async function getpersonalUser(options?: { [key: string]: any }) {
 }
 
 /** Change personal user info PUT /api/v1/personal/user */
-export async function updatepersonalUser(body: API.User, options?: { [key: string]: any }) {
+export async function updatepersonalUser(body: API.User, options?: API.RequestOptions) {
   return request<API.Result<any>>("/api/v1/personal/user", {
     method: "PUT",
     data: body,
@@ -79,7 +79,7 @@ export async function getFakeCaptcha(
     /** 手机号 */
     phone?: string;
   },
-  options?: { [key: string]: any },
+  options?: API.RequestOptions,
 ) {
   return request<API.FakeCaptcha>("/api/login/captcha", {
     method: "GET",

@@ -40,10 +40,10 @@ request.interceptors.response.use(
 /** Generic API request handler */
 async function fetchRequest<T>(
   url: string,
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  params?: API.Params,
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   body?: any,
   options?: API.RequestOptions,
+  params?: API.Params,
 ) {
   return request<API.Result<T>>(url, {
     method,

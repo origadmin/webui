@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USERNAME_KEY, USER_ID_KEY, USER_KEY } from "@/types";
+import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USER_ID_KEY, USER_KEY, USERNAME_KEY } from "@/types";
 
 /**
  * Remove the specified token from local storage
