@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { data, topNav } from "@/mocks/data";
-import { userAuthenticated } from "@/utils/auth";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
 import { SidebarContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from "@/components/Sidebar";
 import Layout from "@/components/layout";
 
@@ -20,14 +19,13 @@ const getMockData = () => {
 };
 
 export default function MainPage() {
-  const navigate = useNavigate();
+  const { token } = useAuth();
 
-  useEffect(() => {
-    const isAuthenticated = userAuthenticated();
-    if (!isAuthenticated) {
-      navigate("/login", { replace: true });
-    }
-  });
+  // Determine whether a user has permissions
+  if (!token) {
+    // If you don't have permissions, you'll be redirected to the login page
+    return <Navigate to='/login' replace />;
+  }
 
   const sidebarData = getMockData();
 

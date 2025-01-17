@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-export default function UnauthorisedError() {
+export default function UnauthorizedError() {
   const navigate = useNavigate();
   return (
     <div className='h-svh'>

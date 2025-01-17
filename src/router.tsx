@@ -1,13 +1,13 @@
-import GeneralError from "@/pages/errors/general-error";
-import MaintenanceError from "@/pages/errors/maintenance-error";
-import NotFoundError from "@/pages/errors/not-found-error";
+import { GeneralError, NotFoundError, errorRoutes } from "@/pages/errors";
 import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 
-type RouterConfig = RouteObject & {
+type RouteObjectConfig = RouteObject & {
   keyword?: string;
 };
 
-export const routes: RouterConfig[] = [
+type RouterConfig = RouteObjectConfig[];
+
+export const routes: RouterConfig = [
   // Auth routes
   {
     path: "/login",
@@ -52,10 +52,12 @@ export const routes: RouterConfig[] = [
       const MainPage = await import("@/app/MainPage");
       return { Component: MainPage.default };
     },
-    element: <Navigate to='/dashboard' replace />,
     children: [
       {
         index: true,
+        element: <Navigate to='dashboard' replace />,
+      },
+      {
         path: "dashboard",
         lazy: async () => ({
           Component: (await import("@/pages/dashboard")).default,
@@ -79,6 +81,66 @@ export const routes: RouterConfig[] = [
         }),
       },
       {
+        path: "system",
+        children: [
+          {
+            index: true,
+            element: <Navigate to='user' replace />,
+          },
+          {
+            path: "user",
+            lazy: async () => ({
+              Component: (await import("@/pages/system/user")).default,
+              metadata: {
+                title: "User",
+                icon: "user",
+              },
+            }),
+          },
+          {
+            index: true,
+            path: "settings",
+            lazy: async () => ({
+              Component: (await import("@/pages/system/settings")).default,
+              metadata: {
+                title: "Settings",
+                icon: "settings",
+              },
+            }),
+          },
+          // {
+          //   path: "role",
+          //   lazy: async () => ({
+          //     Component: (await import("@/pages/system/role")).default,
+          //   }),
+          // },
+          // {
+          //   path: "menu",
+          //   lazy: async () => ({
+          //     Component: (await import("@/pages/system/menu")).default,
+          //   }),
+          // },
+          // {
+          //   path: "resource",
+          //   lazy: async () => ({
+          //     Component: (await import("@/pages/system/resource")).default,
+          //   }),
+          // },
+          // {
+          //   path: "team",
+          //   lazy: async () => ({
+          //     Component: (await import("@/pages/system/team")).default,
+          //   }),
+          // },
+          // {
+          //   path: "permission",
+          //   lazy: async () => ({
+          //     Component: (await import("@/pages/system/permission")).default,
+          //   }),
+          // },
+        ],
+      },
+      {
         path: "examples",
         children: [
           {
@@ -91,7 +153,6 @@ export const routes: RouterConfig[] = [
           {
             path: "form",
             children: [
-              // 添加默认重定向到 'basic'
               {
                 index: true,
                 element: <Navigate to='basic' replace />,
@@ -215,10 +276,11 @@ export const routes: RouterConfig[] = [
     ],
   },
   // Error routes
-  { path: "/500", Component: GeneralError },
-  { path: "/404", Component: NotFoundError },
-  { path: "/503", Component: MaintenanceError },
-
+  // { path: "/500", Component: GeneralError },
+  // { path: "/404", Component: NotFoundError },
+  // { path: "/503", Component: MaintenanceError },
+  // { path: "/401", Component: UnauthorizedError },
+  ...errorRoutes,
   // Fallback 404 route
   { path: "*", Component: NotFoundError },
 ];

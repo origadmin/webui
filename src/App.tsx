@@ -1,20 +1,20 @@
 import { Suspense } from "react";
 import router from "@/router";
 import { RouterProvider } from "react-router-dom";
-import { API } from "@/types/typings";
+import AuthProvider from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 
 type UserResource = {
   user?: API.User;
-  menus?: Record<string, API.MenuItem>;
+  // menus?: Record<string, API.MenuItem>;
 };
 
 type InitialStateProps = {
   fetch?: () => Promise<UserResource>;
   // routePathCodeMap?: Record<string, string>;
   user?: API.User;
-  menus?: Record<string, API.MenuItem>;
+  // menus?: Record<string, API.MenuItem>;
   loading?: boolean;
 };
 
@@ -173,10 +173,20 @@ export async function getInitialState(): Promise<InitialStateProps> {
 
 function App() {
   console.log("Application Started");
+  // const { user, fetchMenus } = useRBAC();
+
+  // useEffect(() => {
+  //   if (user) {
+  //     fetchMenus();
+  //   }
+  // }, [user, fetchMenus]);
+
   return (
     <>
       <Suspense fallback={<LoadingSpinner />}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
         <Toaster />
       </Suspense>
     </>

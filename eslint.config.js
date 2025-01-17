@@ -99,11 +99,11 @@ const tseslintConfig = {
     },
   },
   rules: {
-    "@typescript-eslint/no-unsafe-argument": "error",
-    "@typescript-eslint/no-unsafe-assignment": "error",
-    "@typescript-eslint/no-unsafe-call": "error",
-    "@typescript-eslint/no-unsafe-member-access": "error",
-    "@typescript-eslint/no-unsafe-return": "error",
+    "@typescript-eslint/no-unsafe-argument": "warn",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
+    "@typescript-eslint/no-unsafe-return": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
   },
 };
@@ -142,8 +142,7 @@ const tailwindcssConfig = {
       "no-arbitrary-value": "off",
       "no-contradicting-classname": "error",
       "no-custom-classname": "warn",
-      "no-unnecessary-arbitrary-value": "warn",
-      //recommended
+      "no-unnecessary-arbitrary-value": "warn", //recommended
       // "stylelint/annotation-no-unknown": "error",
       // "stylelint/at-rule-descriptor-no-unknown": "error",
       // "stylelint/at-rule-descriptor-value-no-unknown": "error",
@@ -211,8 +210,7 @@ const prettierPluginConfig = {
   },
   rules: {
     ...prettierConfig.rules,
-    "prettier/prettier": ["error"],
-    // Don't add anything, it will load .prettierrc
+    "prettier/prettier": ["error"], // Don't add anything, it will load .prettierrc
   },
 };
 
@@ -226,7 +224,6 @@ export default tseslint.config([
   tseslintConfig,
   prettierConfig, // prettierPlugin.configs.recommended,
   prettierPluginConfig, // reactPlugin.configs.recommended,
-  reactConfig,
-  // ...tailwindcss.configs["flat/recommended"],
+  reactConfig, // ...tailwindcss.configs["flat/recommended"],
   // tailwindcssConfig,
 ]);

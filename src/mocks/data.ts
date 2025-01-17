@@ -97,6 +97,34 @@ export const data: API.SidebarData = {
       ],
     },
     {
+      title: "Settings",
+      items: [
+        {
+          title: "System",
+          items: [
+            {
+              title: "Settings",
+              path: "/system/settings",
+              icon: IconSettings,
+              shortcut: ["s", "s"],
+            },
+            {
+              title: "Users",
+              path: "/system/user",
+              icon: IconUsers,
+              shortcut: ["u", "u"],
+            },
+            {
+              title: "Roles",
+              path: "/system/role",
+              icon: IconUsers,
+              shortcut: ["r", "r"],
+            },
+          ],
+        },
+      ],
+    },
+    {
       title: "Examples",
       items: [
         {

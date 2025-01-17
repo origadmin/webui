@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-export default function NotFoundError() {
+export default function NotFoundError(): React.ReactElement {
   const navigate = useNavigate();
+
+  function navigateToHome() {
+    navigate("/", { replace: true });
+  }
+
   return (
     <div className='h-svh'>
       <div className='m-auto flex size-full flex-col items-center justify-center gap-2'>
@@ -16,7 +21,7 @@ export default function NotFoundError() {
           <Button variant='outline' onClick={() => navigate(-1)}>
             Go Back
           </Button>
-          <Button onClick={() => navigate("/", { replace: true })}>Back to Home</Button>
+          <Button onClick={navigateToHome}>Back to Home</Button>
         </div>
       </div>
     </div>

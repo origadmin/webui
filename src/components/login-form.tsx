@@ -1,8 +1,9 @@
 import React, { useTransition } from "react";
-import { setToken } from "@/utils/auth";
+import { Storage } from "@/utils";
 import { GalleryVerticalEnd } from "lucide-react";
 import { ResolverSuccess, useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -14,7 +15,7 @@ type LoginFormValue = {
   email?: string;
 };
 
-const signIn = (credentials: string, param: { email: string | undefined; callbackUrl: string }) => {
+async function signIn(credentials: string, param: { email: string | undefined; callbackUrl: string }) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       // 模拟登录成功
@@ -24,18 +25,22 @@ const signIn = (credentials: string, param: { email: string | undefined; callbac
       };
 
       if (param.email) {
-        setToken(user.id);
+        Storage.setUserID(user.id);
+        Storage.setAccessToken(user.id);
+        const time = new Date().getTime() + 1000 * 60 * 60 * 24 * 7;
+        Storage.setExpirationTime(time.toString());
         // 登录成功后，跳转到 callbackUrl
         window.location.href = param.callbackUrl;
         resolve(user);
       } else {
         reject(new Error("Email is required"));
       }
-    }, 3000); // 等待 3 秒
+    }, 1000); // 等待 3 秒
   });
-};
+}
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+  const { setToken } = useAuth();
   const [loading, startTransition] = useTransition();
   const { toast } = useToast();
   const urlParams = new URLSearchParams(window.location.search);
@@ -56,11 +61,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   });
 
   const onSubmit = async (data: LoginFormValue) => {
-    startTransition(() => {
-      signIn("credentials", {
+    startTransition(async () => {
+      await signIn("credentials", {
         email: data.email,
         callbackUrl: redirectUrl,
       });
+      const token = Storage.getAccessToken();
+      if (!token) return;
+      setToken(token);
       toast({
         description: "Signed In Successfully!",
       });
