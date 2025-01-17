@@ -4,7 +4,6 @@ import prettierPlugin from "eslint-plugin-prettier";
 import reactPlugin from "eslint-plugin-react";
 import reactPluginHooks from "eslint-plugin-react-hooks";
 import tailwindcss from "eslint-plugin-tailwindcss";
-import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -76,7 +75,7 @@ const reactConfig = {
 };
 
 const eslintConfig = {
-  files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+  files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
 };
 
 const tseslintConfig = {
@@ -86,7 +85,7 @@ const tseslintConfig = {
   settings: {
     react: { version: "detect" },
   },
-  files: ["**/*.ts", "**/*.tsx"],
+  files: ["**/*.{ts,tsx}"],
   languageOptions: {
     parser: tseslint.parser,
     parserOptions: {
@@ -105,6 +104,7 @@ const tseslintConfig = {
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/no-unsafe-member-access": "error",
     "@typescript-eslint/no-unsafe-return": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
   },
 };
 
@@ -212,6 +212,7 @@ const prettierPluginConfig = {
   rules: {
     ...prettierConfig.rules,
     "prettier/prettier": ["error"],
+    // Don't add anything, it will load .prettierrc
   },
 };
 
@@ -228,13 +229,4 @@ export default tseslint.config([
   reactConfig,
   // ...tailwindcss.configs["flat/recommended"],
   // tailwindcssConfig,
-  {
-    plugins: {
-      "unused-imports": unusedImports,
-    },
-    rules: {
-      "unused-imports/no-unused-vars": "error",
-      "unused-imports/no-unused-imports": "error",
-    },
-  },
 ]);
