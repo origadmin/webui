@@ -11,11 +11,11 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar.tsx";
-import { SidebarContentProps, MenuItem } from "@/components/Sidebar/sidebar-content-item.tsx";
+import { SidebarGroupContentProps, MenuItem } from "@/components/Sidebar/sidebar-group-content.tsx";
 
-export type SidebarContentMainProps = Omit<SidebarContentProps, "seconds">;
+export type SidebarMainContentProps = Omit<SidebarGroupContentProps, "seconds">;
 
-export function SidebarContentMain({ title, items }: SidebarContentMainProps) {
+export function SidebarMainContent({ title, items }: SidebarMainContentProps) {
   function renderIcon(item: MenuItem) {
     return (
       <a href={item.path}>

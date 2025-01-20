@@ -17,7 +17,7 @@ const DefaultTeam = {
   plan: "RSBuild + React + ShadcnUI + ",
 };
 
-function SidebarHeaderItem(props?: SidebarHeaderProps) {
+function SidebarHeaderContent(props?: SidebarHeaderProps) {
   const { teams = [DefaultTeam] } = props || {};
   return (
     <SidebarHeader>
@@ -27,4 +27,4 @@ function SidebarHeaderItem(props?: SidebarHeaderProps) {
 }
 
 export type { SidebarHeaderProps };
-export { SidebarHeaderItem };
+export { SidebarHeaderContent };

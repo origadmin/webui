@@ -9,7 +9,7 @@ type SidebarFooterProps = {
   };
 };
 
-function SidebarFooterItem(props: SidebarFooterProps) {
+function SidebarFooterContent(props: SidebarFooterProps) {
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -22,4 +22,4 @@ function SidebarFooterItem(props: SidebarFooterProps) {
 }
 
 export type { SidebarFooterProps };
-export { SidebarFooterItem };
+export { SidebarFooterContent };

@@ -75,11 +75,9 @@
 //   });
 //   return menuItems;
 // }
-import { HOST } from "@/types";
 import { fetchRequest, Method } from "@/utils/service.tsx";
 import { getRefreshToken } from "@/utils/storage.tsx";
 import config from "@config";
-
 
 export async function refreshToken() {
   const { url, method } = config.auth.refreshToken;
@@ -94,7 +92,7 @@ export async function refreshToken() {
 
   try {
     const response = await fetchRequest<API.Token>(
-      HOST + url,
+      config.host + url,
       method === "" ? "GET" : (method as Method),
       JSON.stringify({ refresh_token: refreshToken }),
       undefined,

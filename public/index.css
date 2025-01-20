@@ -4848,6 +4848,10 @@ body {
   display: block;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .inline {
   display: inline;
 }
@@ -5154,6 +5158,10 @@ body {
 
 .w-\[100px\] {
   width: 100px;
+}
+
+.w-\[120px\] {
+  width: 120px;
 }
 
 .w-\[150px\] {
@@ -5855,10 +5863,6 @@ body {
 
 .bg-border {
   background-color: hsl(var(--border));
-}
-
-.bg-card {
-  background-color: hsl(var(--card));
 }
 
 .bg-destructive {
@@ -7205,6 +7209,12 @@ body {
 
 .data-\[swipe\=move\]\:translate-x-\[var\(--radix-toast-swipe-move-x\)\][data-swipe="move"] {
   --tw-translate-x: var(--radix-toast-swipe-move-x);
+  -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.data-\[state\=open\]\:rotate-90[data-state="open"] {
+  --tw-rotate: 90deg;
   -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
           transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }

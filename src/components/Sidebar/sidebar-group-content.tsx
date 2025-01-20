@@ -13,21 +13,21 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { SidebarContentMain } from "@/components/Sidebar/sidebar-content-main.tsx";
-import { SidebarContentSec } from "@/components/Sidebar/sidebar-content-sec.tsx";
+import { SidebarMainContent } from "@/components/Sidebar/sidebar-main-content.tsx";
+import { SidebarSecondaryContent } from "@/components/Sidebar/sidebar-secondary-content.tsx";
 
 export type MenuItem = API.MenuItem & {};
 
-type SidebarContentProps = {
+type SidebarGroupContentProps = {
   key?: string;
   title?: string;
   items?: MenuItem[];
-  main?: SidebarContentProps;
-  seconds?: SidebarContentProps;
+  main?: SidebarGroupContentProps;
+  seconds?: SidebarGroupContentProps;
   props?: React.ComponentPropsWithoutRef<typeof SidebarGroup>;
 };
 
-function SidebarContentItem({ main, seconds, items = [] }: SidebarContentProps) {
+function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupContentProps) {
   function renderLink(item: MenuItem) {
     return <Link to={item.path || "#"}>{renderIcon(item)}</Link>;
   }
@@ -109,22 +109,24 @@ function SidebarContentItem({ main, seconds, items = [] }: SidebarContentProps) 
 
   return (
     <SidebarContent>
-      <SidebarContentMain {...main}></SidebarContentMain>
-      <SidebarGroup>
-        <SidebarMenu>
-          {items.map((item) => (
-            <>
-              {onlyTitle(item) && renderTitle(item)}
-              {!onlyTitle(item) && renderItem(item)}
-              {hasSub(item) && renderSubItem(item.items)}
-            </>
-          ))}
-        </SidebarMenu>
-      </SidebarGroup>
-      <SidebarContentSec {...seconds} props={{ className: "mt-auto" }} />
+      {main && <SidebarMainContent {...main}></SidebarMainContent>}
+      {items && (
+        <SidebarGroup {...props}>
+          <SidebarMenu>
+            {items.map((item) => (
+              <>
+                {onlyTitle(item) && renderTitle(item)}
+                {!onlyTitle(item) && renderItem(item)}
+                {hasSub(item) && renderSubItem(item.items)}
+              </>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      )}
+      {seconds && <SidebarSecondaryContent props={{ className: "mt-auto" }} {...seconds} />}
     </SidebarContent>
   );
 }
 
-export type { SidebarContentProps };
-export { SidebarContentItem };
+export type { SidebarGroupContentProps };
+export { SidebarGroupContent };

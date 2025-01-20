@@ -1,37 +1,62 @@
-import React, { useTransition } from "react";
-import { Storage } from "@/utils";
+import React, { useEffect, useState, useTransition } from "react";
+import { mockToken } from "@/mocks/data.ts";
+import { fetchRequest } from "@/utils/service.tsx";
 import { GalleryVerticalEnd } from "lucide-react";
 import { ResolverSuccess, useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { useToken } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { LoadingSpinner } from "@/components/Loading";
 
 type LoginFormValue = {
-  id?: string;
-  email?: string;
+  username: string;
+  password: string;
+  captcha_id: string;
+  captcha_code: string;
 };
 
-async function signIn(credentials: string, param: { email: string | undefined; callbackUrl: string }) {
+export type SignInProps = {
+  values?: LoginFormValue;
+  callbackUrl: string;
+};
+
+type Captcha = {
+  id?: string;
+  data?: string;
+};
+
+// const LoginFormValue = z.object({
+//   username: z.string().email({ message: "Invalid username" }),
+//   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+//   captcha_id: z.string().min(1, { message: "CAPTCHA is required" }),
+//   captcha_code: z.string().min(1, { message: "CAPTCHA is required" }),
+// });
+
+async function signIn(param: SignInProps) {
   return new Promise((resolve, reject) => {
+    console.log("param:", param);
+    if (!param.values) {
+      reject(new Error("Require login data is empty"));
+      return;
+    }
+    console.log("param value:", param);
+
     setTimeout(() => {
       // 模拟登录成功
-      const user = {
-        id: "1",
-        email: "test@gmail.com",
-      };
-
-      if (param.email) {
-        Storage.setUserID(user.id);
-        Storage.setAccessToken(user.id);
-        const time = new Date().getTime() + 1000 * 60 * 60 * 24 * 7;
-        Storage.setExpirationTime(time.toString());
+      const token = mockToken;
+      if (token) {
+        // Storage.setUserID(token.user_id);
+        // Storage.setAccessToken(token.access_token);
+        // const time = new Date().setTime(token.expires_at);
+        // Storage.setExpirationTime(time.toString());
         // 登录成功后，跳转到 callbackUrl
-        window.location.href = param.callbackUrl;
-        resolve(user);
+        // window.location.href = param.callbackUrl;
+        resolve(token);
       } else {
         reject(new Error("Email is required"));
       }
@@ -40,15 +65,14 @@ async function signIn(credentials: string, param: { email: string | undefined; c
 }
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
-  const { setToken } = useToken();
+  const [captcha, setCaptcha] = useState<Captcha>({});
+  const [isLoading, setIsLoading] = useState(true);
   const [loading, startTransition] = useTransition();
+  const { setToken } = useToken();
   const { toast } = useToast();
   const urlParams = new URLSearchParams(window.location.search);
   const redirectUrl = urlParams.get("redirect") || "/";
-  const value: LoginFormValue = {
-    id: "1",
-    email: "test@gmail.com",
-  };
+
   const form = useForm<LoginFormValue>({
     resolver: function (values) {
       const result: ResolverSuccess<LoginFormValue> = {
@@ -57,21 +81,70 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       };
       return result;
     },
-    defaultValues: value,
+    defaultValues: {
+      username: "",
+      password: "",
+      captcha_id: captcha.id || "",
+      captcha_code: "",
+    },
   });
 
-  const onSubmit = async (data: LoginFormValue) => {
+  // const form = useForm<LoginFormValue>({
+  //   resolver: function (values, ctx) {
+  //     console.log("values", values, ctx);
+  //     const result: ResolverSuccess<LoginFormValue> = {
+  //       errors: {},
+  //       values: values,
+  //     };
+  //     return result;
+  //   },
+  //   defaultValues: {
+  //     username: "",
+  //     password: "",
+  //     captcha_id: captcha.id || "",
+  //     captcha_code: "",
+  //   },
+  // });
+
+  const refreshCaptcha = async () => {
+    setIsLoading(true);
+    // Simulate API call to get new CAPTCHA
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
+    await handleCaptchaChange();
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    refreshCaptcha();
+  }, []);
+
+  const handleCaptchaChange = async () => {
+    fetchRequest<Captcha>("/api/v1/captcha", "GET")
+      .then((response) => {
+        // console.log("captcha", response.success, response.data);
+        if (response.success) {
+          const { id, data } = response.data;
+          setCaptcha({ id: id, data: data });
+          // form.setValue("captcha_id", id);
+        }
+        return response;
+      })
+      .finally();
+  };
+
+  const onSubmit = async (values: LoginFormValue) => {
+    values.captcha_id = captcha.id || "";
+    console.log("form data:", values);
     startTransition(async () => {
-      await signIn("credentials", {
-        email: data.email,
+      const result = await signIn({
+        values: values,
         callbackUrl: redirectUrl,
       });
-      const token = Storage.getAccessToken();
-      if (!token) return;
-      setToken(token);
-      toast({
-        description: "Signed In Successfully!",
-      });
+      if (result.success) {
+        toast({
+          description: "Signed In Successfully!",
+        });
+      }
     });
   };
 
@@ -79,6 +152,11 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          {/*<FormField*/}
+          {/*  control={form.control}*/}
+          {/*  name='captcha_id'*/}
+          {/*  render={({ field }) => <Input id='captcha_id' {...field} readOnly hidden />}*/}
+          {/*/>*/}
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col items-center gap-2'>
               <a href='#' className='flex flex-col items-center gap-2 font-medium'>
@@ -96,10 +174,57 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
               </div>
             </div>
             <div className='flex flex-col gap-6'>
-              <div className='grid gap-2'>
-                <Label htmlFor='email'>Email</Label>
-                <Input id='email' type='email' placeholder='m@example.com' required />
-              </div>
+              <FormField
+                control={form.control}
+                name='username'
+                render={({ field }) => (
+                  <div className='grid gap-2'>
+                    <Label htmlFor='username'>Username</Label>
+                    <Input id='username' type='username' {...field} placeholder='Login username' required />
+                  </div>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <div className='grid gap-2'>
+                    <div className='flex items-center'>
+                      <Label htmlFor='password'>Password</Label>
+                      <a href='#' className='ml-auto inline-block text-sm underline-offset-4 hover:underline'>
+                        Forgot your password?
+                      </a>
+                    </div>
+                    <Input id='password' type='password' {...field} placeholder='Login password' required />
+                  </div>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='captcha_code'
+                render={({ field }) => (
+                  <div className='grid gap-2'>
+                    <Label htmlFor='captcha_code'>CAPTCHA</Label>
+                    <div className='flex items-center gap-2'>
+                      <Input className='flex-1' id='captcha_code' placeholder='Enter CAPTCHA' {...field} required />
+                      {isLoading ? (
+                        <Skeleton className='h-10 w-[120px] flex items-center justify-center'>
+                          <LoadingSpinner />
+                        </Skeleton>
+                      ) : (
+                        <img
+                          src={captcha.data}
+                          alt='CAPTCHA'
+                          className='h-10 w-[120px] cursor-pointer'
+                          onClick={refreshCaptcha}
+                          aria-label='Click to refresh CAPTCHA'
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+              />
               <Button type='submit' className='w-full' disabled={loading}>
                 Login
               </Button>

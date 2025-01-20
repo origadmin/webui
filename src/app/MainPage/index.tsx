@@ -2,7 +2,7 @@ import { data, topNav, mockSecondItems } from "@/mocks/data";
 import { Navigate, Outlet } from "react-router-dom";
 import { useToken } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark.tsx";
-import { SidebarContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from "@/components/Sidebar";
+import { SidebarGroupContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from "@/components/Sidebar";
 import Layout from "@/components/layout";
 
 const getMockData = () => {
@@ -15,7 +15,7 @@ const getMockData = () => {
       seconds: {
         items: mockSecondItems,
       },
-    } as SidebarContentProps,
+    } as SidebarGroupContentProps,
     footer: {
       user: data.user,
     } as SidebarFooterProps,

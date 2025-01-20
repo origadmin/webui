@@ -54,7 +54,6 @@ const AuthProvider = ({ token: userToken, access: userAccess, refresh, children 
     if (token) {
       Storage.setAccessToken(token);
     }
-    // checkAndRefreshToken().finally();
   }, [token]);
 
   // useEffect(() => {}, [access]);
