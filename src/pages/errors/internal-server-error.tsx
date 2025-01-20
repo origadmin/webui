@@ -7,7 +7,7 @@ interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
   minimal?: boolean;
 }
 
-export default function GeneralError({ className, minimal = false }: GeneralErrorProps) {
+export default function InternalServerError({ className, minimal = false }: GeneralErrorProps) {
   const navigate = useNavigate();
   return (
     <div className={cn("h-svh w-full", className)}>

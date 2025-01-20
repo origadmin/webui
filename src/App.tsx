@@ -1,6 +1,10 @@
-import { Suspense } from "react";
-import router from "@/router";
-import { RouterProvider } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
+import { routes, RouterConfig } from "@/router.tsx";
+import { refreshToken } from "@/utils/auth.tsx";
+import { initRouter } from "@/utils/router.tsx";
+import { getAccessToken } from "@/utils/storage.tsx";
+import config from "@config";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthProvider from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
@@ -173,6 +177,7 @@ export async function getInitialState(): Promise<InitialStateProps> {
 
 function App() {
   console.log("Application Started");
+  const [initRoutes, setInitRoutes] = useState<RouterConfig>(routes);
   // const { user, fetchMenus } = useRBAC();
 
   // useEffect(() => {
@@ -180,16 +185,32 @@ function App() {
   //     fetchMenus();
   //   }
   // }, [user, fetchMenus]);
+  const accesses = new Map<string, boolean>();
+  accesses.set("*", true);
+
+  const initState = {
+    // fetch: fetchInitData,
+    // settings: Settings as Partial<LayoutSettings>,
+    // routePathCodeMap,
+    refresh: () => {
+      return refreshToken();
+    },
+    token: getAccessToken(),
+    access: accesses,
+    routes: config.routes,
+  };
+
+  useEffect(() => {
+    setInitRoutes(initRouter(routes));
+  });
 
   return (
-    <>
-      <Suspense fallback={<LoadingSpinner />}>
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-        <Toaster />
-      </Suspense>
-    </>
+    <Suspense fallback={<LoadingSpinner />}>
+      <AuthProvider {...initState}>
+        <RouterProvider router={createBrowserRouter(initRoutes)} />
+      </AuthProvider>
+      <Toaster />
+    </Suspense>
   );
 }
 

@@ -3,7 +3,7 @@ import { Storage } from "@/utils";
 import { GalleryVerticalEnd } from "lucide-react";
 import { ResolverSuccess, useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/use-auth";
+import { useToken } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -40,7 +40,7 @@ async function signIn(credentials: string, param: { email: string | undefined; c
 }
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
-  const { setToken } = useAuth();
+  const { setToken } = useToken();
   const [loading, startTransition] = useTransition();
   const { toast } = useToast();
   const urlParams = new URLSearchParams(window.location.search);

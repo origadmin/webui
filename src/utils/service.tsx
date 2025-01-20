@@ -28,6 +28,7 @@ request.interceptors.request.use(
 // Respond to the interceptor
 request.interceptors.response.use(
   (response: API.Result<any>) => {
+    console.log("type response:", typeof response);
     // Do something about the response data
     return response.data;
   },
@@ -37,10 +38,12 @@ request.interceptors.response.use(
   },
 );
 
+export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
 /** Generic API request handler */
 async function fetchRequest<T>(
   url: string,
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  method: Method,
   body?: any,
   options?: API.RequestOptions,
   params?: API.Params,

@@ -35,7 +35,6 @@
 //     throw error;
 //   }
 // }
-
 // export function convertMenuItem<T>(
 //   data: T[],
 //   convertT?: (item: T) => {
@@ -76,3 +75,48 @@
 //   });
 //   return menuItems;
 // }
+import { HOST } from "@/types";
+import { fetchRequest, Method } from "@/utils/service.tsx";
+import { getRefreshToken } from "@/utils/storage.tsx";
+import config from "@config";
+
+
+export async function refreshToken() {
+  const { url, method } = config.auth.refreshToken;
+  // Assuming the refresh token is stored in localStorage
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) {
+    throw new Error("No refresh token found");
+  }
+  if (url === "") {
+    return;
+  }
+
+  try {
+    const response = await fetchRequest<API.Token>(
+      HOST + url,
+      method === "" ? "GET" : (method as Method),
+      JSON.stringify({ refresh_token: refreshToken }),
+      undefined,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+    if (response.data.success) {
+      const { data } = await response.data;
+      // Update localStorage with the new tokens
+      if (data && "access_token" in data) {
+        localStorage.setItem("access_token", data.access_token);
+      }
+      // if (data && "refresh_token" in data) {
+      //   localStorage.setItem("refresh_token", data.refresh_token);
+      // }
+      return data?.access_token || "";
+    }
+  } catch (err) {
+    console.error("Refresh Token Error:", err);
+  }
+  return "";
+}

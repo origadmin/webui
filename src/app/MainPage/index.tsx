@@ -1,6 +1,6 @@
 import { data, topNav, mockSecondItems } from "@/mocks/data";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "@/hooks/use-auth";
+import { useToken } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark.tsx";
 import { SidebarContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from "@/components/Sidebar";
 import Layout from "@/components/layout";
@@ -40,8 +40,9 @@ const watermark = {
 };
 
 export default function MainPage() {
-  const { token } = useAuth();
+  const { token } = useToken();
 
+  console.log("login token:", token);
   // Determine whether a user has permissions
   if (!token) {
     // If you don't have permissions, you'll be redirected to the login page

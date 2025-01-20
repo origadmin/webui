@@ -1,11 +1,11 @@
-import { GeneralError, NotFoundError, errorRoutes } from "@/pages/errors";
+import { InternalServerError, NotFoundError, errorRoutes } from "@/pages/errors";
 import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 
-type RouteObjectConfig = RouteObject & {
+export type RouteObjectConfig = RouteObject & {
   keyword?: string;
 };
 
-type RouterConfig = RouteObjectConfig[];
+export type RouterConfig = RouteObjectConfig[];
 
 export const routes: RouterConfig = [
   // Auth routes
@@ -232,7 +232,7 @@ export const routes: RouterConfig = [
         lazy: async () => ({
           Component: (await import("@/pages/settings")).default,
         }),
-        errorElement: <GeneralError />,
+        errorElement: <InternalServerError />,
         children: [
           {
             index: true,
@@ -269,7 +269,7 @@ export const routes: RouterConfig = [
             lazy: async () => ({
               Component: (await import("@/pages/settings/error-example")).default,
             }),
-            errorElement: <GeneralError className='h-[50svh]' minimal />,
+            errorElement: <InternalServerError className='h-[50svh]' minimal />,
           },
         ],
       },

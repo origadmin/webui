@@ -1,6 +1,6 @@
 import ComingSoon from "./coming-soon";
 import ForbiddenError from "./forbidden";
-import GeneralError from "./general-error";
+import InternalServerError from "src/pages/errors/internal-server-error.tsx";
 import MaintenanceError from "./maintenance-error";
 import NotFoundError from "./not-found-error";
 import UnauthorizedError from "./unauthorized-error";
@@ -16,7 +16,7 @@ const errorRoutes = [
   },
   {
     path: "/500",
-    element: <GeneralError />,
+    element: <InternalServerError />,
   },
   {
     path: "/503",
@@ -40,7 +40,7 @@ export {
   comingSoonRoutes,
   ComingSoon,
   ForbiddenError,
-  GeneralError,
+  InternalServerError,
   MaintenanceError,
   NotFoundError,
   UnauthorizedError,
