@@ -1,10 +1,18 @@
+import { mockUser } from "@/mocks/data.ts";
 import { Pagination } from "@/utils";
 import { fetchRequest } from "@/utils/service";
 
+
 /** Query user list GET /api/v1/sys/users */
 export async function listUser(params: API.Params, options?: API.RequestOptions) {
+  if (process.env.NODE_ENV === "development") {
+    // 返回 mock 数据
+    return Promise.resolve({
+      data: mockUser,
+    });
+  }
   params = Pagination.parseParams(params);
-  return fetchRequest<API.User>("/api/v1/sys/users", "GET", undefined, options, params);
+  return fetchRequest<API.User[]>("/api/v1/sys/users", "GET", undefined, options, params);
 }
 
 /** Create user record POST /api/v1/sys/users */

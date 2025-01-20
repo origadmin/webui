@@ -50,10 +50,6 @@ declare global {
       path: string;
     };
 
-    type User = {
-      id: string;
-    };
-
     type MenuItem = {
       keyword?: string;
       title: string;

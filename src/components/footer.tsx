@@ -1,4 +1,5 @@
 import React from "react";
+import { randomKey } from "@/utils/crypto.tsx";
 
 type LinkProps = {
   key?: string;
@@ -16,15 +17,19 @@ export function Footer(props?: FooterProps) {
   const {
     links = [
       {
+        key: randomKey(),
         title: "FAQs",
       },
       {
+        key: randomKey(),
         title: "Privacy Policy",
       },
       {
+        key: randomKey(),
         title: "Terms & Conditions",
       },
       {
+        key: randomKey(),
         title: "Refund Policy",
       },
     ],
@@ -37,7 +42,7 @@ export function Footer(props?: FooterProps) {
         <div>
           <ul className='flex w-full flex-wrap items-center justify-center gap-3 sm:flex-nowrap md:gap-10'>
             {links?.flatMap((link: LinkProps) => (
-              <li>
+              <li key={link.key}>
                 <a
                   className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
                   target={link.blank ? "blank" : undefined}

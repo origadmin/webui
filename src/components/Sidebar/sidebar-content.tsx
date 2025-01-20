@@ -1,6 +1,6 @@
+import { randomKey } from "@/utils/crypto.tsx";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { API } from "@/types/typings";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarContent,
@@ -15,32 +15,44 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
+type MenuItem = API.MenuItem & {
+  key?: string;
+};
+
 type SidebarContentProps = {
-  items?: API.MenuItem[];
+  items?: MenuItem[];
 };
 
 function SidebarContentItem(props: SidebarContentProps) {
   const { state } = useSidebar();
 
-  function renderIcon(item: API.MenuItem, state: string) {
+  function renderIcon(item: MenuItem, _: string) {
     // console.log("state", state);
     // state === 'collapsed' ? <item.icon size={18} /> :
     return item.icon && <item.icon />;
   }
 
-  function onlyTitle(item: API.MenuItem) {
+  function onlyTitle(item: MenuItem) {
     return item.title !== undefined && item.icon === undefined && item.path === undefined;
   }
 
-  function hasSub(item: API.MenuItem) {
+  function hasSub(item: MenuItem) {
     return item.items !== undefined && item.items.length > 0;
   }
 
-  function renderSubItem(items: API.MenuItem[] | undefined) {
+  function key(item: MenuItem) {
+    if (item.key !== undefined) {
+      return item.key;
+    } else {
+      return randomKey();
+    }
+  }
+
+  function renderSubItem(items: MenuItem[] | undefined) {
     return items?.map((item) => {
       return hasSub(item) ? (
         <Collapsible key={item.title} asChild defaultOpen={item.isActive} className='group/collapsible'>
-          <SidebarMenuItem>
+          <SidebarMenuItem key={key(item)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={item.title} isActive={false}>
                 {renderIcon(item, state)}
@@ -51,7 +63,7 @@ function SidebarContentItem(props: SidebarContentProps) {
             <CollapsibleContent>
               <SidebarMenuSub>
                 {item.items?.map((subItem) => (
-                  <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubItem key={key(subItem)}>
                     <SidebarMenuSubButton asChild isActive={false}>
                       <Link to={subItem.path || "#"}>
                         {renderIcon(subItem, state)}
@@ -65,7 +77,7 @@ function SidebarContentItem(props: SidebarContentProps) {
           </SidebarMenuItem>
         </Collapsible>
       ) : (
-        <SidebarMenuItem>
+        <SidebarMenuItem key={key(item)}>
           <SidebarMenuButton asChild tooltip={item.title} isActive={false}>
             <Link to={item.path || "#"}>
               {renderIcon(item, state)}
@@ -81,11 +93,12 @@ function SidebarContentItem(props: SidebarContentProps) {
     <SidebarContent>
       <SidebarMenu>
         <SidebarGroup>
-          {props.items?.map((item) => (
-            <>
-              {onlyTitle(item) && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
-              {!onlyTitle(item) && (
-                <SidebarMenuItem>
+          {props.items?.map((item) => {
+            return onlyTitle(item) ? (
+              <SidebarGroupLabel key={key(item)}>{item.title}</SidebarGroupLabel>
+            ) : (
+              <>
+                <SidebarMenuItem key={key(item)}>
                   <SidebarMenuButton asChild>
                     <Link to={item.path || "#"}>
                       {item.icon && <item.icon />}
@@ -93,10 +106,10 @@ function SidebarContentItem(props: SidebarContentProps) {
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              )}
-              {hasSub(item) && renderSubItem(item.items)}
-            </>
-          ))}
+                {hasSub(item) && renderSubItem(item.items)}
+              </>
+            );
+          })}
         </SidebarGroup>
       </SidebarMenu>
     </SidebarContent>

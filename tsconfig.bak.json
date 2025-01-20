@@ -38,6 +38,6 @@
     "noFallthroughCasesInSwitch": true
     /* Decorators */
   },
-  "include": ["node_modules/@types/**/*.d.ts", "./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
