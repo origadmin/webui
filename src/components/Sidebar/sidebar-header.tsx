@@ -1,4 +1,4 @@
-import React, { ElementType } from "react";
+import { ElementType } from "react";
 import { Command } from "lucide-react";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import { TeamSwitcher } from "@/components/team-switcher";

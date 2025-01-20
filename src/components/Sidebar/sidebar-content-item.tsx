@@ -1,4 +1,4 @@
-import { randomKey, uuid } from "@/utils/crypto.tsx";
+import { randomKey } from "@/utils/crypto.tsx";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -12,26 +12,33 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
+import { SidebarContentMain } from "@/components/Sidebar/sidebar-content-main.tsx";
+import { SidebarContentSec } from "@/components/Sidebar/sidebar-content-sec.tsx";
 
-type MenuItem = API.MenuItem & {
-  key?: string;
-};
+export type MenuItem = API.MenuItem & {};
 
 type SidebarContentProps = {
   key?: string;
+  title?: string;
   items?: MenuItem[];
+  main?: SidebarContentProps;
+  seconds?: SidebarContentProps;
+  props?: React.ComponentPropsWithoutRef<typeof SidebarGroup>;
 };
 
-function SidebarContentItem(props: SidebarContentProps) {
-  const { key: sidebarKey = uuid() } = props;
-  const { state } = useSidebar();
+function SidebarContentItem({ main, seconds, items = [] }: SidebarContentProps) {
+  function renderLink(item: MenuItem) {
+    return <Link to={item.path || "#"}>{renderIcon(item)}</Link>;
+  }
 
-  function renderIcon(item: MenuItem, _: string) {
-    // console.log("state", state);
-    // state === 'collapsed' ? <item.icon size={18} /> :
-    return item.icon && <item.icon />;
+  function renderIcon(item: MenuItem) {
+    return (
+      <>
+        {item.icon && <item.icon />}
+        <span>{item.title}</span>
+      </>
+    );
   }
 
   function onlyTitle(item: MenuItem) {
@@ -43,11 +50,10 @@ function SidebarContentItem(props: SidebarContentProps) {
   }
 
   function key(item: MenuItem) {
-    if (item.key !== undefined) {
-      return item.key;
-    } else {
-      return randomKey();
+    if (item.id !== undefined) {
+      item.id = randomKey();
     }
+    return item.id;
   }
 
   function renderSubItem(items: MenuItem[] | undefined) {
@@ -57,8 +63,7 @@ function SidebarContentItem(props: SidebarContentProps) {
           <SidebarMenuItem key={key(item)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={item.title} isActive={false}>
-                {renderIcon(item, state)}
-                <span>{item.title}</span>
+                {renderIcon(item)}
                 <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
               </SidebarMenuButton>
             </CollapsibleTrigger>
@@ -67,10 +72,7 @@ function SidebarContentItem(props: SidebarContentProps) {
                 {item.items?.map((subItem) => (
                   <SidebarMenuSubItem key={key(subItem)}>
                     <SidebarMenuSubButton asChild isActive={false}>
-                      <Link to={subItem.path || "#"}>
-                        {renderIcon(subItem, state)}
-                        <span>{subItem.title}</span>
-                      </Link>
+                      {renderLink(subItem)}
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                 ))}
@@ -81,38 +83,45 @@ function SidebarContentItem(props: SidebarContentProps) {
       ) : (
         <SidebarMenuItem key={key(item)}>
           <SidebarMenuButton asChild tooltip={item.title} isActive={false}>
-            <Link to={item.path || "#"}>
-              {renderIcon(item, state)}
-              <span>{item.title}</span>
-            </Link>
+            {renderLink(item)}
           </SidebarMenuButton>
         </SidebarMenuItem>
       );
     });
   }
 
+  function renderTitle(item: MenuItem) {
+    return <SidebarGroupLabel key={key(item)}>{item.title}</SidebarGroupLabel>;
+  }
+
+  function renderItem(item: MenuItem) {
+    return (
+      <SidebarMenuItem key={key(item)}>
+        <SidebarMenuButton asChild>
+          <Link to={item.path || "#"}>
+            {item.icon && <item.icon />}
+            <span>{item.title}</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  }
+
   return (
-    <SidebarContent key={sidebarKey}>
-      <SidebarMenu>
-        <SidebarGroup>
-          {props.items?.map((item) => (
+    <SidebarContent>
+      <SidebarContentMain {...main}></SidebarContentMain>
+      <SidebarGroup>
+        <SidebarMenu>
+          {items.map((item) => (
             <>
-              {onlyTitle(item) && <SidebarGroupLabel key={key(item)}>{item.title}</SidebarGroupLabel>}
-              {!onlyTitle(item) && (
-                <SidebarMenuItem key={key(item)}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.path || "#"}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
+              {onlyTitle(item) && renderTitle(item)}
+              {!onlyTitle(item) && renderItem(item)}
               {hasSub(item) && renderSubItem(item.items)}
             </>
           ))}
-        </SidebarGroup>
-      </SidebarMenu>
+        </SidebarMenu>
+      </SidebarGroup>
+      <SidebarContentSec {...seconds} props={{ className: "mt-auto" }} />
     </SidebarContent>
   );
 }

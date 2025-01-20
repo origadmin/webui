@@ -19,7 +19,7 @@ import {
   IconUserOff,
   IconUsers,
 } from "@tabler/icons-react";
-import { Command } from "lucide-react";
+import { Command, LifeBuoy, Send } from "lucide-react";
 import { API } from "@/types/typings";
 
 export type Product = {
@@ -301,5 +301,18 @@ export const mockUser = [
     roles: ["user"],
     departments: ["dev"],
     positions: ["高级开发工程师"],
+  },
+];
+
+export const mockSecondItems = [
+  {
+    title: "Support",
+    url: "#",
+    icon: LifeBuoy,
+  },
+  {
+    title: "Feedback",
+    url: "#",
+    icon: Send,
   },
 ];

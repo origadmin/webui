@@ -1,4 +1,4 @@
-import { data, topNav } from "@/mocks/data";
+import { data, topNav, mockSecondItems } from "@/mocks/data";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark.tsx";
@@ -12,6 +12,9 @@ const getMockData = () => {
     } as SidebarHeaderProps,
     content: {
       items: data.menuItems,
+      seconds: {
+        items: mockSecondItems,
+      },
     } as SidebarContentProps,
     footer: {
       user: data.user,

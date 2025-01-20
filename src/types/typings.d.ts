@@ -1,7 +1,8 @@
 /* eslint-disable */
 // @ts-ignore
-import {TablerIcon} from "@tabler/icons-react";
-import {LucideIcon} from "lucide-react";
+import { TablerIcon } from "@tabler/icons-react";
+import { LucideIcon } from "lucide-react";
+
 
 declare global {
   namespace API {
@@ -51,6 +52,7 @@ declare global {
     };
 
     type MenuItem = {
+      id?: string;
       keyword?: string;
       title: string;
       path?: string;

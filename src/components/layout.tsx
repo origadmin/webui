@@ -1,8 +1,7 @@
 import * as React from "react";
 import KBar from "src/components/KBar";
-import { API } from "@/types/typings";
-import { Sidebar, SidebarInset, SidebarProvider, SidebarRail } from "@/components/ui/sidebar";
-import { SidebarContentItem, SidebarFooterItem, SidebarHeaderItem, SidebarProps } from "@/components/Sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProps, SidebarComponent } from "@/components/Sidebar";
 import { Footer, FooterProps } from "@/components/footer";
 import Header from "./header";
 
@@ -14,16 +13,11 @@ type LayoutProps = {
 };
 
 export function Layout(props: LayoutProps) {
-  const { sidebarProps } = props;
+  const { sidebarProps = {} } = props;
   return (
     <KBar>
       <SidebarProvider>
-        <Sidebar className='border-r' collapsible='icon' {...(sidebarProps ? sidebarProps.props : {})}>
-          {sidebarProps?.header && <SidebarHeaderItem {...sidebarProps.header} />}
-          {sidebarProps?.content && <SidebarContentItem {...sidebarProps.content} />}
-          {sidebarProps?.footer && <SidebarFooterItem {...sidebarProps.footer} />}
-          <SidebarRail />
-        </Sidebar>
+        <SidebarComponent {...sidebarProps}></SidebarComponent>
         <SidebarInset className='flex-1'>
           <Header topNav={props.topNav} />
           {props.children}
