@@ -152,11 +152,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          {/*<FormField*/}
-          {/*  control={form.control}*/}
-          {/*  name='captcha_id'*/}
-          {/*  render={({ field }) => <Input id='captcha_id' {...field} readOnly hidden />}*/}
-          {/*/>*/}
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col items-center gap-2'>
               <a href='#' className='flex flex-col items-center gap-2 font-medium'>
