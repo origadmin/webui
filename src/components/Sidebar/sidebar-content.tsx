@@ -1,4 +1,4 @@
-import { randomKey } from "@/utils/crypto.tsx";
+import { randomKey, uuid } from "@/utils/crypto.tsx";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -20,10 +20,12 @@ type MenuItem = API.MenuItem & {
 };
 
 type SidebarContentProps = {
+  key?: string;
   items?: MenuItem[];
 };
 
 function SidebarContentItem(props: SidebarContentProps) {
+  const { key: sidebarKey = uuid() } = props;
   const { state } = useSidebar();
 
   function renderIcon(item: MenuItem, _: string) {
@@ -51,7 +53,7 @@ function SidebarContentItem(props: SidebarContentProps) {
   function renderSubItem(items: MenuItem[] | undefined) {
     return items?.map((item) => {
       return hasSub(item) ? (
-        <Collapsible key={item.title} asChild defaultOpen={item.isActive} className='group/collapsible'>
+        <Collapsible key={key(item)} asChild defaultOpen={item.isActive} className='group/collapsible'>
           <SidebarMenuItem key={key(item)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={item.title} isActive={false}>
@@ -90,14 +92,13 @@ function SidebarContentItem(props: SidebarContentProps) {
   }
 
   return (
-    <SidebarContent>
+    <SidebarContent key={sidebarKey}>
       <SidebarMenu>
         <SidebarGroup>
-          {props.items?.map((item) => {
-            return onlyTitle(item) ? (
-              <SidebarGroupLabel key={key(item)}>{item.title}</SidebarGroupLabel>
-            ) : (
-              <>
+          {props.items?.map((item) => (
+            <>
+              {onlyTitle(item) && <SidebarGroupLabel key={key(item)}>{item.title}</SidebarGroupLabel>}
+              {!onlyTitle(item) && (
                 <SidebarMenuItem key={key(item)}>
                   <SidebarMenuButton asChild>
                     <Link to={item.path || "#"}>
@@ -106,10 +107,10 @@ function SidebarContentItem(props: SidebarContentProps) {
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                {hasSub(item) && renderSubItem(item.items)}
-              </>
-            );
-          })}
+              )}
+              {hasSub(item) && renderSubItem(item.items)}
+            </>
+          ))}
         </SidebarGroup>
       </SidebarMenu>
     </SidebarContent>
