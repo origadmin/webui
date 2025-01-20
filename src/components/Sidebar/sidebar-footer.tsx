@@ -1,5 +1,5 @@
 import { SidebarFooter, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
-import { NavUserItem } from "@/components/NavUser";
+import { NavUserComponent } from "@/components/NavUser";
 
 type SidebarFooterProps = {
   user?: {
@@ -14,7 +14,7 @@ function SidebarFooterItem(props: SidebarFooterProps) {
     <SidebarFooter>
       <SidebarMenu>
         <SidebarMenuItem>
-          <NavUserItem user={props.user} />
+          <NavUserComponent user={props.user} />
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarFooter>

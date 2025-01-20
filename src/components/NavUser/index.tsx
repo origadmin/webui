@@ -26,7 +26,7 @@ const DefaultUser = {
   avatar: "https://avatars.githubusercontent.com/u/10214304?v=4",
 };
 
-function NavUserItem(props: NavUserProps) {
+function NavUserComponent(props: NavUserProps) {
   const { isMobile } = useSidebar();
   const user = props.user ?? DefaultUser;
   return (
@@ -97,4 +97,4 @@ function NavUserItem(props: NavUserProps) {
 }
 
 export type { NavUserProps };
-export { NavUserItem };
+export { NavUserComponent };

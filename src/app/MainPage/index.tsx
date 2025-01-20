@@ -23,7 +23,7 @@ const getMockData = () => {
 };
 
 const watermark = {
-  text: "OrigAdmin",
+  content: "OrigAdmin",
   fontColor: "#ffffff",
   fontWeight: "bold",
   fontFamily: "Arial",
@@ -52,9 +52,13 @@ export default function MainPage() {
 
   return (
     <Layout sidebarProps={sidebarData} topNav={topNav}>
-      <Watermark {...watermark}>
+      {watermark ? (
+        <Watermark {...watermark}>
+          <Outlet />
+        </Watermark>
+      ) : (
         <Outlet />
-      </Watermark>
+      )}
     </Layout>
   );
 }
