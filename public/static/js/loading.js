@@ -23,16 +23,16 @@
         }
         .loading-spinner {
           position: absolute;
-          top: -150%; /* 上移位置 */
+          top: -120%; 
           left: 50%;
           transform: translateX(-50%);
           width: 175px;
           height: 100px;
-          pointer-events: none; /* 防止动画遮挡文字时影响点击事件 */
+          pointer-events: none;
         }
         .loading-spinner span {
           display: block;
-          background: #007BFF; /* 蓝色主题 */
+          background: #007BFF; 
           width: 7px;
           height: 100%;
           border-radius: 14px;
@@ -89,15 +89,15 @@
         }
         @keyframes load {
           0% {
-            background: #0044FF; /* 更深的蓝色 */
+            background: #0044FF; 
             transform: scaleY(0.08);
           }
           50% {
-            background: #007BFF; /* 蓝色主题 */
+            background: #007BFF; 
             transform: scaleY(1);
           }
           100% {
-            background: #0044FF; /* 更深的蓝色 */
+            background: #0044FF; 
             transform: scaleY(0.08);
           }
         }
@@ -111,7 +111,7 @@
           color: #666;
         }
         .loading-spacing {
-          height: 20px; /* 添加间距 */
+          height: 20px; 
         }
       </style>
 
