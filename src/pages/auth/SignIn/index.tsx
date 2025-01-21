@@ -1,7 +1,7 @@
 import Background from "@/assets/static/background.jpg";
-import { UserAuthForm } from "./components/user-auth-form";
+import { UserAuthForm } from "@/pages/auth/SignIn/components/user-auth-form.tsx";
 
-export default function SignIn() {
+function SignInPage() {
   return (
     <>
       <div
@@ -72,3 +72,5 @@ export default function SignIn() {
     </>
   );
 }
+
+export default SignInPage;

@@ -3,7 +3,7 @@ import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { tasks } from "./data/tasks";
 
-export default function Tasks() {
+function Tasks() {
   return (
     <PageContainer>
       <div className='mb-2 flex items-center justify-between space-y-2'>
@@ -18,3 +18,5 @@ export default function Tasks() {
     </PageContainer>
   );
 }
+
+export default Tasks;

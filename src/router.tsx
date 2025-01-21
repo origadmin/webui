@@ -10,39 +10,33 @@ export type RouterConfig = RouteObjectConfig[];
 export const routes: RouterConfig = [
   // Auth routes
   {
-    path: "/login",
+    path: "/signin",
     lazy: async () => ({
-      Component: (await import("@/pages/login")).default,
+      Component: (await import("@/pages/auth/SignIn")).default,
     }),
   },
   {
-    path: "/sign-in",
+    path: "/signup",
     lazy: async () => ({
-      Component: (await import("@/pages/auth/sign-in")).default,
+      Component: (await import("@/pages/auth/SignUp")).default,
     }),
   },
   {
-    path: "/sign-in-2",
+    path: "/signin2",
     lazy: async () => ({
-      Component: (await import("@/pages/auth/sign-in-2")).default,
+      Component: (await import("@/pages/auth/SignIn2")).default,
     }),
   },
   {
-    path: "/sign-up",
+    path: "/forgot",
     lazy: async () => ({
-      Component: (await import("@/pages/auth/sign-up")).default,
-    }),
-  },
-  {
-    path: "/forgot-password",
-    lazy: async () => ({
-      Component: (await import("@/pages/auth/forgot-password")).default,
+      Component: (await import("@/pages/auth/Forgot")).default,
     }),
   },
   {
     path: "/otp",
     lazy: async () => ({
-      Component: (await import("@/pages/auth/otp")).default,
+      Component: (await import("@/pages/auth/Otp")).default,
     }),
   },
   // Main routes

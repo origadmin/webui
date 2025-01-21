@@ -35,7 +35,7 @@ interface State {
   id?: string;
 }
 
-const SystemUser: React.FC = () => {
+function SystemUser() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [state, dispatch] = useReducer(
     (pre: State, action: Action) => {
@@ -195,6 +195,6 @@ const SystemUser: React.FC = () => {
       </Card>
     </PageContainer>
   );
-};
+}
 
 export default SystemUser;

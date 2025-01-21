@@ -2,14 +2,14 @@ import { HTMLAttributes, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/custom/button";
-import { PinInput, PinInputField } from "@/components/custom/pin-input";
+import { cn } from "@/lib/utils.ts";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { Button } from "@/components/custom/button.tsx";
+import { PinInput, PinInputField } from "@/components/custom/pin-input.tsx";
 
-interface OtpFormProps extends HTMLAttributes<HTMLDivElement> {}
+export type OtpFormProps = HTMLAttributes<HTMLDivElement>;
 
 const formSchema = z.object({
   otp: z.string().min(1, { message: "Please enter your otp code." }),

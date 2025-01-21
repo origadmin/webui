@@ -7,18 +7,18 @@ import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.ts";
 import { useToast } from "@/hooks/use-toast.tsx";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form.tsx";
+import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { LoadingSpinner } from "@/components/Loading";
-import { Button } from "@/components/custom/button";
-import { PasswordInput } from "@/components/custom/password-input";
+import { Button } from "@/components/custom/button.tsx";
+import { PasswordInput } from "@/components/custom/password-input.tsx";
 import { SignInProps } from "@/components/login-form.tsx";
 
-type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
+export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
 const formSchema = z.object({
   username: z.string().min(1, { message: "Please enter your Email, Phone, or Username" }),
@@ -34,9 +34,19 @@ const formSchema = z.object({
   captcha_code: z.string().length(4, { message: "Invalid captcha code" }),
 });
 
-type Captcha = {
+export type Captcha = {
   id?: string;
   data?: string;
+};
+export type LoginFormValue = {
+  username: string;
+  password: string;
+  captcha_id: string;
+  captcha_code: string;
+};
+export type SignInProps = {
+  values?: LoginFormValue;
+  callbackUrl: string;
 };
 
 const signIn = async (param: SignInProps): Promise<API.Result<any>> => {
