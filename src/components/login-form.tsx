@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useCallback, useEffect, useState, useTransition } from "react";
 import { mockToken } from "@/mocks/data.ts";
 import { fetchRequest } from "@/utils/service.tsx";
 import { GalleryVerticalEnd } from "lucide-react";
@@ -37,7 +37,7 @@ type Captcha = {
 //   captcha_code: z.string().min(1, { message: "CAPTCHA is required" }),
 // });
 
-async function signIn(param: SignInProps) {
+const signIn = async (param: SignInProps): Promise<API.Result<any>> => {
   return new Promise((resolve, reject) => {
     console.log("param:", param);
     if (!param.values) {
@@ -56,13 +56,13 @@ async function signIn(param: SignInProps) {
         // Storage.setExpirationTime(time.toString());
         // 登录成功后，跳转到 callbackUrl
         // window.location.href = param.callbackUrl;
-        resolve(token);
+        resolve({ success: true, data: token });
       } else {
         reject(new Error("Email is required"));
       }
     }, 1000); // 等待 3 秒
   });
-}
+};
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [captcha, setCaptcha] = useState<Captcha>({});
@@ -89,48 +89,29 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     },
   });
 
-  // const form = useForm<LoginFormValue>({
-  //   resolver: function (values, ctx) {
-  //     console.log("values", values, ctx);
-  //     const result: ResolverSuccess<LoginFormValue> = {
-  //       errors: {},
-  //       values: values,
-  //     };
-  //     return result;
-  //   },
-  //   defaultValues: {
-  //     username: "",
-  //     password: "",
-  //     captcha_id: captcha.id || "",
-  //     captcha_code: "",
-  //   },
-  // });
-
-  const refreshCaptcha = async () => {
+  const refreshCaptcha = useCallback(async () => {
     setIsLoading(true);
     // Simulate API call to get new CAPTCHA
     // await new Promise((resolve) => setTimeout(resolve, 1000))
-    await handleCaptchaChange();
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    refreshCaptcha();
-  }, []);
-
-  const handleCaptchaChange = async () => {
-    fetchRequest<Captcha>("/api/v1/captcha", "GET")
+    const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
+    const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
+    await fetchRequest<Captcha>(url, "GET")
       .then((response) => {
-        // console.log("captcha", response.success, response.data);
-        if (response.success) {
-          const { id, data } = response.data;
-          setCaptcha({ id: id, data: data });
-          // form.setValue("captcha_id", id);
+        if (response.success && response.data) {
+          setCaptcha({ ...response.data });
         }
         return response;
       })
-      .finally();
-  };
+      .catch((err) => {
+        console.log("captcha error:", err);
+        setCaptcha({});
+      });
+    setIsLoading(false);
+  }, [captcha.id, setCaptcha, setIsLoading]);
+
+  useEffect(() => {
+    refreshCaptcha();
+  }, [refreshCaptcha]);
 
   const onSubmit = async (values: LoginFormValue) => {
     values.captcha_id = captcha.id || "";
@@ -140,7 +121,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         values: values,
         callbackUrl: redirectUrl,
       });
-      if (result.success) {
+      if (result && result.success) {
         toast({
           description: "Signed In Successfully!",
         });

@@ -11,3 +11,4 @@ export const USER_KEY = "user";
 export const USER_ID_KEY = "user_id";
 export const USERNAME_KEY = "username";
 export const EXPIRATION_TIME_KEY = "expiration_time";
+export const AUTHORIZATION_KEY = "authorization";

@@ -202,7 +202,7 @@ function App() {
 
   useEffect(() => {
     setInitRoutes(initRouter(routes));
-  });
+  }, []);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>

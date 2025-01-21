@@ -17,6 +17,7 @@ declare global {
     type Error = {
       id?: string;
       code?: number;
+      message?: string;
       detail?: string;
       status?: string;
     };

@@ -28,16 +28,18 @@ export default function SignIn() {
             >
               <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
             </svg>
-            Shadcn Admin
+            OrigAdmin Panel
           </div>
 
           <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
               <p className='text-lg'>
-                &ldquo;This library has saved me countless hours of work and helped me deliver stunning designs to my
-                clients faster than ever before.&rdquo;
+                &ldquo;This library has revolutionized my workflow, saving time and <br />
+                allowing me to deliver stunning designs at lightning speed. It <br />
+                enhances efficiency and brings unmatched creativity and quality <br />
+                to my work. There's truly no substitute for this tool! &rdquo;
               </p>
-              <footer className='text-sm'>Sofia Davis</footer>
+              <footer className='text-sm'>Lu Xun</footer>
             </blockquote>
           </div>
         </div>
@@ -47,12 +49,13 @@ export default function SignIn() {
             <div className='flex flex-col space-y-2 text-left'>
               <h1 className='text-2xl font-semibold tracking-tight'>Login</h1>
               <p className='text-sm text-muted-foreground'>
-                Enter your email and password below <br />
-                to log into your account
+                Enter your email and password below to log into your account
               </p>
             </div>
             <UserAuthForm />
-            <p className='px-8 text-center text-sm text-muted-foreground'>
+            <br />
+            <footer className='px-8 text-center text-sm text-muted-foreground mt-auto'>
+              {/*<p className='px-8 text-center text-sm text-muted-foreground'>*/}
               By clicking login, you agree to our{" "}
               <a href='/terms' className='underline underline-offset-4 hover:text-primary'>
                 Terms of Service
@@ -61,8 +64,8 @@ export default function SignIn() {
               <a href='/privacy' className='underline underline-offset-4 hover:text-primary'>
                 Privacy Policy
               </a>
-              .
-            </p>
+              .{/*</p>*/}
+            </footer>
           </div>
         </div>
       </div>

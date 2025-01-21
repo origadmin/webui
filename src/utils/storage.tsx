@@ -1,4 +1,5 @@
-import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USER_ID_KEY, USER_KEY, USERNAME_KEY } from "@/types";
+import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USER_ID_KEY, USER_KEY, USERNAME_KEY, AUTHORIZATION_KEY } from "@/types";
+
 
 /**
  * Remove the specified token from local storage
@@ -26,17 +27,21 @@ export const removeRefreshToken = () => {
  * The function `setUserID` sets the user ID in the local storage.
  * @param {string} id - A string representing the user ID that needs to be set.
  */
-export function setUserID(id: string) {
+export const setUserID = (id: string) => {
   localStorage.setItem(USER_ID_KEY, id);
-}
+};
 
 /**
  * The function `getUserID` returns the value of the 'user ID' key from the localStorage, or an empty string if it doesn't exist.
  * @returns a string value representing the user ID or an empty string.
  */
-export function getUserID(): string {
-  return localStorage.getItem(USER_ID_KEY) || "";
-}
+export const getUserID = () => {
+  const auth = getAuthorization();
+  if (auth && auth.user_id) {
+    return auth.user_id;
+  }
+  return localStorage.getItem(USER_ID_KEY);
+};
 
 /**
  * The function `setUser` sets the user object in the local storage.
@@ -59,17 +64,17 @@ export const getUser = () => {
  * The function sets the username in the local storage.
  * @param {string} username - A string representing the username that needs to be set.
  */
-export function setUsername(username: string) {
+export const setUsername = (username: string) => {
   localStorage.setItem(USERNAME_KEY, username);
-}
+};
 
 /**
  * The function `getUsername` returns the value of the 'username' key from the localStorage, or an empty string if it doesn't exist.
  * @returns a string value representing the username or an empty string.
  */
-export function getUsername(): string {
-  return localStorage.getItem(USERNAME_KEY) || "";
-}
+export const getUsername = () => {
+  return localStorage.getItem(USERNAME_KEY);
+};
 
 /**
  * The function `hasToken` checks if a token exists in the local storage based on the provided key.
@@ -115,6 +120,10 @@ export const hasRefreshToken = () => {
  * @returns The refresh token value if it exists, otherwise returns null.
  */
 export const getRefreshToken = () => {
+  const auth = getAuthorization();
+  if (auth && auth.refresh_token) {
+    return auth.refresh_token;
+  }
   return getToken(REFRESH_TOKEN_KEY);
 };
 
@@ -139,6 +148,10 @@ export const hasAccessToken = () => {
  * @returns The access token value if it exists, otherwise returns null.
  */
 export const getAccessToken = () => {
+  const auth = getAuthorization();
+  if (auth && auth.access_token) {
+    return auth.access_token;
+  }
   return getToken(ACCESS_TOKEN_KEY);
 };
 
@@ -154,8 +167,38 @@ export const setAccessToken = (accessToken: string) => {
  * The function `getExpirationTime` retrieves the expiration time from the local storage.
  * @returns The expiration time value if it exists, otherwise returns null.
  */
-export const getExpirationTime = () => {
+export const getExpirationTimeString = () => {
+  const auth = getAuthorization();
+  // for unknown json type
+  // if (auth &&
+  // "expiration_time" in auth &&
+  // auth.expiration_time !== "" &&
+  // typeof auth.expiration_time === "string") {
+  //   return parseInt(auth.expiration_time, 10);
+  // }
+  if (auth && auth.expiration_time) {
+    return auth.expiration_time;
+  }
   return localStorage.getItem(EXPIRATION_TIME_KEY);
+};
+
+/**
+ * The function `getExpirationTime` retrieves the expiration time from the local storage.
+ * @returns The expiration time value if it exists, otherwise returns null.
+ */
+export const getExpirationTime = () => {
+  const expire = getExpirationTimeString();
+  // for unknown json type
+  // if (auth &&
+  // "expiration_time" in auth &&
+  // auth.expiration_time !== "" &&
+  // typeof auth.expiration_time === "string") {
+  //   return parseInt(auth.expiration_time, 10);
+  // }
+  if (expire) {
+    return parseInt(expire, 10);
+  }
+  return undefined;
 };
 
 /**
@@ -164,6 +207,39 @@ export const getExpirationTime = () => {
  */
 export const setExpirationTime = (expirationTime: string) => {
   localStorage.setItem(EXPIRATION_TIME_KEY, expirationTime);
+};
+
+export const clearStorage = () => {
+  localStorage.clear();
+};
+
+const setAuthorization = (token: string) => {
+  localStorage.setItem(AUTHORIZATION_KEY, token);
+};
+
+const getAuthorization = () => {
+  const tokenStr = localStorage.getItem(AUTHORIZATION_KEY);
+  if (tokenStr) {
+    return JSON.parse(tokenStr) as API.Token;
+  }
+  return null;
+};
+
+export const setAuth = (token: API.Token, split: boolean = false) => {
+  setAuthorization(JSON.stringify(token));
+  if (!split) {
+    return;
+  }
+  setAccessToken(token.access_token);
+  if (token.user_id) {
+    setUserID(token.user_id);
+  }
+  if (token.refresh_token) {
+    setRefreshToken(token.refresh_token);
+  }
+  if (token.expiration_time) {
+    setExpirationTime(token.expiration_time);
+  }
 };
 
 /**
@@ -176,6 +252,6 @@ export const IsExpired = () => {
     return true;
   }
   const currentTime = new Date().getTime();
-  const expirationTimeInMilliseconds = parseInt(expirationTime, 10) * 1000;
+  const expirationTimeInMilliseconds = expirationTime * 1000;
   return currentTime > expirationTimeInMilliseconds;
 };

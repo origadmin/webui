@@ -17,7 +17,6 @@ request.interceptors.request.use(
     const token = getAccessToken();
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
-      // config.headers["Access-Control-Allow-Origin"] = "*";
     }
     return config;
   },
@@ -34,7 +33,7 @@ request.interceptors.response.use(
     // Do something about the response data
     return Promise.resolve(response);
   },
-  (response: AxiosResponse<any, any>) => {
+  (response: AxiosError<any>) => {
     // Do something about response errors
     return Promise.reject(response);
   },
@@ -49,7 +48,7 @@ async function fetchRequest<T>(
   body?: any,
   options?: API.RequestOptions,
   params?: API.Params,
-) {
+): Promise<API.Result<T>> {
   return request<API.Result<T>>(url, {
     method,
     ...(params ? { params } : {}),
@@ -57,17 +56,17 @@ async function fetchRequest<T>(
     ...(options || {}),
   })
     .then((resp) => resp.data)
-    .catch((resp: AxiosError) => {
-      console.log("request error:", resp);
-      if (resp && resp.response && resp.response.data) {
-        const respData = resp.response.data;
+    .catch((respErr: AxiosError<API.Result<T>>) => {
+      console.log("request error:", respErr);
+      if (respErr && respErr.response && respErr.response.data) {
+        const respData = respErr.response.data;
         if (typeof respData === "string") {
           throw new Error(respData);
         } else if (isAPIError(respData)) {
           throw new Error(respData.error.message, { cause: respData.error });
         }
       }
-      throw new Error("unknown error");
+      throw respErr;
     });
 }
 

@@ -1,19 +1,27 @@
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from "react";
+import Placeholder from "@/assets/static/placeholder.jpg";
+import { mockToken } from "@/mocks/data.ts";
+import { fetchRequest } from "@/utils/service.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast.tsx";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { LoadingSpinner } from "@/components/Loading";
 import { Button } from "@/components/custom/button";
 import { PasswordInput } from "@/components/custom/password-input";
+import { SignInProps } from "@/components/login-form.tsx";
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
 const formSchema = z.object({
-  email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
+  username: z.string().min(1, { message: "Please enter your Email, Phone, or Username" }),
   password: z
     .string()
     .min(1, {
@@ -22,26 +30,135 @@ const formSchema = z.object({
     .min(7, {
       message: "Password must be at least 7 characters long",
     }),
+  captcha_id: z.string(),
+  captcha_code: z.string().length(4, { message: "Invalid captcha code" }),
 });
 
+type Captcha = {
+  id?: string;
+  data?: string;
+};
+
+const signIn = async (param: SignInProps): Promise<API.Result<any>> => {
+  return new Promise((resolve, reject) => {
+    console.log("param:", param);
+    if (!param.values) {
+      reject(new Error("Require login data is empty"));
+      return;
+    }
+    console.log("param value:", param);
+
+    setTimeout(() => {
+      // 模拟登录成功
+      const token = mockToken;
+      if (token) {
+        // Storage.setUserID(token.user_id);
+        // Storage.setAccessToken(token.access_token);
+        // const time = new Date().setTime(token.expires_at);
+        // Storage.setExpirationTime(time.toString());
+        // 登录成功后，跳转到 callbackUrl
+        // window.location.href = param.callbackUrl;
+        resolve({ success: true, data: token });
+      } else {
+        reject(new Error("Email is required"));
+      }
+    }, 1000); // 等待 3 秒
+  });
+};
+
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const [captcha, setCaptcha] = useState<Captcha>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [submitting, startTransition] = useTransition();
+  const { toast } = useToast();
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get("redirect") || "/";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
+      captcha_id: captcha.id || "",
+      captcha_code: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  const refreshCaptcha = useCallback(async () => {
+    // Avoid refreshing the CAPTCHA when submitting a login form
+    if (submitting || isLoading) {
+      return;
+    }
     setIsLoading(true);
-    console.log(data);
-
-    setTimeout(() => {
+    // Simulate API call to get new CAPTCHA
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
+    const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
+    const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
+    try {
+      const response = await fetchRequest<Captcha>(url, "GET");
+      if (response.success && response.data) {
+        setCaptcha({ ...response.data });
+      } else {
+        console.error("Failed to refresh captcha:", response);
+      }
+    } catch (err) {
+      console.error("Captcha Err:", err);
+    } finally {
       setIsLoading(false);
-    }, 3000);
+    }
+  }, [submitting, isLoading, captcha.id]);
+
+  // const refreshCaptcha = async () => {
+  //   if (submitting) {
+  //     return;
+  //   }
+  //   setIsLoading(true);
+  //   // Cancel any previous requests
+  //
+  //   // Simulate API call to get new CAPTCHA
+  //   // await new Promise((resolve) => setTimeout(resolve, 1000))
+  //   const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
+  //   const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
+  //   try {
+  //     const response = await fetchRequest<Captcha>(url, "GET", { signal });
+  //     console.log("response:", response);
+  //     if (response.success && response.data) {
+  //       setCaptcha({ ...response.data });
+  //     } else {
+  //       console.error("Failed to refresh captcha:", response);
+  //       // setCaptcha({});
+  //     }
+  //   } catch (err) {
+  //     console.error("Captcha error:", err);
+  //     // setCaptcha({});
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  useEffect(() => {
+    // Avoid refreshing the CAPTCHA when submitting a login form
+    if (isLoading) {
+      return;
+    }
+    console.log("refresh captcha");
+    refreshCaptcha();
+  }, []);
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    values.captcha_id = captcha.id || "";
+    console.log("form data:", values);
+    startTransition(async () => {
+      const result = await signIn({
+        values: values,
+        callbackUrl: redirectUrl,
+      });
+      if (result && result.success) {
+        toast({
+          description: "Signed In Successfully!",
+        });
+      }
+    });
   }
 
   return (
@@ -51,12 +168,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name='email'
+              name='username'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <Input placeholder='Please enter Email, Phone, or Username...' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -80,7 +197,34 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' loading={isLoading}>
+            <div className='grid gap-2'>
+              <FormField
+                control={form.control}
+                name='captcha_code'
+                render={({ field }) => (
+                  <FormItem className='space-y-1'>
+                    <Label htmlFor='captcha_code'>CAPTCHA</Label>
+                    <div className='flex items-center gap-2'>
+                      <Input className='flex-1' id='captcha_code' placeholder='Enter CAPTCHA' {...field} required />
+                      {isLoading ? (
+                        <Skeleton className='h-10 w-[120px] flex items-center justify-center'>
+                          <LoadingSpinner />
+                        </Skeleton>
+                      ) : (
+                        <img
+                          src={captcha.data || Placeholder}
+                          alt='CAPTCHA'
+                          className='h-10 w-[120px] cursor-pointer'
+                          onClick={refreshCaptcha}
+                          aria-label='Click to refresh CAPTCHA'
+                        />
+                      )}
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button type='submit' className='mt-2' loading={submitting}>
               Login
             </Button>
 
@@ -98,7 +242,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 variant='outline'
                 className='w-full'
                 type='button'
-                loading={isLoading}
+                loading={submitting}
                 leftSection={<IconBrandGithub className='size-4' />}
               >
                 GitHub
@@ -107,11 +251,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 variant='outline'
                 className='w-full'
                 type='button'
-                loading={isLoading}
+                loading={submitting}
                 leftSection={<IconBrandFacebook className='size-4' />}
               >
                 Facebook
               </Button>
+            </div>
+            <div className='grid gap-2'>
+              <div className='text-center text-sm'>
+                Don&apos;t have an account? {/*<a href="#" className="underline underline-offset-4">*/}
+                {/*  Sign up*/}
+                {/*</a>*/}
+                <Link to='#' className='text-sm font-medium text-muted-foreground hover:opacity-75'>
+                  Sign up
+                </Link>
+              </div>
             </div>
           </div>
         </form>
