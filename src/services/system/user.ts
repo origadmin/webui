@@ -1,4 +1,4 @@
-import { mockUser } from "@/mocks/data.ts";
+import { mockUsers } from "@/mocks/data.ts";
 import { Pagination } from "@/utils";
 import { fetchRequest } from "@/utils/service";
 
@@ -8,7 +8,7 @@ export async function listUser(params: API.Params, options?: API.RequestOptions)
   if (process.env.NODE_ENV === "development") {
     // 返回 mock 数据
     return Promise.resolve({
-      data: mockUser,
+      data: mockUsers,
     });
   }
   params = Pagination.parseParams(params);

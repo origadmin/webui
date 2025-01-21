@@ -1,10 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ActiveUsers } from "./active-users";
-import { ErrorLogs } from "./error-logs";
-import { PerformanceMetrics } from "./performance-metrics";
-import { ServerStatus } from "./server-status";
-import { SystemHealth } from "./system-health";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
+import { ActiveUsers } from "@/pages/dashboard/Monitor/active-users.tsx";
+import { ErrorLogs } from "@/pages/dashboard/Monitor/error-logs.tsx";
+import { PerformanceMetrics } from "@/pages/dashboard/Monitor/performance-metrics.tsx";
+import { ServerStatus } from "@/pages/dashboard/Monitor/server-status.tsx";
+import { SystemHealth } from "@/pages/dashboard/Monitor/system-health.tsx";
 
 export default function Monitor() {
   return (

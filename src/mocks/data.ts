@@ -20,7 +20,6 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import { Command, LifeBuoy, Send } from "lucide-react";
-import { API } from "@/types/typings";
 
 export type Product = {
   photo_path: string;
@@ -56,13 +55,22 @@ export const data: API.SidebarData = {
           icon: IconLayoutDashboard,
           isActive: false,
           shortcut: ["d", "d"],
-        },
-        {
-          title: "Monitor",
-          path: "/monitor",
-          icon: IconMessages,
-          shortcut: ["m", "m"],
-          isActive: false,
+          items: [
+            {
+              title: "Overview",
+              path: "/dashboard/overview",
+              icon: IconLayoutDashboard,
+              shortcut: ["o", "o"],
+              isActive: false,
+            },
+            {
+              title: "Monitor",
+              path: "/dashboard/monitor",
+              icon: IconMessages,
+              shortcut: ["m", "m"],
+              isActive: false,
+            },
+          ],
         },
         {
           title: "Notifications",

@@ -49,31 +49,73 @@ export const routes: RouterConfig = [
     children: [
       {
         index: true,
-        element: <Navigate to='dashboard' replace />,
+        element: <Navigate to='dashboard/overview' replace />,
       },
       {
         path: "dashboard",
-        lazy: async () => ({
-          Component: (await import("@/pages/dashboard")).default,
-          metadata: {
-            hidden: true,
-            title: "Dashboard",
-            icon: "dashboard",
+        children: [
+          {
+            index: true,
+            element: <Navigate to='overview' replace />,
           },
-        }),
-      },
-      {
-        index: true,
-        path: "monitor",
-        lazy: async () => ({
-          Component: (await import("@/pages/monitor")).default,
-          metadata: {
-            hidden: true,
-            title: "Monitor",
-            icon: "monitor",
+          {
+            path: "overview",
+            lazy: async () => ({
+              Component: (await import("@/pages/dashboard/Overview")).default,
+              metadata: {
+                hidden: true,
+                title: "Overview",
+                icon: "overview",
+              },
+            }),
           },
-        }),
+          {
+            path: "monitor",
+            lazy: async () => ({
+              Component: (await import("@/pages/dashboard/Monitor")).default,
+              metadata: {
+                hidden: true,
+                title: "Monitor",
+                icon: "monitor",
+              },
+            }),
+          },
+          {
+            path: "customers",
+            lazy: async () => ({
+              Component: (await import("@/pages/dashboard/Customers")).default,
+              metadata: {
+                hidden: true,
+                title: "Customers",
+                icon: "customers",
+              },
+            }),
+          },
+          {
+            path: "products",
+            lazy: async () => ({
+              Component: (await import("@/pages/dashboard/Products")).default,
+              metadata: {
+                hidden: true,
+                title: "Products",
+                icon: "products",
+              },
+            }),
+          },
+          {
+            path: "settings",
+            lazy: async () => ({
+              Component: (await import("@/pages/dashboard/Settings")).default,
+              metadata: {
+                hidden: true,
+                title: "Settings",
+                icon: "settings",
+              },
+            }),
+          },
+        ],
       },
+
       {
         path: "system",
         children: [

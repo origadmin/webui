@@ -1,5 +1,5 @@
 import { Activity, ArrowDownIcon, ArrowUpIcon, DollarSign, ShoppingCart, Users } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 
 const metrics = [
   {

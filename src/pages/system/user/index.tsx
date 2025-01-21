@@ -72,7 +72,9 @@ function SystemUser() {
     try {
       const response = await listUser({ pageSize });
       console.log("response", response);
-      setData(response.data || []);
+      if (response && response.data) {
+        setData(response.data || []);
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
     }

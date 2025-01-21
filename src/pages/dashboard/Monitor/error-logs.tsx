@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx";
 
 const errorLogs = [
   { timestamp: "2023-06-15 14:30:22", level: "ERROR", message: "Database connection failed" },

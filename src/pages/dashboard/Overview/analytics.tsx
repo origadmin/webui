@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ConversionFunnel } from "./conversion-funnel";
-import { MetricsOverview } from "./metrics-overview";
-import { UserActivityChart } from "./user-activity-chart";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { ConversionFunnel } from "./conversion-funnel.tsx";
+import { MetricsOverview } from "./metrics-overview.tsx";
+import { UserActivityChart } from "./user-activity-chart.tsx";
 
 const invoices = [
   {
