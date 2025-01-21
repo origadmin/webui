@@ -85,7 +85,7 @@ const tseslintConfig = {
   settings: {
     react: { version: "detect" },
   },
-  files: ["**/*.{ts,tsx}"],
+  files: ["**/*.{js,jsx,ts,tsx}"],
   languageOptions: {
     parser: tseslint.parser,
     parserOptions: {
@@ -112,7 +112,7 @@ const tailwindcssConfig = {
   plugins: {
     tailwindcss,
   },
-  files: ["**/*.{css,ts,tsx}"],
+  files: ["**/*.{css,js,jsx,ts,tsx}"],
   languageOptions: {
     parserOptions: {
       sourceType: "module",

@@ -12,26 +12,20 @@
           height: 100%;
           margin: 0;
           padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-family: Arial, sans-serif;
         }
-        #root {
-          background-repeat: no-repeat;
-          background-size: 100% auto;
-        }
-        .loading-spinner {
-          /* change color here */
-          /* color: #46dff0 */
-        }
-        .loading-spinner,
-        .loading-spinner div,
-        .loading-spinner div:after {
-          box-sizing: border-box;
+        .loading-container {
+          text-align: center;
         }
         .loading-spinner {
-          color: currentColor;
           display: inline-block;
           position: relative;
           width: 80px;
           height: 80px;
+          margin-bottom: 20px;
         }
         .loading-spinner div {
           transform-origin: 40px 40px;
@@ -46,7 +40,7 @@
           width: 6.4px;
           height: 17.6px;
           border-radius: 20%;
-          background: currentColor;
+          background: #46dff0;
         }
         .loading-spinner div:nth-child(1) {
           transform: rotate(0deg);
@@ -104,17 +98,21 @@
             opacity: 0;
           }
         }
+        .loading-title {
+          font-size: 24px;
+          color: #333;
+          margin-bottom: 10px;
+        }
+        .loading-sub-title {
+          font-size: 16px;
+          color: #666;
+        }
       </style>
 
-      <div style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        min-height: 362px;
-      ">
-        <div class="loading-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <div class="loading-container">
+        <div class="loading-spinner">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
         <div class="loading-title">
           Loading resources...
         </div>
