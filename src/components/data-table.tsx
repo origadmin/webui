@@ -13,33 +13,54 @@ interface DataTableProps<T> {
   columns: ColumnType<T>[];
   onEdit: (item: T) => void;
   onDelete: (item: T) => void;
+  toolbarPosition?: "top" | "bottom"; // 新增属性
+  toolbarAlignment?: "left" | "center" | "right"; // 新增属性
 }
 
-export function DataTable<T extends { id: string | number }>({ data, columns, onEdit, onDelete }: DataTableProps<T>) {
+export function DataTable<T extends { id: string | number }>({
+  data,
+  columns,
+  onEdit,
+  onDelete,
+  toolbarPosition = "top", // 默认值
+  toolbarAlignment = "left",
+}: DataTableProps<T>) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = data.filter((item) =>
     Object.values(item).some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())),
   );
+
+  const renderToolbar = () => (
+    <div
+      className={`flex ${
+        toolbarAlignment === "left" ? "justify-start" : toolbarAlignment === "center" ? "justify-center" : "justify-end"
+      } mb-4`}
+    >
+      <Input type='text' placeholder='Search...' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+    </div>
+  );
+
   return (
     <div>
-      <Input
-        type='text'
-        placeholder='Search...'
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className='mb-4'
-      />
+      {toolbarPosition === "top" && renderToolbar()}
       <Table>
         <TableHeader>
+          <Input
+            type='text'
+            placeholder='Search...'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className='mb-4'
+          />
+        </TableHeader>
+        <TableBody>
           <TableRow>
             {columns.map((column) => (
               <TableHead key={String(column.key)}>{column.label}</TableHead>
             ))}
             <TableHead>Actions</TableHead>
           </TableRow>
-        </TableHeader>
-        <TableBody>
           {filteredData.map((item) => (
             <TableRow key={item.id}>
               {columns.map((column) => (

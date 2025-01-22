@@ -99,11 +99,11 @@ function SystemUser() {
       <Card>
         <CardHeader>
           <CardTitle>User Management</CardTitle>
-          <Button onClick={() => dispatch({ type: ActionTypeEnum.ADD })}>Add User</Button>
         </CardHeader>
         <CardContent>
           <div className='flex items-center py-4'>
             <Input placeholder='Search users...' className='max-w-sm' />
+            <Button onClick={() => dispatch({ type: ActionTypeEnum.ADD })}>Add User</Button>
           </div>
           <Table>
             <TableHeader>

@@ -14,7 +14,7 @@ export default function PageContainer({
   children,
   props,
   headerProps = { menus: mockTopNav },
-  scrollable = true,
+  scrollable = false, // using the global scroll
 }: {
   children: React.ReactNode;
   scrollable?: boolean;
@@ -33,7 +33,7 @@ export default function PageContainer({
 
   return (
     <Content {...props}>
-      <Content.Header className='h-16 gap-2 justify-between　ease-linear'>
+      <Content.Header className='h-16 gap-2 justify-between ease-linear'>
         <div className='flex items-center gap-2 px-4'>
           <SidebarTrigger className='-ml-1' />
           <Separator orientation='vertical' className='mr-2 h-4' />

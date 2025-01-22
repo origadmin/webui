@@ -1,11 +1,15 @@
+import InternalServerError from "src/pages/errors/internal-server-error";
 import ComingSoon from "./coming-soon";
 import ForbiddenError from "./forbidden";
-import InternalServerError from "src/pages/errors/internal-server-error";
 import MaintenanceError from "./maintenance-error";
 import NotFoundError from "./not-found-error";
 import UnauthorizedError from "./unauthorized-error";
 
 const errorRoutes = [
+  {
+    path: "/401",
+    element: <UnauthorizedError />,
+  },
   {
     path: "/403",
     element: <ForbiddenError />,
@@ -21,10 +25,6 @@ const errorRoutes = [
   {
     path: "/503",
     element: <MaintenanceError />,
-  },
-  {
-    path: "/401",
-    element: <UnauthorizedError />,
   },
 ];
 

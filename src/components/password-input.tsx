@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Eye, EyeOff } from "react-feather";
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 
 export type PasswordInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">;
 

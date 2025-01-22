@@ -1,7 +1,8 @@
-import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar.ts";
+import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar";
+import { SIGN_IN_URL } from "@/types";
 import { Navigate, Outlet } from "react-router-dom";
-import { useToken } from "@/hooks/use-auth";
-import { Watermark } from "@/components/ui/watermark.tsx";
+import { useToken, useAuth } from "@/hooks/use-auth";
+import { Watermark } from "@/components/ui/watermark";
 import { SidebarProps } from "@/components/Sidebar";
 import Layout from "@/components/layout";
 
@@ -41,12 +42,13 @@ const watermark = {
 
 export default function MainPage() {
   const { token } = useToken();
+  const { signInPath } = useAuth();
 
   console.log("login token:", token);
   // Determine whether a user has permissions
   if (!token) {
     // If you don't have permissions, you'll be redirected to the login page
-    return <Navigate to='/login' replace />;
+    return <Navigate to={signInPath || SIGN_IN_URL} replace />;
   }
 
   const sidebarData = getMockData();

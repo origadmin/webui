@@ -1,5 +1,5 @@
 import Background from "@/assets/static/background.jpg";
-import { UserAuthForm } from "@/pages/auth/SignIn/components/user-auth-form";
+import { UserAuthForm } from "./components/user-auth-form";
 
 function SignInPage() {
   return (
@@ -13,8 +13,7 @@ function SignInPage() {
         }}
         className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'
       >
-        <div className='relative hidden h-full flex-col p-10 text-white lg:flex dark:border-r'>
-          {/*<div className='absolute inset-0 bg-zinc-900' />*/}
+        <div className='relative hidden h-full flex-col p-10 lg:flex dark:border-r'>
           <div className='relative z-20 flex items-center text-lg font-medium'>
             <svg
               xmlns='http://www.w3.org/2000/svg'

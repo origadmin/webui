@@ -107,9 +107,9 @@ declare global {
     };
 
     type Team = {
-      id: string;
+      id?: string;
       name: string;
-      avatar: string;
+      avatar?: string;
       logo: ElementType;
       plan: string;
     };

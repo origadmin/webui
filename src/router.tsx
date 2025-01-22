@@ -126,7 +126,7 @@ export const routes: RouterConfig = [
           {
             path: "user",
             lazy: async () => ({
-              Component: (await import("@/pages/system/user")).default,
+              Component: (await import("@/pages/system/users")).default,
               metadata: {
                 title: "User",
                 icon: "user",

@@ -1,6 +1,5 @@
 import { IconMenu } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { API } from "@/types/typings";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -11,10 +10,12 @@ import {
 import { Button } from "./custom/button";
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
+  props?: React.HTMLAttributes<HTMLElement>;
   menus?: API.TopNav[];
 }
 
-export function TopNav({ className, menus, ...props }: TopNavProps) {
+export function TopNav({ menus, props }: TopNavProps) {
+  const { className } = props || {};
   return (
     <>
       <div className='md:hidden'>

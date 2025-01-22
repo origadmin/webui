@@ -6,12 +6,14 @@ type ContextType = {
   setToken: (token: string) => void;
   access?: Map<string, boolean>;
   setAccess: (access: Map<string, boolean>) => void;
+  signInPath?: string;
+  signUpPath?: string;
 };
 
 const Context = createContext<ContextType>({
   token: null,
-  setToken: (_: string) => void {},
-  setAccess: (_: Map<string, boolean>) => void {},
+  setToken: (token: string) => void {},
+  setAccess: (access: Map<string, boolean>) => void {},
 });
 
 type AuthProviderProps = {
@@ -45,9 +47,7 @@ const AuthProvider = ({ token: userToken, access: userAccess, refresh, children 
         console.error("Error refreshing token:", error);
         Storage.removeAccessToken();
       }
-    } else {
     }
-    // }
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { randomKey } from "@/utils/crypto.tsx";
+import { randomKey } from "@/utils/crypto";
 import {
   IconBarrierBlock,
   IconBrowserCheck,
@@ -308,9 +308,9 @@ export const mockUsers = [
     email: "admin@example.com",
     phone: "13800138000",
     status: 1,
-    roles: ["super_admin"],
-    departments: ["root"],
-    positions: ["技术总监"],
+    // roles: ["super_admin"],
+    // departments: ["root"],
+    // positions: ["技术总监"],
     is_system: true,
   },
   {
@@ -320,9 +320,9 @@ export const mockUsers = [
     email: "test@example.com",
     phone: "13800138001",
     status: 1,
-    roles: ["user"],
-    departments: ["dev"],
-    positions: ["高级开发工程师"],
+    // roles: ["user"],
+    // departments: ["dev"],
+    // positions: ["高级开发工程师"],
   },
 ];
 
@@ -334,9 +334,9 @@ export const mockUser = {
   email: "admin@example.com",
   phone: "13800138000",
   status: 1,
-  roles: ["super_admin"],
-  departments: ["root"],
-  positions: ["技术总监"],
+  // roles: ["super_admin"],
+  // departments: ["root"],
+  // positions: ["技术总监"],
   is_system: true,
 };
 

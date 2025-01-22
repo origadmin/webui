@@ -1,13 +1,14 @@
 import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from "react";
 import Placeholder from "@/assets/static/placeholder.jpg";
-import { mockToken } from "@/mocks/mockSidebar.ts";
+import { mockToken } from "@/mocks/mockSidebar";
 import { fetchRequest } from "@/utils/service";
+import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,8 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LoadingSpinner } from "@/components/Loading";
 import { Button } from "@/components/custom/button";
-import { PasswordInput } from "@/components/custom/password-input";
-import { SignInProps } from "@/components/login-form";
+import { PasswordInput } from "@/components/password-input";
 
 export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -57,7 +57,14 @@ const signIn = async (param: SignInProps): Promise<API.Result<any>> => {
       return;
     }
     console.log("param value:", param);
-
+    if (param.values.username !== "admin") {
+      reject(new Error("Invalid username or password"));
+      return;
+    }
+    if (param.values.password !== "adminadmin") {
+      reject(new Error("Invalid username or password"));
+      return;
+    }
     setTimeout(() => {
       // 模拟登录成功
       const token = mockToken;
@@ -118,34 +125,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   }, [submitting, isLoading, captcha.id]);
 
-  // const refreshCaptcha = async () => {
-  //   if (submitting) {
-  //     return;
-  //   }
-  //   setIsLoading(true);
-  //   // Cancel any previous requests
-  //
-  //   // Simulate API call to get new CAPTCHA
-  //   // await new Promise((resolve) => setTimeout(resolve, 1000))
-  //   const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
-  //   const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
-  //   try {
-  //     const response = await fetchRequest<Captcha>(url, "GET", { signal });
-  //     console.log("response:", response);
-  //     if (response.success && response.data) {
-  //       setCaptcha({ ...response.data });
-  //     } else {
-  //       console.error("Failed to refresh captcha:", response);
-  //       // setCaptcha({});
-  //     }
-  //   } catch (err) {
-  //     console.error("Captcha error:", err);
-  //     // setCaptcha({});
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   useEffect(() => {
     // Avoid refreshing the CAPTCHA when submitting a login form
     if (isLoading) {
@@ -159,13 +138,24 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     values.captcha_id = captcha.id || "";
     console.log("form data:", values);
     startTransition(async () => {
-      const result = await signIn({
-        values: values,
-        callbackUrl: redirectUrl,
-      });
-      if (result && result.success) {
+      try {
+        const result = await signIn({
+          values: values,
+          callbackUrl: redirectUrl,
+        });
+        if (result && result.success) {
+          toast({
+            description: "Signed In Successfully!",
+          });
+          setAuth(result.data);
+        }
+        window.location.href = redirectUrl;
+      } catch (err) {
+        const myerr = err as Error;
+        console.error("SignIn Err:", myerr);
         toast({
-          description: "Signed In Successfully!",
+          variant: "destructive",
+          description: myerr && myerr.message ? myerr.message : "unknown error",
         });
       }
     });
@@ -215,21 +205,24 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <FormItem className='space-y-1'>
                     <Label htmlFor='captcha_code'>CAPTCHA</Label>
                     <div className='flex items-center gap-2'>
-                      <Input className='flex-1' id='captcha_code' placeholder='Enter CAPTCHA' {...field} required />
+                      <FormControl>
+                        <Input className='flex-1' id='captcha_code' placeholder='Enter CAPTCHA' {...field} required />
+                      </FormControl>
                       {isLoading ? (
-                        <Skeleton className='h-10 w-[120px] flex items-center justify-center'>
+                        <Skeleton className='h-10 w-[120px] flex flex-1 items-center justify-center'>
                           <LoadingSpinner />
                         </Skeleton>
                       ) : (
                         <img
                           src={captcha.data || Placeholder}
                           alt='CAPTCHA'
-                          className='h-10 w-[120px] cursor-pointer'
+                          className='h-10 w-[120px] cursor-pointer flex flex-1 rounded-md items-center justify-center'
                           onClick={refreshCaptcha}
                           aria-label='Click to refresh CAPTCHA'
                         />
                       )}
                     </div>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
