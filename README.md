@@ -47,6 +47,11 @@ This project implements the front-end Admin design based on the following techno
    ```
 6. Open the browser and visit http://localhost:3000 to see the project.
 
+7. [Demo](https://shadcn-admin-design.vercel.app/)
+
+- default user account: `admin` and password: `adminadmin` (you can change it in the `src/pages/auth/index.tsx` file).
+- captcha is not validated in the demo, so you can log in directly with four digits.
+
 ### Script used
 
 ```
