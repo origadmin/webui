@@ -1,10 +1,9 @@
 import { Suspense, useEffect, useState } from "react";
+import { mockSidebar } from "@/mocks/mockSidebar";
 import { routes, RouterConfig } from "@/router";
-import { SIGN_IN_URL } from "@/types";
 import { refreshToken } from "@/utils/auth";
 import { initRouter } from "@/utils/router";
 import { getAccessToken } from "@/utils/storage";
-import config from "@config";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthProvider from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
@@ -198,8 +197,9 @@ function App() {
     },
     token: getAccessToken(),
     access: accesses,
-    routes: config.routes,
+    routes: routes,
     // signInPath: SIGN_IN_URL,
+    menus: mockSidebar.menuItems,
   };
 
   useEffect(() => {

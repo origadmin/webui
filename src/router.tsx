@@ -1,9 +1,7 @@
 import { InternalServerError, NotFoundError, errorRoutes } from "@/pages/errors";
-import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
-export type RouteObjectConfig = RouteObject & {
-  keyword?: string;
-};
+export type RouteObjectConfig = API.Route;
 
 export type RouterConfig = RouteObjectConfig[];
 

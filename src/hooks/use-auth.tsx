@@ -3,6 +3,8 @@ import { Storage } from "@/utils";
 
 type ContextType = {
   token?: string | null;
+  menus?: API.MenuItem[];
+  routes?: API.Route[];
   setToken: (token: string) => void;
   access?: Map<string, boolean>;
   setAccess: (access: Map<string, boolean>) => void;

@@ -2,7 +2,7 @@ import { NotFoundError, ForbiddenError } from "@/pages/errors";
 import { RouteObject } from "react-router-dom";
 
 export const initRouter = (oldRoutes: RouteObject[], routes?: RouteObject[]) => {
-  let newRoutes = oldRoutes;
+  const newRoutes = oldRoutes;
   if (!routes) {
     return newRoutes;
   }

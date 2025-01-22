@@ -2,6 +2,7 @@
 // @ts-ignore
 import { TablerIcon } from "@tabler/icons-react";
 import { LucideIcon } from "lucide-react";
+import { RouteObject } from "react-router-dom";
 
 
 declare global {
@@ -48,12 +49,13 @@ declare global {
       [key: string]: unknown;
     };
 
-    type Route = {
-      path: string;
+    type Route = RouteObject & {
+      keyword?: string;
     };
 
     type MenuItem = {
-      id?: string;
+      id: string;
+      name?: string;
       keyword?: string;
       title: string;
       path?: string;
@@ -65,6 +67,7 @@ declare global {
       description?: string;
       isActive?: boolean;
       items?: MenuItem[];
+      parent_id?: string;
     };
 
     type Resource = {
