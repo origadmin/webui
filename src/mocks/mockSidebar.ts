@@ -300,17 +300,17 @@ export const mockSidebar: API.SidebarData = {
 export const mockTopNav: API.TopNav[] = [
   {
     title: "Overview",
-    href: "dashboard/overview",
+    href: "/dashboard/overview",
     isActive: true,
   },
   {
     title: "Customers",
-    href: "dashboard/customers",
+    href: "/dashboard/customers",
     isActive: false,
   },
   {
     title: "Products",
-    href: "dashboard/products",
+    href: "/dashboard/products",
     isActive: false,
   },
   {
