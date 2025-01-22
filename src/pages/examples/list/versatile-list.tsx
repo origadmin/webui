@@ -13,7 +13,7 @@ export default function VersatileList() {
   const [view, setView] = useState<ViewType>("card");
 
   return (
-    <div className='container mx-auto py-10'>
+    <div className='container mx-auto py-4'>
       <Tabs value={view} onValueChange={(value) => setView(value as ViewType)}>
         <TabsList>
           <TabsTrigger value='card'>Card View</TabsTrigger>

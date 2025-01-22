@@ -79,7 +79,7 @@ export default function AdvancedFormExample() {
 
   return (
     <PageContainer>
-      <div className='container mx-auto py-10'>
+      <div className='container mx-auto py-4'>
         <Card>
           <CardHeader>
             <CardTitle>Advanced Project Management Form</CardTitle>
@@ -88,7 +88,7 @@ export default function AdvancedFormExample() {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-                <Tabs defaultValue='project' className='w-full'>
+                <Tabs defaultValue='project' orientation='vertical' className='w-full p-4'>
                   <TabsList className='grid w-full grid-cols-3'>
                     <TabsTrigger value='project'>Project Details</TabsTrigger>
                     <TabsTrigger value='tasks'>Tasks</TabsTrigger>

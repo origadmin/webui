@@ -103,7 +103,7 @@ export function AppearanceForm() {
                         </div>
                       </div>
                     </div>
-                    <span className='block w-full p-2 text-center font-normal'>Light</span>
+                    <span className='block w-full p-4 text-center font-normal'>Light</span>
                   </FormLabel>
                 </FormItem>
                 <FormItem>
@@ -127,7 +127,7 @@ export function AppearanceForm() {
                         </div>
                       </div>
                     </div>
-                    <span className='block w-full p-2 text-center font-normal'>Dark</span>
+                    <span className='block w-full p-4 text-center font-normal'>Dark</span>
                   </FormLabel>
                 </FormItem>
               </RadioGroup>

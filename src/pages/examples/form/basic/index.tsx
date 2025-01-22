@@ -58,7 +58,7 @@ export default function DetailedFormExample() {
 
   return (
     <PageContainer>
-      <div className='container mx-auto py-10'>
+      <div className='container mx-auto py-4'>
         <Card>
           <CardHeader>
             <CardTitle>Detailed Form Example</CardTitle>

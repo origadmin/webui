@@ -10,10 +10,10 @@ import { SystemHealth } from "./system-health";
 export default function MonitorPage() {
   return (
     <PageContainer>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
+      <div className='p-4 md:px-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold tracking-tight'>System Monitor</h1>
       </div>
-      <Tabs defaultValue='overview' className='w-full space-y-4'>
+      <Tabs defaultValue='overview' orientation='vertical' className='w-full p-4'>
         <TabsList>
           <TabsTrigger value='overview'>Overview</TabsTrigger>
           <TabsTrigger value='performance'>Performance</TabsTrigger>

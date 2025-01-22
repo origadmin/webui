@@ -6,7 +6,7 @@ import { tasks } from "./data/tasks";
 function Tasks() {
   return (
     <PageContainer>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
+      <div className='p-4 md:px-4 flex items-center justify-between'>
         <div>
           <h2 className='text-2xl font-bold tracking-tight'>Welcome back!</h2>
           <p className='text-muted-foreground'>Here&apos;s a list of your tasks for this month!</p>

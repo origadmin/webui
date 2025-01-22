@@ -14,7 +14,7 @@ import SidebarNav from "./components/sidebar-nav";
 export default function Settings() {
   return (
     <PageContainer>
-      <div className='space-y-0.5'>
+      <div className='p-4 md:px-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>Settings</h1>
         <p className='text-muted-foreground'>Manage your account settings and set e-mail preferences.</p>
       </div>

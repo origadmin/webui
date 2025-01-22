@@ -14,7 +14,7 @@ export default function UserPage() {
   return (
     <UsersProvider>
       <PageContainer>
-        <div className='mb-2 flex items-center justify-between space-y-2 flex-wrap'>
+        <div className='p-4 md:px-4 flex items-center justify-between'>
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>User List</h2>
             <p className='text-muted-foreground'>Manage your users and their roles here.</p>

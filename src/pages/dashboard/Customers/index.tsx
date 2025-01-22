@@ -6,7 +6,7 @@ import CustomerTable from "./components/CustomerTable";
 export default function CustomersPage() {
   return (
     <PageContainer>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
+      <div className='p-4 md:px-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold tracking-tight'>Our Customers</h1>
       </div>
       <div className='space-y-4'>

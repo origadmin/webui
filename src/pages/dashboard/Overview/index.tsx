@@ -15,13 +15,13 @@ export default function DashboardPage() {
   return (
     /* ===== Main ===== */
     <PageContainer>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
+      <div className='p-4 md:px-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center'>
           <Button>Download</Button>
         </div>
       </div>
-      <Tabs orientation='vertical' defaultValue='overview' className='space-y-4'>
+      <Tabs defaultValue='overview' orientation='vertical' className='w-full p-4'>
         <div className='w-full overflow-x-auto pb-2'>
           <TabsList>
             <TabsTrigger value='overview'>Overview</TabsTrigger>

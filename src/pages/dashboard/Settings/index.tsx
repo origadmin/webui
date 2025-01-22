@@ -7,10 +7,10 @@ import ProfileSettings from "./components/ProfileSettings";
 export default function SettingsPage() {
   return (
     <PageContainer>
-      <div className='mb-2 flex items-center justify-between space-y-2'>
+      <div className='p-4 md:px-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold tracking-tight'>Settings</h1>
       </div>
-      <Tabs defaultValue='profile' className='w-full space-y-4'>
+      <Tabs defaultValue='profile' orientation='vertical' className='w-full p-4'>
         <TabsList className='grid w-full grid-cols-3'>
           <TabsTrigger value='profile'>Profile</TabsTrigger>
           <TabsTrigger value='notifications'>Notifications</TabsTrigger>
