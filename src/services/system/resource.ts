@@ -1,5 +1,5 @@
 import { Pagination } from "@/utils";
-import { request } from "@/utils/service.tsx";
+import { request } from "@/utils/service";
 
 /** Query resource list GET /api/v1/sys/resources */
 export async function listResource(params: API.Params, options?: API.RequestOptions) {

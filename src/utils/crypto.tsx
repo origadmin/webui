@@ -1,7 +1,6 @@
 import MD5 from "crypto-js/md5";
 import SHA256 from "crypto-js/sha256";
 
-
 /**
  * The function exports a TypeScript implementation of the MD5 hashing algorithm for a given string.
  * @param {string} str - The `str` parameter is a string that will be hashed using the MD5 algorithm.

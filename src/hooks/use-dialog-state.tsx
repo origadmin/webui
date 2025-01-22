@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 /**
  * Custom hook for confirm dialog
  * @param initialState string | null

@@ -1,7 +1,6 @@
-import { mockUsers } from "@/mocks/mockSidebar.ts";
+import { mockUsers } from "@/mocks/mockSidebar";
 import { Pagination } from "@/utils";
 import { fetchRequest } from "@/utils/service";
-
 
 /** Query user list GET /api/v1/sys/users */
 export async function listUser(params: API.Params, options?: API.RequestOptions) {

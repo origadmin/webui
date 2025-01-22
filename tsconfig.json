@@ -6,11 +6,7 @@
       "@config": ["./config/config.ts"]
     },
     "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
