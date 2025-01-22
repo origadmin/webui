@@ -48,9 +48,11 @@ export const mockSidebar: API.SidebarData = {
   ],
   menuItems: [
     {
+      id: randomKey(),
       title: "General",
       items: [
         {
+          id: randomKey(),
           title: "Dashboard",
           path: "/dashboard",
           icon: IconLayoutDashboard,
@@ -58,6 +60,7 @@ export const mockSidebar: API.SidebarData = {
           shortcut: ["d", "d"],
           items: [
             {
+              id: randomKey(),
               title: "Overview",
               path: "/dashboard/overview",
               icon: IconLayoutDashboard,
@@ -65,6 +68,7 @@ export const mockSidebar: API.SidebarData = {
               isActive: false,
             },
             {
+              id: randomKey(),
               title: "Monitor",
               path: "/dashboard/monitor",
               icon: IconMessages,
@@ -74,18 +78,21 @@ export const mockSidebar: API.SidebarData = {
           ],
         },
         {
+          id: randomKey(),
           title: "Tasks",
           path: "/tasks",
           icon: IconChecklist,
           shortcut: ["t", "t"],
         },
         {
+          id: randomKey(),
           title: "Apps",
           path: "/apps",
           icon: IconPackages,
           shortcut: ["a", "a"],
         },
         {
+          id: randomKey(),
           title: "Chats",
           path: "/chats",
           icon: IconMessages,
@@ -94,24 +101,29 @@ export const mockSidebar: API.SidebarData = {
       ],
     },
     {
+      id: randomKey(),
       title: "Settings",
       items: [
         {
+          id: randomKey(),
           title: "System",
           items: [
             {
+              id: randomKey(),
               title: "Settings",
               path: "/system/settings",
               icon: IconSettings,
               shortcut: ["s", "s"],
             },
             {
+              id: randomKey(),
               title: "Users",
               path: "/system/user",
               icon: IconUsers,
               shortcut: ["u", "u"],
             },
             {
+              id: randomKey(),
               title: "Roles",
               path: "/system/role",
               icon: IconUsers,
@@ -122,23 +134,28 @@ export const mockSidebar: API.SidebarData = {
       ],
     },
     {
+      id: randomKey(),
       title: "Examples",
       items: [
         {
+          id: randomKey(),
           title: "Form",
           icon: IconHelp,
           items: [
             {
+              id: randomKey(),
               title: "Advanced",
               path: "/examples/form/advanced",
               icon: IconHelp,
             },
             {
+              id: randomKey(),
               title: "Basic",
               path: "/examples/form/basic",
               icon: IconHelp,
             },
             {
+              id: randomKey(),
               title: "Simple",
               path: "/examples/form/simple",
               icon: IconHelp,
@@ -146,6 +163,7 @@ export const mockSidebar: API.SidebarData = {
           ],
         },
         {
+          id: randomKey(),
           title: "List",
           path: "/examples/list",
           icon: IconHelp,
@@ -153,59 +171,72 @@ export const mockSidebar: API.SidebarData = {
       ],
     },
     {
+      id: randomKey(),
       title: "Pages",
       items: [
         {
+          id: randomKey(),
           title: "Auth",
           icon: IconLockAccess,
           items: [
             {
+              id: randomKey(),
               title: "Sign In",
-              path: "/sign-in",
+              path: "/signin",
             },
             {
+              id: randomKey(),
               title: "Sign In (2 Col)",
-              path: "/sign-in-2",
+              path: "/signin2",
             },
             {
+              id: randomKey(),
               title: "Sign Up",
-              path: "/sign-up",
+              path: "/signup",
             },
             {
+              id: randomKey(),
               title: "Forgot Password",
-              path: "/forgot-password",
+              path: "/forgot",
             },
             {
+              id: randomKey(),
               title: "OTP",
               path: "/otp",
             },
           ],
         },
         {
+          id: randomKey(),
           title: "Errors",
           icon: IconBug,
           items: [
             {
+              id: randomKey(),
               title: "Unauthorized",
               path: "/401",
               icon: IconLock,
             },
             {
+              id: randomKey(),
               title: "Forbidden",
               path: "/403",
               icon: IconUserOff,
             },
             {
+              id: randomKey(),
               title: "Not Found",
               path: "/404",
               icon: IconError404,
             },
             {
+              id: randomKey(),
               title: "Internal Server Error",
               path: "/500",
               icon: IconServerOff,
             },
             {
+              id: randomKey(),
               title: "Maintenance Error",
               path: "/503",
               icon: IconBarrierBlock,
@@ -215,33 +246,40 @@ export const mockSidebar: API.SidebarData = {
       ],
     },
     {
+      id: randomKey(),
       title: "Other",
       items: [
         {
+          id: randomKey(),
           title: "Settings",
           icon: IconSettings,
           items: [
             {
+              id: randomKey(),
               title: "Profile",
               path: "/settings",
               icon: IconUserCog,
             },
             {
+              id: randomKey(),
               title: "Account",
               path: "/settings/account",
               icon: IconTool,
             },
             {
+              id: randomKey(),
               title: "Appearance",
               path: "/settings/appearance",
               icon: IconPalette,
             },
             {
+              id: randomKey(),
               title: "Notifications",
               path: "/settings/notifications",
               icon: IconNotification,
             },
             {
+              id: randomKey(),
               title: "Display",
               path: "/settings/display",
               icon: IconBrowserCheck,
@@ -249,6 +287,7 @@ export const mockSidebar: API.SidebarData = {
           ],
         },
         {
+          id: randomKey(),
           title: "Help Center",
           path: "/help-center",
           icon: IconHelp,
