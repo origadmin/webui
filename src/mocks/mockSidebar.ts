@@ -315,7 +315,7 @@ export const mockTopNav: API.TopNav[] = [
   },
   {
     title: "Settings",
-    href: "dashboard/settings",
+    href: "/dashboard/settings",
     isActive: false,
   },
 ];

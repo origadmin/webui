@@ -1,14 +1,19 @@
+import PageContainer from "@/components/page-container";
 import { CustomerPagination } from "./components/CustomerPagination";
 import CustomerSearch from "./components/CustomerSearch";
 import CustomerTable from "./components/CustomerTable";
 
 export default function CustomersPage() {
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <h1 className='text-3xl font-bold mb-8'>Our Customers</h1>
-      <CustomerSearch />
-      <CustomerTable />
-      <CustomerPagination />
-    </div>
+    <PageContainer>
+      <div className='mb-2 flex items-center justify-between space-y-2'>
+        <h1 className='text-2xl font-bold tracking-tight'>Our Customers</h1>
+      </div>
+      <div className='space-y-4'>
+        <CustomerSearch />
+        <CustomerTable />
+        <CustomerPagination />
+      </div>
+    </PageContainer>
   );
 }

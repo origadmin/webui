@@ -1,14 +1,17 @@
+import PageContainer from "@/components/page-container";
 import ProductGrid from "./components/ProductGrid";
 import { ProductPagination } from "./components/ProductPagination";
 import ProductSearch from "./components/ProductSearch";
 
 export default function ProductsPage() {
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <h1 className='text-3xl font-bold mb-8'>Our Products</h1>
+    <PageContainer>
+      <div className='mb-2 flex items-center justify-between space-y-2'>
+        <h1 className='text-2xl font-bold tracking-tight'>Our Products</h1>
+      </div>
       <ProductSearch />
       <ProductGrid />
       <ProductPagination />
-    </div>
+    </PageContainer>
   );
 }
