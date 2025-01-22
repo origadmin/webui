@@ -11,7 +11,7 @@ import { ProductPerformance } from "./product-performance";
 import { RevenueChart } from "./revenue-chart";
 import { UserActivityChart } from "./user-activity-chart";
 
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     /* ===== Main ===== */
     <PageContainer>

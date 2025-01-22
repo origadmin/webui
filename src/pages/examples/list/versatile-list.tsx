@@ -64,17 +64,17 @@ function BasicView({ items }: { items: ListItem[] }) {
   return (
     <div className='space-y-6'>
       {items.map((item) => (
-        <div key={item.id} className='flex items-center justify-between rounded-lg bg-white p-6 shadow'>
+        <div key={item.id} className='flex items-center justify-between rounded-lg p-6 shadow'>
           <div>
             <h3 className='text-lg font-medium'>{item.title}</h3>
-            <p className='text-sm text-gray-500'>{item.description}</p>
+            <p className='text-sm'>{item.description}</p>
             <div className='mt-2'>
               <Badge variant={item.status === "active" ? "default" : "secondary"}>{item.status}</Badge>
             </div>
           </div>
           <div className='text-right'>
-            <p className='text-sm text-gray-500'>Owner: {item.owner}</p>
-            <p className='text-sm text-gray-500'>Created: {item.createdAt}</p>
+            <p className='text-sm'>Owner: {item.owner}</p>
+            <p className='text-sm'>Created: {item.createdAt}</p>
             <Button variant='outline' className='mt-2'>
               View Details
             </Button>
