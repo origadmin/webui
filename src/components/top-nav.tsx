@@ -11,10 +11,10 @@ import {
 import { Button } from "./custom/button";
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
-  navs?: API.TopNav[];
+  menus?: API.TopNav[];
 }
 
-export function TopNav({ className, navs, ...props }: TopNavProps) {
+export function TopNav({ className, menus, ...props }: TopNavProps) {
   return (
     <>
       <div className='md:hidden'>
@@ -25,7 +25,7 @@ export function TopNav({ className, navs, ...props }: TopNavProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom' align='start'>
-            {navs?.map(({ title, href, isActive }) => (
+            {menus?.map(({ title, href, isActive }) => (
               <DropdownMenuItem key={`${title}-${href}`} asChild>
                 <Link to={href} className={!isActive ? "text-muted-foreground" : ""}>
                   {title}
@@ -37,7 +37,7 @@ export function TopNav({ className, navs, ...props }: TopNavProps) {
       </div>
 
       <nav className={cn("hidden items-center space-x-4 md:flex lg:space-x-6", className)} {...props}>
-        {navs?.map(({ title, href, isActive }) => (
+        {menus?.map(({ title, href, isActive }) => (
           <Link
             key={`${title}-${href}`}
             to={href}

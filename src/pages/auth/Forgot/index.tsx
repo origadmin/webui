@@ -1,6 +1,6 @@
-import { ForgotForm } from "@/pages/auth/Forgot/components/forgot-form.tsx";
+import { ForgotForm } from "@/pages/auth/Forgot/components/forgot-form";
 import { Link } from "react-router-dom";
-import { Card } from "@/components/ui/card.tsx";
+import { Card } from "@/components/ui/card";
 
 export default function Forgot() {
   return (

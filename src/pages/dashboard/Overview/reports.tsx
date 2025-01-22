@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { ReportsChart } from "./reports-chart.tsx";
-import { ReportsList } from "./reports-list.tsx";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ReportsChart } from "./reports-chart";
+import { ReportsList } from "./reports-list";
 
 export default function ReportsContent() {
   return (

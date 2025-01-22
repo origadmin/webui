@@ -1,6 +1,6 @@
-import { Overview } from "@/pages/dashboard/Overview/components/overview.tsx";
-import { RecentSales } from "@/pages/dashboard/Overview/components/recent-sales.tsx";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Overview } from "@/pages/dashboard/Overview/components/overview";
+import { RecentSales } from "@/pages/dashboard/Overview/components/recent-sales";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function OverviewContent() {
   return (

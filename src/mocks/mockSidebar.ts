@@ -1,3 +1,4 @@
+import { randomKey } from "@/utils/crypto.tsx";
 import {
   IconBarrierBlock,
   IconBrowserCheck,
@@ -32,7 +33,7 @@ export type Product = {
   updated_at: string;
 };
 
-export const data: API.SidebarData = {
+export const mockSidebar: API.SidebarData = {
   user: {
     name: "OrigAdmin",
     email: "origadminpanelwebui@gmail.com",
@@ -71,12 +72,6 @@ export const data: API.SidebarData = {
               isActive: false,
             },
           ],
-        },
-        {
-          title: "Notifications",
-          path: "/notifications",
-          icon: IconNotification,
-          shortcut: ["n", "n"],
         },
         {
           title: "Tasks",
@@ -263,7 +258,7 @@ export const data: API.SidebarData = {
   ],
 };
 
-export const topNav: API.TopNav[] = [
+export const mockTopNav: API.TopNav[] = [
   {
     title: "Overview",
     href: "dashboard/overview",
@@ -283,6 +278,25 @@ export const topNav: API.TopNav[] = [
     title: "Settings",
     href: "dashboard/settings",
     isActive: false,
+  },
+];
+
+export const mockFooter = [
+  {
+    key: randomKey(),
+    title: "FAQs",
+  },
+  {
+    key: randomKey(),
+    title: "Privacy Policy",
+  },
+  {
+    key: randomKey(),
+    title: "Terms & Conditions",
+  },
+  {
+    key: randomKey(),
+    title: "Refund Policy",
   },
 ];
 

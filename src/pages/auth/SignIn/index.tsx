@@ -1,5 +1,5 @@
 import Background from "@/assets/static/background.jpg";
-import { UserAuthForm } from "@/pages/auth/SignIn/components/user-auth-form.tsx";
+import { UserAuthForm } from "@/pages/auth/SignIn/components/user-auth-form";
 
 function SignInPage() {
   return (

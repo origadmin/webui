@@ -1,5 +1,4 @@
 import React from "react";
-import { randomKey } from "@/utils/crypto.tsx";
 
 type LinkProps = {
   key?: string;
@@ -14,27 +13,7 @@ export type FooterProps = {
 };
 
 export function Footer(props?: FooterProps) {
-  const {
-    links = [
-      {
-        key: randomKey(),
-        title: "FAQs",
-      },
-      {
-        key: randomKey(),
-        title: "Privacy Policy",
-      },
-      {
-        key: randomKey(),
-        title: "Terms & Conditions",
-      },
-      {
-        key: randomKey(),
-        title: "Refund Policy",
-      },
-    ],
-    copyright = "OrigAdmin",
-  } = props || {};
+  const { links = [], copyright = "OrigAdmin" } = props || {};
 
   return (
     <footer className='border-grid flex flex-col items-center justify-center gap-2 border-t p-2 md:px-8 md:py-2'>

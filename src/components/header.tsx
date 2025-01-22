@@ -1,4 +1,4 @@
-import { topNav } from "@/mocks/data";
+import { mockTopNav } from "@/mocks/mockSidebar.ts";
 import { ThemeToggle } from "@/components/Theme";
 import { TopNav } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
@@ -7,7 +7,7 @@ import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
 
 export type HeaderProps = {
-  topNav?: typeof topNav;
+  topNav?: typeof mockTopNav;
 };
 
 export default function Header(props?: HeaderProps) {
@@ -17,7 +17,7 @@ export default function Header(props?: HeaderProps) {
       <div className='flex items-center gap-2 px-4'>
         <SidebarTrigger className='-ml-1' />
         <Separator orientation='vertical' className='mr-2 h-4' />
-        {topNav && <TopNav navs={topNav} />}
+        {topNav && <TopNav menus={topNav} />}
       </div>
       <div className='flex items-center gap-2 px-4'></div>
       <div className='flex items-center gap-2 px-4'>

@@ -1,22 +1,22 @@
 import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from "react";
 import Placeholder from "@/assets/static/placeholder.jpg";
-import { mockToken } from "@/mocks/data.ts";
-import { fetchRequest } from "@/utils/service.tsx";
+import { mockToken } from "@/mocks/mockSidebar.ts";
+import { fetchRequest } from "@/utils/service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { cn } from "@/lib/utils.ts";
-import { useToast } from "@/hooks/use-toast.tsx";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { useToast } from "@/hooks/use-toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LoadingSpinner } from "@/components/Loading";
-import { Button } from "@/components/custom/button.tsx";
-import { PasswordInput } from "@/components/custom/password-input.tsx";
-import { SignInProps } from "@/components/login-form.tsx";
+import { Button } from "@/components/custom/button";
+import { PasswordInput } from "@/components/custom/password-input";
+import { SignInProps } from "@/components/login-form";
 
 export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 

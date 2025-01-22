@@ -3,11 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils.ts";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Separator } from "@/components/ui/separator.tsx";
-import { Button } from "@/components/custom/button.tsx";
-import { PinInput, PinInputField } from "@/components/custom/pin-input.tsx";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/custom/button";
+import { PinInput, PinInputField } from "@/components/custom/pin-input";
 
 export type OtpFormProps = HTMLAttributes<HTMLDivElement>;
 

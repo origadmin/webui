@@ -1,6 +1,6 @@
 import ComingSoon from "./coming-soon";
 import ForbiddenError from "./forbidden";
-import InternalServerError from "src/pages/errors/internal-server-error.tsx";
+import InternalServerError from "src/pages/errors/internal-server-error";
 import MaintenanceError from "./maintenance-error";
 import NotFoundError from "./not-found-error";
 import UnauthorizedError from "./unauthorized-error";

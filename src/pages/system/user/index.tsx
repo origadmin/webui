@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import PageContainer from "@/components/page-container.tsx";
+import PageContainer from "@/components/page-container";
 import { UserModal } from "./UserModal";
 
 enum ActionTypeEnum {

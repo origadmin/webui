@@ -1,4 +1,4 @@
-import PageContainer from "@/components/page-container.tsx";
+import PageContainer from "@/components/page-container";
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { tasks } from "./data/tasks";

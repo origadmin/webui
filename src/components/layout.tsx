@@ -3,7 +3,6 @@ import KBar from "src/components/KBar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarProps, SidebarComponent } from "@/components/Sidebar";
 import { Footer, FooterProps } from "@/components/footer";
-import Header from "./header";
 
 type LayoutProps = {
   footer?: FooterProps;
@@ -18,10 +17,7 @@ export function Layout(props: LayoutProps) {
     <KBar>
       <SidebarProvider>
         <SidebarComponent {...sidebarProps}></SidebarComponent>
-        <SidebarInset className='flex-1'>
-          <Header topNav={props.topNav} />
-          {props.children}
-        </SidebarInset>
+        <SidebarInset className='flex-1'>{props.children}</SidebarInset>
       </SidebarProvider>
       <Footer {...props.footer} />
     </KBar>

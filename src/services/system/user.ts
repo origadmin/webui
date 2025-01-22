@@ -1,4 +1,4 @@
-import { mockUsers } from "@/mocks/data.ts";
+import { mockUsers } from "@/mocks/mockSidebar.ts";
 import { Pagination } from "@/utils";
 import { fetchRequest } from "@/utils/service";
 

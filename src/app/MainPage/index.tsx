@@ -1,25 +1,25 @@
-import { data, topNav, mockSecondItems } from "@/mocks/data";
+import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar.ts";
 import { Navigate, Outlet } from "react-router-dom";
 import { useToken } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark.tsx";
-import { SidebarGroupContentProps, SidebarFooterProps, SidebarHeaderProps, SidebarProps } from "@/components/Sidebar";
+import { SidebarProps } from "@/components/Sidebar";
 import Layout from "@/components/layout";
 
-const getMockData = () => {
+const getMockData = (): SidebarProps => {
   return {
     header: {
-      teams: data.teams,
-    } as SidebarHeaderProps,
+      teams: mockSidebar.teams,
+    },
     content: {
-      items: data.menuItems,
+      items: mockSidebar.menuItems,
       seconds: {
         items: mockSecondItems,
       },
-    } as SidebarGroupContentProps,
+    },
     footer: {
-      user: data.user,
-    } as SidebarFooterProps,
-  } as SidebarProps;
+      user: mockSidebar.user,
+    },
+  };
 };
 
 const watermark = {
@@ -52,7 +52,13 @@ export default function MainPage() {
   const sidebarData = getMockData();
 
   return (
-    <Layout sidebarProps={sidebarData} topNav={topNav}>
+    <Layout
+      sidebarProps={sidebarData}
+      topNav={mockTopNav}
+      footer={{
+        links: mockFooter,
+      }}
+    >
       {watermark ? (
         <Watermark {...watermark}>
           <Outlet />

@@ -1,6 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { NotificationsChart } from "./notifications-chart.tsx";
-import { NotificationsList } from "./notifications-list.tsx";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { NotificationsChart } from "./notifications-chart";
+import { NotificationsList } from "./notifications-list";
 
 export default function NotificationsContent() {
   return (

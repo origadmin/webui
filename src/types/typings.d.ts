@@ -110,6 +110,8 @@ declare global {
       id: string;
       name: string;
       avatar: string;
+      logo: ElementType;
+      plan: string;
     };
 
     type SidebarData = {

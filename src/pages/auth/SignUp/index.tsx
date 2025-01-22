@@ -1,7 +1,7 @@
 import Background from "@/assets/static/background.jpg";
-import { SignUpForm } from "@/pages/auth/SignUp/components/sign-up-form.tsx";
+import { SignUpForm } from "@/pages/auth/SignUp/components/sign-up-form";
 import { Link } from "react-router-dom";
-import { Card } from "@/components/ui/card.tsx";
+import { Card } from "@/components/ui/card";
 
 function SignUp() {
   return (

@@ -1,6 +1,6 @@
-import { OtpForm } from "@/pages/auth/Otp/components/otp-form.tsx";
+import { OtpForm } from "@/pages/auth/Otp/components/otp-form";
 import { Link } from "react-router-dom";
-import { Card } from "@/components/ui/card.tsx";
+import { Card } from "@/components/ui/card";
 
 function Otp() {
   return (

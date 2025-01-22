@@ -6,7 +6,7 @@ const ContentContext = React.createContext<{
   fixed: boolean;
 } | null>(null);
 
-interface ContentProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContentProps extends React.HTMLAttributes<HTMLDivElement> {
   fixed?: boolean;
 }
 
@@ -39,7 +39,12 @@ const Content = ({ className, fixed = false, ...props }: ContentProps) => {
 };
 Content.displayName = "Content";
 
-interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  menus?: {
+    title: string;
+    href: string;
+    isActive: boolean;
+  }[];
   sticky?: boolean;
 }
 
@@ -55,7 +60,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ className, stick
       ref={ref}
       data-layout='header'
       className={cn(
-        `z-10 flex h-[var(--header-height)] items-center gap-4 bg-background p-4 md:px-8`,
+        `z-10 flex h-[var(--header-height)] items-center gap-2 bg-background p-4 md:px-4`,
         contextVal.offset > 10 && sticky ? "shadow" : "shadow-none",
         contextVal.fixed && "flex-none",
         sticky && "sticky top-0",
@@ -78,7 +83,7 @@ const Body = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
     <div
       ref={ref}
       data-layout='body'
-      className={cn("px-4 py-6 md:overflow-hidden md:px-8", contextVal && contextVal.fixed && "flex-1", className)}
+      className={cn("px-4 py-4 md:overflow-hidden md:px-4", contextVal && contextVal.fixed && "flex-1", className)}
       {...props}
     />
   );

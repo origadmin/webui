@@ -1,5 +1,5 @@
-import { UserAuthForm } from "@/pages/auth/SignIn/components/user-auth-form.tsx";
-import { Card } from "@/components/ui/card.tsx";
+import { UserAuthForm } from "@/pages/auth/SignIn/components/user-auth-form";
+import { Card } from "@/components/ui/card";
 
 function SignIn2() {
   return (

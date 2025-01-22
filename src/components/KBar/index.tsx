@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { data } from "@/mocks/data";
+import { mockSidebar } from "@/mocks/mockSidebar.ts";
 import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from "kbar";
 import { useNavigate } from "react-router-dom";
 import { API } from "@/types/typings";
@@ -12,7 +12,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
   // These action are for the navigation
   const actions = useMemo(
     () =>
-      data.menuItems.flatMap((navItem) => {
+      mockSidebar.menuItems.flatMap((navItem) => {
         // Only include base action if the navItem has a real URL and is not just a container
         const baseAction =
           navItem.path !== "#"
