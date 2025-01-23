@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 
 export default function SearchInput() {
   const { query } = useKBar();
-  console.log("query", query);
   return (
     <div className='w-full space-y-2'>
       <Button

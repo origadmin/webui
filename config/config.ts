@@ -1,5 +1,6 @@
 import { ForbiddenError, NotFoundError } from "@/pages/errors";
 import { HOST } from "@/types";
+import { routes } from "./route";
 
 const config = {
   host: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
@@ -9,9 +10,10 @@ const config = {
       method: "POST",
     },
   },
-  routes: {
-    Forbidden: ForbiddenError,
-    NotFound: NotFoundError,
+  routes: routes,
+  errorRoutes: {
+    403: ForbiddenError,
+    404: NotFoundError,
   },
 };
 

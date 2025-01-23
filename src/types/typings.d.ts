@@ -4,6 +4,7 @@ import { TablerIcon } from "@tabler/icons-react";
 import { LucideIcon } from "lucide-react";
 import { RouteObject } from "react-router-dom";
 
+
 declare global {
   namespace API {
     type Params = {
@@ -37,23 +38,26 @@ declare global {
       expiration_time?: string;
     };
 
-    type TreeItem = {
+    type ItemTree = Record<string, any> & {
       id: string;
       key: string;
       value: string;
       title: string;
       parent_id?: string;
       disabled?: boolean;
-      children?: TreeItem[];
+      children?: ItemTree[];
       [key: string]: unknown;
     };
 
-    type Route = RouteObject & {
+    type Route = Omit<RouteObject, "children", "element"> & {
       keyword?: string;
+      component?: string;
+      element?: string;
+      children?: Route[];
     };
 
     type MenuItem = {
-      id: string;
+      id?: string;
       name?: string;
       keyword?: string;
       title: string;
@@ -65,7 +69,7 @@ declare global {
       label?: string;
       description?: string;
       isActive?: boolean;
-      items?: MenuItem[];
+      children?: MenuItem[];
       parent_id?: string;
     };
 

@@ -40,11 +40,7 @@ const Content = ({ className, fixed = false, ...props }: ContentProps) => {
 Content.displayName = "Content";
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  menus?: {
-    title: string;
-    href: string;
-    isActive: boolean;
-  }[];
+  show?: boolean;
   sticky?: boolean;
 }
 

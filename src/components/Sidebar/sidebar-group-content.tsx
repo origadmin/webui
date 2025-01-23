@@ -1,4 +1,4 @@
-import { randomKey } from "@/utils/crypto.tsx";
+import { randomKey } from "@/utils/crypto";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -13,8 +13,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { SidebarMainContent } from "@/components/Sidebar/sidebar-main-content.tsx";
-import { SidebarSecondaryContent } from "@/components/Sidebar/sidebar-secondary-content.tsx";
+import { SidebarMainContent } from "@/components/Sidebar/sidebar-main-content";
+import { SidebarSecondaryContent } from "@/components/Sidebar/sidebar-secondary-content";
 
 export type MenuItem = API.MenuItem & {};
 
@@ -46,7 +46,7 @@ function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupC
   }
 
   function hasSub(item: MenuItem) {
-    return item.items !== undefined && item.items.length > 0;
+    return item.children !== undefined && item.children.length > 0;
   }
 
   function key(item: MenuItem) {
@@ -69,7 +69,7 @@ function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupC
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                {item.items?.map((subItem) => (
+                {item.children?.map((subItem) => (
                   <SidebarMenuSubItem key={key(subItem)}>
                     <SidebarMenuSubButton asChild isActive={false}>
                       {renderLink(subItem)}
@@ -117,7 +117,7 @@ function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupC
               <>
                 {onlyTitle(item) && renderTitle(item)}
                 {!onlyTitle(item) && renderItem(item)}
-                {hasSub(item) && renderSubItem(item.items)}
+                {hasSub(item) && renderSubItem(item.children)}
               </>
             ))}
           </SidebarMenu>

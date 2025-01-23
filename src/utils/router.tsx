@@ -1,5 +1,6 @@
 import { NotFoundError, ForbiddenError } from "@/pages/errors";
 import { RouteObject } from "react-router-dom";
+import { MenuItem } from "@/components/Sidebar/sidebar-group-content";
 
 export const initRouter = (oldRoutes: RouteObject[], routes?: RouteObject[]) => {
   const newRoutes = oldRoutes;
@@ -42,4 +43,52 @@ export const initRouter = (oldRoutes: RouteObject[], routes?: RouteObject[]) => 
   }
   console.log("update routes", newRoutes);
   return newRoutes;
+};
+
+export const menusToTree = (menus: API.MenuItem[], parentId: string | null = null): API.ItemTree[] => {
+  // Work with boundary conditions
+  if (!menus || menus.length === 0) {
+    return [];
+  }
+
+  // Use Map to improve lookup efficiency
+  const menuMap = new Map<string, MenuItem>();
+  const result: API.ItemTree[] = [];
+
+  // Initialize the map
+  for (const menu of menus) {
+    menuMap.set(menu.id, { ...menu, children: [] });
+  }
+
+  // Build a tree structure
+  for (const menu of menus) {
+    if (menu.parent_id === parentId) {
+      result.push(menuMap.get(menu.id) as API.ItemTree);
+    } else {
+      const parentMenu = menuMap.get(menu.parent_id as string);
+      if (parentMenu) {
+        parentMenu.children?.push(menuMap.get(menu.id) as API.ItemTree);
+      }
+    }
+  }
+  return result;
+};
+
+export const lazyLoad = async (path: string, name: string = "default") => {
+  try {
+    const module = await import(`@/pages/${path}`);
+    if (module && name in module) {
+      return {
+        Component: module[name],
+      };
+    }
+    return {
+      Component: NotFoundError,
+    };
+  } catch (error) {
+    console.error(`Error loading component ${name} from path ${path}:`, error);
+    return {
+      Component: NotFoundError,
+    };
+  }
 };

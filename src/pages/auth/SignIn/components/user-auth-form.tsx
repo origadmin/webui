@@ -6,7 +6,7 @@ import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -90,6 +90,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { toast } = useToast();
   const urlParams = new URLSearchParams(window.location.search);
   const redirectUrl = urlParams.get("redirect") || "/";
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -149,7 +150,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           });
           setAuth(result.data);
         }
-        window.location.href = redirectUrl;
+
+        // console.log("location", location.pathname, redirectUrl);
+        navigate(redirectUrl, { replace: true });
+        // window.location.href = redirectUrl;
       } catch (err) {
         const myerr = err as Error;
         console.error("SignIn Err:", myerr);

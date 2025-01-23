@@ -5,7 +5,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { SidebarGroupContentProps } from "@/components/Sidebar/sidebar-group-content.tsx";
+import { SidebarGroupContentProps } from "@/components/Sidebar/sidebar-group-content";
 
 type MenuItem = API.MenuItem & {};
 

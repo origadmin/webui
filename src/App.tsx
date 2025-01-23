@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useState } from "react";
 import { mockSidebar } from "@/mocks/mockSidebar";
+import { errorRoutes } from "@/pages/errors";
 import { routes, RouterConfig } from "@/router";
 import { refreshToken } from "@/utils/auth";
 import { initRouter } from "@/utils/router";
@@ -177,14 +178,15 @@ export async function getInitialState(): Promise<InitialStateProps> {
 
 function App() {
   console.log("Application Started");
+  // const location = useLocation();
+  // const match = useMatch(location.pathname);
   const [initRoutes, setInitRoutes] = useState<RouterConfig>(routes);
   // const { user, fetchMenus } = useRBAC();
+  // const menus = mockSidebar.menuItems;
 
-  // useEffect(() => {
-  //   if (user) {
-  //     fetchMenus();
-  //   }
-  // }, [user, fetchMenus]);
+  // const currentRoute = router.routes.find((route) => route.id === match?.pathname);
+  // console.log("route:", currentRoute?.id);
+
   const accesses = new Map<string, boolean>();
   accesses.set("*", true);
 
@@ -195,9 +197,13 @@ function App() {
     refresh: () => {
       return refreshToken();
     },
+    isAuthenticated: () => {
+      return !!getAccessToken();
+    },
     token: getAccessToken(),
     access: accesses,
     routes: routes,
+    errorRoutes: errorRoutes,
     // signInPath: SIGN_IN_URL,
     menus: mockSidebar.menuItems,
   };

@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible.tsx";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -10,8 +10,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
-} from "@/components/ui/sidebar.tsx";
-import { SidebarGroupContentProps, MenuItem } from "@/components/Sidebar/sidebar-group-content.tsx";
+} from "@/components/ui/sidebar";
+import { SidebarGroupContentProps, MenuItem } from "@/components/Sidebar/sidebar-group-content";
 
 export type SidebarMainContentProps = Omit<SidebarGroupContentProps, "seconds">;
 

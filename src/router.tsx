@@ -1,37 +1,41 @@
+import { JSX, lazy } from "react";
 import { InternalServerError, NotFoundError, errorRoutes } from "@/pages/errors";
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 
-export type RouteObjectConfig = API.Route;
-
-export type RouterConfig = RouteObjectConfig[];
+export type RouterConfig = RouteObject[];
 
 export const routes: RouterConfig = [
   // Auth routes
   {
+    id: "signin",
     path: "/signin",
     lazy: async () => ({
       Component: (await import("@/pages/auth/SignIn")).default,
     }),
   },
   {
-    path: "/signup",
-    lazy: async () => ({
-      Component: (await import("@/pages/auth/SignUp")).default,
-    }),
-  },
-  {
+    id: "signin2",
     path: "/signin2",
     lazy: async () => ({
       Component: (await import("@/pages/auth/SignIn2")).default,
     }),
   },
   {
+    id: "signup",
+    path: "/signup",
+    lazy: async () => ({
+      Component: (await import("@/pages/auth/SignUp")).default,
+    }),
+  },
+  {
+    id: "forgot",
     path: "/forgot",
     lazy: async () => ({
       Component: (await import("@/pages/auth/Forgot")).default,
     }),
   },
   {
+    id: "otp",
     path: "/otp",
     lazy: async () => ({
       Component: (await import("@/pages/auth/Otp")).default,
@@ -50,6 +54,7 @@ export const routes: RouterConfig = [
         element: <Navigate to='dashboard/overview' replace />,
       },
       {
+        id: "dashboard",
         path: "dashboard",
         children: [
           {
@@ -57,63 +62,42 @@ export const routes: RouterConfig = [
             element: <Navigate to='overview' replace />,
           },
           {
+            id: "dashboard:overview",
             path: "overview",
             lazy: async () => ({
               Component: (await import("@/pages/dashboard/Overview")).default,
-              metadata: {
-                hidden: true,
-                title: "Overview",
-                icon: "overview",
-              },
             }),
           },
           {
+            id: "dashboard:monitor",
             path: "monitor",
             lazy: async () => ({
               Component: (await import("@/pages/dashboard/Monitor")).default,
-              metadata: {
-                hidden: true,
-                title: "Monitor",
-                icon: "monitor",
-              },
             }),
           },
           {
+            id: "dashboard:customers",
             path: "customers",
             lazy: async () => ({
               Component: (await import("@/pages/dashboard/Customers")).default,
-              metadata: {
-                hidden: true,
-                title: "Customers",
-                icon: "customers",
-              },
             }),
           },
           {
+            id: "dashboard:products",
             path: "products",
             lazy: async () => ({
               Component: (await import("@/pages/dashboard/Products")).default,
-              metadata: {
-                hidden: true,
-                title: "Products",
-                icon: "products",
-              },
             }),
           },
           {
+            id: "dashboard:settings",
             path: "settings",
             lazy: async () => ({
               Component: (await import("@/pages/dashboard/Settings")).default,
-              metadata: {
-                hidden: true,
-                title: "Settings",
-                icon: "settings",
-              },
             }),
           },
         ],
       },
-
       {
         path: "system",
         children: [
@@ -125,10 +109,6 @@ export const routes: RouterConfig = [
             path: "user",
             lazy: async () => ({
               Component: (await import("@/pages/system/users")).default,
-              metadata: {
-                title: "User",
-                icon: "user",
-              },
             }),
           },
           {
@@ -136,10 +116,6 @@ export const routes: RouterConfig = [
             path: "settings",
             lazy: async () => ({
               Component: (await import("@/pages/system/settings")).default,
-              metadata: {
-                title: "Settings",
-                icon: "settings",
-              },
             }),
           },
           // {
@@ -195,20 +171,12 @@ export const routes: RouterConfig = [
                 path: "basic",
                 lazy: async () => ({
                   Component: (await import("@/pages/examples/form/basic")).default,
-                  metadata: {
-                    title: "Basic Form",
-                    icon: "form",
-                  },
                 }),
               },
               {
                 path: "simple",
                 lazy: async () => ({
                   Component: (await import("@/pages/examples/form/simple")).default,
-                  metadata: {
-                    title: "Detailed Form",
-                    icon: "form",
-                  },
                 }),
               },
               {
@@ -225,10 +193,6 @@ export const routes: RouterConfig = [
         path: "tasks",
         lazy: async () => ({
           Component: (await import("@/pages/tasks")).default,
-          metadata: {
-            title: "Tasks",
-            icon: "tasks",
-          },
         }),
       },
       {
@@ -318,6 +282,22 @@ export const routes: RouterConfig = [
   // Fallback 404 route
   { path: "*", Component: NotFoundError },
 ];
+
+const getRoutes: {
+  routes: RouterConfig;
+  routeComponents: Map<string, React.LazyExoticComponent<() => JSX.Element>>;
+} = async () => {
+  return {
+    routes,
+    routeComponents: {
+      SignIn: lazy(() => import("@/pages/auth/SignIn")),
+      signup: lazy(() => import("@/pages/auth/SignUp")),
+      forgot: lazy(() => import("@/pages/auth/Forgot")),
+      signin2: lazy(() => import("@/pages/auth/SignIn2")),
+      maintenance: lazy(() => import("@/pages/errors/maintenance-error")),
+    },
+  };
+};
 
 const router = createBrowserRouter(routes);
 

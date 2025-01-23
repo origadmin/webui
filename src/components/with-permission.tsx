@@ -1,11 +1,11 @@
-import { useRBAC } from "@/context/RBACContext";
+import { useAuth } from "@/hooks/use-auth";
 
 export function withPermission(WrappedComponent: React.ComponentType, requiredPermissions: string[]) {
   return function WithPermissionComponent(props: any) {
-    const { permissions } = useRBAC();
+    const { permissions } = useAuth();
 
     const hasPermission = requiredPermissions.every((requiredPermission) =>
-      permissions.some((p) => p.id === requiredPermission),
+      permissions?.some((p) => p.id === requiredPermission),
     );
 
     if (!hasPermission) {

@@ -10,12 +10,10 @@ import {
 import { Button } from "./custom/button";
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
-  props?: React.HTMLAttributes<HTMLElement>;
   menus?: API.TopNav[];
 }
 
-export function TopNav({ menus, props }: TopNavProps) {
-  const { className } = props || {};
+export function TopNav({ className, menus, ...props }: TopNavProps) {
   return (
     <>
       <div className='md:hidden'>
@@ -51,3 +49,5 @@ export function TopNav({ menus, props }: TopNavProps) {
     </>
   );
 }
+
+export type { TopNavProps };

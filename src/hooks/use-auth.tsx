@@ -2,8 +2,10 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { Storage } from "@/utils";
 
 type ContextType = {
+  isAuthenticated: () => boolean;
   token?: string | null;
   menus?: API.MenuItem[];
+  permissions?: any[];
   routes?: API.Route[];
   setToken: (token: string) => void;
   access?: Map<string, boolean>;
@@ -13,9 +15,10 @@ type ContextType = {
 };
 
 const Context = createContext<ContextType>({
+  isAuthenticated: () => false,
   token: null,
-  setToken: (token: string) => void {},
-  setAccess: (access: Map<string, boolean>) => void {},
+  setToken: () => void {},
+  setAccess: () => void {},
 });
 
 type AuthProviderProps = {
@@ -23,9 +26,16 @@ type AuthProviderProps = {
   access?: Map<string, boolean>;
   refresh?: () => Promise<string | undefined>;
   children: React.ReactNode;
+  isAuthenticated: () => boolean;
 };
 
-const AuthProvider = ({ token: userToken, access: userAccess, refresh, children }: AuthProviderProps) => {
+const AuthProvider = ({
+  isAuthenticated = () => false,
+  token: userToken,
+  access: userAccess,
+  refresh,
+  children,
+}: AuthProviderProps) => {
   const [token, _setToken] = useState(userToken);
   const [access, _setAccess] = useState(userAccess);
   const setToken = (newToken: string) => {
@@ -36,31 +46,22 @@ const AuthProvider = ({ token: userToken, access: userAccess, refresh, children 
     _setAccess(newAccess);
   };
 
-  const checkAndRefreshToken = async () => {
-    // if (IsExpired()) {
-    if (refresh) {
-      try {
-        const newToken = await refresh();
-        if (newToken) {
-          Storage.setAccessToken(newToken);
-          setToken(newToken);
-        }
-      } catch (error) {
-        console.error("Error refreshing token:", error);
-        Storage.removeAccessToken();
-      }
-    }
-  };
-
   useEffect(() => {
     if (token) {
       Storage.setAccessToken(token);
     }
   }, [token]);
 
-  // useEffect(() => {}, [access]);
-
-  const contextValue = useMemo(() => ({ token, setToken, access, setAccess }), [token, access]);
+  const contextValue = useMemo(
+    () => ({
+      isAuthenticated,
+      token,
+      setToken,
+      access,
+      setAccess,
+    }),
+    [isAuthenticated, token, access],
+  );
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
 

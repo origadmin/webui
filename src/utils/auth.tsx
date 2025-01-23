@@ -75,8 +75,8 @@
 //   });
 //   return menuItems;
 // }
-import { fetchRequest, Method } from "@/utils/service.tsx";
-import { getRefreshToken } from "@/utils/storage.tsx";
+import { fetchRequest, Method } from "@/utils/service";
+import { getRefreshToken } from "@/utils/storage";
 import config from "@config";
 
 export async function refreshToken() {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Sidebar, SidebarRail } from "@/components/ui/sidebar";
 import { SidebarFooterContent, SidebarFooterProps } from "./sidebar-footer-content";
-import { SidebarGroupContent, SidebarGroupContentProps } from "./sidebar-group-content.tsx";
+import { SidebarGroupContent, SidebarGroupContentProps } from "./sidebar-group-content";
 import { SidebarHeaderContent, SidebarHeaderProps } from "./sidebar-header-content";
 import { SidebarSecondaryContent, SidebarSecondaryContentProps } from "./sidebar-secondary-content";
 
