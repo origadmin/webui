@@ -12,7 +12,7 @@ interface ModelContextType {
 }
 
 class Dispatcher {
-  callbacks: Record<string, Set<Function>> = {};
+  callbacks: Record<string, Set<any>> = {};
   data: Record<string, unknown> = {};
   update = (name: string) => {
     if (this.callbacks[name]) {

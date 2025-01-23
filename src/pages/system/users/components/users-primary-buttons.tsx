@@ -6,10 +6,10 @@ export function UsersPrimaryButtons() {
   const { setOpen } = useUsers();
   return (
     <div className='flex gap-2'>
-      <Button variant='outline' className='space-x-1' onClick={() => setOpen("invite")}>
+      <Button variant='outline' size='sm' className='ml-auto hidden h-8 lg:flex' onClick={() => setOpen("invite")}>
         <span>Invite User</span> <IconMailPlus size={18} />
       </Button>
-      <Button className='space-x-1' onClick={() => setOpen("add")}>
+      <Button variant='default' size='sm' className='ml-auto hidden h-8 lg:flex' onClick={() => setOpen("add")}>
         <span>Add User</span> <IconUserPlus size={18} />
       </Button>
     </div>

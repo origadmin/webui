@@ -23,8 +23,8 @@ export const RoleSelect: React.FC<RoleSelectProps> = ({ value, onChange, classNa
   useEffect(() => {
     const fetchRoles = async () => {
       const res = await listRole({ status: "enabled", resultType: "select" });
-      if (res.data) {
-        setOptions(res.data.map((item) => ({ label: item.name, value: item.id })));
+      if (res.data && res.data.data) {
+        setOptions(res.data.data.map((item) => ({ label: item.name, value: item.id })));
       }
     };
 

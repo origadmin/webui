@@ -1,6 +1,6 @@
 import React from "react";
 import { mockTopNav } from "@/mocks/mockSidebar";
-import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -12,7 +12,6 @@ import { TopNav, TopNavProps } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
 
 interface PageContainerProps {
-  board?: boolean;
   navMenus?: TopNavProps["menus"];
   navToolbars?: React.ReactNode[];
   children: React.ReactNode;
@@ -22,7 +21,6 @@ interface PageContainerProps {
 }
 
 export default function PageContainer({
-  board = true,
   children,
   props,
   navMenus = mockTopNav,
@@ -58,15 +56,14 @@ export default function PageContainer({
             </div>
           </Content.Header>
         )}
-        {/*className={cn(board ? "rounded-lg border flex flex-col" : "flex flex-col", className)}*/}
-        <Content.Body className='flex flex-col'>
+        <Content.Body>
           <div className='px-4 md:px-6'>
             <Breadcrumbs />
           </div>
-          {renderScrollArea()}
+          <div className={cn("board flex flex-col mx-auto py-4", className)}>{renderScrollArea()}</div>
         </Content.Body>
       </Content>
     );
   };
-  return board ? <Card>{renderContent()}</Card> : renderContent();
+  return renderContent();
 }

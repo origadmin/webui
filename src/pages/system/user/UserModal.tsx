@@ -29,8 +29,8 @@ export const UserModal: React.FC<UserModalProps> = (props) => {
       getUser(props.id).then((res) => {
         if (res.data) {
           setUserData({
-            ...res.data,
-            status_checked: res.data.status === "activated",
+            ...res.data.data,
+            status_checked: res.data.data?.status === "activated",
           });
         }
       });

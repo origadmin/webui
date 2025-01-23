@@ -7,6 +7,7 @@ type ContextType = {
   menus?: API.MenuItem[];
   permissions?: any[];
   routes?: API.Route[];
+  refresh?: () => Promise<string | undefined>;
   setToken: (token: string) => void;
   access?: Map<string, boolean>;
   setAccess: (access: Map<string, boolean>) => void;
@@ -56,6 +57,7 @@ const AuthProvider = ({
     () => ({
       isAuthenticated,
       token,
+      refresh,
       setToken,
       access,
       setAccess,

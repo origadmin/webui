@@ -112,6 +112,12 @@ export const routes: RouterConfig = [
             }),
           },
           {
+            path: "user2",
+            lazy: async () => ({
+              Component: (await import("@/pages/system/user")).default,
+            }),
+          },
+          {
             index: true,
             path: "settings",
             lazy: async () => ({
@@ -290,7 +296,7 @@ const getRoutes: {
   return {
     routes,
     routeComponents: {
-      SignIn: lazy(() => import("@/pages/auth/SignIn")),
+      signin: lazy(() => import("@/pages/auth/SignIn")),
       signup: lazy(() => import("@/pages/auth/SignUp")),
       forgot: lazy(() => import("@/pages/auth/Forgot")),
       signin2: lazy(() => import("@/pages/auth/SignIn2")),
