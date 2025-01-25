@@ -97,9 +97,8 @@ export async function getInitialState(): Promise<InitialStateProps> {
   };
 }
 
+// const queryClient = useMemo(() => new QueryClient(), []);
 function App() {
-  // const queryClient = useMemo(() => new QueryClient(), []);
-
   console.log("Application Started");
   // const location = useLocation();
   // const match = useMatch(location.pathname);

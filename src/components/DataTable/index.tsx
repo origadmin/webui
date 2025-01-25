@@ -1,5 +1,5 @@
 import { JSX, useState } from "react";
-import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
+import { PAGE_SIZE, START_PAGE } from "@/types";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Searchbar } from "@/components/DataTable/searchbar";
-import { Pagination } from "./pagination";
+import { Pagination, PaginationProps } from "./pagination";
 import { Toolbar, ToolbarProps } from "./toolbar";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
@@ -39,15 +39,10 @@ interface DataTableProps<T> {
   columns: ColumnType<T>[];
   toolbars?: JSX.Element;
   paginationState?: PaginationState;
-  // getCoreRowModel?: (table: ReactTable<T>) => () => RowModel<T>;
-  // getFilteredRowModel?: (table: ReactTable<T>) => () => RowModel<T>;
-  // getPaginationRowModel?: (table: ReactTable<T>) => () => RowModel<T>;
-  // getSortedRowModel?: (table: ReactTable<T>) => () => RowModel<T>;
-  // getFacetedRowModel?: (table: ReactTable<T>) => () => RowModel<T>;
-  // getFacetedUniqueValues?: (table: ReactTable<T>) => () => Map<any, number>;
+  sizeOptions?: PaginationProps<T>["sizeOptions"];
 }
 
-function DataTable<T>({ columns, toolbars, data, paginationState }: DataTableProps<T>) {
+function DataTable<T>({ columns, toolbars, data, paginationState, sizeOptions }: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -131,7 +126,7 @@ function DataTable<T>({ columns, toolbars, data, paginationState }: DataTablePro
       {
         <Pagination
           table={table}
-          sizeOptions={PAGE_SIZE_OPTIONS}
+          sizeOptions={sizeOptions}
           // pagination={table.getState().pagination}
           // onChange={table.setPagination}
           // pageSize={table.getState().pagination.pageSize}
