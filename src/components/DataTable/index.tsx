@@ -1,5 +1,5 @@
 import { JSX, useState } from "react";
-import { PAGE_SIZE, START_PAGE } from "@/types";
+import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -42,7 +42,13 @@ interface DataTableProps<T> {
   sizeOptions?: PaginationProps<T>["sizeOptions"];
 }
 
-function DataTable<T>({ columns, toolbars, data, paginationState, sizeOptions }: DataTableProps<T>) {
+function DataTable<T>({
+  columns,
+  toolbars,
+  data,
+  paginationState,
+  sizeOptions = PAGE_SIZE_OPTIONS,
+}: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
