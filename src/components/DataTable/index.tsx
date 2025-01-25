@@ -46,7 +46,7 @@ function DataTable<T>({
   columns,
   toolbars,
   data,
-  paginationState,
+  paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
   sizeOptions = PAGE_SIZE_OPTIONS,
 }: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
@@ -64,7 +64,7 @@ function DataTable<T>({
       columnFilters,
     },
     initialState: {
-      pagination: paginationState ?? { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
+      pagination: paginationState,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
