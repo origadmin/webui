@@ -1,7 +1,7 @@
 import { SidebarFooter, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { NavUserComponent } from "@/components/NavUser";
 
-type SidebarFooterProps = {
+type FooterProps = {
   user?: {
     name: string;
     email: string;
@@ -9,7 +9,7 @@ type SidebarFooterProps = {
   };
 };
 
-function SidebarFooterContent(props: SidebarFooterProps) {
+function FooterContent(props: FooterProps) {
   return (
     <SidebarFooter>
       <SidebarMenu>
@@ -21,5 +21,5 @@ function SidebarFooterContent(props: SidebarFooterProps) {
   );
 }
 
-export type { SidebarFooterProps };
-export { SidebarFooterContent };
+export type { FooterProps };
+export { FooterContent };

@@ -1,7 +1,7 @@
 // If HOST is empty, it will use the proxy target defined in config/proxy.ts.
 export const HOST = "";
-export const SIGN_IN_URL = `/signin`;
-export const SIGN_UP_URL = `/signup`;
+export const SIGN_IN_URL = `/sign-in`;
+export const SIGN_UP_URL = `/sign-up`;
 export const REFRESH_URL = `/refresh`;
 export const START_PAGE = 0;
 export const PAGE_SIZE = 15;

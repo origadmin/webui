@@ -151,9 +151,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           setAuth(result.data);
         }
 
-        // console.log("location", location.pathname, redirectUrl);
-        navigate(redirectUrl, { replace: true });
-        // window.location.href = redirectUrl;
+        console.log("location", location.pathname, redirectUrl);
+        // navigate(redirectUrl, { replace: true });
+        window.location.href = redirectUrl;
+        // window.location.replace(redirectUrl);
       } catch (err) {
         const myerr = err as Error;
         console.error("SignIn Err:", myerr);

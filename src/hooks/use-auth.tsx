@@ -31,11 +31,11 @@ type AuthProviderProps = {
 };
 
 const AuthProvider = ({
-  isAuthenticated = () => false,
   token: userToken,
   access: userAccess,
   refresh,
   children,
+  isAuthenticated = () => false,
 }: AuthProviderProps) => {
   const [token, _setToken] = useState(userToken);
   const [access, _setAccess] = useState(userAccess);

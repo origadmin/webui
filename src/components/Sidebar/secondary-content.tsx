@@ -5,13 +5,13 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { SidebarGroupContentProps } from "@/components/Sidebar/sidebar-group-content";
+import { GroupContentProps } from "@/components/Sidebar/group-content";
 
 type MenuItem = API.MenuItem & {};
 
-export type SidebarSecondaryContentProps = Omit<SidebarGroupContentProps, "main">;
+export type SecondaryContentProps = Omit<GroupContentProps, "main">;
 
-export function SidebarSecondaryContent({ items, props }: SidebarSecondaryContentProps) {
+export function SecondaryContent({ items, props }: SecondaryContentProps) {
   function renderIcon(item: MenuItem) {
     return (
       <a href={item.path}>

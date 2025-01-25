@@ -5,7 +5,8 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import postcssOptions from "./postcss.config.js";
 
-/** @type {import('@rsbuild/core').RsbuildConfig} */
+
+/** @type {import("@rsbuild/core").RsbuildConfig} */
 const config = defineConfig({
   server: {
     base: "/",
@@ -18,8 +19,18 @@ const config = defineConfig({
     template: "index.html",
     templateParameters: {
       APP_TITLE: "OrigAdmin Panel",
-      // eslint-disable-next-line no-undef
+      INDEX_CSS: process.env.NODE_ENV === "development" ? "index.css" : "index.min.css",
       BASE_URL: process.env.BASE_URL || "",
+    },
+    favicon: "./public/favicon.ico",
+    appIcon: {
+      name: "OrigAdmin Panel",
+      icons: [
+        { src: "./src/assets/icons/icon-128x128.png", size: 128 },
+        { src: "./src/assets/icons/icon-192x192.png", size: 192 },
+        { src: "./src/assets/icons/icon-256x256.png", size: 256 },
+        // { src: "./src/assets/icons/icon-512x512.png", size: 512 },
+      ],
     },
   },
   module: {
@@ -40,7 +51,7 @@ const config = defineConfig({
   },
   source: {
     entry: {
-      index: "./src/index.tsx",
+      index: "./src/main.tsx",
     },
   },
   output: {
@@ -50,6 +61,18 @@ const config = defineConfig({
     ],
   },
   plugins: [pluginReact()],
+  // tools: {
+  //   rspack: {
+  //     plugins: [
+  //       TanStackRouterRspack({
+  //         quoteStyle: "double",
+  //         generatedRouteTree: "./src/routes.gen.ts",
+  //         semicolons: true,
+  //         // virtualRouteConfig: "./src/routes.ts",
+  //       }),
+  //     ],
+  //   },
+  // },
 });
 
 export default config;

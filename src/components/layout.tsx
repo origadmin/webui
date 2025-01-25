@@ -9,6 +9,7 @@ type LayoutProps = {
   topNav?: API.TopNav[];
   sidebarProps?: SidebarProps;
   children: React.ReactNode;
+  watermark?: React.ReactNode;
 };
 
 export function Layout(props: LayoutProps) {

@@ -1,6 +1,6 @@
 import { NotFoundError, ForbiddenError } from "@/pages/errors";
 import { RouteObject } from "react-router-dom";
-import { MenuItem } from "@/components/Sidebar/sidebar-group-content";
+import { MenuItem } from "@/components/Sidebar/group-content";
 
 export const initRouter = (oldRoutes: RouteObject[], routes?: RouteObject[]) => {
   const newRoutes = oldRoutes;

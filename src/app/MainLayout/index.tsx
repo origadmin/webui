@@ -40,7 +40,12 @@ const watermark = {
   left: 0, // 调整到左边
 };
 
-export default function MainPage() {
+interface MainLayoutProps extends React.HTMLAttributes<HTMLElement> {
+  fixed?: boolean;
+  children?: React.ReactNode;
+}
+
+export default function MainLayout() {
   const { token } = useToken();
   const { signInPath } = useAuth();
 

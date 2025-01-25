@@ -11,11 +11,11 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-import { SidebarGroupContentProps, MenuItem } from "@/components/Sidebar/sidebar-group-content";
+import { GroupContentProps, MenuItem } from "@/components/Sidebar/group-content";
 
-export type SidebarMainContentProps = Omit<SidebarGroupContentProps, "seconds">;
+export type MainContentProps = Omit<GroupContentProps, "seconds">;
 
-export function SidebarMainContent({ title, items }: SidebarMainContentProps) {
+export function MainContent({ title, items }: MainContentProps) {
   function renderIcon(item: MenuItem) {
     return (
       <a href={item.path}>
@@ -36,7 +36,7 @@ export function SidebarMainContent({ title, items }: SidebarMainContentProps) {
                 <SidebarMenuButton asChild tooltip={item.title}>
                   {renderIcon(item)}
                 </SidebarMenuButton>
-                {item.items?.length ? (
+                {item.children?.length ? (
                   <>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuAction className='data-[state=open]:rotate-90'>
@@ -46,7 +46,7 @@ export function SidebarMainContent({ title, items }: SidebarMainContentProps) {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        {item.items?.map((subItem) => (
+                        {item.children?.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
                               <a href={subItem.path}>

@@ -3,7 +3,7 @@ import { SignUpForm } from "@/pages/auth/SignUp/components/sign-up-form";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
-function SignUp() {
+function SignUpPage() {
   return (
     <div
       style={{
@@ -59,4 +59,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpPage;

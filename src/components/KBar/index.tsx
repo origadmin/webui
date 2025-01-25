@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import { mockSidebar } from "@/mocks/mockSidebar.ts";
+import { mockSidebar } from "@/mocks/mockSidebar";
 import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from "kbar";
 import { useNavigate } from "react-router-dom";
-import { API } from "@/types/typings";
 import RenderResults from "./render-result";
 import useThemeSwitching from "./use-theme-switching";
 
@@ -29,7 +28,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
 
         // Map child items into actions
         const childActions =
-          navItem.items?.map((childItem: API.MenuItem) => ({
+          navItem.children?.map((childItem: API.MenuItem) => ({
             id: `${childItem.title.toLowerCase()}Action`,
             name: childItem.title,
             shortcut: childItem.shortcut,

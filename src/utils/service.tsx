@@ -5,7 +5,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 // Create an instance of axios
 const request = axios.create({
   baseURL: config.host + "/", // Replace with your API base URL
-  timeout: 1000, // The request timeout period
+  timeout: 3000, // The request timeout period
 });
 
 // Request an interceptor

@@ -2,7 +2,7 @@ import { OtpForm } from "@/pages/auth/Otp/components/otp-form";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
-function Otp() {
+function OtpPage() {
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
@@ -44,4 +44,4 @@ function Otp() {
   );
 }
 
-export default Otp;
+export default OtpPage;

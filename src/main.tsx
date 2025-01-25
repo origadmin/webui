@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import App from "@/App";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
-import "./index.css";
+import "./main.css";
 
 const rootElement = document.getElementById("root");
 

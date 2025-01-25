@@ -1,37 +1,36 @@
-import { JSX, lazy } from "react";
 import { InternalServerError, NotFoundError, errorRoutes } from "@/pages/errors";
-import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 
 export type RouterConfig = RouteObject[];
 
 export const routes: RouterConfig = [
   // Auth routes
   {
-    id: "signin",
-    path: "/signin",
+    id: "sign-in",
+    path: "/sign-in",
     lazy: async () => ({
       Component: (await import("@/pages/auth/SignIn")).default,
     }),
   },
   {
-    id: "signin2",
-    path: "/signin2",
+    id: "sign-in-2",
+    path: "/sign-in-2",
     lazy: async () => ({
       Component: (await import("@/pages/auth/SignIn2")).default,
     }),
   },
   {
-    id: "signup",
-    path: "/signup",
+    id: "sign-up",
+    path: "/sign-up",
     lazy: async () => ({
       Component: (await import("@/pages/auth/SignUp")).default,
     }),
   },
   {
-    id: "forgot",
-    path: "/forgot",
+    id: "forgot-password",
+    path: "/forgot-password",
     lazy: async () => ({
-      Component: (await import("@/pages/auth/Forgot")).default,
+      Component: (await import("@/pages/auth/ForgotPassword")).default,
     }),
   },
   {
@@ -45,8 +44,8 @@ export const routes: RouterConfig = [
   {
     path: "/",
     lazy: async () => {
-      const MainPage = await import("@/app/MainPage");
-      return { Component: MainPage.default };
+      const MainLayout = await import("@/app/MainLayout");
+      return { Component: MainLayout.default };
     },
     children: [
       {
@@ -289,21 +288,21 @@ export const routes: RouterConfig = [
   { path: "*", Component: NotFoundError },
 ];
 
-const getRoutes: {
-  routes: RouterConfig;
-  routeComponents: Map<string, React.LazyExoticComponent<() => JSX.Element>>;
-} = async () => {
-  return {
-    routes,
-    routeComponents: {
-      signin: lazy(() => import("@/pages/auth/SignIn")),
-      signup: lazy(() => import("@/pages/auth/SignUp")),
-      forgot: lazy(() => import("@/pages/auth/Forgot")),
-      signin2: lazy(() => import("@/pages/auth/SignIn2")),
-      maintenance: lazy(() => import("@/pages/errors/maintenance-error")),
-    },
-  };
-};
+// const getRoutes: {
+//   routes: RouterConfig;
+//   routeComponents: Map<string, React.LazyExoticComponent<() => JSX.Element>>;
+// } = async () => {
+//   return {
+//     routes,
+//     routeComponents: {
+//       "/sign-in": lazy(() => import("@/pages/auth/SignIn")),
+//       "/sign-up": lazy(() => import("@/pages/auth/SignUp")),
+//       "/forgot-password": lazy(() => import("@/pages/auth/ForgotPassword")),
+//       "/sign-in-2": lazy(() => import("@/pages/auth/SignIn2")),
+//       "/maintenance": lazy(() => import("@/pages/errors/maintenance-error")),
+//     },
+//   };
+// };
 
 const router = createBrowserRouter(routes);
 

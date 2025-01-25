@@ -3,7 +3,7 @@ import { Command } from "lucide-react";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import { TeamSwitcher } from "@/components/team-switcher";
 
-type SidebarHeaderProps = {
+type HeaderProps = {
   teams?: {
     name: string;
     logo: ElementType;
@@ -17,7 +17,7 @@ const DefaultTeam = {
   plan: "RSBuild + React + ShadcnUI + ",
 };
 
-function SidebarHeaderContent(props?: SidebarHeaderProps) {
+function HeaderContent(props?: HeaderProps) {
   const { teams = [DefaultTeam] } = props || {};
   return (
     <SidebarHeader>
@@ -26,5 +26,5 @@ function SidebarHeaderContent(props?: SidebarHeaderProps) {
   );
 }
 
-export type { SidebarHeaderProps };
-export { SidebarHeaderContent };
+export type { HeaderProps };
+export { HeaderContent };

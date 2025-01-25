@@ -13,21 +13,21 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { SidebarMainContent } from "@/components/Sidebar/sidebar-main-content";
-import { SidebarSecondaryContent } from "@/components/Sidebar/sidebar-secondary-content";
+import { MainContent } from "@/components/Sidebar/main-content";
+import { SecondaryContent } from "@/components/Sidebar/secondary-content";
 
 export type MenuItem = API.MenuItem & {};
 
-type SidebarGroupContentProps = {
+type GroupContentProps = {
   key?: string;
   title?: string;
   items?: MenuItem[];
-  main?: SidebarGroupContentProps;
-  seconds?: SidebarGroupContentProps;
+  main?: GroupContentProps;
+  seconds?: GroupContentProps;
   props?: React.ComponentPropsWithoutRef<typeof SidebarGroup>;
 };
 
-function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupContentProps) {
+function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
   function renderLink(item: MenuItem) {
     return <Link to={item.path || "#"}>{renderIcon(item)}</Link>;
   }
@@ -68,7 +68,7 @@ function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupC
               </SidebarMenuButton>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <SidebarMenuSub>
+              <SidebarMenuSub key={key(item)}>
                 {item.children?.map((subItem) => (
                   <SidebarMenuSubItem key={key(subItem)}>
                     <SidebarMenuSubButton asChild isActive={false}>
@@ -109,7 +109,7 @@ function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupC
 
   return (
     <SidebarContent>
-      {main && <SidebarMainContent {...main}></SidebarMainContent>}
+      {main && <MainContent {...main}></MainContent>}
       {items && (
         <SidebarGroup {...props}>
           <SidebarMenu>
@@ -123,10 +123,10 @@ function SidebarGroupContent({ main, seconds, items = [], props }: SidebarGroupC
           </SidebarMenu>
         </SidebarGroup>
       )}
-      {seconds && <SidebarSecondaryContent props={{ className: "mt-auto" }} {...seconds} />}
+      {seconds && <SecondaryContent props={{ className: "mt-auto" }} {...seconds} />}
     </SidebarContent>
   );
 }
 
-export type { SidebarGroupContentProps };
-export { SidebarGroupContent };
+export type { GroupContentProps };
+export { GroupContent };

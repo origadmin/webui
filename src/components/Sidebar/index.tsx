@@ -1,23 +1,24 @@
 import * as React from "react";
 import { Sidebar, SidebarRail } from "@/components/ui/sidebar";
-import { SidebarFooterContent, SidebarFooterProps } from "./sidebar-footer-content";
-import { SidebarGroupContent, SidebarGroupContentProps } from "./sidebar-group-content";
-import { SidebarHeaderContent, SidebarHeaderProps } from "./sidebar-header-content";
-import { SidebarSecondaryContent, SidebarSecondaryContentProps } from "./sidebar-secondary-content";
+import { FooterContent, FooterProps } from "./footer-content";
+import { GroupContent, GroupContentProps } from "./group-content";
+import { HeaderContent, HeaderProps } from "./header-content";
+import { MainContent, MainContentProps } from "./main-content";
+import { SecondaryContent, SecondaryContentProps } from "./secondary-content";
 
 type SidebarProps = {
   props?: React.ComponentProps<typeof Sidebar>;
-  header?: SidebarHeaderProps;
-  content?: SidebarGroupContentProps;
-  footer?: SidebarFooterProps;
+  header?: HeaderProps;
+  content?: GroupContentProps;
+  footer?: FooterProps;
 };
 
 const SidebarComponent: React.FC<SidebarProps> = ({ props, header, content, footer }: SidebarProps) => {
   return (
     <Sidebar className='border-r' collapsible='icon' {...props}>
-      {header && <SidebarHeaderContent {...header} />}
-      {content && <SidebarGroupContent {...content} />}
-      {footer && <SidebarFooterContent {...footer} />}
+      {header && <HeaderContent {...header} />}
+      {content && <GroupContent {...content} />}
+      {footer && <FooterContent {...footer} />}
       <SidebarRail />
     </Sidebar>
   );
@@ -25,9 +26,10 @@ const SidebarComponent: React.FC<SidebarProps> = ({ props, header, content, foot
 
 export type {
   SidebarProps,
-  SidebarHeaderProps,
-  SidebarFooterProps,
-  SidebarSecondaryContentProps,
-  SidebarGroupContentProps,
+  HeaderProps as SidebarHeaderProps,
+  FooterProps as SidebarFooterProps,
+  GroupContentProps as SidebarGroupContentProps,
+  MainContentProps as SidebarMainContentProps,
+  SecondaryContentProps as SidebarSecondaryContentProps,
 };
-export { SidebarComponent, SidebarHeaderContent, SidebarFooterContent, SidebarSecondaryContent, SidebarGroupContent };
+export { SidebarComponent, HeaderContent, FooterContent, MainContent, SecondaryContent, GroupContent };
