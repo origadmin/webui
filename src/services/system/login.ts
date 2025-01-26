@@ -15,7 +15,7 @@ export function getCaptchaImageURL(id: string) {
 
 /** Login system with username and password POST /api/v1/login */
 export async function login(body: API.LoginForm, options?: API.RequestOptions) {
-  return request<API.Result<API.LoginToken>>("/api/v1/login", {
+  return request<API.Result<any>>("/api/v1/login", {
     method: "POST",
     data: body,
     ...(options || {}),

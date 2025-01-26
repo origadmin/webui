@@ -1,83 +1,10 @@
-// async function refreshToken(uri: string) {
-//   // Assuming the refresh token is stored in localStorage
-//   const refreshToken = getRefreshToken();
-//   if (!refreshToken) {
-//     throw new Error("No refresh token found");
-//   }
-//   try {
-//     const response = await request(HOST + uri, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ refresh_token: refreshToken }),
-//     });
-//
-//     const data = await response.json();
-//
-//     if (!response.ok) {
-//       if (data && "error" in data) {
-//         const error = data.error as API.Error;
-//         console.error("Refresh Token Error:", error.detail || "");
-//         throw new Error(error.detail || "An unknown error occurred");
-//       }
-//     }
-//     // Update localStorage with the new tokens
-//     if (data && ACCESS_TOKEN_KEY in data) {
-//       localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
-//     }
-//     if (data && REFRESH_TOKEN_KEY in data) {
-//       localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
-//     }
-//     return data.access_token || "";
-//   } catch (error) {
-//     console.error("Refresh Token Error:", error);
-//     throw error;
-//   }
-// }
-// export function convertMenuItem<T>(
-//   data: T[],
-//   convertT?: (item: T) => {
-//     id: string;
-//     name: string;
-//     parent_id?: string;
-//     disabled?: boolean;
-//     children: T[];
-//   },
-// ): API.MenuItem[] {
-//   const menuItems: API.MenuItem[] = [];
-//   data.forEach((item) => {
-//     const dataItem = convertT
-//       ? convertT(item)
-//       : (item as {
-//           id: string;
-//           name: string;
-//           parent_id?: string;
-//           disabled?: boolean;
-//           children: T[];
-//         });
-//
-//     // todo: fix this
-//     const menuItem: API.MenuItem = {
-//       // id: dataItem.id,
-//       keyword: dataItem.id,
-//       title: dataItem.name,
-//       // value: dataItem.id,
-//       label: dataItem.name,
-//       // parent_id: dataItem.parent_id,
-//       items: dataItem.children ? convertMenuItem(dataItem.children, convertT) : [],
-//     };
-//
-//     if (dataItem.disabled) {
-//       menuItem.disabled = dataItem.disabled;
-//     }
-//     menuItems.push(menuItem);
-//   });
-//   return menuItems;
-// }
+import { mockToken } from "@/mocks/mockSidebar";
+import { logout, login } from "@/services/system/login";
+import { SIGN_IN_URL } from "@/types";
 import { fetchRequest, Method } from "@/utils/service";
 import { getRefreshToken } from "@/utils/storage";
 import config from "@config";
+import { AxiosResponse } from "axios";
 
 export async function refreshToken() {
   const { url, method } = config.auth.refreshToken;
@@ -102,19 +29,104 @@ export async function refreshToken() {
         },
       },
     );
-    if (response.data.success) {
-      const { data } = await response.data;
+    if (response && response.success && response.data) {
+      const { access_token } = response.data;
       // Update localStorage with the new tokens
-      if (data && "access_token" in data) {
-        localStorage.setItem("access_token", data.access_token);
+      if (access_token) {
+        localStorage.setItem("access_token", access_token);
       }
       // if (data && "refresh_token" in data) {
       //   localStorage.setItem("refresh_token", data.refresh_token);
       // }
-      return data?.access_token || "";
+      return access_token || "";
     }
   } catch (err) {
     console.error("Refresh Token Error:", err);
   }
   return "";
 }
+
+export type SignProps<T> = {
+  redirectUrl?: string;
+  options?: API.RequestOptions;
+  callback?: (token: T | Promise<T>) => void;
+  onError?: (error: Error) => void;
+  onSuccess?: (data: T) => void;
+  onFinish?: () => void;
+  login?: (params: API.LoginForm, options?: API.RequestOptions) => Promise<AxiosResponse<API.Result<T>>>;
+  logout?: (options?: API.RequestOptions) => Promise<AxiosResponse<API.Result<T>>>;
+};
+
+export const signOut = async <T,>({ logout: _logout = logout, options }: SignProps<T>) => {
+  const { pathname } = window.location;
+  try {
+    await _logout(options);
+    const urlParams = new URL(window.location.href).searchParams;
+    /** 此方法会跳转到 redirect 参数所在的位置 */
+    const redirect = urlParams.get("redirect");
+    // Note: There may be security issues, please note
+    if (redirect !== null || pathname !== SIGN_IN_URL) {
+      window.location.replace(redirect || SIGN_IN_URL);
+      return;
+    }
+  } catch (error) {
+    console.error("Error logging out:", error);
+    if (pathname !== SIGN_IN_URL) {
+      window.location.replace(SIGN_IN_URL);
+    }
+  } finally {
+    // Clear user status to prevent errors from causing state confusion
+    localStorage.removeItem("access_token");
+  }
+};
+
+export const signIn = async <T,>(params: API.LoginForm, { login: _login = login, options, ...props }: SignProps<T>) => {
+  console.log("param value:", params);
+  if (params.username !== "admin") {
+    if (props.onError) {
+      props.onError(new Error("Invalid username or password"));
+    }
+    return;
+  }
+  if (params.password !== "adminadmin") {
+    if (props.onError) {
+      props.onError(new Error("Invalid username or password"));
+    }
+    return;
+  }
+
+  setTimeout(() => {
+    // 模拟登录成功
+    const token = mockToken;
+    if (token) {
+      // Storage.setUserID(token.user_id);
+      // Storage.setAccessToken(token.access_token);
+      // const time = new Date().setTime(token.expires_at);
+      // Storage.setExpirationTime(time.toString());
+      // 登录成功后，跳转到 callbackUrl
+      // window.location.href = param.callbackUrl;
+      if (props.onSuccess) {
+        props.onSuccess({ success: true, data: token } as T);
+      }
+    } else {
+      if (props.onError) {
+        props.onError(new Error("Invalid username or password"));
+      }
+    }
+  }, 1000); // 等待 3 秒
+
+  // try {
+  //   const resp = await _login(params, options);
+  //   if (!resp) {
+  //     if (props.onError) {
+  //       props.onError(new Error("Invalid username or password"));
+  //     }
+  //   }
+  // } catch (error) {
+  //   console.error("Error logging in:", error);
+  //   if (props.onError) {
+  //     props.onError(new Error("Invalid username or password"));
+  //     return;
+  //   }
+  // }
+};

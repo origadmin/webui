@@ -168,19 +168,19 @@ export const mockSidebar: API.SidebarData = {
           children: [
             {
               title: "Sign In",
-              path: "/signin",
+              path: "/sign-in",
             },
             {
               title: "Sign In (2 Col)",
-              path: "/signin2",
+              path: "/sign-in-2",
             },
             {
               title: "Sign Up",
-              path: "/signup",
+              path: "/sign-up",
             },
             {
               title: "Forgot Password",
-              path: "/forgot",
+              path: "/forgot-password",
             },
             {
               title: "OTP",

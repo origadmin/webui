@@ -143,4 +143,16 @@ declare global {
     type MainMenuItem = MenuItemWithOptionalChildren;
     type SidebarMenuItem = MenuItemWithChildren;
   }
+
+  type AuthorizationItemConfig = {
+    url: string;
+    method: string;
+    params: Record<string, string>;
+  };
+
+  AuthorizationConfig = Record<string, AuthorizationConfigItem>;
+
+  type Config = {
+    auth: AuthorizationConfig;
+  };
 }

@@ -1,12 +1,15 @@
 import { getAccessToken } from "@/utils/storage";
 import config from "@config";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 
 // Create an instance of axios
 const request = axios.create({
   baseURL: config.host + "/", // Replace with your API base URL
   timeout: 3000, // The request timeout period
 });
+
+// type AxiosRequestInterceptorUse<T> = (onFulfilled?: ((value: T) => T | Promise<T>) | null, onRejected?: ((error: any) => any) | null, options?: AxiosInterceptorOptions) => number;
+// type AxiosResponseInterceptorUse<T> = (onFulfilled?: ((value: T) => T | Promise<T>) | null, onRejected?: ((error: any) => any) | null) => number;
 
 // Request an interceptor
 request.interceptors.request.use(
@@ -28,12 +31,12 @@ request.interceptors.request.use(
 
 // Respond to the interceptor
 request.interceptors.response.use(
-  (response: AxiosResponse<any, any>) => {
+  (response) => {
     console.log("type response:", response);
     // Do something about the response data
-    return Promise.resolve(response);
+    return response;
   },
-  (response: AxiosError<any>) => {
+  (response) => {
     // Do something about response errors
     return Promise.reject(response);
   },
@@ -42,12 +45,12 @@ request.interceptors.response.use(
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 /** Generic API request handler */
-async function fetchRequest<T>(
+async function fetchRequest<T, D = any>(
   url: string,
   method: Method,
-  body?: any,
+  body?: D,
   options?: API.RequestOptions,
-  params?: API.Params,
+  params?: API.Params, // url parameters
 ): Promise<API.Result<T>> {
   return request<API.Result<T>>(url, {
     method,

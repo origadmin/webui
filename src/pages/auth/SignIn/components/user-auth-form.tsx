@@ -1,12 +1,12 @@
 import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from "react";
 import Placeholder from "@/assets/static/placeholder.jpg";
-import { mockToken } from "@/mocks/mockSidebar";
+import { signIn } from "@/utils/auth";
 import { fetchRequest } from "@/utils/service";
 import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -49,40 +49,6 @@ export type SignInProps = {
   callbackUrl: string;
 };
 
-const signIn = async (param: SignInProps): Promise<API.Result<any>> => {
-  return new Promise((resolve, reject) => {
-    console.log("param:", param);
-    if (!param.values) {
-      reject(new Error("Require login data is empty"));
-      return;
-    }
-    console.log("param value:", param);
-    if (param.values.username !== "admin") {
-      reject(new Error("Invalid username or password"));
-      return;
-    }
-    if (param.values.password !== "adminadmin") {
-      reject(new Error("Invalid username or password"));
-      return;
-    }
-    setTimeout(() => {
-      // 模拟登录成功
-      const token = mockToken;
-      if (token) {
-        // Storage.setUserID(token.user_id);
-        // Storage.setAccessToken(token.access_token);
-        // const time = new Date().setTime(token.expires_at);
-        // Storage.setExpirationTime(time.toString());
-        // 登录成功后，跳转到 callbackUrl
-        // window.location.href = param.callbackUrl;
-        resolve({ success: true, data: token });
-      } else {
-        reject(new Error("Email is required"));
-      }
-    }, 1000); // 等待 3 秒
-  });
-};
-
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [captcha, setCaptcha] = useState<Captcha>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +56,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { toast } = useToast();
   const urlParams = new URLSearchParams(window.location.search);
   const redirectUrl = urlParams.get("redirect") || "/";
-  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -139,30 +104,26 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     values.captcha_id = captcha.id || "";
     console.log("form data:", values);
     startTransition(async () => {
-      try {
-        const result = await signIn({
-          values: values,
-          callbackUrl: redirectUrl,
-        });
-        if (result && result.success) {
+      await signIn<API.Result<API.Token>>(values, {
+        redirectUrl: redirectUrl,
+        onSuccess: (data) => {
           toast({
             description: "Signed In Successfully!",
           });
-          setAuth(result.data);
-        }
-
-        console.log("location", location.pathname, redirectUrl);
-        // navigate(redirectUrl, { replace: true });
-        window.location.href = redirectUrl;
-        // window.location.replace(redirectUrl);
-      } catch (err) {
-        const myerr = err as Error;
-        console.error("SignIn Err:", myerr);
-        toast({
-          variant: "destructive",
-          description: myerr && myerr.message ? myerr.message : "unknown error",
-        });
-      }
+          if (data.data) {
+            setAuth(data.data);
+          }
+          console.log("location", location.pathname, redirectUrl);
+          window.location.href = redirectUrl;
+        },
+        onError: (err) => {
+          console.error("SignIn Err:", err);
+          toast({
+            variant: "destructive",
+            description: err && err.message ? err.message : "unknown error",
+          });
+        },
+      });
     });
   }
 
