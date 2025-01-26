@@ -23,7 +23,6 @@ const getMockData = (): SidebarProps => {
 
 const watermark = {
   content: "OrigAdmin",
-  fontColor: "#ffffff",
   fontWeight: "bold",
   fontFamily: "Arial",
   opacity: 0.3,
@@ -49,7 +48,7 @@ export default function MainLayout() {
   return (
     <Layout
       sidebarProps={sidebarData}
-      topNav={mockTopNav}
+      topNavProps={{ menus: mockTopNav }}
       footer={{
         links: mockFooter,
       }}

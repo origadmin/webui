@@ -1,6 +1,5 @@
-import { randomKey } from "@/utils/crypto";
-import { ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarContent,
@@ -22,8 +21,8 @@ type GroupContentProps = {
   key?: string;
   title?: string;
   items?: MenuItem[];
-  main?: GroupContentProps;
-  seconds?: GroupContentProps;
+  main?: React.ComponentPropsWithoutRef<typeof GroupContent>;
+  seconds?: React.ComponentPropsWithoutRef<typeof GroupContent>;
   props?: React.ComponentPropsWithoutRef<typeof SidebarGroup>;
 };
 
@@ -50,10 +49,7 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
   }
 
   function key(item: MenuItem) {
-    if (item.id !== undefined) {
-      item.id = randomKey();
-    }
-    return item.id;
+    return item.id + ":" + item.title;
   }
 
   function renderSubItem(items: MenuItem[] | undefined) {

@@ -1,8 +1,8 @@
 /* eslint-disable */
 // @ts-ignore
 import { TablerIcon } from "@tabler/icons-react";
-import { LucideIcon } from "lucide-react";
 import { RouteObject } from "@tanstack/react-router";
+import { LucideIcon } from "lucide-react";
 
 
 declare global {
@@ -124,12 +124,6 @@ declare global {
       user: SideBarUser;
       teams: Team[];
       menuItems: MenuItem[];
-    };
-
-    type TopNav = {
-      title: string;
-      href: string;
-      isActive: boolean;
     };
 
     type MenuItemWithChildren = MenuItem & {

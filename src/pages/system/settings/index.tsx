@@ -165,7 +165,7 @@ function SettingsPage() {
                       <SelectItem value='none'>None</SelectItem> {/* Updated line */}
                       {menus &&
                         menus.map((menu) => (
-                          <SelectItem key={menu.id} value={menu.id}>
+                          <SelectItem key={menu.id} value={menu.id || "none"}>
                             {menu.name}
                           </SelectItem>
                         ))}

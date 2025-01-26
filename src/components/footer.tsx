@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 type LinkProps = {
   key?: string;
@@ -8,15 +9,23 @@ type LinkProps = {
 };
 
 export type FooterProps = {
+  className?: string;
   links?: LinkProps[];
   copyright?: string;
 };
 
-export function Footer(props?: FooterProps) {
+export function Footer({ className, ...props }: FooterProps) {
   const { links = [], copyright = "OrigAdmin" } = props || {};
 
   return (
-    <footer className='border-grid flex flex-col items-center justify-center gap-2 border-t p-2 md:px-8 md:py-2'>
+    <footer
+      className={cn(
+        "relative flex flex-1 flex-col bg-background",
+        "md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
+        className,
+      )}
+    >
+      {/*<footer className='border-grid flex flex-col items-center justify-center gap-2 border-t p-2 md:px-8 md:py-2'>*/}
       <div className='flex w-full flex-col items-center justify-end gap-2 p-2 xl:flex-row'>
         <div>
           <ul className='flex w-full flex-wrap items-center justify-center gap-3 sm:flex-nowrap md:gap-10'>

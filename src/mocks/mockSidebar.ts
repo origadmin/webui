@@ -41,7 +41,7 @@ export const mockSidebar: API.SidebarData = {
   },
   teams: [
     {
-      name: "OrigAdmin Panel",
+      name: "OrigAdmin WebUI",
       logo: Command,
       plan: "React + ShadcnUI",
     },
@@ -265,7 +265,7 @@ export const mockSidebar: API.SidebarData = {
   ],
 };
 
-export const mockTopNav: API.TopNav[] = [
+export const mockTopNav = [
   {
     title: "Overview",
     href: "/dashboard/overview",

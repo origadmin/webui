@@ -1,4 +1,4 @@
-# OrigAdmin Panel
+# OrigAdmin WebUI
 
 ## 🌟 Preview
 
@@ -21,7 +21,7 @@ This project implements the front-end Admin design based on the following techno
 
 ## 🚀 Live Demo
 
-[OrigAdmin Panel Live](https://shadcn-admin-design.vercel.app)
+[OrigAdmin WebUI Live](https://shadcn-admin-design.vercel.app)
 
 - **Username**: `admin`
 - **Password**: `adminadmin`

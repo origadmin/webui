@@ -9,8 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./custom/button";
 
+type NavMenu = {
+  title: string;
+  href: string;
+  isActive: boolean;
+};
+
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
-  menus?: API.TopNav[];
+  menus?: NavMenu[];
 }
 
 export function TopNav({ className, menus, ...props }: TopNavProps) {

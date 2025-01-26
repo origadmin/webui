@@ -56,7 +56,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ className, stick
       ref={ref}
       data-layout='header'
       className={cn(
-        `z-10 flex h-[var(--header-height)] items-center gap-2 bg-background p-4 md:px-4`,
+        `z-10 flex h-[var(--header-height)] items-center gap-2 p-4 md:px-4`,
         contextVal.offset > 10 && sticky ? "shadow" : "shadow-none",
         contextVal.fixed && "flex-none",
         sticky && "sticky top-0",

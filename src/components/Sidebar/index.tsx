@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Sidebar, SidebarRail } from "@/components/ui/sidebar";
+import { SidebarRail, Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { FooterContent, FooterProps } from "./footer-content";
 import { GroupContent, GroupContentProps } from "./group-content";
 import { HeaderContent, HeaderProps } from "./header-content";
@@ -15,7 +15,7 @@ type SidebarProps = {
 
 const SidebarComponent: React.FC<SidebarProps> = ({ props, header, content, footer }: SidebarProps) => {
   return (
-    <Sidebar className='border-r' collapsible='icon' {...props}>
+    <Sidebar className='border-r-2' collapsible='icon' {...props}>
       {header && <HeaderContent {...header} />}
       {content && <GroupContent {...content} />}
       {footer && <FooterContent {...footer} />}
@@ -32,4 +32,14 @@ export type {
   MainContentProps as SidebarMainContentProps,
   SecondaryContentProps as SidebarSecondaryContentProps,
 };
-export { SidebarComponent, HeaderContent, FooterContent, MainContent, SecondaryContent, GroupContent };
+export {
+  SidebarComponent,
+  HeaderContent,
+  FooterContent,
+  MainContent,
+  SecondaryContent,
+  GroupContent,
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+};

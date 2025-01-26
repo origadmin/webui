@@ -109,7 +109,7 @@ const Watermark: React.FC<WatermarkProps> = ({
 
   return (
     <div className={cn("relative w-full h-full", className)}>
-      <div className='relative z-10'>{children}</div>
+      <div className='relative'>{children}</div>
       <div
         className={`pointer-events-none select-none ${fullscreen ? "fixed" : "absolute"} inset-0`}
         style={{ opacity, zIndex: zIndex - 1 }} // Ensure watermark is behind content

@@ -19,13 +19,13 @@ const config = defineConfig({
   html: {
     template: "index.html",
     templateParameters: {
-      APP_TITLE: "OrigAdmin Panel",
+      APP_TITLE:"OrigAdmin WebUI",
       INDEX_CSS: process.env.NODE_ENV === "development" ? "index.css" : "index.min.css",
       BASE_URL: process.env.BASE_URL || "",
     },
     favicon: "./public/favicon.ico",
     appIcon: {
-      name: "OrigAdmin Panel",
+      name: "OrigAdmin WebUI",
       icons: [
         { src: "./src/assets/icons/icon-128x128.png", size: 128 },
         { src: "./src/assets/icons/icon-192x192.png", size: 192 },

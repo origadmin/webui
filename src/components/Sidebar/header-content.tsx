@@ -14,7 +14,7 @@ type HeaderProps = {
 const DefaultTeam = {
   name: "OrigAdmin WebUI",
   logo: Command,
-  plan: "RSBuild + React + ShadcnUI + ",
+  plan: "RSBuild + React + ShadcnUI",
 };
 
 function HeaderContent(props?: HeaderProps) {
