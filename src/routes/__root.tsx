@@ -1,4 +1,5 @@
 import * as React from "react";
+import { InternalServerError, NotFoundError } from "@/pages/errors";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -8,6 +9,8 @@ export const Route = createRootRouteWithContext<{
   auth: AuthContextType;
 }>()({
   component: RootComponent,
+  errorComponent: InternalServerError,
+  notFoundComponent: NotFoundError,
 });
 
 function RootComponent() {

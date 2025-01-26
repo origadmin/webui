@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -8,8 +8,7 @@ interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function InternalServerError({ className, minimal = false }: GeneralErrorProps) {
-  const navigate = useNavigate();
-  const { history } = useRouter();
+  const { navigate, history } = useRouter();
   return (
     <div className={cn("h-svh w-full", className)}>
       <div className='m-auto flex size-full flex-col items-center justify-center gap-2'>
