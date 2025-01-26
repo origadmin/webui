@@ -30,7 +30,7 @@ function SignUpPage() {
           </svg>
           <h1 className='text-xl font-medium'>OrigAdmin</h1>
         </div>
-        <Card className='p-6　inset-0 bg-zinc-900 bg-opacity-75'>
+        <Card className='p-6 inset-0 bg-zinc-900 bg-opacity-75'>
           <div className='mb-2 flex flex-col space-y-2 text-left'>
             <h1 className='text-lg font-semibold tracking-tight'>Create an account</h1>
             <p className='text-sm text-muted-foreground'>

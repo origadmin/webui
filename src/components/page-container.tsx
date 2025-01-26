@@ -34,13 +34,13 @@ export default function PageContainer({
       <Content {...props}>
         {headerProps.show && (
           <Content.Header className='gap-2 justify-between shadow-none ease-linear'>
-            <div className='p-4 md:px-6'>
+            <div className='px-8 flex flex-col'>
               <Breadcrumbs />
             </div>
           </Content.Header>
         )}
         <Content.Body>
-          <div className={cn("board flex flex-col mx-auto py-4", className)}>{renderScrollArea()}</div>
+          <div className={cn("p-2 flex flex-col mx-auto", className)}>{renderScrollArea()}</div>
         </Content.Body>
       </Content>
     );

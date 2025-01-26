@@ -60,7 +60,7 @@ function SettingsPage() {
 
   return (
     <PageContainer>
-      <div className='p-4 md:px-4 flex items-center justify-between'>
+      <div className='md:px-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold tracking-tight'>Settings</h1>
       </div>
       <Tabs defaultValue='permissions' orientation='vertical' className='w-full p-4'>

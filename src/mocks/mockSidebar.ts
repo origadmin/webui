@@ -269,7 +269,7 @@ export const mockTopNav = [
   {
     title: "Overview",
     href: "/dashboard/overview",
-    isActive: true,
+    isActive: false,
   },
   {
     title: "Customers",
