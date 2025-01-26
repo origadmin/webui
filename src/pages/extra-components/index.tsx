@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronRight } from "react-feather";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { nord } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Input } from "@/components/ui/input";

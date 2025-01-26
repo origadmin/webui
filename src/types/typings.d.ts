@@ -2,7 +2,7 @@
 // @ts-ignore
 import { TablerIcon } from "@tabler/icons-react";
 import { LucideIcon } from "lucide-react";
-import { RouteObject } from "react-router-dom";
+import { RouteObject } from "@tanstack/react-router";
 
 
 declare global {

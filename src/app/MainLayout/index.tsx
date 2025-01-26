@@ -1,7 +1,5 @@
 import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar";
-import { SIGN_IN_URL } from "@/types";
-import { Navigate, Outlet } from "react-router-dom";
-import { useToken, useAuth } from "@/hooks/use-auth";
+import { Outlet } from "@tanstack/react-router";
 import { Watermark } from "@/components/ui/watermark";
 import { SidebarProps } from "@/components/Sidebar";
 import Layout from "@/components/layout";
@@ -46,16 +44,6 @@ interface MainLayoutProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export default function MainLayout() {
-  const { token } = useToken();
-  const { signInPath } = useAuth();
-
-  console.log("login token:", token);
-  // Determine whether a user has permissions
-  if (!token) {
-    // If you don't have permissions, you'll be redirected to the login page
-    return <Navigate to={signInPath || SIGN_IN_URL} replace />;
-  }
-
   const sidebarData = getMockData();
 
   return (

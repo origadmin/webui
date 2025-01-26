@@ -3,7 +3,7 @@ import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { tasks } from "./data/tasks";
 
-function Tasks() {
+function TasksPage() {
   return (
     <PageContainer>
       <div className='p-4 md:px-4 flex items-center justify-between'>
@@ -19,4 +19,4 @@ function Tasks() {
   );
 }
 
-export default Tasks;
+export default TasksPage;

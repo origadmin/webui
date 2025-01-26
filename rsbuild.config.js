@@ -3,6 +3,7 @@
 // const postcssOptions = require('./postcss.config');
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
+import { TanStackRouterRspack } from "@tanstack/router-plugin/rspack";
 import postcssOptions from "./postcss.config.js";
 
 
@@ -61,18 +62,18 @@ const config = defineConfig({
     ],
   },
   plugins: [pluginReact()],
-  // tools: {
-  //   rspack: {
-  //     plugins: [
-  //       TanStackRouterRspack({
-  //         quoteStyle: "double",
-  //         generatedRouteTree: "./src/routes.gen.ts",
-  //         semicolons: true,
-  //         // virtualRouteConfig: "./src/routes.ts",
-  //       }),
-  //     ],
-  //   },
-  // },
+  tools: {
+    rspack: {
+      plugins: [
+        TanStackRouterRspack({
+          quoteStyle: "double",
+          generatedRouteTree: "./src/routes.gen.ts",
+          semicolons: true,
+          // virtualRouteConfig: "./src/routes.ts",
+        }),
+      ],
+    },
+  },
 });
 
 export default config;

@@ -29,7 +29,7 @@ const formSchema = z.object({
   publicProfile: z.boolean().optional(),
 });
 
-export default function DetailedFormExample() {
+export default function BasicFormExample() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

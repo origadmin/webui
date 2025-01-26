@@ -81,4 +81,6 @@ export const useToken = () => {
   return { token, setToken };
 };
 
+export type { ContextType as AuthContextType };
+
 export default AuthProvider;

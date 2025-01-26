@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 
 export default function ForbiddenError() {
@@ -16,7 +16,7 @@ export default function ForbiddenError() {
           <Button variant='outline' onClick={() => history.go(-1)}>
             Go Back
           </Button>
-          <Button onClick={() => navigate("/", { replace: true })}>Back to Home</Button>
+          <Button onClick={() => navigate({ to: "/", replace: true })}>Back to Home</Button>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { mockSidebar } from "@/mocks/mockSidebar";
 import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from "kbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import RenderResults from "./render-result";
 import useThemeSwitching from "./use-theme-switching";
 

@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -9,6 +9,7 @@ interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
 
 export default function InternalServerError({ className, minimal = false }: GeneralErrorProps) {
   const navigate = useNavigate();
+  const { history } = useRouter();
   return (
     <div className={cn("h-svh w-full", className)}>
       <div className='m-auto flex size-full flex-col items-center justify-center gap-2'>
@@ -19,10 +20,10 @@ export default function InternalServerError({ className, minimal = false }: Gene
         </p>
         {!minimal && (
           <div className='mt-6 flex gap-4'>
-            <Button variant='outline' onClick={() => navigate(-1)}>
+            <Button variant='outline' onClick={() => history.back()} disabled={history.canGoBack()}>
               Go Back
             </Button>
-            <Button onClick={() => navigate("/", { replace: true })}>Back to Home</Button>
+            <Button onClick={() => navigate({ to: "/", replace: true })}>Back to Home</Button>
           </div>
         )}
       </div>

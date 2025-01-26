@@ -1,12 +1,12 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import { mockSidebar } from "@/mocks/mockSidebar";
 import { errorRoutes } from "@/pages/errors";
-import { routes, RouterConfig } from "@/router";
+import { router } from "@/router";
 import { refreshToken } from "@/utils/auth";
-import { initRouter } from "@/utils/router";
 import { getAccessToken } from "@/utils/storage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AuthProvider from "@/hooks/use-auth";
+import { RouterProvider } from "@tanstack/react-router";
+import { routes } from "config/route";
+import AuthProvider, { useAuth } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 
@@ -97,12 +97,17 @@ export async function getInitialState(): Promise<InitialStateProps> {
   };
 }
 
+function AuthApp() {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
+}
+
 // const queryClient = useMemo(() => new QueryClient(), []);
 function App() {
   console.log("Application Started");
   // const location = useLocation();
   // const match = useMatch(location.pathname);
-  const [initRoutes, setInitRoutes] = useState<RouterConfig>(routes);
+  // const [initRoutes, setInitRoutes] = useState<RouterConfig>(routes);
   // const { user, fetchMenus } = useRBAC();
   // const menus = mockSidebar.menuItems;
 
@@ -131,13 +136,13 @@ function App() {
   };
 
   useEffect(() => {
-    setInitRoutes(initRouter(routes));
+    // setInitRoutes(initRouter(routes));
   }, []);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <AuthProvider {...initState}>
-        <RouterProvider router={createBrowserRouter(initRoutes)} />
+        <AuthApp />
       </AuthProvider>
       <Toaster />
     </Suspense>

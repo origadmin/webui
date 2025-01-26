@@ -5106,10 +5106,6 @@ body {
   height: 26.25rem;
 }
 
-.h-\[50svh\] {
-  height: 50svh;
-}
-
 .h-\[calc\(100dvh-52px\)\] {
   height: calc(100dvh - 52px);
 }

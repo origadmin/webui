@@ -1,7 +1,7 @@
 import InternalServerError from "src/pages/errors/internal-server-error";
+import ServiceTemporarilyUnavailableError from "src/pages/errors/service-temporarily-unavailable-error";
 import ComingSoon from "./coming-soon";
-import ForbiddenError from "./forbidden";
-import MaintenanceError from "./maintenance-error";
+import ForbiddenError from "./forbidden-error";
 import NotFoundError from "./not-found-error";
 import UnauthorizedError from "./unauthorized-error";
 
@@ -24,7 +24,7 @@ const errorRoutes = [
   },
   {
     path: "/503",
-    element: <MaintenanceError />,
+    element: <ServiceTemporarilyUnavailableError />,
   },
 ];
 
@@ -41,7 +41,7 @@ export {
   ComingSoon,
   ForbiddenError,
   InternalServerError,
-  MaintenanceError,
+  ServiceTemporarilyUnavailableError,
   NotFoundError,
   UnauthorizedError,
 };

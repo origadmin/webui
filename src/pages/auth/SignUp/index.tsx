@@ -1,6 +1,6 @@
 import Background from "@/assets/static/background.jpg";
 import { SignUpForm } from "@/pages/auth/SignUp/components/sign-up-form";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
 
 function SignUpPage() {

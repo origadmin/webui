@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageContainer from "@/components/page-container";
 
-function SystemSettings() {
+function SettingsPage() {
   const {
     menus,
     // routes,
@@ -258,4 +258,4 @@ function SystemSettings() {
   );
 }
 
-export default SystemSettings;
+export default SettingsPage;

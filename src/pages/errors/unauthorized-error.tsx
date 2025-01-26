@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 
 export default function UnauthorizedError() {
@@ -12,10 +12,10 @@ export default function UnauthorizedError() {
           Please log in with the appropriate credentials <br /> to access this resource.
         </p>
         <div className='mt-6 flex gap-4'>
-          <Button variant='outline' onClick={() => navigate(-1)}>
+          <Button variant='outline' onClick={() => history.go(-1)}>
             Go Back
           </Button>
-          <Button onClick={() => navigate("/", { replace: true })}>Back to Home</Button>
+          <Button onClick={() => navigate({ to: "/", replace: true })}>Back to Home</Button>
         </div>
       </div>
     </div>

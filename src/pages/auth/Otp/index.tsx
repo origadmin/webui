@@ -1,5 +1,5 @@
 import { OtpForm } from "@/pages/auth/Otp/components/otp-form";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
 
 function OtpPage() {

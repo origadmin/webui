@@ -6,7 +6,7 @@ import {
   IconTool,
   IconUser,
 } from "@tabler/icons-react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "@tanstack/react-router";
 import { Separator } from "@/components/ui/separator";
 import PageContainer from "@/components/page-container";
 import SidebarNav from "./components/sidebar-nav";

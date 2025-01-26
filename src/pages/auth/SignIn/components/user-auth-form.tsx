@@ -5,8 +5,8 @@ import { fetchRequest } from "@/utils/service";
 import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -231,7 +231,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 Don&apos;t have an account? {/*<a href="#" className="underline underline-offset-4">*/}
                 {/*  Sign up*/}
                 {/*</a>*/}
-                <Link to='#' className='text-sm font-medium text-muted-foreground hover:opacity-75'>
+                <Link className='text-sm font-medium text-muted-foreground hover:opacity-75' to={"/"}>
                   Sign up
                 </Link>
               </div>

@@ -35,7 +35,7 @@ interface State {
   id?: string;
 }
 
-function SystemUser() {
+function UserPage() {
   const [pageSize, setPageSize] = useState<number>(10);
   const [state, dispatch] = useReducer(
     (pre: State, action: Action) => {
@@ -199,4 +199,4 @@ function SystemUser() {
   );
 }
 
-export default SystemUser;
+export default UserPage;

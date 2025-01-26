@@ -1,12 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 
 export default function NotFoundError(): React.ReactElement {
   const navigate = useNavigate();
-
-  function navigateToHome() {
-    navigate("/", { replace: true });
-  }
 
   return (
     <div className='h-svh'>
@@ -18,10 +14,10 @@ export default function NotFoundError(): React.ReactElement {
           does not exist or might have been removed.
         </p>
         <div className='mt-6 flex gap-4'>
-          <Button variant='outline' onClick={() => navigate(-1)}>
+          <Button variant='outline' onClick={() => history.go(-1)}>
             Go Back
           </Button>
-          <Button onClick={navigateToHome}>Back to Home</Button>
+          <Button onClick={() => navigate({ to: "/", replace: true })}>Back to Home</Button>
         </div>
       </div>
     </div>

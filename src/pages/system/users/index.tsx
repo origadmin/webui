@@ -7,7 +7,7 @@ import { columns } from "./components/users-columns";
 import { UsersDialogs } from "./components/users-dialogs";
 import UsersProvider from "./context/users-context";
 
-export default function UserPage() {
+export default function UsersPage() {
   // Parse user list
   const userList = userListSchema.parse(users);
 
