@@ -1,10 +1,10 @@
-import { useUsers } from "../context/users-context";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
+import { useUserTable } from "./users-table-provider";
 
 export function UsersDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useUsers();
+  const { open, setOpen, currentRow, setCurrentRow } = useUserTable();
   return (
     <>
       <UsersActionDialog key='user-add' open={open === "add"} onOpenChange={() => setOpen("add")} />

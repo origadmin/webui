@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { User } from "@/mocks/user/schema";
+import { useUserTable } from "@/pages/system/users/components/users-table-provider";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -38,7 +39,7 @@ export function UsersTable({ columns, data }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-
+  const { setOpen } = useUserTable();
   const table = useReactTable({
     data,
     columns,
@@ -63,7 +64,16 @@ export function UsersTable({ columns, data }: DataTableProps) {
 
   return (
     <div className='space-y-4'>
-      <DataTableToolbar table={table} toolbars={<UsersPrimaryButtons />} />
+      <DataTableToolbar
+        table={table}
+        toolbars={
+          <UsersPrimaryButtons
+            onClick={(state) => {
+              setOpen(state);
+            }}
+          />
+        }
+      />
       <div className='rounded-md border'>
         <Table>
           <TableHeader>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { User } from "@/mocks/user/schema";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -7,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
-interface Props {
+interface Props<T> {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow: User;
+  currentRow: T;
 }
 
-export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
+export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props<API.User>) {
   const [value, setValue] = useState("");
 
   const handleDelete = () => {

@@ -1,14 +1,14 @@
 import { callTypes, userTypes } from "@/mocks/user/data";
 import { User } from "@/mocks/user/schema";
-import { ColumnDef } from "@tanstack/react-table";
+import { UserRowActions } from "@/pages/system/users/components/users-row-actions";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { DataTableRowActions } from "./data-table-row-actions";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnType<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -117,6 +117,6 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Actions' />,
-    cell: DataTableRowActions,
+    cell: UserRowActions,
   },
 ];

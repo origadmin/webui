@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export interface PaginationProps<T> {
   table: Table<T>;
-  sizeOptions?: number[] | string[];
+  sizeOptions?: string[];
 }
 
 export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
@@ -13,7 +14,15 @@ export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
   const pageIndex = table.getState().pagination.pageIndex;
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
   const totalCount = table.getFilteredRowModel().rows.length;
-  const renderSizeOptions = () => {
+
+  const mergedSizeOptions = useMemo(() => {
+    return sizeOptions ? sizeOptions.map((option) => Number(option)) : undefined;
+  }, [sizeOptions]);
+
+  const renderSizeOptions = (sizeOptions?: number[]) => {
+    if (!sizeOptions) {
+      return null;
+    }
     return (
       <div className='flex items-center sm:space-x-6 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
@@ -28,11 +37,12 @@ export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side='top'>
-              {sizeOptions.map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
+              {sizeOptions &&
+                sizeOptions.map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
@@ -85,7 +95,7 @@ export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
       <div className='hidden flex-1 text-sm text-muted-foreground sm:block'>
         {selectedCount} of {totalCount} row(s) selected.
       </div>
-      {sizeOptions.length > 0 ? renderSizeOptions() : null}
+      {renderSizeOptions(mergedSizeOptions)}
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { userTypes } from "@/mocks/user/data";
-import { User } from "@/mocks/user/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -76,13 +75,13 @@ const formSchema = z
   });
 type UserForm = z.infer<typeof formSchema>;
 
-interface Props {
-  currentRow?: User;
+interface Props<T> {
+  currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
+export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.User>) {
   const isEdit = !!currentRow;
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),

@@ -1,4 +1,4 @@
-import { JSX, useState } from "react";
+import { useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import {
   ColumnDef,
@@ -20,6 +20,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Searchbar } from "@/components/DataTable/searchbar";
 import { Pagination, PaginationProps } from "./pagination";
+import { RowActions, RowActionsProps } from "./row-actions";
 import { Toolbar, ToolbarProps } from "./toolbar";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
@@ -37,7 +38,7 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
 interface DataTableProps<T> {
   data: T[];
   columns: ColumnType<T>[];
-  toolbars?: JSX.Element;
+  toolbars?: ToolbarProps<T>["toolbars"];
   paginationState?: PaginationState;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
 }
@@ -129,35 +130,22 @@ function DataTable<T>({
           </TableBody>
         </Table>
       </div>
-      {
-        <Pagination
-          table={table}
-          sizeOptions={sizeOptions}
-          // pagination={table.getState().pagination}
-          // onChange={table.setPagination}
-          // pageSize={table.getState().pagination.pageSize}
-          // setPageSize={table.setPageSize}
-          // pageIndex={table.getState().pagination.pageIndex}
-          // setPageIndex={table.setPageIndex}
-          // getPageCount={table.getPageCount}
-          // getCanNextPage={table.getCanNextPage}
-          // getCanPreviousPage={table.getCanPreviousPage}
-          // nextPage={table.nextPage}
-          // previousPage={table.previousPage}
-          // sizeOptions={PAGE_SIZE_OPTIONS}
-          // selectedCount={table.getFilteredSelectedRowModel().rows.length}
-          // totalCount={table.getFilteredRowModel().rows.length}
-        />
-      }
+      {<Pagination table={table} sizeOptions={sizeOptions} />}
     </div>
   );
 }
 
 export type { DataTableProps, ColumnType, ColumnType as DataTableColumnType };
 export type {
+  RowActionsProps as DataTableRowActionsProps,
   PaginationOptions as DataTablePaginationOptions,
   ToolbarProps as DataTableToolbarProps,
   ViewOptionsProps as DataTableViewOptionsProps,
 };
-export { Pagination as DataTablePagination, Toolbar as DataTableToolbar, ViewOptions as DataTableViewOptions };
+export {
+  RowActions as DataTableRowActions,
+  Pagination as DataTablePagination,
+  Toolbar as DataTableToolbar,
+  ViewOptions as DataTableViewOptions,
+};
 export { DataTable };

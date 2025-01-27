@@ -1,18 +1,23 @@
+import { useState } from "react";
 import { userListSchema } from "@/mocks/user/schema";
 import { users } from "@/mocks/user/users";
+import useDialogState from "@/hooks/use-dialog-state";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
+import { OpenStateType } from "@/components/DataTable/row-actions";
 import PageContainer from "@/components/page-container";
 import { columns } from "./components/users-columns";
 import { UsersDialogs } from "./components/users-dialogs";
-import UsersProvider from "./context/users-context";
+import { UserTableProvider } from "./components/users-table-provider";
 
 export default function UsersPage() {
+  const [open, setOpen] = useDialogState<OpenStateType>(null);
+  const [currentRow, setCurrentRow] = useState<API.User | null>(null);
   // Parse user list
   const userList = userListSchema.parse(users);
 
   return (
-    <UsersProvider>
+    <UserTableProvider open={open} setOpen={setOpen} currentRow={currentRow} setCurrentRow={setCurrentRow}>
       <PageContainer>
         <Card>
           <CardHeader>
@@ -27,6 +32,6 @@ export default function UsersPage() {
         </Card>
       </PageContainer>
       <UsersDialogs />
-    </UsersProvider>
+    </UserTableProvider>
   );
 }

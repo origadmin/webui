@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { FacetedFilter } from "./faceted-filter";
 
 interface SearchbarProps<TData> {
-  column?: number;
   table: Table<TData>;
+  column?: number;
 }
 
 export function Searchbar<TData>({ table }: SearchbarProps<TData>) {
