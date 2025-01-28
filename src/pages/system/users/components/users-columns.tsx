@@ -50,7 +50,7 @@ export const columns: ColumnType<User>[] = [
     enableHiding: false,
   },
   {
-    id: "nickname",
+    accessorKey: "nickname",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => {
       return <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>;

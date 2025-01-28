@@ -20,8 +20,7 @@ import { SelectDropdown } from "@/components/select-dropdown";
 
 const formSchema = z
   .object({
-    firstName: z.string().min(1, { message: "First Name is required." }),
-    lastName: z.string().min(1, { message: "Last Name is required." }),
+    nickname: z.string().min(1, { message: "Nickname is required." }),
     username: z.string().min(1, { message: "Username is required." }),
     phoneNumber: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
@@ -93,8 +92,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
           isEdit,
         }
       : {
-          firstName: "",
-          lastName: "",
+          nickname: "",
           username: "",
           email: "",
           role: "",
@@ -141,25 +139,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
             <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
               <FormField
                 control={form.control}
-                name='firstName'
+                name='nickname'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>First Name</FormLabel>
+                    <FormLabel className='col-span-2 text-right'>Nickname</FormLabel>
                     <FormControl>
                       <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='lastName'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Doe' className='col-span-4' autoComplete='off' {...field} />
                     </FormControl>
                     <FormMessage className='col-span-4 col-start-3' />
                   </FormItem>

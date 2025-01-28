@@ -13,18 +13,18 @@ declare namespace API {
     /** 状态 */
     status: string;
     /** 创建时间 */
-    createdAt: string;
+    createdAt: Date;
     /** 更新时间 */
-    updatedAt: string;
+    updatedAt: Date;
     /** 角色 */
-    role: string;
+    role?: string;
     /** 权限 */
-    permissions: string[];
+    permissions?: string[];
     /** 头像 */
     avatar: string;
     /** 昵称 */
     nickname: string;
     /** 备注 */
-    remark: string;
+    remark?: string;
   };
 }
