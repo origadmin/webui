@@ -20,6 +20,8 @@ const userSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   username: z.string(),
+  nickname: z.string(),
+  avatar: z.string(),
   email: z.string(),
   phoneNumber: z.string(),
   status: userStatusSchema,
@@ -27,6 +29,6 @@ const userSchema = z.object({
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 });
-export type User = z.infer<typeof userSchema>;
+export type User = z.infer<typeof userSchema> & API.User;
 
 export const userListSchema = z.array(userSchema);

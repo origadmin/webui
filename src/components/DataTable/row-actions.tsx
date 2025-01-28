@@ -2,14 +2,8 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 
 export type OpenStateType = "invite" | "add" | "edit" | "delete";
 

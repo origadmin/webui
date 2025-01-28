@@ -50,12 +50,10 @@ export const columns: ColumnType<User>[] = [
     enableHiding: false,
   },
   {
-    id: "fullName",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Name' />,
+    id: "nickname",
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => {
-      const { firstName, lastName } = row.original;
-      const fullName = `${firstName} ${lastName}`;
-      return <LongText className='max-w-36'>{fullName}</LongText>;
+      return <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>;
     },
     meta: { className: "w-36" },
   },

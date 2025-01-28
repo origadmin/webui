@@ -8,7 +8,7 @@ export type PasswordInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(({ className, ...props }, ref) => {
   const [showPassword, setShowPassword] = React.useState(false);
   return (
-    <div className='relative rounded-md'>
+    <div className={cn("relative rounded-md", className)}>
       <input
         type={showPassword ? "text" : "password"}
         className={cn(
