@@ -138,7 +138,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-0.5'>
+            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
               <FormField
                 control={form.control}
                 name='firstName'
