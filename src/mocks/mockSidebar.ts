@@ -105,6 +105,7 @@ export const mockSidebar: API.SidebarData = {
       children: [
         {
           title: "System",
+          icon: IconServerOff,
           children: [
             {
               title: "Settings",
