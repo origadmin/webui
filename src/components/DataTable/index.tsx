@@ -31,7 +31,7 @@ declare module "@tanstack/react-table" {
   }
 }
 
-type ColumnType<TData, TValue = any> = ColumnDef<TData, TValue> & {
+type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   searchable?: boolean;
 };
 

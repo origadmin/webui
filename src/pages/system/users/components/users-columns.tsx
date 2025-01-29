@@ -1,5 +1,4 @@
 import { callTypes, userTypes } from "@/mocks/user/data";
-import { User } from "@/mocks/user/schema";
 import { UserRowActions } from "@/pages/system/users/components/users-row-actions";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +7,7 @@ import { ColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 import { DataTableColumnHeader } from "./data-table-column-header";
 
-export const columns: ColumnType<User>[] = [
+export const columns: ColumnType<API.User>[] = [
   {
     id: "select",
     header: ({ table }) => (

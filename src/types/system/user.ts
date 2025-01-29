@@ -11,7 +11,7 @@ declare namespace API {
     /** 手机号 */
     phoneNumber: string;
     /** 状态 */
-    status: string;
+    status: "active" | "inactive" | "invited" | "suspended";
     /** 创建时间 */
     createdAt: Date;
     /** 更新时间 */
