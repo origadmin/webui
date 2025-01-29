@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authorization/")({
       });
     }
     throw redirect({
-      to: "/dashboard",
+      to: "/dashboard/overview",
       replace: true,
     });
   },
