@@ -1,18 +1,18 @@
-import { JSX } from "react";
 import { userTypes } from "@/mocks/user/data";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ToolbarProps } from "@/components/DataTable/toolbar";
 import { FacetedFilter } from "./faceted-filter";
 import { ViewOptions } from "./view-options";
 
-export interface ToolbarProps<TData> {
+export interface TitleBarProps<TData> {
   table: Table<TData>;
-  toolbars?: JSX.Element;
+  toolbars?: ToolbarProps["toolbars"];
 }
 
-export function Toolbar<TData>({ table, toolbars }: ToolbarProps<TData>) {
+export function TitleBar<TData>({ table, toolbars }: TitleBarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -54,7 +54,7 @@ export function Toolbar<TData>({ table, toolbars }: ToolbarProps<TData>) {
       </div>
 
       <div className='flex gap-2'>
-        {toolbars && toolbars}
+        {toolbars}
         <ViewOptions table={table} />
       </div>
     </div>

@@ -17,11 +17,11 @@ import {
   getFacetedUniqueValues,
   PaginationState,
 } from "@tanstack/react-table";
+import { TitleBar, ToolbarProps } from "src/components/DataTable/title-bar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Searchbar } from "@/components/DataTable/searchbar";
 import { Pagination, PaginationProps } from "./pagination";
 import { RowActions, RowActionsProps } from "./row-actions";
-import { Toolbar, ToolbarProps } from "./toolbar";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
 declare module "@tanstack/react-table" {
@@ -89,7 +89,7 @@ function DataTable<T>({
   return (
     <div className='space-y-4'>
       <Searchbar table={table} />
-      <Toolbar table={table} toolbars={toolbars} />
+      <TitleBar table={table} toolbars={toolbars} />
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -130,7 +130,7 @@ function DataTable<T>({
           </TableBody>
         </Table>
       </div>
-      {<Pagination table={table} sizeOptions={sizeOptions} />}
+      {<Pagination table={table} sizeOptions={sizeOptions} toolbars={toolbars} />}
     </div>
   );
 }
@@ -145,7 +145,7 @@ export type {
 export {
   RowActions as DataTableRowActions,
   Pagination as DataTablePagination,
-  Toolbar as DataTableToolbar,
+  TitleBar as DataTableToolbar,
   ViewOptions as DataTableViewOptions,
 };
 export { DataTable };

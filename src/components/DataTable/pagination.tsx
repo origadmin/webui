@@ -1,15 +1,17 @@
 import { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
+import { ToolbarProps } from "src/components/DataTable/toolbar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export interface PaginationProps<T> {
   table: Table<T>;
+  toolbars?: ToolbarProps["toolbars"];
   sizeOptions?: string[];
 }
 
-export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
+export function Pagination<T>({ table, sizeOptions = [], toolbars }: PaginationProps<T>) {
   const pageSize = table.getState().pagination.pageSize;
   const pageIndex = table.getState().pagination.pageIndex;
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
@@ -20,9 +22,6 @@ export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
   }, [sizeOptions]);
 
   const renderSizeOptions = (sizeOptions?: number[]) => {
-    if (!sizeOptions) {
-      return null;
-    }
     return (
       <div className='flex items-center sm:space-x-6 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
@@ -96,6 +95,7 @@ export function Pagination<T>({ table, sizeOptions = [] }: PaginationProps<T>) {
         {selectedCount} of {totalCount} row(s) selected.
       </div>
       {renderSizeOptions(mergedSizeOptions)}
+      <div className='flex items-center space-x-2 px-2'>{toolbars}</div>
     </div>
   );
 }
