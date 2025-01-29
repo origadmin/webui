@@ -1,4 +1,6 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
+import useDialogState from "@/hooks/use-dialog-state";
+import { OpenStateType } from "@/components/DataTable/row-actions";
 
 type TableDialogType = "invite" | "add" | "edit" | "delete";
 
@@ -12,9 +14,23 @@ interface TableContextType<T> {
 const createTableContext = <T,>() => {
   const Context = createContext<TableContextType<T> | null>(null);
 
-  const Provider = ({ children, ...props }: { children: React.ReactNode } & TableContextType<T>) => (
-    <Context.Provider value={props}>{children}</Context.Provider>
-  );
+  const Provider = ({ children, ...props }: { children: React.ReactNode }) => {
+    const [open, setOpen] = useDialogState<OpenStateType>(null);
+    const [currentRow, setCurrentRow] = useState<T | null>(null);
+    return (
+      <Context.Provider
+        value={{
+          open,
+          setOpen,
+          currentRow,
+          setCurrentRow,
+          ...props,
+        }}
+      >
+        {children}
+      </Context.Provider>
+    );
+  };
 
   const useTable = () => {
     const context = useContext(Context);

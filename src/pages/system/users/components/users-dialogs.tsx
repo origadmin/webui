@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
@@ -6,9 +7,8 @@ import { useUserTable } from "./users-table-provider";
 export function UsersDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useUserTable();
   return (
-    <>
+    <Fragment>
       <UsersActionDialog key='user-add' open={open === "add"} onOpenChange={() => setOpen("add")} />
-
       <UsersInviteDialog key='user-invite' open={open === "invite"} onOpenChange={() => setOpen("invite")} />
 
       {currentRow && (
@@ -24,7 +24,6 @@ export function UsersDialogs() {
             }}
             currentRow={currentRow}
           />
-
           <UsersDeleteDialog
             key={`user-delete-${currentRow.id}`}
             open={open === "delete"}
@@ -38,6 +37,6 @@ export function UsersDialogs() {
           />
         </>
       )}
-    </>
+    </Fragment>
   );
 }

@@ -81,7 +81,10 @@ export const columns: ColumnType<API.User>[] = [
         </div>
       );
     },
-    filterFn: (row, id, value) => {
+    filterFn: (row, id, value: string[]) => {
+      // const statusValue = row.getValue<string>(id);
+      // return typeof statusValue === "string" && value.includes(statusValue);
+
       return value.includes(row.getValue(id));
     },
     enableHiding: false,
@@ -105,7 +108,7 @@ export const columns: ColumnType<API.User>[] = [
         </div>
       );
     },
-    filterFn: (row, id, value) => {
+    filterFn: (row, id, value: string[]) => {
       return value.includes(row.getValue(id));
     },
     enableSorting: false,

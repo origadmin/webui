@@ -54,7 +54,7 @@ export function Toolbar<TData>({ table, toolbars }: ToolbarProps<TData>) {
       </div>
 
       <div className='flex gap-2'>
-        {toolbars}
+        {toolbars && toolbars}
         <ViewOptions table={table} />
       </div>
     </div>
