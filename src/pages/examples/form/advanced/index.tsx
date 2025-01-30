@@ -79,7 +79,7 @@ export default function AdvancedFormExample() {
 
   return (
     <PageContainer>
-      {/*<Card>*/}
+      <Card>
         <CardHeader>
           <CardTitle>Advanced Project Management Form</CardTitle>
           <CardDescription>Manage your project details, tasks, and team members.</CardDescription>
@@ -354,7 +354,7 @@ export default function AdvancedFormExample() {
             </form>
           </Form>
         </CardContent>
-      {/*</Card>*/}
+      </Card>
     </PageContainer>
   );
 }
