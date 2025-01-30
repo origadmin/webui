@@ -12,7 +12,7 @@ This project implements the front-end Admin design based on the following techno
 
 - 🛠️ [ShadcnUI](https://ui.shadcn.com/): A React UI component library that provides a set of accessible and customizable components.
 - 🚀 [RSBuild](https://rsbuild.js.org/): A modern build tool that simplifies the process of building web applications.
-- 🎨 [Tailwind](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
+- 🎨 [TailwindV3](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
 - 💡 [Postcss](https://postcss.org/): A tool for transforming CSS with JavaScript, enabling the use of plugins to extend CSS functionality.
 - ✨ [Prettier](https://prettier.io/): A code formatter that enforces consistent style by parsing your code and re-printing it with its own rules.
 - ⚡ [Bun](https://bun.sh/): A fast all-in-one JavaScript runtime, bundler, and package manager.
