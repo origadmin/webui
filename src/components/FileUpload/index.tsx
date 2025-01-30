@@ -79,7 +79,7 @@ export function FileUpload({ onFilesChange, multiple = true, accept = "*" }: Fil
         />
         <Button onClick={handleButtonClick} className='w-full'>
           <Upload className='mr-2 h-4 w-4' />
-          选择文件
+          Select the file
         </Button>
       </div>
       {files.length > 0 && (
