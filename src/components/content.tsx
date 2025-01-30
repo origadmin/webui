@@ -40,7 +40,7 @@ const Content = ({ className, fixed = false, ...props }: ContentProps) => {
 Content.displayName = "Content";
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  show?: boolean;
+  showBreadcrumbs?: boolean;
   sticky?: boolean;
 }
 
