@@ -1,18 +1,16 @@
-import { JSX } from "react";
 import { userTypes } from "@/mocks/user/data";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { DataTableViewOptions } from "./data-table-view-options";
+import { FacetedFilter } from "./faceted-filter";
 
-interface DataTableToolbarProps<TData> {
+export interface SearchBarProps<TData> {
   table: Table<TData>;
-  toolbars?: JSX.Element;
+  column?: number;
 }
 
-export function DataTableToolbar<TData>({ table, toolbars }: DataTableToolbarProps<TData>) {
+export function SearchBar<TData>({ table }: SearchBarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -26,7 +24,7 @@ export function DataTableToolbar<TData>({ table, toolbars }: DataTableToolbarPro
         />
         <div className='flex gap-x-2'>
           {table.getColumn("status") && (
-            <DataTableFacetedFilter
+            <FacetedFilter
               column={table.getColumn("status")}
               title='Status'
               options={[
@@ -38,11 +36,7 @@ export function DataTableToolbar<TData>({ table, toolbars }: DataTableToolbarPro
             />
           )}
           {table.getColumn("role") && (
-            <DataTableFacetedFilter
-              column={table.getColumn("role")}
-              title='Role'
-              options={userTypes.map((t) => ({ ...t }))}
-            />
+            <FacetedFilter column={table.getColumn("role")} title='Role' options={userTypes.map((t) => ({ ...t }))} />
           )}
         </div>
         {isFiltered && (
@@ -51,11 +45,6 @@ export function DataTableToolbar<TData>({ table, toolbars }: DataTableToolbarPro
             <Cross2Icon className='ml-2 h-4 w-4' />
           </Button>
         )}
-      </div>
-
-      <div className='flex gap-2'>
-        {toolbars}
-        <DataTableViewOptions table={table} />
       </div>
     </div>
   );

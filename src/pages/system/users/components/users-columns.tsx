@@ -3,9 +3,8 @@ import { UserRowActions } from "@/pages/system/users/components/users-row-action
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnType } from "@/components/DataTable";
+import { ColumnType, DataTableColumnHeader } from "@/components/DataTable";
 import LongText from "@/components/long-text";
-import { DataTableColumnHeader } from "./data-table-column-header";
 
 export const columns: ColumnType<API.User>[] = [
   {

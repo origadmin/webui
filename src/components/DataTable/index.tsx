@@ -17,11 +17,13 @@ import {
   getFacetedUniqueValues,
   PaginationState,
 } from "@tanstack/react-table";
-import { TitleBar, ToolbarProps } from "src/components/DataTable/title-bar";
+import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Searchbar } from "@/components/DataTable/searchbar";
+import { ToolbarProps } from "@/components/DataTable/toolbar";
+import { ColumnHeader, ColumnHeaderProps } from "./column-header";
 import { Pagination, PaginationProps } from "./pagination";
 import { RowActions, RowActionsProps } from "./row-actions";
+import { SearchBar, SearchBarProps } from "./search-bar";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
 declare module "@tanstack/react-table" {
@@ -38,9 +40,11 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
 interface DataTableProps<T> {
   data: T[];
   columns: ColumnType<T>[];
-  toolbars?: ToolbarProps<T>["toolbars"];
+  searchBarProps?: SearchBarProps<T>;
+  toolbars?: TitleBarProps<T>["toolbars"];
   paginationState?: PaginationState;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
+  paginationProps?: PaginationProps<T>;
 }
 
 function DataTable<T>({
@@ -88,8 +92,8 @@ function DataTable<T>({
 
   return (
     <div className='space-y-4'>
-      <Searchbar table={table} />
-      <TitleBar table={table} toolbars={toolbars} />
+      <SearchBar table={table} />
+      <TitleBar table={table} toolbars={toolbars} showStatistics={true} />
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -141,11 +145,15 @@ export type {
   PaginationOptions as DataTablePaginationOptions,
   ToolbarProps as DataTableToolbarProps,
   ViewOptionsProps as DataTableViewOptionsProps,
+  ColumnHeaderProps as DataTableColumnHeaderProps,
+  SearchBarProps as DataTableSearchBarProps,
 };
 export {
   RowActions as DataTableRowActions,
   Pagination as DataTablePagination,
   TitleBar as DataTableToolbar,
   ViewOptions as DataTableViewOptions,
+  ColumnHeader as DataTableColumnHeader,
+  SearchBar as DataTableSearchBar,
 };
 export { DataTable };

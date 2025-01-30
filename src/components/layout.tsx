@@ -9,8 +9,6 @@ import { TopNav, TopNavProps } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
 
 type LayoutProps = {
-  // className?: string;
-  // fixed?: boolean;
   footer?: FooterProps;
   topNavProps?: TopNavProps;
   sidebarProps?: SidebarProps;
