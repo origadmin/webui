@@ -1,21 +1,22 @@
-import React from "react";
 import { cn } from "@/lib/utils";
 
-type LinkProps = {
+type FooterLink = {
   key?: string;
-  title: React.ReactNode;
+  title: string;
   href?: string;
   blank?: boolean;
+  links?: FooterLink[];
 };
 
 export type FooterProps = {
   className?: string;
-  links?: LinkProps[];
+  links?: FooterLink[];
+  logo?: string;
   copyright?: string;
 };
 
 export function Footer({ className, ...props }: FooterProps) {
-  const { links = [], copyright = "OrigAdmin" } = props || {};
+  const { links = [], logo = "/static/logo.svg", copyright = "OrigAdmin" } = props || {};
 
   return (
     <footer
@@ -29,7 +30,7 @@ export function Footer({ className, ...props }: FooterProps) {
       <div className='flex w-full flex-col items-center justify-end gap-2 p-2 xl:flex-row'>
         <div>
           <ul className='flex w-full flex-wrap items-center justify-center gap-3 sm:flex-nowrap md:gap-10'>
-            {links?.flatMap((link: LinkProps) => (
+            {links?.flatMap((link: FooterLink) => (
               <li key={link.key}>
                 <a
                   className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
@@ -38,6 +39,21 @@ export function Footer({ className, ...props }: FooterProps) {
                 >
                   {link.title}
                 </a>
+                {link.links && (
+                  <ul className='mt-1 ml-4 flex flex-col gap-1'>
+                    {link.links.flatMap((sublink: FooterLink) => (
+                      <li>
+                        <a
+                          className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
+                          target={sublink.blank ? "blank" : undefined}
+                          href={sublink.href || "#"}
+                        >
+                          {sublink.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -46,6 +62,11 @@ export function Footer({ className, ...props }: FooterProps) {
       {copyright && (
         <div className='w-full min-w-0 flex-col gap-1 p-2 text-center text-sm text-zinc-500 md:text-sm dark:text-zinc-400'>
           ©{new Date().getFullYear()} {copyright}. All Rights Reserved.
+        </div>
+      )}
+      {logo && (
+        <div className='flex w-full flex-col justify-center'>
+          <img src={logo} alt='Logo' className='h-8 w-auto' />
         </div>
       )}
     </footer>

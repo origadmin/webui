@@ -37,11 +37,6 @@ const watermark = {
   left: 0, // 调整到左边
 };
 
-interface MainLayoutProps extends React.HTMLAttributes<HTMLElement> {
-  fixed?: boolean;
-  children?: React.ReactNode;
-}
-
 export default function MainLayout() {
   const sidebarData = getMockData();
 
