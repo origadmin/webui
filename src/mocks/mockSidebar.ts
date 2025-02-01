@@ -293,18 +293,70 @@ export const mockFooter = [
   {
     key: randomKey(),
     title: "FAQs",
+    url: "#",
+    links: [
+      {
+        key: randomKey(),
+        title: "Terms",
+        url: "#",
+      },
+      {
+        key: randomKey(),
+        title: "Disclaimer",
+        url: "#",
+      },
+    ],
   },
   {
     key: randomKey(),
     title: "Privacy Policy",
+    url: "#",
+    links: [
+      {
+        key: randomKey(),
+        title: "General",
+        url: "#",
+      },
+      {
+        key: randomKey(),
+        title: "Privacy",
+        url: "#",
+      },
+    ],
   },
   {
     key: randomKey(),
     title: "Terms & Conditions",
+    url: "#",
+    links: [
+      {
+        key: randomKey(),
+        title: "General",
+        url: "#",
+      },
+      {
+        key: randomKey(),
+        title: "Privacy",
+        url: "#",
+      },
+    ],
   },
   {
     key: randomKey(),
     title: "Refund Policy",
+    url: "#",
+    links: [
+      {
+        key: randomKey(),
+        title: "General",
+        url: "#",
+      },
+      {
+        key: randomKey(),
+        title: "Privacy",
+        url: "#",
+      },
+    ],
   },
 ];
 

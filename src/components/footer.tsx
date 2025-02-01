@@ -17,6 +17,22 @@ export type FooterProps = {
 
 export function Footer({ className, ...props }: FooterProps) {
   const { links = [], logo = "/static/logo.svg", copyright = "OrigAdmin" } = props || {};
+  const renderLink = (link: FooterLink, isSubLink = false) => (
+    <li key={link.key} className={isSubLink ? "flex items-start" : undefined}>
+      <a
+        className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
+        target={link.blank ? "blank" : undefined}
+        href={link.href || "#"}
+      >
+        {link.title}
+      </a>
+      {link.links && !isSubLink && (
+        <ul className='mt-1 ml-0 flex flex-col gap-1'>
+          {link.links.flatMap((sublink: FooterLink) => renderLink(sublink, true))}
+        </ul>
+      )}
+    </li>
+  );
 
   return (
     <footer
@@ -30,32 +46,9 @@ export function Footer({ className, ...props }: FooterProps) {
       <div className='flex w-full flex-col items-center justify-end gap-2 p-2 xl:flex-row'>
         <div>
           <ul className='flex w-full flex-wrap items-center justify-center gap-3 sm:flex-nowrap md:gap-10'>
-            {links?.flatMap((link: FooterLink) => (
-              <li key={link.key}>
-                <a
-                  className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
-                  target={link.blank ? "blank" : undefined}
-                  href={link.href || "#"}
-                >
-                  {link.title}
-                </a>
-                {link.links && (
-                  <ul className='mt-1 ml-4 flex flex-col gap-1'>
-                    {link.links.flatMap((sublink: FooterLink) => (
-                      <li>
-                        <a
-                          className='text-sm font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400'
-                          target={sublink.blank ? "blank" : undefined}
-                          href={sublink.href || "#"}
-                        >
-                          {sublink.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
+            {links?.flatMap((link: FooterLink) => {
+              return renderLink(link);
+            })}
           </ul>
         </div>
       </div>
