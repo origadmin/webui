@@ -48,14 +48,13 @@ export default function MainLayout(props?: MainLayoutProps) {
   const { token } = useAuth();
   if (token) {
     console.log("token is ", token);
-    console.log("key is ", key);
   }
   return (
     <Layout
       key={key}
       sidebarProps={sidebarData}
       topNavProps={{ menus: mockTopNav }}
-      footer={{
+      footerProps={{
         links: mockFooter,
       }}
     >

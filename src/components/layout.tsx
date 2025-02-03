@@ -10,11 +10,11 @@ import { UserNav } from "@/components/user-nav";
 
 type LayoutProps = {
   key?: string;
-  footer?: FooterProps;
+  footerProps?: FooterProps;
   topNavProps?: TopNavProps;
+  showSidebarTrigger?: boolean;
   sidebarProps?: SidebarProps;
   navToolbars?: React.ReactNode[];
-  showSidebarTrigger?: boolean;
   children: React.ReactNode;
 };
 
@@ -26,6 +26,15 @@ export function Layout({
   ...props
 }: LayoutProps) {
   const { sidebarProps = {} } = props;
+
+  const renderNavToolbars = () => {
+    if (!navToolbars) {
+      return null;
+    }
+    return navToolbars.map((bar, index) => {
+      return <div key={index}>{bar}</div>;
+    });
+  };
 
   return (
     <KBar>
@@ -39,19 +48,12 @@ export function Layout({
               {topNavProps && <TopNav {...topNavProps} />}
             </div>
             <div className='flex items-center gap-2 px-4'></div>
-            <div className='flex items-center gap-2 px-4'>
-              {navToolbars &&
-                navToolbars.map((toolbar, index) => (
-                  <div key={index} className='md:flex'>
-                    {toolbar}
-                  </div>
-                ))}
-            </div>
+            <div className='flex items-center gap-2 px-4'>{renderNavToolbars()}</div>
           </div>
           {children}
         </SidebarInset>
       </SidebarProvider>
-      <Footer {...props.footer} />
+      <Footer {...props.footerProps} />
     </KBar>
   );
 }
