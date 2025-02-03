@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -18,7 +19,6 @@ import { SecondaryContent } from "@/components/Sidebar/secondary-content";
 export type MenuItem = API.MenuItem & {};
 
 type GroupContentProps = {
-  key?: string;
   title?: string;
   items?: MenuItem[];
   main?: React.ComponentPropsWithoutRef<typeof GroupContent>;
@@ -48,15 +48,18 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
     return item.children !== undefined && item.children.length > 0;
   }
 
-  function key(item: MenuItem) {
+  function itemKey(item: MenuItem) {
     return item.id + ":" + item.title;
   }
 
   function renderSubItem(items: MenuItem[] | undefined) {
-    return items?.map((item) => {
+    if (!items) {
+      return null;
+    }
+    return items.map((item) => {
       return hasSub(item) ? (
-        <Collapsible key={key(item)} asChild defaultOpen={item.isActive} className='group/collapsible'>
-          <SidebarMenuItem key={key(item)}>
+        <Collapsible key={itemKey(item)} asChild defaultOpen={item.isActive} className='group/collapsible'>
+          <SidebarMenuItem key={itemKey(item)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={item.title} isActive={false}>
                 {renderIcon(item)}
@@ -64,9 +67,9 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
               </SidebarMenuButton>
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <SidebarMenuSub key={key(item)}>
+              <SidebarMenuSub key={itemKey(item)}>
                 {item.children?.map((subItem) => (
-                  <SidebarMenuSubItem key={key(subItem)}>
+                  <SidebarMenuSubItem key={itemKey(subItem)}>
                     <SidebarMenuSubButton asChild isActive={false}>
                       {renderLink(subItem)}
                     </SidebarMenuSubButton>
@@ -77,7 +80,7 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
           </SidebarMenuItem>
         </Collapsible>
       ) : (
-        <SidebarMenuItem key={key(item)}>
+        <SidebarMenuItem key={itemKey(item)}>
           <SidebarMenuButton asChild tooltip={item.title} isActive={false}>
             {renderLink(item)}
           </SidebarMenuButton>
@@ -87,12 +90,12 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
   }
 
   function renderTitle(item: MenuItem) {
-    return <SidebarGroupLabel key={key(item)}>{item.title}</SidebarGroupLabel>;
+    return <SidebarGroupLabel key={itemKey(item)}>{item.title}</SidebarGroupLabel>;
   }
 
   function renderItem(item: MenuItem) {
     return (
-      <SidebarMenuItem key={key(item)}>
+      <SidebarMenuItem key={itemKey(item)}>
         <SidebarMenuButton asChild>
           <Link to={item.path || "#"}>
             {item.icon && <item.icon />}
@@ -109,12 +112,12 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
       {items && (
         <SidebarGroup {...props}>
           <SidebarMenu>
-            {items.map((item) => (
-              <>
+            {items.map((item, index) => (
+              <Fragment key={index}>
                 {onlyTitle(item) && renderTitle(item)}
                 {!onlyTitle(item) && renderItem(item)}
                 {hasSub(item) && renderSubItem(item.children)}
-              </>
+              </Fragment>
             ))}
           </SidebarMenu>
         </SidebarGroup>

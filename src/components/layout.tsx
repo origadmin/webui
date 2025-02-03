@@ -9,6 +9,7 @@ import { TopNav, TopNavProps } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
 
 type LayoutProps = {
+  key?: string;
   footer?: FooterProps;
   topNavProps?: TopNavProps;
   sidebarProps?: SidebarProps;
@@ -25,6 +26,7 @@ export function Layout({
   ...props
 }: LayoutProps) {
   const { sidebarProps = {} } = props;
+
   return (
     <KBar>
       <SidebarProvider>
@@ -38,7 +40,12 @@ export function Layout({
             </div>
             <div className='flex items-center gap-2 px-4'></div>
             <div className='flex items-center gap-2 px-4'>
-              {navToolbars && navToolbars.map((toolbar) => <div className='md:flex'>{toolbar}</div>)}
+              {navToolbars &&
+                navToolbars.map((toolbar, index) => (
+                  <div key={index} className='md:flex'>
+                    {toolbar}
+                  </div>
+                ))}
             </div>
           </div>
           {children}

@@ -1,8 +1,9 @@
 import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar";
 import { Outlet } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark";
 import { SidebarProps } from "@/components/Sidebar";
-import Layout from "@/components/layout";
+import { Layout } from "@/components/layout";
 
 const getMockData = (): SidebarProps => {
   return {
@@ -27,21 +28,31 @@ const watermark = {
   fontFamily: "Arial",
   opacity: 0.3,
   rotate: 45,
-  width: 100, // 减小单个水印的宽度
-  height: 100, // 减小单个水印的高度
+  width: 100, // Reduce the width of a single watermark
+  height: 100, // Reduce the height of a single watermark
   x: 0,
   y: 0,
   zIndex: 1,
   position: "absolute",
-  top: 0, // 调整到顶部
-  left: 0, // 调整到左边
+  top: 0, // Adjust to the top
+  left: 0, // Adjust to the left
 };
 
-export default function MainLayout() {
-  const sidebarData = getMockData();
+type MainLayoutProps = {
+  key?: string;
+};
 
+export default function MainLayout(props?: MainLayoutProps) {
+  const { key = "main" } = props || {};
+  const sidebarData = getMockData();
+  const { token } = useAuth();
+  if (token) {
+    console.log("token is ", token);
+    console.log("key is ", key);
+  }
   return (
     <Layout
+      key={key}
       sidebarProps={sidebarData}
       topNavProps={{ menus: mockTopNav }}
       footer={{
