@@ -23,17 +23,16 @@ const Context = createContext<ContextType>({
 });
 
 type AuthProviderProps = {
+  isAuthenticated: () => boolean;
   token: string | null;
   access?: Map<string, boolean>;
   refresh?: () => Promise<string | undefined>;
   children: React.ReactNode;
-  isAuthenticated: () => boolean;
 };
 
 const AuthProvider = ({
   token: userToken,
   access: userAccess,
-  refresh,
   children,
   isAuthenticated = () => false,
 }: AuthProviderProps) => {
@@ -57,7 +56,6 @@ const AuthProvider = ({
     () => ({
       isAuthenticated,
       token,
-      refresh,
       setToken,
       access,
       setAccess,
@@ -79,6 +77,11 @@ export const useAccess = () => {
 export const useToken = () => {
   const { token, setToken } = useContext(Context);
   return { token, setToken };
+};
+
+export const useInitialData = () => {
+  const initialData = useContext(Context);
+  return { initialData };
 };
 
 export type { ContextType as AuthContextType };

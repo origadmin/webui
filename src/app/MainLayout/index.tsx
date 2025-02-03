@@ -1,6 +1,6 @@
 import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar";
 import { Outlet } from "@tanstack/react-router";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth, useInitialData } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark";
 import { SidebarProps } from "@/components/Sidebar";
 import { Layout } from "@/components/layout";
@@ -46,8 +46,12 @@ export default function MainLayout(props?: MainLayoutProps) {
   const { key = "main" } = props || {};
   const sidebarData = getMockData();
   const { token } = useAuth();
+  const { initialData } = useInitialData();
   if (token) {
     console.log("token is ", token);
+  }
+  if (initialData) {
+    console.log("initialData is ", initialData);
   }
   return (
     <Layout
