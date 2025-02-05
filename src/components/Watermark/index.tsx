@@ -1,39 +1,23 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "../Theme";
 
 interface WatermarkProps {
-  // Watermark text content
   content: string | string[];
-  // Width
   width?: number;
-  // Height
   height?: number;
-  // Horizontal gap between watermarks
   gapX?: number;
-  // Vertical gap between watermarks
   gapY?: number;
-  // Rotation angle
   rotate?: number;
-  // Font size
   fontSize?: number;
-  // Font color
   fontColor?: string;
-  // Font family
   fontFamily?: string;
-  // Opacity
   opacity?: number;
-  // Number of anti-tamper layers
   antiTamperLayers?: number;
-  // Font weight
   fontWeight?: number | string;
-  // z-index
   zIndex?: number;
-  // Enable fullscreen mode
   fullscreen?: boolean;
-  // Custom class name
   className?: string;
-  // Children
   children: React.ReactNode;
 }
 
@@ -45,7 +29,6 @@ const Watermark: React.FC<WatermarkProps> = ({
   gapY = 100,
   rotate = -22,
   fontSize = 8,
-  fontColor = "var(--secondary-foreground)",
   fontFamily = "sans-serif",
   opacity = 1,
   antiTamperLayers = 2,
@@ -75,7 +58,7 @@ const Watermark: React.FC<WatermarkProps> = ({
       .join("");
 
     return `
-      <svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+      <svg  viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
         <g transform="rotate(${rotate}, ${width / 2}, ${height / 2})">
           ${texts}
         </g>
@@ -83,44 +66,39 @@ const Watermark: React.FC<WatermarkProps> = ({
     `;
   }, [theme, content, width, height, rotate, fontSize, fontFamily, fontWeight]);
 
-  useEffect(() => {
-    // Create a MutationObserver to monitor DOM changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === "childList" || mutation.type === "attributes") {
-          // If a modified watermark layer is detected, a re-render is forced
-          mutation.target.dispatchEvent(new Event("watermark-changed"));
-        }
-      });
-    });
-
-    // Observe the changes in the watermark container
-    const watermarkContainer = document.querySelector(".watermark-container");
-    if (watermarkContainer) {
-      observer.observe(watermarkContainer, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-    }
-
-    // Clean up observer when component is unmounted
-    return () => {
-      if (observer) {
-        observer.disconnect();
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   const observer = new MutationObserver((mutations) => {
+  //     mutations.forEach((mutation) => {
+  //       if (mutation.type === "attributes" || mutation.type === "childList") {
+  //         mutation.target.dispatchEvent(new Event("watermark-changed"));
+  //       }
+  //     });
+  //   });
+  //
+  //   const watermarkContainer = document.querySelector(".watermark-container");
+  //   if (watermarkContainer) {
+  //     observer.observe(watermarkContainer, {
+  //       attributes: true,
+  //       childList: true,
+  //       subtree: true,
+  //     });
+  //   } else {
+  //     console.warn(".watermark-container not found");
+  //   }
+  //
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, []);
 
   return (
     <div className={cn("relative w-full h-full", className)}>
       <div className='relative'>{children}</div>
       <div
         className={`pointer-events-none select-none ${fullscreen ? "fixed" : "absolute"} inset-0`}
-        style={{ opacity, zIndex: zIndex - 1 }} // Ensure watermark is behind content
+        style={{ opacity, zIndex: zIndex - 1 }}
         aria-hidden={true}
       >
-        {/* Base Layer */}
         <div
           className='absolute inset-0'
           style={{
@@ -129,7 +107,6 @@ const Watermark: React.FC<WatermarkProps> = ({
             backgroundSize: `${gapX + width}px ${gapY + height}px`,
           }}
         />
-        {/* Anti-Tamper Layers */}
         {[...Array(antiTamperLayers)].map((_, index) => (
           <div
             key={index}
@@ -146,5 +123,6 @@ const Watermark: React.FC<WatermarkProps> = ({
     </div>
   );
 };
+
 Watermark.displayName = "Watermark";
 export default Watermark;

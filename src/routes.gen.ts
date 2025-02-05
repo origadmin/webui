@@ -33,6 +33,9 @@ const Errors401LazyImport = createFileRoute("/(Errors)/401")();
 const AuthorizationTasksIndexLazyImport = createFileRoute(
   "/_authorization/tasks/",
 )();
+const AuthorizationChatsIndexLazyImport = createFileRoute(
+  "/_authorization/chats/",
+)();
 const AuthorizationAppsIndexLazyImport = createFileRoute(
   "/_authorization/apps/",
 )();
@@ -150,6 +153,15 @@ const AuthorizationTasksIndexLazyRoute =
     getParentRoute: () => AuthorizationRoute,
   } as any).lazy(() =>
     import("./routes/_authorization/tasks/index.lazy").then((d) => d.Route),
+  );
+
+const AuthorizationChatsIndexLazyRoute =
+  AuthorizationChatsIndexLazyImport.update({
+    id: "/chats/",
+    path: "/chats/",
+    getParentRoute: () => AuthorizationRoute,
+  } as any).lazy(() =>
+    import("./routes/_authorization/chats/index.lazy").then((d) => d.Route),
   );
 
 const AuthorizationAppsIndexLazyRoute = AuthorizationAppsIndexLazyImport.update(
@@ -449,6 +461,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationAppsIndexLazyImport;
       parentRoute: typeof AuthorizationImport;
     };
+    "/_authorization/chats/": {
+      id: "/_authorization/chats/";
+      path: "/chats";
+      fullPath: "/chats";
+      preLoaderRoute: typeof AuthorizationChatsIndexLazyImport;
+      parentRoute: typeof AuthorizationImport;
+    };
     "/_authorization/tasks/": {
       id: "/_authorization/tasks/";
       path: "/tasks";
@@ -501,6 +520,7 @@ interface AuthorizationRouteChildren {
   AuthorizationSystemUsersLazyRoute: typeof AuthorizationSystemUsersLazyRoute;
   AuthorizationDashboardIndexRoute: typeof AuthorizationDashboardIndexRoute;
   AuthorizationAppsIndexLazyRoute: typeof AuthorizationAppsIndexLazyRoute;
+  AuthorizationChatsIndexLazyRoute: typeof AuthorizationChatsIndexLazyRoute;
   AuthorizationTasksIndexLazyRoute: typeof AuthorizationTasksIndexLazyRoute;
   AuthorizationExamplesFormAdvancedLazyRoute: typeof AuthorizationExamplesFormAdvancedLazyRoute;
   AuthorizationExamplesFormBasicLazyRoute: typeof AuthorizationExamplesFormBasicLazyRoute;
@@ -525,6 +545,7 @@ const AuthorizationRouteChildren: AuthorizationRouteChildren = {
   AuthorizationSystemUsersLazyRoute: AuthorizationSystemUsersLazyRoute,
   AuthorizationDashboardIndexRoute: AuthorizationDashboardIndexRoute,
   AuthorizationAppsIndexLazyRoute: AuthorizationAppsIndexLazyRoute,
+  AuthorizationChatsIndexLazyRoute: AuthorizationChatsIndexLazyRoute,
   AuthorizationTasksIndexLazyRoute: AuthorizationTasksIndexLazyRoute,
   AuthorizationExamplesFormAdvancedLazyRoute:
     AuthorizationExamplesFormAdvancedLazyRoute,
@@ -562,6 +583,7 @@ export interface FileRoutesByFullPath {
   "/system/users": typeof AuthorizationSystemUsersLazyRoute;
   "/dashboard": typeof AuthorizationDashboardIndexRoute;
   "/apps": typeof AuthorizationAppsIndexLazyRoute;
+  "/chats": typeof AuthorizationChatsIndexLazyRoute;
   "/tasks": typeof AuthorizationTasksIndexLazyRoute;
   "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedLazyRoute;
   "/examples/form/basic": typeof AuthorizationExamplesFormBasicLazyRoute;
@@ -591,6 +613,7 @@ export interface FileRoutesByTo {
   "/system/users": typeof AuthorizationSystemUsersLazyRoute;
   "/dashboard": typeof AuthorizationDashboardIndexRoute;
   "/apps": typeof AuthorizationAppsIndexLazyRoute;
+  "/chats": typeof AuthorizationChatsIndexLazyRoute;
   "/tasks": typeof AuthorizationTasksIndexLazyRoute;
   "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedLazyRoute;
   "/examples/form/basic": typeof AuthorizationExamplesFormBasicLazyRoute;
@@ -622,6 +645,7 @@ export interface FileRoutesById {
   "/_authorization/system/users": typeof AuthorizationSystemUsersLazyRoute;
   "/_authorization/dashboard/": typeof AuthorizationDashboardIndexRoute;
   "/_authorization/apps/": typeof AuthorizationAppsIndexLazyRoute;
+  "/_authorization/chats/": typeof AuthorizationChatsIndexLazyRoute;
   "/_authorization/tasks/": typeof AuthorizationTasksIndexLazyRoute;
   "/_authorization/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedLazyRoute;
   "/_authorization/examples/form/basic": typeof AuthorizationExamplesFormBasicLazyRoute;
@@ -654,6 +678,7 @@ export interface FileRouteTypes {
     | "/system/users"
     | "/dashboard"
     | "/apps"
+    | "/chats"
     | "/tasks"
     | "/examples/form/advanced"
     | "/examples/form/basic"
@@ -682,6 +707,7 @@ export interface FileRouteTypes {
     | "/system/users"
     | "/dashboard"
     | "/apps"
+    | "/chats"
     | "/tasks"
     | "/examples/form/advanced"
     | "/examples/form/basic"
@@ -711,6 +737,7 @@ export interface FileRouteTypes {
     | "/_authorization/system/users"
     | "/_authorization/dashboard/"
     | "/_authorization/apps/"
+    | "/_authorization/chats/"
     | "/_authorization/tasks/"
     | "/_authorization/examples/form/advanced"
     | "/_authorization/examples/form/basic"
@@ -784,6 +811,7 @@ export const routeTree = rootRoute
         "/_authorization/system/users",
         "/_authorization/dashboard/",
         "/_authorization/apps/",
+        "/_authorization/chats/",
         "/_authorization/tasks/",
         "/_authorization/examples/form/advanced",
         "/_authorization/examples/form/basic",
@@ -863,6 +891,10 @@ export const routeTree = rootRoute
     },
     "/_authorization/apps/": {
       "filePath": "_authorization/apps/index.lazy.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/chats/": {
+      "filePath": "_authorization/chats/index.lazy.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/tasks/": {

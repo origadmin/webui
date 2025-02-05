@@ -6,6 +6,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnType, DataTableColumnHeader } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
+const headerMeta = {
+  meta: {
+    className: cn(
+      "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
+      "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
+      "sticky left-6 md:table-cell",
+    ),
+  },
+};
+
 export const columns: ColumnType<API.User>[] = [
   {
     id: "select",
@@ -19,8 +29,8 @@ export const columns: ColumnType<API.User>[] = [
     ),
     meta: {
       className: cn(
-        "sticky md:table-cell left-0 z-10 rounded-tl",
         "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
+        "md:table-cell",
       ),
     },
     cell: ({ row }) => (
@@ -38,32 +48,27 @@ export const columns: ColumnType<API.User>[] = [
     accessorKey: "username",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
-    meta: {
-      className: cn(
-        "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
-        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-        "sticky left-6 md:table-cell",
-      ),
-    },
+    meta: headerMeta.meta,
+    enableSorting: true,
     enableHiding: false,
   },
   {
     accessorKey: "nickname",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
-    cell: ({ row }) => {
-      return <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>;
-    },
-    meta: { className: "w-36" },
+    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
+    meta: headerMeta.meta,
   },
   {
     accessorKey: "email",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit text-nowrap'>{row.getValue("email")}</div>,
+    meta: headerMeta.meta,
   },
   {
     accessorKey: "phoneNumber",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
     cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
+    meta: headerMeta.meta,
     enableSorting: false,
   },
   {
@@ -86,6 +91,7 @@ export const columns: ColumnType<API.User>[] = [
 
       return value.includes(row.getValue(id));
     },
+    meta: headerMeta.meta,
     enableHiding: false,
     enableSorting: false,
   },
@@ -110,6 +116,7 @@ export const columns: ColumnType<API.User>[] = [
     filterFn: (row, id, value: string[]) => {
       return value.includes(row.getValue(id));
     },
+    meta: headerMeta.meta,
     enableSorting: false,
     enableHiding: false,
   },
@@ -117,5 +124,6 @@ export const columns: ColumnType<API.User>[] = [
     id: "actions",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Actions' />,
     cell: UserRowActions,
+    meta: headerMeta.meta,
   },
 ];

@@ -1,6 +1,7 @@
 /* eslint-disable */
 // @ts-ignore
 declare namespace API {
+  namespace System {}
   type FakeCaptcha = {
     code?: number;
     status?: string;

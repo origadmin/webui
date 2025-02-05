@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
+import { useRouter } from "@tanstack/react-router";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -47,6 +48,17 @@ interface DataTableProps<T> {
   paginationProps?: PaginationProps<T>;
 }
 
+const searchParamsToSortingState = (searchParams: URLSearchParams): SortingState => {
+  const sort = searchParams.get("sort");
+  if (sort === null) {
+    return [];
+  }
+  return sort.split(",").map((sort) => {
+    const [id, desc] = sort.split(":");
+    return { id, desc: desc === "desc" };
+  });
+};
+
 function DataTable<T>({
   columns,
   toolbars,
@@ -54,10 +66,33 @@ function DataTable<T>({
   paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
   sizeOptions = PAGE_SIZE_OPTIONS,
 }: DataTableProps<T>) {
+  const router = useRouter();
+  const searchParams = router.routeTree.useSearch();
+
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const oldSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
+  const currentSearch = oldSearchParams.toString();
+  const [sorting, setSorting] = useState<SortingState>(searchParamsToSortingState(oldSearchParams));
+  console.log("sorting", sorting);
+
+  useEffect(() => {
+    const currentPathname = router.state.location.pathname;
+
+    const currentSearchParams = new URLSearchParams(currentSearch);
+    currentSearchParams.set("sort", sorting.map((sort) => `${sort.id}:${sort.desc ? "desc" : "asc"}`).join(","));
+    const nextSearch = currentSearchParams.toString();
+    if (nextSearch === "") {
+      return;
+    }
+
+    if (currentSearch !== nextSearch) {
+      console.log("currentSearchParams", nextSearch, "currentSearch", currentSearch);
+      router.history.push(`${currentPathname}?${nextSearch}`);
+    }
+  }, [router, sorting, currentSearch]);
 
   const table = useReactTable({
     data,
