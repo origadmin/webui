@@ -80,18 +80,17 @@ function DataTable<T>({
 
   useEffect(() => {
     const currentPathname = router.state.location.pathname;
-
     const currentSearchParams = new URLSearchParams(currentSearch);
-    currentSearchParams.set("sort", sorting.map((sort) => `${sort.id}:${sort.desc ? "desc" : "asc"}`).join(","));
-    const nextSearch = currentSearchParams.toString();
-    if (nextSearch === "") {
+    if (sorting.length === 0) {
       return;
     }
+    currentSearchParams.set("sort", sorting.map((sort) => `${sort.id}:${sort.desc ? "desc" : "asc"}`).join(","));
+    const nextSearch = currentSearchParams.toString();
 
     if (currentSearch !== nextSearch) {
       console.log("currentSearchParams", nextSearch, "currentSearch", currentSearch);
       const path = `${currentPathname}?${nextSearch}`;
-      router.history.push(path.replaceAll("\\%3A", ":"));
+      router.history.push(path.replaceAll("%3A", ":"));
     }
   }, [router, sorting, currentSearch]);
 
