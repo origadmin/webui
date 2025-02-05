@@ -90,7 +90,8 @@ function DataTable<T>({
 
     if (currentSearch !== nextSearch) {
       console.log("currentSearchParams", nextSearch, "currentSearch", currentSearch);
-      router.history.push(`${currentPathname}?${nextSearch}`);
+      const path = `${currentPathname}?${nextSearch}`;
+      router.history.push(path.replaceAll("\\%3A", ":"));
     }
   }, [router, sorting, currentSearch]);
 
