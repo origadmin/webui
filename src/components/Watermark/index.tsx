@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "../Theme";
 
 interface WatermarkProps {
   // Watermark text content
@@ -44,7 +45,7 @@ const Watermark: React.FC<WatermarkProps> = ({
   gapY = 100,
   rotate = -22,
   fontSize = 8,
-  fontColor = "rgba(0, 0, 0, 0.15)",
+  fontColor = "var(--secondary-foreground)",
   fontFamily = "sans-serif",
   opacity = 1,
   antiTamperLayers = 2,
@@ -54,17 +55,21 @@ const Watermark: React.FC<WatermarkProps> = ({
   className,
   children,
 }) => {
+  const { theme } = useTheme();
+
   const svgContent = useMemo(() => {
     const contents = Array.isArray(content) ? content : [content];
+    const color = theme === "dark" ? "#fff" : "#020817";
     const texts = contents
       .map((text, index) => {
         const y = height / 2 + (index - (contents.length - 1) / 2) * fontSize * 1.5;
-        return `<text x="50%"
+        return `<text 
+                x="50%"
                 y="${y}"
                 dy=".5em"
                 text-anchor="middle"
-                fill="${fontColor}"
-                style="font-size: ${fontSize}px; font-family: ${fontFamily}; font-weight: ${fontWeight}"
+                fill="${color}"
+                style="font-size: ${fontSize}px; font-family: ${fontFamily}, Arial, sans-serif; font-weight: ${fontWeight}"
               >${text}</text>`;
       })
       .join("");
@@ -76,7 +81,7 @@ const Watermark: React.FC<WatermarkProps> = ({
         </g>
       </svg>
     `;
-  }, [content, width, height, rotate, fontSize, fontColor, fontFamily, fontWeight]);
+  }, [theme, content, width, height, rotate, fontSize, fontFamily, fontWeight]);
 
   useEffect(() => {
     // Create a MutationObserver to monitor DOM changes
@@ -142,4 +147,4 @@ const Watermark: React.FC<WatermarkProps> = ({
   );
 };
 Watermark.displayName = "Watermark";
-export { Watermark };
+export default Watermark;

@@ -149,4 +149,8 @@ declare global {
   type Config = {
     auth: AuthorizationConfig;
   };
+
+  type InitialDataConfig = {
+    [key: string]: any;
+  };
 }

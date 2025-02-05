@@ -24,13 +24,16 @@ const Context = createContext<ContextType>({
   setInitialData: () => void {},
 });
 
-type AuthProviderProps<T = unknown> = {
+export type AuthProviderProps<T = unknown> = {
   isAuthenticated?: () => boolean;
   token: string | null;
   access?: Map<string, boolean>;
   initialData?: T;
+  signInPath?: string;
+  signUpPath?: string;
+  signOutPath?: string;
   refresh?: () => Promise<string | undefined>;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const AuthProvider = <T = unknown,>({
@@ -39,6 +42,7 @@ const AuthProvider = <T = unknown,>({
   children,
   isAuthenticated: _isAuthenticated,
   initialData: userInitialData,
+  ...props
 }: AuthProviderProps<T>) => {
   const [token, _setToken] = useState(userToken);
   const [access, _setAccess] = useState(userAccess);
@@ -73,14 +77,17 @@ const AuthProvider = <T = unknown,>({
       setAccess,
       initialData,
       setInitialData,
+      ...props,
     } as ContextType;
-  }, [_isAuthenticated, token, access, initialData]);
+  }, [_isAuthenticated, token, access, initialData, props]);
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
 
 export const useAuth = () => {
-  return useContext(Context);
+  const context = useContext(Context);
+  if (context === undefined) throw new Error("useAuth must be used within a AuthProvider");
+  return context;
 };
 
 export const useAccess = () => {

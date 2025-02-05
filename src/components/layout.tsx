@@ -8,14 +8,14 @@ import SearchInput from "@/components/search-input";
 import { TopNav, TopNavProps } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
 
-type LayoutProps = {
+export type LayoutProps = {
   key?: string;
   footerProps?: FooterProps;
   topNavProps?: TopNavProps;
   showSidebarTrigger?: boolean;
   sidebarProps?: SidebarProps;
   navToolbars?: React.ReactNode[];
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export function Layout({

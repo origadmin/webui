@@ -1,12 +1,11 @@
 import { Suspense, useEffect } from "react";
 import { mockSidebar } from "@/mocks/mock-sidebar";
-import { errorRoutes } from "@/pages/errors";
 import { router } from "@/router";
 import { SIGN_IN_URL, SIGN_OUT_URL, SIGN_UP_URL } from "@/types";
 import { refreshToken } from "@/utils/auth";
 import { getAccessToken } from "@/utils/storage";
 import { RouterProvider } from "@tanstack/react-router";
-import AuthProvider, { useAuth } from "@/hooks/use-auth";
+import AuthProvider, { AuthProviderProps, useAuth } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 
@@ -117,7 +116,7 @@ function MainApp() {
   const accesses = new Map<string, boolean>();
   accesses.set("*", true);
 
-  const initState = {
+  const initData: AuthProviderProps<InitialDataConfig> = {
     // fetch: fetchInitData,
     // settings: Settings as Partial<LayoutSettings>,
     // routePathCodeMap,
@@ -129,7 +128,6 @@ function MainApp() {
     },
     token: getAccessToken(),
     access: accesses,
-    errorRoutes: errorRoutes,
     initialData: {
       menus: mockSidebar.menuItems,
     },
@@ -144,7 +142,7 @@ function MainApp() {
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <AuthProvider {...initState}>
+      <AuthProvider<InitialDataConfig> {...initData}>
         <AuthApp />
       </AuthProvider>
       <Toaster />
