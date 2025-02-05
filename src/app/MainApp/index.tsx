@@ -103,7 +103,7 @@ function AuthApp() {
 }
 
 // const queryClient = useMemo(() => new QueryClient(), []);
-function App() {
+function MainApp() {
   console.log("Application Started");
   // const location = useLocation();
   // const match = useMatch(location.pathname);
@@ -149,4 +149,4 @@ function App() {
   );
 }
 
-export default App;
+export default MainApp;
