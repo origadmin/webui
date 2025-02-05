@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { Storage } from "@/utils";
 
-type ContextType = {
+type ContextType<T = unknown> = {
   isAuthenticated: () => boolean;
   token: string | null;
   refresh?: () => Promise<string | undefined>;
   setToken: (token: string) => void;
   access?: Map<string, boolean>;
   setAccess: (access: Map<string, boolean>) => void;
-  initialData: unknown;
-  setInitialData?: (data: unknown) => void;
+  initialData: T;
+  setInitialData?: (data: T) => void;
   signInPath?: string;
   signUpPath?: string;
   signOutPath?: string;
@@ -19,13 +19,12 @@ const Context = createContext<ContextType>({
   isAuthenticated: () => false,
   token: null,
   setToken: () => void {},
-  access: new Map(),
   setAccess: () => void {},
-  initialData: {},
+  initialData: {} as unknown,
   setInitialData: () => void {},
 });
 
-type AuthProviderProps<T = never> = {
+type AuthProviderProps<T = unknown> = {
   isAuthenticated?: () => boolean;
   token: string | null;
   access?: Map<string, boolean>;
@@ -34,7 +33,7 @@ type AuthProviderProps<T = never> = {
   children: React.ReactNode;
 };
 
-const AuthProvider = <T = never,>({
+const AuthProvider = <T = unknown,>({
   token: userToken,
   access: userAccess,
   children,
@@ -43,7 +42,7 @@ const AuthProvider = <T = never,>({
 }: AuthProviderProps<T>) => {
   const [token, _setToken] = useState(userToken);
   const [access, _setAccess] = useState(userAccess);
-  const [initialData, _setInitialData] = useState(userInitialData);
+  const [initialData, _setInitialData] = useState(userInitialData as T);
 
   // const isAuthenticated = _isAuthenticated ? _isAuthenticated : () => !!token;
 
@@ -74,8 +73,9 @@ const AuthProvider = <T = never,>({
       setAccess,
       initialData,
       setInitialData,
-    };
+    } as ContextType;
   }, [_isAuthenticated, token, access, initialData]);
+
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
 
@@ -93,10 +93,9 @@ export const useToken = () => {
   return { token, setToken };
 };
 
-export const useInitialData = <T = never,>() => {
-  const { initialData, setInitialData } = useContext(Context);
-  const _initialData = initialData as T;
-  return { initialData: _initialData, setInitialData };
+export const useInitialData = <T = unknown,>() => {
+  const { initialData, setInitialData } = useContext(Context) as ContextType<T>;
+  return { initialData, setInitialData };
 };
 
 export type { ContextType as AuthContextType };
