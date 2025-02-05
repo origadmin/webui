@@ -45,10 +45,10 @@ request.interceptors.response.use(
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 /** Generic API request handler */
-async function fetchRequest<T, D = any>(
+async function fetchRequest<T, TData = any>(
   url: string,
   method: Method,
-  body?: D,
+  body?: TData,
   options?: API.RequestOptions,
   params?: API.Params, // url parameters
 ): Promise<API.Result<T>> {

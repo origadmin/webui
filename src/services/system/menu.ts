@@ -3,6 +3,7 @@
 import { Pagination } from "@/utils";
 import { request } from "@/utils/service";
 
+
 /** Query menu list GET /api/v1/sys/menus */
 export async function listMenu(params: API.Params, options?: API.RequestOptions) {
   params = Pagination.parseParams(params);

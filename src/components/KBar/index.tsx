@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { mockSidebar } from "@/mocks/mockSidebar";
-import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from "kbar";
+import { mockSidebar } from "@/mocks/mock-sidebar";
 import { useNavigate } from "@tanstack/react-router";
+import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from "kbar";
 import RenderResults from "./render-result";
 import useThemeSwitching from "./use-theme-switching";
 
@@ -22,21 +22,28 @@ export default function KBar({ children }: { children: React.ReactNode }) {
                 keywords: navItem.title.toLowerCase(),
                 section: "Navigation",
                 subtitle: `Go to ${navItem.title}`,
-                perform: () => navigate(navItem.path || "#"),
+                perform: () =>
+                  navigate({
+                    to: navItem.path,
+                  }),
               }
             : null;
 
         // Map child items into actions
-        const childActions =
-          navItem.children?.map((childItem: API.MenuItem) => ({
-            id: `${childItem.title.toLowerCase()}Action`,
-            name: childItem.title,
-            shortcut: childItem.shortcut,
-            keywords: childItem.title.toLowerCase(),
-            section: navItem.title,
-            subtitle: `Go to ${childItem.title}`,
-            perform: () => navigate(childItem.path || "#"),
-          })) ?? [];
+        const childActions = navItem.children
+          ? navItem.children?.map((childItem: API.MenuItem) => ({
+              id: `${childItem.title.toLowerCase()}Action`,
+              name: childItem.title,
+              shortcut: childItem.shortcut,
+              keywords: childItem.title.toLowerCase(),
+              section: navItem.title,
+              subtitle: `Go to ${childItem.title}`,
+              perform: () =>
+                navigate({
+                  to: childItem.path,
+                }),
+            }))
+          : [];
 
         // Return only valid actions (ignoring null base actions for containers)
         return baseAction ? [baseAction, ...childActions] : childActions;

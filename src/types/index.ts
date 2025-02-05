@@ -3,6 +3,7 @@ export const HOST = "";
 export const DEFAULT_MAIN_PAGE = "/dashboard/overview";
 export const SIGN_IN_URL = `/sign-in`;
 export const SIGN_UP_URL = `/sign-up`;
+export const SIGN_OUT_URL = `/sign-out`;
 export const REFRESH_URL = `/refresh`;
 export const START_PAGE = 0;
 export const PAGE_SIZE = 15;

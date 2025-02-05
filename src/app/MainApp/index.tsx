@@ -1,11 +1,11 @@
 import { Suspense, useEffect } from "react";
-import { mockSidebar } from "@/mocks/mockSidebar";
+import { mockSidebar } from "@/mocks/mock-sidebar";
 import { errorRoutes } from "@/pages/errors";
 import { router } from "@/router";
+import { SIGN_IN_URL, SIGN_OUT_URL, SIGN_UP_URL } from "@/types";
 import { refreshToken } from "@/utils/auth";
 import { getAccessToken } from "@/utils/storage";
 import { RouterProvider } from "@tanstack/react-router";
-import { routes } from "config/route";
 import AuthProvider, { useAuth } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
@@ -129,10 +129,13 @@ function MainApp() {
     },
     token: getAccessToken(),
     access: accesses,
-    routes: routes,
     errorRoutes: errorRoutes,
-    // signInPath: SIGN_IN_URL,
-    menus: mockSidebar.menuItems,
+    initialData: {
+      menus: mockSidebar.menuItems,
+    },
+    signInPath: SIGN_IN_URL,
+    signUpPath: SIGN_UP_URL,
+    signOutPath: SIGN_OUT_URL,
   };
 
   useEffect(() => {

@@ -1,4 +1,5 @@
-import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mockSidebar";
+import { useEffect } from "react";
+import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mock-sidebar";
 import { Outlet } from "@tanstack/react-router";
 import { useAuth, useInitialData } from "@/hooks/use-auth";
 import { Watermark } from "@/components/ui/watermark";
@@ -38,24 +39,24 @@ const watermark = {
   left: 0, // Adjust to the left
 };
 
-type MainLayoutProps = {
-  key?: string;
-};
-
-export default function MainLayout(props?: MainLayoutProps) {
-  const { key = "main" } = props || {};
+export default function MainLayout() {
   const sidebarData = getMockData();
   const { token } = useAuth();
-  const { initialData } = useInitialData();
-  if (token) {
-    console.log("token is ", token);
-  }
+  // @typescript-eslint/no-unused-vars
+  const { initialData, setInitialData } = useInitialData();
+
   if (initialData) {
     console.log("initialData is ", initialData);
   }
+  useEffect(() => {
+    if (token) {
+      console.log("token is ", token);
+    }
+  }, [token]);
+  
   return (
     <Layout
-      key={key}
+      key='main-layout'
       sidebarProps={sidebarData}
       topNavProps={{ menus: mockTopNav }}
       footerProps={{

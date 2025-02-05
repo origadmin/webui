@@ -10,14 +10,22 @@
 
 This project implements the front-end Admin design based on the following technologies:
 
-- 🛠️ [ShadcnUI](https://ui.shadcn.com/): A React UI component library that provides a set of accessible and customizable components.
+- 🛠️ [ShadcnUI](https://ui.shadcn.com/): A React UI component library that provides a set of accessible and customizable
+  components.
+- 🌐 [@tanstack/router](https://tanstack.com/router): A routing library for React that provides a simple and powerful way
+  to handle client-side routing.
 - 🚀 [RSBuild](https://rsbuild.js.org/): A modern build tool that simplifies the process of building web applications.
-- 🎨 [TailwindV3](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
-- 💡 [Postcss](https://postcss.org/): A tool for transforming CSS with JavaScript, enabling the use of plugins to extend CSS functionality.
-- ✨ [Prettier](https://prettier.io/): A code formatter that enforces consistent style by parsing your code and re-printing it with its own rules.
+- 🎨 [Tailwind.v3](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
+- 💡 [Postcss](https://postcss.org/): A tool for transforming CSS with JavaScript, enabling the use of plugins to extend
+  CSS functionality.
+- ✨ [Prettier](https://prettier.io/): A code formatter that enforces consistent style by parsing your code and
+  re-printing it with its own rules.
 - ⚡ [Bun](https://bun.sh/): A fast all-in-one JavaScript runtime, bundler, and package manager.
-- 📜 [TypeScript](https://www.typescriptlang.org/): A statically typed programming language that builds on JavaScript, adding features like interfaces and generics.
-- 🛡️ [ESLint](https://eslint.org/): A tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding errors.
+- 📜 [TypeScript](https://www.typescriptlang.org/): A statically typed programming language that builds on JavaScript,
+  adding features like interfaces and generics.
+- 🗃️ [React](https://reactjs.org/): A JavaScript library for building user interfaces.
+- 🛡️ [ESLint](https://eslint.org/): A tool for identifying and reporting on patterns found in ECMAScript/JavaScript
+  code, with the goal of making code more consistent and avoiding errors.
 
 ## 🚀 Live Demo
 
@@ -118,8 +126,8 @@ bun lint
 
 ### License
 
-This project is licensed under [MIT License](https://opensource.org/licenses/MIT). Feel free to use and modify it, but please keep the original author information.
-
+This project is licensed under [MIT License](https://opensource.org/licenses/MIT). Feel free to use and modify it, but
+please keep the original author information.
 
 ### License
 

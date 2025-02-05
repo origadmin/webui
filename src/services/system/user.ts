@@ -1,4 +1,4 @@
-import { mockUsers } from "@/mocks/mockSidebar";
+import { mockUsers } from "@/mocks/mock-sidebar";
 import { Pagination } from "@/utils";
 import { fetchRequest } from "@/utils/service";
 

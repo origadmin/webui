@@ -1,4 +1,4 @@
-import { mockToken } from "@/mocks/mockSidebar";
+import { mockToken } from "@/mocks/mock-sidebar";
 import { logout, login } from "@/services/system/login";
 import { SIGN_IN_URL } from "@/types";
 import { fetchRequest, Method } from "@/utils/service";

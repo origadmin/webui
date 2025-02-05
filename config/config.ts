@@ -1,26 +1,8 @@
-import { ForbiddenError, NotFoundError } from "@/pages/errors";
 import { HOST } from "@/types";
-import { routes } from "./route";
 
 const config = {
   host: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
   auth: {
-    login: {
-      url: "/api/v1/personal/login",
-      method: "POST",
-    },
-    logout: {
-      url: "/api/v1/personal/logout",
-      method: "POST",
-    },
-    register: {
-      url: "/api/v1/personal/register",
-      method: "POST",
-    },
-    forgotPassword: {
-      url: "/api/v1/personal/forgot-password",
-      method: "POST",
-    },
     verifyEmail: {
       url: "/api/v1/personal/verify-email",
       method: "POST",
@@ -41,11 +23,6 @@ const config = {
       url: "/api/v1/personal/refresh",
       method: "POST",
     },
-  },
-  routes: routes,
-  errorRoutes: {
-    403: ForbiddenError,
-    404: NotFoundError,
   },
 };
 
