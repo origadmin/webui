@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export interface PaginationProps<T> {
   table: Table<T>;
   toolbars?: ToolbarProps["toolbars"];
-
   sizeOptions?: string[];
 }
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import KBar from "src/components/KBar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProps, SidebarComponent, SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/Sidebar";
-import { ThemeToggle } from "@/components/Theme";
+import { ThemeSwitch } from "@/components/Theme";
 import { Footer, FooterProps } from "@/components/footer";
 import SearchInput from "@/components/search-input";
 import { TopNav, TopNavProps } from "@/components/top-nav";
@@ -21,7 +21,7 @@ export type LayoutProps = {
 export function Layout({
   showSidebarTrigger = true,
   children,
-  navToolbars = [<SearchInput />, <ThemeToggle />, <UserNav />],
+  navToolbars = [<SearchInput />, <ThemeSwitch />, <UserNav />],
   topNavProps,
   ...props
 }: LayoutProps) {

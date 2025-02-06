@@ -42,16 +42,14 @@ interface DataTableProps<T> {
   data: T[];
   columns: ColumnType<T>[];
   searchBarProps?: SearchBarProps<T>;
-  showStatistics?: boolean;
-  statistics?: {
-    total: number;
-    filtered: number;
-  };
+  showToolbarStatistics?: boolean;
+  showPagination?: boolean;
   toolbarPosition?: "top" | "bottom";
   toolbars?: TitleBarProps<T>["toolbars"];
   paginationState?: PaginationState;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
   paginationProps?: PaginationProps<T>;
+  titleBarProps?: TitleBarProps<T>;
 }
 
 const searchParamsToSortingState = (searchParams: URLSearchParams): SortingState => {
@@ -70,9 +68,12 @@ function DataTable<T>({
   toolbars,
   data,
   paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
-  showStatistics = true,
+  showToolbarStatistics = true,
+  showPagination = true,
   toolbarPosition = "top",
   sizeOptions = PAGE_SIZE_OPTIONS,
+  paginationProps,
+  titleBarProps,
 }: DataTableProps<T>) {
   const router = useRouter();
   const searchParams = router.routeTree.useSearch();
@@ -126,12 +127,6 @@ function DataTable<T>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    // getCoreRowModel: props.getCoreRowModel ?? getCoreRowModel(),
-    // getFilteredRowModel: props.getFilteredRowModel ?? getFilteredRowModel(),
-    // getPaginationRowModel: props.getPaginationRowModel ?? getPaginationRowModel(),
-    // getSortedRowModel: props.getSortedRowModel ?? getSortedRowModel(),
-    // getFacetedRowModel: props.getFacetedRowModel ?? getFacetedRowModel(),
-    // getFacetedUniqueValues: props.getFacetedUniqueValues ?? getFacetedUniqueValues(),
   });
 
   return (
@@ -140,7 +135,8 @@ function DataTable<T>({
       <TitleBar
         table={table}
         toolbars={toolbarPosition === "top" ? toolbars : undefined}
-        showStatistics={showStatistics}
+        showStatistics={showToolbarStatistics}
+        {...titleBarProps}
       />
       <div className='rounded-md border'>
         <Table>
@@ -182,13 +178,14 @@ function DataTable<T>({
           </TableBody>
         </Table>
       </div>
-      {
+      {showPagination && (
         <Pagination
           table={table}
           sizeOptions={sizeOptions}
           toolbars={toolbarPosition === "bottom" ? toolbars : undefined}
+          {...paginationProps}
         />
-      }
+      )}
     </div>
   );
 }
