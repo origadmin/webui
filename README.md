@@ -32,7 +32,7 @@ This project implements the front-end Admin design based on the following techno
 [OrigAdmin WebUI Live](https://shadcn-admin-design.vercel.app)
 
 - **Username**: `admin`
-- **Password**: `adminadmin`
+- **Password**: `orig.admin`
 - **Captcha**: `1234` (this is a demo, so the captcha is not validated, you can log in directly with four digits).
 -
 - You can change the **Username** and **Password** in the `src/pages/auth/index.tsx` file.

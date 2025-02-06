@@ -1,9 +1,16 @@
+import { Fragment } from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export type OpenStateType = "invite" | "add" | "edit" | "delete";
 
@@ -25,8 +32,8 @@ export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsPro
       <DropdownMenuContent align='end' className='w-[160px]'>
         <DropdownMenuItem
           onClick={() => {
-            setCurrentRow(row.original);
-            setOpen("edit");
+            setCurrentRow?.(row.original);
+            setOpen?.("edit");
           }}
         >
           Edit
@@ -37,8 +44,8 @@ export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsPro
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            setCurrentRow(row.original);
-            setOpen("delete");
+            setCurrentRow?.(row.original);
+            setOpen?.("delete");
           }}
           className='!text-red-500'
         >
@@ -49,5 +56,29 @@ export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsPro
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+export function IconRowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsProps<TData>) {
+  const onClick = (open: OpenStateType) => {
+    setCurrentRow?.(row.original);
+    setOpen?.(open);
+  };
+
+  return (
+    <Fragment>
+      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
+        <IconEdit size={16} />
+      </Button>
+      <Button
+        className='h-8 w-8 !text-red-500'
+        variant='ghost'
+        size='icon'
+        onClick={() => onClick("delete")}
+        title='Delete'
+      >
+        <IconTrash size={16} />
+      </Button>
+    </Fragment>
   );
 }

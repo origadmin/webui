@@ -87,7 +87,7 @@ export const signIn = async <T,>(params: API.LoginForm, { login: _login = login,
     }
     return;
   }
-  if (params.password !== "adminadmin") {
+  if (params.password !== "orig.admin") {
     if (props.onError) {
       props.onError(new Error("Invalid username or password"));
     }

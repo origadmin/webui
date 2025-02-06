@@ -92,6 +92,13 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
     });
   }
 
+  function renderTitleItem(item: MenuItem, index: number) {
+    if (onlyTitle(item)) {
+      return renderTitle(item, index);
+    }
+    return renderItem(item, index);
+  }
+
   function renderTitle(item: MenuItem, index: number) {
     return <SidebarGroupLabel key={itemKey(item, index)}>{item.title}</SidebarGroupLabel>;
   }
@@ -111,14 +118,13 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
 
   return (
     <SidebarContent>
-      {main && <MainContent {...main}></MainContent>}
+      {main && <MainContent {...main} />}
       {items && (
         <SidebarGroup {...props}>
           <SidebarMenu>
             {items.map((item, index) => (
               <Fragment key={index}>
-                {onlyTitle(item) && renderTitle(item, index)}
-                {!onlyTitle(item) && renderItem(item, index)}
+                {renderTitleItem(item, index)}
                 {hasSub(item) && renderSubItem(item.children)}
               </Fragment>
             ))}

@@ -4,10 +4,12 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FacetedFilter } from "./faceted-filter";
+import { ColumnType } from "@/components/DataTable/index";
 
 export interface SearchBarProps<TData> {
   table: Table<TData>;
-  column?: number;
+  columns: ColumnType<TData>[];
+  col?: number;
 }
 
 export function SearchBar<TData>({ table }: SearchBarProps<TData>) {

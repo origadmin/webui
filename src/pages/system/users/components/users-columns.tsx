@@ -1,22 +1,22 @@
 import { callTypes, userTypes } from "@/mocks/user/data";
-import { UserRowActions } from "@/pages/system/users/components/users-row-actions";
+import { UserIconRowActions } from "@/pages/system/users/components/users-row-actions";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnType, DataTableColumnHeader } from "@/components/DataTable";
+import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 const headerMeta = {
   meta: {
     className: cn(
-      "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
+      "p-2 drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
       "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
       "sticky left-6 md:table-cell",
     ),
   },
 };
 
-export const columns: ColumnType<API.User>[] = [
+export const columns: DataTableColumnType<API.User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -46,7 +46,8 @@ export const columns: ColumnType<API.User>[] = [
   },
   {
     accessorKey: "username",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
+    headerTitle: "Username",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
     meta: headerMeta.meta,
     enableSorting: true,
@@ -54,26 +55,30 @@ export const columns: ColumnType<API.User>[] = [
   },
   {
     accessorKey: "nickname",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
+    headerTitle: "Nickname",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
     meta: headerMeta.meta,
   },
   {
     accessorKey: "email",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    headerTitle: "Email",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("email")}</div>,
     meta: headerMeta.meta,
   },
   {
     accessorKey: "phoneNumber",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
+    headerTitle: "Phone Number",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
     cell: ({ row }) => <div>{row.getValue("phoneNumber")}</div>,
     meta: headerMeta.meta,
     enableSorting: false,
   },
   {
     accessorKey: "status",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
+    headerTitle: "Status",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status } = row.original;
       const badgeColor = callTypes.get(status);
@@ -86,9 +91,6 @@ export const columns: ColumnType<API.User>[] = [
       );
     },
     filterFn: (row, id, value: string[]) => {
-      // const statusValue = row.getValue<string>(id);
-      // return typeof statusValue === "string" && value.includes(statusValue);
-
       return value.includes(row.getValue(id));
     },
     meta: headerMeta.meta,
@@ -97,7 +99,8 @@ export const columns: ColumnType<API.User>[] = [
   },
   {
     accessorKey: "role",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Role' />,
+    headerTitle: "Role",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Role' />,
     cell: ({ row }) => {
       const { role } = row.original;
       const userType = userTypes.find(({ value }) => value === role);
@@ -121,9 +124,10 @@ export const columns: ColumnType<API.User>[] = [
     enableHiding: false,
   },
   {
-    id: "actions",
-    header: ({ column }) => <DataTableColumnHeader column={column} title='Actions' />,
-    cell: UserRowActions,
+    id: "options",
+    headerTitle: "Options",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
+    cell: UserIconRowActions,
     meta: headerMeta.meta,
   },
 ];

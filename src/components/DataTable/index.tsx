@@ -2,10 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import { useRouter } from "@tanstack/react-router";
 import {
-  ColumnDef,
   ColumnFiltersState,
   PaginationOptions,
-  RowData,
   SortingState,
   VisibilityState,
   flexRender,
@@ -16,26 +14,35 @@ import {
   getSortedRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
+  RowData,
   PaginationState,
+  Renderable,
+  HeaderContext,
+  Column,
+  ColumnDef,
+  ColumnMeta,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ToolbarProps } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
 import { Pagination, PaginationProps } from "./pagination";
-import { RowActions, RowActionsProps } from "./row-actions";
+import { IconRowActions, RowActions, RowActionsProps } from "./row-actions";
 import { SearchBar, SearchBarProps } from "./search-bar";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
 declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     className: string;
+    row?: TData;
+    value?: TValue;
   }
 }
 
 type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   searchable?: boolean;
+  headerTitle?: string;
+  meta: ColumnMeta<TData, TValue>;
 };
 
 interface DataTableProps<T> {
@@ -61,6 +68,14 @@ const searchParamsToSortingState = (searchParams: URLSearchParams): SortingState
     const [id, desc] = sort.split(":");
     return { id, desc: desc === "desc" };
   });
+};
+
+const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderContext<TData, TValue>> => {
+  const columnDef = column.columnDef as ColumnType<TData, TValue>;
+  if (columnDef.headerTitle) {
+    return <ColumnHeader column={column} title={columnDef.headerTitle} />;
+  }
+  return column.columnDef.header;
 };
 
 function DataTable<T>({
@@ -131,7 +146,7 @@ function DataTable<T>({
 
   return (
     <div className='space-y-4'>
-      <SearchBar table={table} />
+      <SearchBar table={table} columns={columns} />
       <TitleBar
         table={table}
         toolbars={toolbarPosition === "top" ? toolbars : undefined}
@@ -150,7 +165,7 @@ function DataTable<T>({
                       colSpan={header.colSpan}
                       className={header.column.columnDef.meta?.className ?? ""}
                     >
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder ? null : flexRender(renderHeader(header.column), header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -190,7 +205,6 @@ function DataTable<T>({
   );
 }
 
-export type { DataTableProps, ColumnType, ColumnType as DataTableColumnType };
 export type {
   RowActionsProps as DataTableRowActionsProps,
   PaginationOptions as DataTablePaginationOptions,
@@ -199,8 +213,11 @@ export type {
   ColumnHeaderProps as DataTableColumnHeaderProps,
   SearchBarProps as DataTableSearchBarProps,
 };
+
+export type { DataTableProps, ColumnType, ColumnType as DataTableColumnType };
 export {
   RowActions as DataTableRowActions,
+  IconRowActions as DataTableIconRowActions,
   Pagination as DataTablePagination,
   TitleBar as DataTableToolbar,
   ViewOptions as DataTableViewOptions,
