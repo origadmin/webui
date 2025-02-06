@@ -42,4 +42,5 @@ export {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
+  SidebarRail,
 };
