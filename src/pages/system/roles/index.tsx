@@ -2,7 +2,7 @@ import { roles } from "@/mocks/role/roles";
 import { roleListSchema } from "@/mocks/role/schema";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/roles-columns";
 import { RolesDialogs } from "./components/roles-dialogs";
 import { RoleTableProvider } from "./components/roles-table-provider";

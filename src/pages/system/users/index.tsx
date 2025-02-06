@@ -2,7 +2,7 @@ import { userListSchema } from "@/mocks/user/schema";
 import { users } from "@/mocks/user/users";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/users-columns";
 import { UsersDialogs } from "./components/users-dialogs";
 import { UsersPrimaryButtons } from "./components/users-primary-buttons";

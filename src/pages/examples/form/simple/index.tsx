@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 
 const formSchema = z.object({
   username: z.string().min(2, {

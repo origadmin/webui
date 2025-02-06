@@ -1,4 +1,4 @@
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { tasks } from "./data/tasks";

@@ -90,4 +90,4 @@ Body.displayName = "Body";
 Content.Header = Header;
 Content.Body = Body;
 
-export { Content };
+export { Content, Body as ContentBody, Header as ContentHeader };

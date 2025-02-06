@@ -9,7 +9,7 @@ import { UserActivityChart } from "@/pages/dashboard/Overview/user-activity-char
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/custom/button";
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 
 export default function OverviewPage() {
   return (

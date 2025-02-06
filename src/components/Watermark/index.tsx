@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "../Theme";
 
-interface WatermarkProps {
+export interface WatermarkProps {
   content: string | string[];
   width?: number;
   height?: number;
@@ -65,31 +65,6 @@ const Watermark: React.FC<WatermarkProps> = ({
       </svg>
     `;
   }, [theme, content, width, height, rotate, fontSize, fontFamily, fontWeight]);
-
-  // useEffect(() => {
-  //   const observer = new MutationObserver((mutations) => {
-  //     mutations.forEach((mutation) => {
-  //       if (mutation.type === "attributes" || mutation.type === "childList") {
-  //         mutation.target.dispatchEvent(new Event("watermark-changed"));
-  //       }
-  //     });
-  //   });
-  //
-  //   const watermarkContainer = document.querySelector(".watermark-container");
-  //   if (watermarkContainer) {
-  //     observer.observe(watermarkContainer, {
-  //       attributes: true,
-  //       childList: true,
-  //       subtree: true,
-  //     });
-  //   } else {
-  //     console.warn(".watermark-container not found");
-  //   }
-  //
-  //   return () => {
-  //     observer.disconnect();
-  //   };
-  // }, []);
 
   return (
     <div className={cn("relative w-full h-full", className)}>

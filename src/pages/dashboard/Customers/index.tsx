@@ -1,4 +1,4 @@
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 import { CustomerPagination } from "./components/CustomerPagination";
 import CustomerSearch from "./components/CustomerSearch";
 import CustomerTable from "./components/CustomerTable";

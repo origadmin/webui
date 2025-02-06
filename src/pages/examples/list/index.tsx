@@ -1,4 +1,4 @@
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 import VersatileList from "./versatile-list";
 
 export default function ListPage() {

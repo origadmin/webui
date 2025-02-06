@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ThemeSwitch from "@/components/Theme/theme-switch";
-import { Content } from "@/components/content";
+import { Content } from "@/components/PageContainer/content";
 import { Breadcrumb, BreadcrumbItem } from "@/components/custom/breadcrumb";
 import { PinInput, PinInputField } from "@/components/custom/pin-input";
 import { Search } from "@/components/search";

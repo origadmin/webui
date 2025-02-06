@@ -1,4 +1,4 @@
-import PageContainer from "@/components/PageContainer/page-container";
+import PageContainer from "@/components/PageContainer";
 import ProductGrid from "./components/ProductGrid";
 import { ProductPagination } from "./components/ProductPagination";
 import ProductSearch from "./components/ProductSearch";
