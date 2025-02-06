@@ -42,6 +42,12 @@ interface DataTableProps<T> {
   data: T[];
   columns: ColumnType<T>[];
   searchBarProps?: SearchBarProps<T>;
+  showStatistics?: boolean;
+  statistics?: {
+    total: number;
+    filtered: number;
+  };
+  toolbarPosition?: "top" | "bottom";
   toolbars?: TitleBarProps<T>["toolbars"];
   paginationState?: PaginationState;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
@@ -64,6 +70,8 @@ function DataTable<T>({
   toolbars,
   data,
   paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
+  showStatistics = true,
+  toolbarPosition = "top",
   sizeOptions = PAGE_SIZE_OPTIONS,
 }: DataTableProps<T>) {
   const router = useRouter();
@@ -129,7 +137,11 @@ function DataTable<T>({
   return (
     <div className='space-y-4'>
       <SearchBar table={table} />
-      <TitleBar table={table} toolbars={toolbars} showStatistics={true} />
+      <TitleBar
+        table={table}
+        toolbars={toolbarPosition === "top" ? toolbars : undefined}
+        showStatistics={showStatistics}
+      />
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -170,7 +182,13 @@ function DataTable<T>({
           </TableBody>
         </Table>
       </div>
-      {<Pagination table={table} sizeOptions={sizeOptions} toolbars={toolbars} />}
+      {
+        <Pagination
+          table={table}
+          sizeOptions={sizeOptions}
+          toolbars={toolbarPosition === "bottom" ? toolbars : undefined}
+        />
+      }
     </div>
   );
 }

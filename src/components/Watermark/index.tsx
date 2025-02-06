@@ -42,7 +42,7 @@ const Watermark: React.FC<WatermarkProps> = ({
 
   const svgContent = useMemo(() => {
     const contents = Array.isArray(content) ? content : [content];
-    const color = theme === "dark" ? "#fff" : "#020817";
+    const color = theme === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)";
     const texts = contents
       .map((text, index) => {
         const y = height / 2 + (index - (contents.length - 1) / 2) * fontSize * 1.5;

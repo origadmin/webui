@@ -9,11 +9,6 @@ import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
 export default function UsersPage() {
-  // const state = useRouterState();
-  // console.log("state", state);
-  // Parse user list
-  // const routeApi = getRouteApi();
-
   const userList = userListSchema.parse(users);
   // const { search } = useSearch<{ status?: string; role?: string }>();
   return (

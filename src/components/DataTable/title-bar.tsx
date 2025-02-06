@@ -12,19 +12,17 @@ export interface TitleBarProps<TData> {
   table: Table<TData>;
   toolbars?: ToolbarProps["toolbars"];
   showSearch?: boolean;
+  showOption?: boolean;
   showStatistics?: boolean;
-  statisticsRender?: () => JSX.Element;
+  statisticsRender?: (total: number, filtered?: number) => JSX.Element;
+  searchBarRender?: (table: Table<TData>) => JSX.Element;
+  toolbarRender?: (table: Table<TData>) => JSX.Element;
 }
 
-export function TitleBar<TData>({
-  table,
-  toolbars,
-  showSearch,
-  showStatistics,
-  statisticsRender,
-}: TitleBarProps<TData>) {
+const renderSearchBar = <TData,>(table: Table<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const renderSearchBar = () => (
+
+  return (
     <Fragment>
       <Input
         placeholder='Filter users...'
@@ -61,22 +59,38 @@ export function TitleBar<TData>({
       )}
     </Fragment>
   );
-  const renderStatistics = () => (
-    <div className='hidden px-2 flex-1 text-sm text-muted-foreground sm:block'>
-      {table.getFilteredRowModel().rows.length} pieces of data found.
-    </div>
+};
+
+const renderStatistics = (total: number) => (
+  <div className='hidden px-2 flex-1 text-sm text-muted-foreground sm:block'>{total} pieces of data found.</div>
+);
+
+export function TitleBar<TData>({
+  table,
+  toolbars,
+  showSearch,
+  showOption = true,
+  showStatistics,
+  statisticsRender = renderStatistics,
+  searchBarRender = renderSearchBar,
+}: TitleBarProps<TData>) {
+  const total = table.getFilteredRowModel().rows.length;
+  const selected = table.getSelectedRowModel().rows.length;
+
+  const renderToolbar = (table: Table<TData>, _toolbars?: JSX.Element) => (
+    <Fragment>
+      {_toolbars}
+      {showOption && <ViewOptions table={table} />}
+    </Fragment>
   );
 
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
-        {showStatistics && (statisticsRender ? statisticsRender() : renderStatistics())}
-        {showSearch && renderSearchBar()}
+        {showStatistics && statisticsRender(total, selected)}
+        {showSearch && searchBarRender(table)}
       </div>
-      <div className='flex gap-2'>
-        {toolbars}
-        <ViewOptions table={table} />
-      </div>
+      <div className='flex gap-2'>{renderToolbar(table, toolbars)}</div>
     </div>
   );
 }

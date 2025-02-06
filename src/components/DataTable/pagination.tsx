@@ -92,7 +92,7 @@ export function Pagination<T>({ table, sizeOptions = [], toolbars }: PaginationP
   };
   return (
     <div className='flex items-center justify-between overflow-auto px-2'>
-      <div className='hidden flex-1 text-sm text-muted-foreground sm:block'>
+      <div className='flex text-sm text-muted-foreground sm:space-x-6 lg:space-x-8'>
         {selectedCount} of {totalCount} row(s) selected.
       </div>
       {renderSizeOptions(mergedSizeOptions)}

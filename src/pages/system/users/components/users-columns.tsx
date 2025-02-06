@@ -61,7 +61,7 @@ export const columns: ColumnType<API.User>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit text-nowrap'>{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("email")}</div>,
     meta: headerMeta.meta,
   },
   {
