@@ -13,8 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
-import { LoadingSpinner } from "@/components/Loading";
+import { Image } from "@/components/Image";
 import { Button } from "@/components/custom/button";
 import { PasswordInput } from "@/components/password-input";
 
@@ -49,8 +48,13 @@ export type SignInProps = {
   callbackUrl: string;
 };
 
+const defaultCaptcha: Captcha = {
+  id: undefined,
+  data: Placeholder,
+};
+
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [captcha, setCaptcha] = useState<Captcha>({});
+  const [captcha, setCaptcha] = useState<Captcha>(defaultCaptcha);
   const [isLoading, setIsLoading] = useState(false);
   const [submitting, startTransition] = useTransition();
   const { toast } = useToast();
@@ -66,6 +70,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       captcha_code: "",
     },
   });
+  // const refreshCaptcha = async () => {
+  //   const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
+  //   const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
+  //   const { data, isLoading, error } = useQuery("getCaptcha", () => fetchRequest<Captcha>(url, "GET"));
+  //   if (error) {
+  //     console.error("Captcha Err:", error);
+  //     return
+  //   }
+  // };
 
   const refreshCaptcha = useCallback(async () => {
     // Avoid refreshing the CAPTCHA when submitting a login form
@@ -74,13 +87,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
     setIsLoading(true);
     // Simulate API call to get new CAPTCHA
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
-    const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
-    const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
+
+    // const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
+    // const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
+    // =>
+    const url = `/api/v1/captcha${captcha.id ? `?id=${captcha.id}&reload=true` : ""}`;
+
     try {
-      const response = await fetchRequest<Captcha>(url, "GET");
+      const response = await fetchRequest<Captcha>(url);
       if (response.success && response.data) {
-        setCaptcha({ ...response.data });
+        setCaptcha({
+          id: response.data.id,
+          data: response.data.data,
+        });
       } else {
         console.error("Failed to refresh captcha:", response);
       }
@@ -131,7 +150,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid gap-2'>
+          <div className='grid gap-2 py-4'>
             <FormField
               control={form.control}
               name='username'
@@ -174,19 +193,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                       <FormControl>
                         <Input className='flex-1' id='captcha_code' placeholder='Enter CAPTCHA' {...field} required />
                       </FormControl>
-                      {isLoading ? (
-                        <Skeleton className='h-10 w-[120px] flex flex-1 items-center justify-center'>
-                          <LoadingSpinner />
-                        </Skeleton>
-                      ) : (
-                        <img
-                          src={captcha.data || Placeholder}
-                          alt='CAPTCHA'
-                          className='h-10 w-[120px] cursor-pointer flex flex-1 rounded-md items-center justify-center'
-                          onClick={refreshCaptcha}
-                          aria-label='Click to refresh CAPTCHA'
-                        />
-                      )}
+                      <Image
+                        isLoading={isLoading}
+                        src={captcha.data}
+                        alt='CAPTCHA'
+                        className='w-[120px]'
+                        size='sm'
+                        onClick={refreshCaptcha}
+                        label='Click to refresh CAPTCHA'
+                      />
                     </div>
                     <FormMessage />
                   </FormItem>

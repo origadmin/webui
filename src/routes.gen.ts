@@ -17,6 +17,7 @@ import { Route as AuthorizationImport } from "./routes/_authorization";
 import { Route as AuthorizationIndexImport } from "./routes/_authorization/index";
 import { Route as ErrorsComingSoonImport } from "./routes/(Errors)/coming-soon";
 import { Route as AuthSignUpImport } from "./routes/(Auth)/sign-up";
+import { Route as AuthSignIn2Import } from "./routes/(Auth)/sign-in-2";
 import { Route as AuthSignInImport } from "./routes/(Auth)/sign-in";
 import { Route as AuthOtpImport } from "./routes/(Auth)/otp";
 import { Route as AuthForgotPasswordImport } from "./routes/(Auth)/forgot-password";
@@ -125,6 +126,12 @@ const ErrorsComingSoonRoute = ErrorsComingSoonImport.update({
 const AuthSignUpRoute = AuthSignUpImport.update({
   id: "/(Auth)/sign-up",
   path: "/sign-up",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const AuthSignIn2Route = AuthSignIn2Import.update({
+  id: "/(Auth)/sign-in-2",
+  path: "/sign-in-2",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -333,6 +340,13 @@ declare module "@tanstack/react-router" {
       path: "/sign-in";
       fullPath: "/sign-in";
       preLoaderRoute: typeof AuthSignInImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/(Auth)/sign-in-2": {
+      id: "/(Auth)/sign-in-2";
+      path: "/sign-in-2";
+      fullPath: "/sign-in-2";
+      preLoaderRoute: typeof AuthSignIn2Import;
       parentRoute: typeof rootRoute;
     };
     "/(Auth)/sign-up": {
@@ -565,6 +579,7 @@ export interface FileRoutesByFullPath {
   "/forgot-password": typeof AuthForgotPasswordRoute;
   "/otp": typeof AuthOtpRoute;
   "/sign-in": typeof AuthSignInRoute;
+  "/sign-in-2": typeof AuthSignIn2Route;
   "/sign-up": typeof AuthSignUpRoute;
   "/coming-soon": typeof ErrorsComingSoonRoute;
   "/401": typeof Errors401LazyRoute;
@@ -595,6 +610,7 @@ export interface FileRoutesByTo {
   "/forgot-password": typeof AuthForgotPasswordRoute;
   "/otp": typeof AuthOtpRoute;
   "/sign-in": typeof AuthSignInRoute;
+  "/sign-in-2": typeof AuthSignIn2Route;
   "/sign-up": typeof AuthSignUpRoute;
   "/coming-soon": typeof ErrorsComingSoonRoute;
   "/401": typeof Errors401LazyRoute;
@@ -627,6 +643,7 @@ export interface FileRoutesById {
   "/(Auth)/forgot-password": typeof AuthForgotPasswordRoute;
   "/(Auth)/otp": typeof AuthOtpRoute;
   "/(Auth)/sign-in": typeof AuthSignInRoute;
+  "/(Auth)/sign-in-2": typeof AuthSignIn2Route;
   "/(Auth)/sign-up": typeof AuthSignUpRoute;
   "/(Errors)/coming-soon": typeof ErrorsComingSoonRoute;
   "/(Errors)/401": typeof Errors401LazyRoute;
@@ -660,6 +677,7 @@ export interface FileRouteTypes {
     | "/forgot-password"
     | "/otp"
     | "/sign-in"
+    | "/sign-in-2"
     | "/sign-up"
     | "/coming-soon"
     | "/401"
@@ -689,6 +707,7 @@ export interface FileRouteTypes {
     | "/forgot-password"
     | "/otp"
     | "/sign-in"
+    | "/sign-in-2"
     | "/sign-up"
     | "/coming-soon"
     | "/401"
@@ -719,6 +738,7 @@ export interface FileRouteTypes {
     | "/(Auth)/forgot-password"
     | "/(Auth)/otp"
     | "/(Auth)/sign-in"
+    | "/(Auth)/sign-in-2"
     | "/(Auth)/sign-up"
     | "/(Errors)/coming-soon"
     | "/(Errors)/401"
@@ -751,6 +771,7 @@ export interface RootRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute;
   AuthOtpRoute: typeof AuthOtpRoute;
   AuthSignInRoute: typeof AuthSignInRoute;
+  AuthSignIn2Route: typeof AuthSignIn2Route;
   AuthSignUpRoute: typeof AuthSignUpRoute;
   ErrorsComingSoonRoute: typeof ErrorsComingSoonRoute;
   Errors401LazyRoute: typeof Errors401LazyRoute;
@@ -765,6 +786,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthOtpRoute: AuthOtpRoute,
   AuthSignInRoute: AuthSignInRoute,
+  AuthSignIn2Route: AuthSignIn2Route,
   AuthSignUpRoute: AuthSignUpRoute,
   ErrorsComingSoonRoute: ErrorsComingSoonRoute,
   Errors401LazyRoute: Errors401LazyRoute,
@@ -788,6 +810,7 @@ export const routeTree = rootRoute
         "/(Auth)/forgot-password",
         "/(Auth)/otp",
         "/(Auth)/sign-in",
+        "/(Auth)/sign-in-2",
         "/(Auth)/sign-up",
         "/(Errors)/coming-soon",
         "/(Errors)/401",
@@ -827,6 +850,9 @@ export const routeTree = rootRoute
     },
     "/(Auth)/sign-in": {
       "filePath": "(Auth)/sign-in.tsx"
+    },
+    "/(Auth)/sign-in-2": {
+      "filePath": "(Auth)/sign-in-2.tsx"
     },
     "/(Auth)/sign-up": {
       "filePath": "(Auth)/sign-up.tsx"

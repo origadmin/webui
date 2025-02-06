@@ -1,18 +1,11 @@
-import Background from "@/assets/static/background.jpg";
+// import Background from "@/assets/static/background.jpg";
 import { UserAuthForm } from "./components/user-auth-form";
+import "./index.css";
 
 function SignInPage() {
   return (
     <>
-      <div
-        style={{
-          backgroundImage: `url(${Background})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-        className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'
-      >
+      <div className='container background relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
         <div className='relative hidden h-full flex-col p-10 lg:flex dark:border-r'>
           <div className='relative z-20 flex items-center text-lg font-medium'>
             <svg

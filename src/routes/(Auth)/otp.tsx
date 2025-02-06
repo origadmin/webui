@@ -1,3 +1,4 @@
+import OtpPage from "@/pages/auth/Otp";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(Auth)/otp")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/(Auth)/otp")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/(Auth)/otp"!</div>;
+  return <OtpPage />;
 }

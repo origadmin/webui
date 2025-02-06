@@ -13,7 +13,11 @@ declare global {
       [key: string]: any;
     };
 
-    type RequestOptions = Map<string, any>;
+    type RequestOptions =
+      | Map<string, any>
+      | {
+          [key: string]: any;
+        };
 
     type Error = {
       id?: string;

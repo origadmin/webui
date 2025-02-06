@@ -60,9 +60,9 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               name='email'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <Input placeholder='Please enter a username or email for sign up' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

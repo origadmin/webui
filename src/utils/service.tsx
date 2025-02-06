@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 
 // Create an instance of axios
 const request = axios.create({
-  baseURL: config.host + "/", // Replace with your API base URL
+  baseURL: config.host ? config.host + "/" : "/", // Replace with your API base URL
   timeout: 3000, // The request timeout period
 });
 
@@ -45,16 +45,20 @@ request.interceptors.response.use(
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 /** Generic API request handler */
-async function fetchRequest<T, TData = any>(
+async function fetchRequest<T, TData = unknown>(
   url: string,
-  method: Method,
+  method: Method = "GET",
   body?: TData,
   options?: API.RequestOptions,
   params?: API.Params, // url parameters
 ): Promise<API.Result<T>> {
+  const searchParams = new URLSearchParams(params);
+  const queryString = searchParams.toString();
+  if (queryString) {
+    url += `?${queryString}`;
+  }
   return request<API.Result<T>>(url, {
     method,
-    ...(params ? { params } : {}),
     ...(body ? { data: body } : {}),
     ...(options || {}),
   })
@@ -65,16 +69,16 @@ async function fetchRequest<T, TData = any>(
         const respData = respErr.response.data;
         if (typeof respData === "string") {
           throw new Error(respData);
-        } else if (isAPIError(respData)) {
-          throw new Error(respData.error.message, { cause: respData.error });
+        } else if (!respData.success) {
+          const error = respData.error;
+          if (error) {
+            throw new Error(error.message, { cause: error });
+          }
+          throw new Error("Unknown error", { cause: error });
         }
       }
       throw respErr;
     });
-}
-
-function isAPIError(data: any): data is { error: API.Error } {
-  return typeof data === "object" && data !== null && "error" in data && "message" in data.error;
 }
 
 export { request, fetchRequest };

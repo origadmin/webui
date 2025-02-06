@@ -1,19 +1,11 @@
-import Background from "@/assets/static/background.jpg";
 import { SignUpForm } from "@/pages/auth/SignUp/components/sign-up-form";
 import { Link } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
+import "./index.css";
 
 function SignUpPage() {
   return (
-    <div
-      style={{
-        backgroundImage: `url(${Background})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-      className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'
-    >
+    <div className='container background grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
       <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
         <div className='mb-4 flex items-center justify-center'>
           <svg

@@ -1,0 +1,8 @@
+@import url("../../../styles/globals.css");
+
+.background {
+  background-image: url("/src/assets/static/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

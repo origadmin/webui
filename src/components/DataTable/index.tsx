@@ -84,6 +84,7 @@ function DataTable<T>({
     if (sorting.length === 0) {
       return;
     }
+    console.log("pathname", currentPathname);
     currentSearchParams.set("sort", sorting.map((sort) => `${sort.id}:${sort.desc ? "desc" : "asc"}`).join(","));
     const nextSearch = currentSearchParams.toString();
 

@@ -1,8 +1,20 @@
 import { OtpForm } from "@/pages/auth/Otp/components/otp-form";
-import { Link } from "@tanstack/react-router";
+import { fetchRequest } from "@/utils/service";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 function OtpPage() {
+  const resendCode = async () => {
+    await fetchRequest("/resent-new-code")
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
@@ -32,9 +44,9 @@ function OtpPage() {
             <OtpForm />
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
               Haven't received it?{" "}
-              <Link to='/resent-new-code' className='underline underline-offset-4 hover:text-primary'>
+              <Button onClick={() => resendCode()} className='underline underline-offset-4 hover:text-primary'>
                 Resend a new code.
-              </Link>
+              </Button>
               .
             </p>
           </Card>

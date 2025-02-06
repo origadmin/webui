@@ -19,10 +19,9 @@ export async function refreshToken() {
 
   try {
     const response = await fetchRequest<API.Token>(
-      config.host + url,
+      url,
       method === "" ? "GET" : (method as Method),
       JSON.stringify({ refresh_token: refreshToken }),
-      undefined,
       {
         headers: {
           "Content-Type": "application/json",

@@ -12,6 +12,9 @@ const config = defineConfig({
   server: {
     base: "/",
     htmlFallback: "index",
+    proxy: {
+      "/api": "http://localhost:25100",
+    },
   },
   dev: {
     writeToDisk: true,

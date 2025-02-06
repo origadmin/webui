@@ -1,7 +1,6 @@
-import { HOST } from "@/types";
-
 const config = {
-  host: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
+  host: undefined,
+  // host: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
   auth: {
     verifyEmail: {
       url: "/api/v1/personal/verify-email",
