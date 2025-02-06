@@ -41,6 +41,7 @@ Content.displayName = "Content";
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   showBreadcrumbs?: boolean;
+  breadcrumbRender?: (props: HeaderProps) => React.ReactNode;
   sticky?: boolean;
 }
 

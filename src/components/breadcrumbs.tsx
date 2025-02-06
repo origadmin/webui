@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Slash } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
 import {
   Breadcrumb,
@@ -11,16 +12,17 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export type BreadcrumbProps = {
-  slash?: boolean;
+  separator?: React.ReactNode;
+  className?: string;
 };
 
-export function Breadcrumbs(props?: BreadcrumbProps) {
-  const { slash = false } = props || {};
+export function Breadcrumbs({ separator = <Slash />, ...props }: BreadcrumbProps) {
   const items = useBreadcrumbs();
+  const { className } = props;
   if (items.length === 0) return null;
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className={cn(className)}>
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={item.title}>
@@ -29,14 +31,9 @@ export function Breadcrumbs(props?: BreadcrumbProps) {
                 <BreadcrumbLink href={item.link}>{item.title}</BreadcrumbLink>
               </BreadcrumbItem>
             )}
-            {index < items.length - 1 &&
-              (slash ? (
-                <BreadcrumbSeparator className='hidden md:block'>
-                  <Slash />
-                </BreadcrumbSeparator>
-              ) : (
-                <BreadcrumbSeparator className='hidden md:block' />
-              ))}
+            {index < items.length - 1 && (
+              <BreadcrumbSeparator className='hidden md:block'>{separator}</BreadcrumbSeparator>
+            )}
             {index === items.length - 1 && <BreadcrumbPage>{item.title}</BreadcrumbPage>}
           </Fragment>
         ))}

@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { Outlet } from "@tanstack/react-router";
 import { Separator } from "@/components/ui/separator";
-import PageContainer from "@/components/page-container";
+import PageContainer from "@/components/PageContainer/page-container";
 import SidebarNav from "./components/sidebar-nav";
 
 export default function Settings() {

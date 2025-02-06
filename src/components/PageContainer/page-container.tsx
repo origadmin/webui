@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Content, ContentProps, HeaderProps } from "@/components/content";
 
 interface PageContainerProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   props?: ContentProps;
   headerProps?: HeaderProps;
   headerRender?: () => JSX.Element;
@@ -33,13 +33,6 @@ export default function PageContainer({
   };
 
   const renderCard = (body: ReactNode) => {
-    // if (card) {
-    //   return (
-    //     <Card>
-    //       <div className='card-body'>{body}</div>
-    //     </Card>
-    //   );
-    // }
     return body;
   };
   const renderContent = () => {

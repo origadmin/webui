@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PageContainer from "@/components/page-container";
+import PageContainer from "@/components/PageContainer/page-container";
 import { ActiveUsers } from "./active-users";
 import { ErrorLogs } from "./error-logs";
 import { PerformanceMetrics } from "./performance-metrics";

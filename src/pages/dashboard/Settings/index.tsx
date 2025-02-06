@@ -1,5 +1,5 @@
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
-import PageContainer from "@/components/page-container";
+import PageContainer from "@/components/PageContainer/page-container";
 import AccountSettings from "./components/AccountSettings";
 import NotificationSettings from "./components/NotificationSettings";
 import ProfileSettings from "./components/ProfileSettings";

@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import PageContainer from "@/components/page-container";
+import PageContainer from "@/components/PageContainer/page-container";
 
 const taskSchema = z.object({
   name: z.string().min(1, "Task name is required"),
