@@ -1,4 +1,3 @@
-import { userTypes } from "@/mocks/user/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,12 +15,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PasswordInput } from "@/components/password-input";
-import { SelectDropdown } from "@/components/select-dropdown";
 
 const formSchema = z
   .object({
     nickname: z.string().min(1, { message: "Nickname is required." }),
-    username: z.string().min(1, { message: "Username is required." }),
+    rolename: z.string().min(1, { message: "Rolename is required." }),
     phoneNumber: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
     password: z.string().transform((pwd) => pwd.trim()),
@@ -72,7 +70,7 @@ const formSchema = z
       }
     }
   });
-type UserForm = z.infer<typeof formSchema>;
+type RoleForm = z.infer<typeof formSchema>;
 
 interface Props<T> {
   currentRow?: T;
@@ -80,9 +78,9 @@ interface Props<T> {
   onOpenChange: (open: boolean) => void;
 }
 
-export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.System.User>) {
+export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.Role>) {
   const isEdit = !!currentRow;
-  const form = useForm<UserForm>({
+  const form = useForm<RoleForm>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
       ? {
@@ -93,7 +91,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
         }
       : {
           nickname: "",
-          username: "",
           email: "",
           role: "",
           phoneNumber: "",
@@ -103,7 +100,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
         },
   });
 
-  const onSubmit = (values: UserForm) => {
+  const onSubmit = (values: RoleForm) => {
     form.reset();
     toast({
       title: "You submitted the following values:",
@@ -128,15 +125,15 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-left'>
-          <DialogTitle>{isEdit ? "Edit User" : "Add New User"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit Role" : "Add New Role"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "Update the user here. " : "Create new user here. "}
+            {isEdit ? "Update the role here. " : "Create new role here. "}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
+            <form id='role-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
               <FormField
                 control={form.control}
                 name='nickname'
@@ -152,10 +149,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
               />
               <FormField
                 control={form.control}
-                name='username'
+                name='rolename'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Username</FormLabel>
+                    <FormLabel className='col-span-2 text-right'>Rolename</FormLabel>
                     <FormControl>
                       <Input placeholder='john_doe' className='col-span-4' {...field} />
                     </FormControl>
@@ -185,26 +182,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
                     <FormControl>
                       <Input placeholder='+123456789' className='col-span-4' {...field} />
                     </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='role'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Role</FormLabel>
-                    <SelectDropdown
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                      placeholder='Select a role'
-                      className='col-span-4'
-                      items={userTypes.map(({ label, value }) => ({
-                        label,
-                        value,
-                      }))}
-                    />
                     <FormMessage className='col-span-4 col-start-3' />
                   </FormItem>
                 )}
@@ -244,7 +221,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
           </Form>
         </ScrollArea>
         <DialogFooter>
-          <Button type='submit' form='user-form'>
+          <Button type='submit' form='role-form'>
             Save changes
           </Button>
         </DialogFooter>

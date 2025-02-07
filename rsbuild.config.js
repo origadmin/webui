@@ -13,7 +13,7 @@ const config = defineConfig({
     base: "/",
     htmlFallback: "index",
     proxy: {
-      "/api": "http://localhost:25100",
+      "/api": process.env.NODE_ENV === "development" ? "http://localhost:25100" : "",
     },
   },
   dev: {

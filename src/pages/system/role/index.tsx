@@ -17,11 +17,11 @@ export default function RolesPage() {
         <Card>
           <CardHeader>
             <CardTitle>Role List</CardTitle>
-            <CardDescription>Manage your roles and their roles here.</CardDescription>
+            <CardDescription>Manage your roles here.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-              <DataTable<API.Role> data={roleList} columns={columns} />
+              <DataTable<API.System.Role> data={roleList} columns={columns} />
             </div>
           </CardContent>
         </Card>

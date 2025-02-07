@@ -22,7 +22,8 @@
     "lint:fix": "eslint ./src --fix --quiet && bun format",
     "lint:strict": "eslint --max-warnings=0 ./src",
     "lint:inspector": "bun x @eslint/config-inspector@latest",
-    "style": "stylelint ./src/**/*.{css}"
+    "style": "stylelint ./src/**/*.{css}",
+    "syncapi": "bun x --bun openapi-typescript ./resources/docs/openapi/openapi.yaml -o ./src/types/schema.d.ts"
   },
   "browserslist": [
     "> 1%",
@@ -112,6 +113,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-tailwindcss": "^3.17.5",
     "globals": "^15.14.0",
+    "openapi-typescript": "^7.6.1",
     "postcss": "^8.5.1",
     "postcss-import": "^16.1.0",
     "postcss-loader": "^8.1.1",

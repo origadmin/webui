@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import { useRouter } from "@tanstack/react-router";
 import {
@@ -20,6 +20,7 @@ import {
   HeaderContext,
   Column,
   ColumnDef,
+  Table as ReactTable,
   ColumnMeta,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
@@ -40,7 +41,9 @@ declare module "@tanstack/react-table" {
 }
 
 type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
+  accessorKey?: string;
   searchable?: boolean;
+  renderSearch?: (column: Column<TData, TValue>, table: ReactTable<TData>) => ReactNode;
   headerTitle?: string;
   meta: ColumnMeta<TData, TValue>;
 };

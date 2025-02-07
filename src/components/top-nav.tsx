@@ -1,13 +1,13 @@
 import { IconMenu } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./custom/button";
 
 type NavMenu = {
   title: string;

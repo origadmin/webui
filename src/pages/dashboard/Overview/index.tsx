@@ -8,7 +8,7 @@ import { RevenueChart } from "@/pages/dashboard/Overview/revenue-chart";
 import { UserActivityChart } from "@/pages/dashboard/Overview/user-activity-chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 import PageContainer from "@/components/PageContainer";
 
 export default function OverviewPage() {

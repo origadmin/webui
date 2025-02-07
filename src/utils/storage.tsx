@@ -52,9 +52,9 @@ export const getUserID = () => {
 
 /**
  * The function `setUser` sets the user object in the local storage.
- * @param {API.User} user - The user object that needs to be set.
+ * @param {API.System.User} user - The user object that needs to be set.
  */
-export const setUser = (user: API.User) => {
+export const setUser = (user: API.System.User) => {
   localStorage.setItem(USER_KEY, JSON.stringify(user));
 };
 
@@ -64,7 +64,7 @@ export const setUser = (user: API.User) => {
  */
 export const getUser = () => {
   const user = localStorage.getItem(USER_KEY);
-  return user ? (JSON.parse(user) as API.User) : null;
+  return user ? (JSON.parse(user) as API.System.User) : null;
 };
 
 /**

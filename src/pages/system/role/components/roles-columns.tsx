@@ -1,9 +1,9 @@
-import { callTypes, statuses } from "@/mocks/user/data";
-import { UserIconRowActions } from "@/pages/system/user/components/users-row-actions";
+import { callTypes } from "@/mocks/role/data";
+import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnType, DataTableColumnHeader } from "@/components/DataTable";
+import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 const headerMeta = {
@@ -16,7 +16,7 @@ const headerMeta = {
   },
 };
 
-export const columns: DataTableColumnType<API.System.User>[] = [
+export const columns: DataTableColumnType<API.Role>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -45,35 +45,29 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "username",
-    headerTitle: "Username",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
+    accessorKey: "name",
+    headerTitle: "Name",
+    searchable: true,
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Rolename' />,
+    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("name")}</LongText>,
     meta: headerMeta.meta,
     enableSorting: true,
     enableHiding: false,
   },
   {
-    accessorKey: "nickname",
-    headerTitle: "Nickname",
+    accessorKey: "keyword",
+    headerTitle: "Keyword",
+    searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
+    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("keyword")}</LongText>,
     meta: headerMeta.meta,
   },
   {
-    accessorKey: "email",
-    headerTitle: "Email",
+    accessorKey: "description",
+    headerTitle: "Description",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
     meta: headerMeta.meta,
-  },
-  {
-    accessorKey: "phone",
-    headerTitle: "Phone",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
-    cell: ({ row }) => <div>{row.getValue("phone")}</div>,
-    meta: headerMeta.meta,
-    enableSorting: false,
   },
   {
     accessorKey: "status",
@@ -81,12 +75,11 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status } = row.original;
-      console.log("status", status, "value", row.getValue("status"), "original", row.original);
-      const badgeColor = callTypes.get(status || 0);
+      const badgeColor = callTypes.get(status);
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statuses[row.getValue("status") || 0]}
+            {row.getValue("status")}
           </Badge>
         </div>
       );
@@ -99,26 +92,10 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "create_time",
-    headerTitle: "Create Time",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Create Time' />,
-    cell: ({ row }) => <div>{row.original.create_time}</div>,
-    meta: headerMeta.meta,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "update_time",
-    headerTitle: "Update Time",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Update Time' />,
-    cell: ({ row }) => <div>{row.getValue("update_time")}</div>,
-    meta: headerMeta.meta,
-    enableSorting: false,
-  },
-  {
     id: "options",
     headerTitle: "Options",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
-    cell: UserIconRowActions,
+    cell: RoleIconRowActions,
     meta: headerMeta.meta,
   },
 ];

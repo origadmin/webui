@@ -57,14 +57,14 @@ export async function refreshToken(options?: API.RequestOptions) {
 
 /** Get personal user info GET /api/v1/personal/user */
 export async function getpersonalUser(options?: API.RequestOptions) {
-  return request<API.Result<API.User>>("/api/v1/personal/user", {
+  return request<API.Result<API.System.User>>("/api/v1/personal/user", {
     method: "GET",
     ...(options || {}),
   });
 }
 
 /** Change personal user info PUT /api/v1/personal/user */
-export async function updatepersonalUser(body: API.User, options?: API.RequestOptions) {
+export async function updatepersonalUser(body: API.System.User, options?: API.RequestOptions) {
   return request<API.Result<any>>("/api/v1/personal/user", {
     method: "PUT",
     data: body,

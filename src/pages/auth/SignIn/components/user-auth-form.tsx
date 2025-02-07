@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Image } from "@/components/Image";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/password-input";
 
 export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;

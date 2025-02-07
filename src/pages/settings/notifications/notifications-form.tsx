@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 
 const notificationsFormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {

@@ -6,7 +6,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/password-input";
 
 export type SignUpFormProps = HTMLAttributes<HTMLDivElement>;

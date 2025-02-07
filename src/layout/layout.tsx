@@ -1,29 +1,12 @@
 import { useEffect } from "react";
-import { mockSidebar, mockTopNav, mockSecondItems, mockFooter } from "@/mocks/mock-sidebar";
 import { Outlet } from "@tanstack/react-router";
 import { useAuth, useInitialData } from "@/hooks/use-auth";
 import { SidebarProps } from "@/components/Sidebar";
+import { FooterProps } from "@/components/footer";
 import { Layout, LayoutProps } from "@/components/layout";
-
-const getMockData = (): SidebarProps => {
-  return {
-    header: {
-      teams: mockSidebar.teams,
-    },
-    content: {
-      items: mockSidebar.menuItems,
-      seconds: {
-        items: mockSecondItems,
-      },
-    },
-    footer: {
-      user: mockSidebar.user,
-    },
-  };
-};
+import { TopNavProps } from "@/components/top-nav";
 
 export default function MainLayout() {
-  const sidebarData = getMockData();
   const { token } = useAuth();
   const { initialData } = useInitialData<InitialDataConfig>();
 
@@ -36,11 +19,9 @@ export default function MainLayout() {
     }
   }, [token]);
   const props: LayoutProps = {
-    sidebarProps: sidebarData,
-    topNavProps: { menus: mockTopNav },
-    footerProps: {
-      links: mockFooter,
-    },
+    sidebarProps: initialData.sidebar ? (initialData.sidebar as SidebarProps) : {},
+    topNavProps: initialData.topNav ? (initialData.topNav as TopNavProps) : {},
+    footerProps: initialData.footer ? (initialData.footer as FooterProps) : {},
   };
 
   return (

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 
 export type OtpFormProps = HTMLAttributes<HTMLDivElement>;
 

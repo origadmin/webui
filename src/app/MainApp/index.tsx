@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from "react";
-import { mockSidebar } from "@/mocks/mock-sidebar";
+import { mockSidebar, mockTopNav, mockFooter, mockSecondItems } from "@/mocks/mock-sidebar";
 import { router } from "@/router";
 import { SIGN_IN_URL, SIGN_OUT_URL, SIGN_UP_URL } from "@/types";
 import { refreshToken } from "@/utils/auth";
@@ -8,16 +8,17 @@ import { RouterProvider } from "@tanstack/react-router";
 import AuthProvider, { AuthProviderProps, useAuth } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
+import { SidebarProps } from "@/components/Sidebar";
 
 type UserResource = {
-  user?: API.User;
+  user?: API.System.User;
   // menus?: Record<string, API.MenuItem>;
 };
 
 type InitialStateProps = {
   fetch?: () => Promise<UserResource>;
   // routePathCodeMap?: Record<string, string>;
-  user?: API.User;
+  user?: API.System.User;
   // menus?: Record<string, API.MenuItem>;
   loading?: boolean;
 };
@@ -104,19 +105,54 @@ function AuthApp() {
 // const queryClient = useMemo(() => new QueryClient(), []);
 function MainApp() {
   console.log("Application Started");
-  // const location = useLocation();
-  // const match = useMatch(location.pathname);
-  // const [initRoutes, setInitRoutes] = useState<RouterConfig>(routes);
-  // const { user, fetchMenus } = useRBAC();
-  // const menus = mockSidebar.menuItems;
-
-  // const currentRoute = router.routes.find((route) => route.id === match?.pathname);
-  // console.log("route:", currentRoute?.id);
 
   const accesses = new Map<string, boolean>();
   accesses.set("*", true);
 
-  const initData: AuthProviderProps<InitialDataConfig> = {
+  const getMockData = (): SidebarProps => {
+    return {
+      header: {
+        teams: mockSidebar.teams,
+      },
+      content: {
+        items: mockSidebar.menuItems,
+        seconds: {
+          items: mockSecondItems,
+        },
+      },
+      footer: {
+        user: mockSidebar.user,
+      },
+    };
+  };
+
+  const initialData: InitialDataConfig = {
+    sidebar: getMockData(),
+    menus: mockSidebar.menuItems,
+    topNav: {
+      menus: mockTopNav,
+    },
+    footer: {
+      links: mockFooter,
+    },
+    watermark: {
+      content: "OrigAdmin",
+      fontWeight: "bold",
+      fontFamily: "Arial",
+      opacity: 0.3,
+      rotate: 45,
+      width: 100, // Reduce the width of a single watermark
+      height: 100, // Reduce the height of a single watermark
+      x: 0,
+      y: 0,
+      zIndex: 1,
+      position: "absolute",
+      top: 0, // Adjust to the top
+      left: 0, // Adjust to the left
+    },
+  };
+
+  const data: AuthProviderProps<InitialDataConfig> = {
     refresh: () => {
       return refreshToken();
     },
@@ -125,24 +161,7 @@ function MainApp() {
     },
     token: getAccessToken(),
     access: accesses,
-    initialData: {
-      menus: mockSidebar.menuItems,
-      watermark: {
-        content: "OrigAdmin",
-        fontWeight: "bold",
-        fontFamily: "Arial",
-        opacity: 0.3,
-        rotate: 45,
-        width: 100, // Reduce the width of a single watermark
-        height: 100, // Reduce the height of a single watermark
-        x: 0,
-        y: 0,
-        zIndex: 1,
-        position: "absolute",
-        top: 0, // Adjust to the top
-        left: 0, // Adjust to the left
-      },
-    },
+    initialData: initialData,
     signInPath: SIGN_IN_URL,
     signUpPath: SIGN_UP_URL,
     signOutPath: SIGN_OUT_URL,
@@ -154,7 +173,7 @@ function MainApp() {
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <AuthProvider<InitialDataConfig> {...initData}>
+      <AuthProvider<InitialDataConfig> {...data}>
         <AuthApp />
       </AuthProvider>
       <Toaster />

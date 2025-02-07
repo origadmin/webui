@@ -21,12 +21,13 @@ const userSchema = z.object({
   nickname: z.string(),
   avatar: z.string(),
   email: z.string(),
-  phoneNumber: z.string(),
-  status: userStatusSchema,
-  role: userRoleSchema,
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  phone: z.string(),
+  // status: userStatusSchema,
+  // role: userRoleSchema,
+  status: z.number(),
+  create_time: z.string(),
+  update_time: z.string(),
 });
-export type User = z.infer<typeof userSchema> & API.User;
+export type User = z.infer<typeof userSchema> & API.System.User;
 
 export const userListSchema = z.array(userSchema);

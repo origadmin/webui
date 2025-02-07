@@ -11,21 +11,21 @@ export async function listUser(params: API.Params, options?: API.RequestOptions)
     });
   }
   params = Pagination.parseParams(params);
-  return fetchRequest<API.User[]>("/api/v1/sys/users", "GET", undefined, options, params);
+  return fetchRequest<API.System.User[]>("/api/v1/sys/users", "GET", undefined, options, params);
 }
 
 /** Create user record POST /api/v1/sys/users */
-export async function addUser(body: API.User, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<API.User>>("/api/v1/sys/users", "POST", body, options);
+export async function addUser(body: API.System.User, options?: API.RequestOptions) {
+  return fetchRequest<API.Result<API.System.User>>("/api/v1/sys/users", "POST", body, options);
 }
 
 /** Get user record by ID GET /api/v1/sys/users/${id} */
 export async function getUser(id: string, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<API.User>>(`/api/v1/sys/users/${id}`, "GET", undefined, options);
+  return fetchRequest<API.Result<API.System.User>>(`/api/v1/sys/users/${id}`, "GET", undefined, options);
 }
 
 /** Update user record by ID PUT /api/v1/sys/users/${id} */
-export async function updateUser(id: string, body: API.User, options?: API.RequestOptions) {
+export async function updateUser(id: string, body: API.System.User, options?: API.RequestOptions) {
   return fetchRequest<API.Result<any>>(`/api/v1/sys/users/${id}`, "PUT", body, options);
 }
 

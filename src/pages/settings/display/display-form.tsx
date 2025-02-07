@@ -4,7 +4,7 @@ import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Button } from "@/components/custom/button";
+import { Button } from "@/components/ui/button";
 
 const items = [
   {
