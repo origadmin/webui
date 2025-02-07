@@ -1,5 +1,6 @@
 import React, { JSX, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useInitialData } from "@/hooks/use-auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Watermark, { WatermarkProps } from "@/components/Watermark";
 import { Breadcrumbs, BreadcrumbProps } from "@/components/breadcrumbs";
@@ -17,33 +18,20 @@ interface PageContainerProps {
   scrollable?: boolean;
 }
 
-const watermark = {
-  content: "OrigAdmin",
-  fontWeight: "bold",
-  fontFamily: "Arial",
-  opacity: 0.3,
-  rotate: 45,
-  width: 100, // Reduce the width of a single watermark
-  height: 100, // Reduce the height of a single watermark
-  x: 0,
-  y: 0,
-  zIndex: 1,
-  position: "absolute",
-  top: 0, // Adjust to the top
-  left: 0, // Adjust to the left
-};
-
-export function PageContainer({
+function PageContainer({
   children,
   props,
   headerProps = {
     showBreadcrumbs: true,
   },
   headerRender,
-  watermarkProps = watermark,
+  watermarkProps,
   scrollable = false, // using the global scroll
 }: PageContainerProps) {
   const { className } = props || {};
+  const { initialData } = useInitialData();
+  watermarkProps = initialData.watermark ? (initialData.watermark as WatermarkProps) : undefined;
+
   const renderScrollArea = () => {
     return scrollable ? (
       <ScrollArea className='h-[calc(100dvh-52px)]'>
@@ -72,3 +60,5 @@ export function PageContainer({
   };
   return renderContent();
 }
+
+export { PageContainer };

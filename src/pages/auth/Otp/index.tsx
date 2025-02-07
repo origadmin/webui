@@ -44,7 +44,11 @@ function OtpPage() {
             <OtpForm />
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
               Haven't received it?{" "}
-              <Button onClick={() => resendCode()} className='underline underline-offset-4 hover:text-primary'>
+              <Button
+                onClick={() => resendCode()}
+                variant={"ghost"}
+                className='underline underline-offset-4 hover:text-primary'
+              >
                 Resend a new code.
               </Button>
               .

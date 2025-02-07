@@ -1,13 +1,11 @@
-import { HTMLAttributes, useState } from "react";
+import { Fragment, HTMLAttributes, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
 import { Button } from "@/components/custom/button";
-import { PinInput, PinInputField } from "@/components/custom/pin-input";
 
 export type OtpFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -34,6 +32,25 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
     }, 2000);
   }
 
+  function genSlots(total: number, perGroup: number) {
+    return Array.from({ length: Math.ceil(total / perGroup) }).map((_, groupIndex) => (
+      <Fragment key={`group-${groupIndex}`}>
+        <InputOTPGroup>
+          {Array.from({ length: Math.min(perGroup, total - groupIndex * perGroup) }).map((_, slotIndex) => (
+            <InputOTPSlot
+              key={`slot-${groupIndex}-${slotIndex}`}
+              index={groupIndex * perGroup + slotIndex}
+              className={`${form.getFieldState("otp").invalid ? "border-red-500" : ""}`}
+            />
+          ))}
+        </InputOTPGroup>
+        {groupIndex < Math.ceil(total / perGroup) - 1 && <InputOTPSeparator key={`separator-${groupIndex}`} />}
+      </Fragment>
+    ));
+  }
+
+  const otpMax = 8;
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
@@ -43,25 +60,29 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
               control={form.control}
               name='otp'
               render={({ field }) => (
-                <FormItem className='space-y-1'>
+                <FormItem className='flex justify-center items-center'>
                   <FormControl>
-                    <PinInput
+                    <InputOTP
                       {...field}
-                      className='flex h-10 justify-between'
-                      onComplete={() => setDisabledBtn(false)}
-                      onIncomplete={() => setDisabledBtn(true)}
+                      maxLength={otpMax}
+                      className='flex h-12 w-12'
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (!disabledBtn && e.length < otpMax) {
+                          setDisabledBtn(true);
+                        }
+                      }}
+                      onComplete={(args: string[]) => {
+                        console.log("otp", args.length, args);
+                        if (args.length === otpMax) {
+                          setDisabledBtn(false);
+                        }
+                      }}
+                      title='input-opt'
+                      placeholder='input-opt'
                     >
-                      {Array.from({ length: 7 }, (_, i) => {
-                        if (i === 3) return <Separator key={i} orientation='vertical' />;
-                        return (
-                          <PinInputField
-                            key={i}
-                            component={Input}
-                            className={`${form.getFieldState("otp").invalid ? "border-red-500" : ""}`}
-                          />
-                        );
-                      })}
-                    </PinInput>
+                      {genSlots(otpMax, otpMax / 2)}
+                    </InputOTP>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

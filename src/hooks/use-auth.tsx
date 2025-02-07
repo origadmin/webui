@@ -48,8 +48,6 @@ const AuthProvider = <T = unknown,>({
   const [access, _setAccess] = useState(userAccess);
   const [initialData, _setInitialData] = useState(userInitialData as T);
 
-  // const isAuthenticated = _isAuthenticated ? _isAuthenticated : () => !!token;
-
   useEffect(() => {
     if (token) {
       Storage.setAccessToken(token);
@@ -100,11 +98,10 @@ export const useToken = () => {
   return { token, setToken };
 };
 
-export const useInitialData = <T = unknown,>() => {
+export const useInitialData = <T = InitialDataConfig,>() => {
   const { initialData, setInitialData } = useContext(Context) as ContextType<T>;
   return { initialData, setInitialData };
 };
 
 export type { ContextType as AuthContextType };
-
 export default AuthProvider;

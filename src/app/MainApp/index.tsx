@@ -117,9 +117,6 @@ function MainApp() {
   accesses.set("*", true);
 
   const initData: AuthProviderProps<InitialDataConfig> = {
-    // fetch: fetchInitData,
-    // settings: Settings as Partial<LayoutSettings>,
-    // routePathCodeMap,
     refresh: () => {
       return refreshToken();
     },
@@ -130,6 +127,21 @@ function MainApp() {
     access: accesses,
     initialData: {
       menus: mockSidebar.menuItems,
+      watermark: {
+        content: "OrigAdmin",
+        fontWeight: "bold",
+        fontFamily: "Arial",
+        opacity: 0.3,
+        rotate: 45,
+        width: 100, // Reduce the width of a single watermark
+        height: 100, // Reduce the height of a single watermark
+        x: 0,
+        y: 0,
+        zIndex: 1,
+        position: "absolute",
+        top: 0, // Adjust to the top
+        left: 0, // Adjust to the left
+      },
     },
     signInPath: SIGN_IN_URL,
     signUpPath: SIGN_UP_URL,

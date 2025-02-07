@@ -17,7 +17,7 @@ export default function UsersPage() {
         <Card>
           <CardHeader>
             <CardTitle>User List</CardTitle>
-            <CardDescription>Manage your users and their roles here.</CardDescription>
+            <CardDescription>Manage your users here.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
