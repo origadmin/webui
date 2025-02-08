@@ -63,6 +63,7 @@ const config = defineConfig({
     copy: [
       // `./src/assets/image.png` -> `./dist/image.png`
       { from: "./public" },
+      process.env.NODE_ENV === "development" ? { from: "./resources/docs/", to: "docs/" } : {},
     ],
   },
   plugins: [pluginReact()],

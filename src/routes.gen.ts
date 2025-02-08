@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as OpenapiImport } from "./routes/openapi";
 import { Route as AuthorizationImport } from "./routes/_authorization";
 import { Route as AuthorizationIndexImport } from "./routes/_authorization/index";
 import { Route as ErrorsComingSoonImport } from "./routes/(Errors)/coming-soon";
@@ -75,6 +76,12 @@ const AuthorizationExamplesFormAdvancedLazyImport = createFileRoute(
 )();
 
 // Create/Update Routes
+
+const OpenapiRoute = OpenapiImport.update({
+  id: "/openapi",
+  path: "/openapi",
+  getParentRoute: () => rootRoute,
+} as any);
 
 const AuthorizationRoute = AuthorizationImport.update({
   id: "/_authorization",
@@ -319,6 +326,13 @@ declare module "@tanstack/react-router" {
       path: "";
       fullPath: "";
       preLoaderRoute: typeof AuthorizationImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/openapi": {
+      id: "/openapi";
+      path: "/openapi";
+      fullPath: "/openapi";
+      preLoaderRoute: typeof OpenapiImport;
       parentRoute: typeof rootRoute;
     };
     "/(Auth)/forgot-password": {
@@ -576,6 +590,7 @@ const AuthorizationRouteWithChildren = AuthorizationRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   "": typeof AuthorizationRouteWithChildren;
+  "/openapi": typeof OpenapiRoute;
   "/forgot-password": typeof AuthForgotPasswordRoute;
   "/otp": typeof AuthOtpRoute;
   "/sign-in": typeof AuthSignInRoute;
@@ -607,6 +622,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  "/openapi": typeof OpenapiRoute;
   "/forgot-password": typeof AuthForgotPasswordRoute;
   "/otp": typeof AuthOtpRoute;
   "/sign-in": typeof AuthSignInRoute;
@@ -640,6 +656,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/_authorization": typeof AuthorizationRouteWithChildren;
+  "/openapi": typeof OpenapiRoute;
   "/(Auth)/forgot-password": typeof AuthForgotPasswordRoute;
   "/(Auth)/otp": typeof AuthOtpRoute;
   "/(Auth)/sign-in": typeof AuthSignInRoute;
@@ -674,6 +691,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | ""
+    | "/openapi"
     | "/forgot-password"
     | "/otp"
     | "/sign-in"
@@ -704,6 +722,7 @@ export interface FileRouteTypes {
     | "/examples/list";
   fileRoutesByTo: FileRoutesByTo;
   to:
+    | "/openapi"
     | "/forgot-password"
     | "/otp"
     | "/sign-in"
@@ -735,6 +754,7 @@ export interface FileRouteTypes {
   id:
     | "__root__"
     | "/_authorization"
+    | "/openapi"
     | "/(Auth)/forgot-password"
     | "/(Auth)/otp"
     | "/(Auth)/sign-in"
@@ -768,6 +788,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   AuthorizationRoute: typeof AuthorizationRouteWithChildren;
+  OpenapiRoute: typeof OpenapiRoute;
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute;
   AuthOtpRoute: typeof AuthOtpRoute;
   AuthSignInRoute: typeof AuthSignInRoute;
@@ -783,6 +804,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   AuthorizationRoute: AuthorizationRouteWithChildren,
+  OpenapiRoute: OpenapiRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthOtpRoute: AuthOtpRoute,
   AuthSignInRoute: AuthSignInRoute,
@@ -807,6 +829,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_authorization",
+        "/openapi",
         "/(Auth)/forgot-password",
         "/(Auth)/otp",
         "/(Auth)/sign-in",
@@ -841,6 +864,9 @@ export const routeTree = rootRoute
         "/_authorization/examples/form/simple",
         "/_authorization/examples/list/"
       ]
+    },
+    "/openapi": {
+      "filePath": "openapi.tsx"
     },
     "/(Auth)/forgot-password": {
       "filePath": "(Auth)/forgot-password.tsx"

@@ -1,10 +1,11 @@
+import { HOST } from "@/types";
 import { getAccessToken } from "@/utils/storage";
 import config from "@config";
 import axios, { AxiosError } from "axios";
 
 // Create an instance of axios
 const request = axios.create({
-  baseURL: config.host ? config.host + "/" : "/", // Replace with your API base URL
+  baseURL: config.host ? config.host : HOST, // Replace with your API base URL
   timeout: 3000, // The request timeout period
 });
 
@@ -52,6 +53,8 @@ async function fetchRequest<T, TData = unknown>(
   options?: API.RequestOptions,
   params?: API.Params, // url parameters
 ): Promise<API.Result<T>> {
+  const localVarUrlObj = new URL(url, request.defaults.baseURL);
+
   const searchParams = new URLSearchParams(params);
   const queryString = searchParams.toString();
   if (queryString) {

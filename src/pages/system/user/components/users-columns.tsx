@@ -3,7 +3,7 @@ import { UserIconRowActions } from "@/pages/system/user/components/users-row-act
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnType, DataTableColumnHeader } from "@/components/DataTable";
+import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 const headerMeta = {
