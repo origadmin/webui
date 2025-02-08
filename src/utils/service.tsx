@@ -1,12 +1,12 @@
-import { HOST } from "@/types";
+import { HOST, HOST_REQUEST_TIMEOUT } from "@/types";
 import { getAccessToken } from "@/utils/storage";
-import config from "@config";
-import axios, { AxiosError } from "axios";
+import GlobalConfig from "@config";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 // Create an instance of axios
 const request = axios.create({
-  baseURL: config.host ? config.host : HOST, // Replace with your API base URL
-  timeout: 3000, // The request timeout period
+  baseURL: GlobalConfig.request.baseURL ? GlobalConfig.request.baseURL : HOST, // Replace with your API base URL
+  timeout: GlobalConfig.request.timeout ? GlobalConfig.request.timeout : HOST_REQUEST_TIMEOUT, // The request timeout period
 });
 
 // type AxiosRequestInterceptorUse<T> = (onFulfilled?: ((value: T) => T | Promise<T>) | null, onRejected?: ((error: any) => any) | null, options?: AxiosInterceptorOptions) => number;
@@ -45,26 +45,44 @@ request.interceptors.response.use(
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
+function stringifyParam(value: unknown): string | undefined {
+  if (value === null || value === undefined) {
+    return undefined;
+  }
+  return String(value);
+}
+
 /** Generic API request handler */
 async function fetchRequest<T, TData = unknown>(
   url: string,
   method: Method = "GET",
-  body?: TData,
-  options?: API.RequestOptions,
-  params?: API.Params, // url parameters
+  options: API.RequestOptions<TData> = {},
 ): Promise<API.Result<T>> {
   const localVarUrlObj = new URL(url, request.defaults.baseURL);
 
-  const searchParams = new URLSearchParams(params);
-  const queryString = searchParams.toString();
-  if (queryString) {
-    url += `?${queryString}`;
+  const searchParams = new URLSearchParams(localVarUrlObj.search);
+  for (const key in options.params) {
+    const value = stringifyParam(options.params[key]);
+    if (value === undefined) {
+      continue;
+    }
+    searchParams.set(key, value);
   }
-  return request<API.Result<T>>(url, {
+
+  localVarUrlObj.search = searchParams.toString();
+  url = localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash;
+
+  const needsSerialization =
+    typeof options.body !== "string" ||
+    (options.headers && stringifyParam(options.headers["Content-Type"]) === "application/json");
+  const config = {
     method,
-    ...(body ? { data: body } : {}),
-    ...(options || {}),
-  })
+    headers: options.headers,
+    data: needsSerialization ? JSON.stringify(options.body || {}) : options.body,
+    ...options.config,
+  } as AxiosRequestConfig<TData>;
+
+  return request<API.Result<T>>(url, config)
     .then((resp) => resp.data)
     .catch((respErr: AxiosError<API.Result<T>>) => {
       console.log("request error:", respErr);
@@ -84,4 +102,23 @@ async function fetchRequest<T, TData = unknown>(
     });
 }
 
-export { request, fetchRequest };
+async function get<T>(url: string, params?: API.Params, options?: API.RequestOptions<any>) {
+  options = {
+    params,
+    ...options,
+  };
+  return fetchRequest<T, undefined>(url, "GET", options);
+}
+
+async function post<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
+  options = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body,
+    ...options,
+  };
+  return fetchRequest<T, TData>(url, "POST", options);
+}
+
+export { request, get, post, fetchRequest };
