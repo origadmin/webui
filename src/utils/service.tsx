@@ -1,7 +1,7 @@
 import { HOST, HOST_REQUEST_TIMEOUT } from "@/types";
 import { getAccessToken } from "@/utils/storage";
 import GlobalConfig from "@config";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Create an instance of axios
 const request = axios.create({
@@ -83,15 +83,17 @@ async function fetchRequest<T, TData = unknown>(
   } as AxiosRequestConfig<TData>;
 
   return request<API.Result<T>>(url, config)
-    .then((resp) => resp.data)
+    .then((resp: AxiosResponse<API.Result<T>>) => resp.data)
     .catch((respErr: AxiosError<API.Result<T>>) => {
       console.log("request error:", respErr);
       if (respErr && respErr.response && respErr.response.data) {
         const respData = respErr.response.data;
         if (typeof respData === "string") {
           throw new Error(respData);
-        } else if (!respData.success) {
-          const error = respData.error;
+        }
+        const apiErr = respData as API.Result<unknown>;
+        if (!apiErr.success) {
+          const error = apiErr.error;
           if (error) {
             throw new Error(error.message, { cause: error });
           }
@@ -102,12 +104,12 @@ async function fetchRequest<T, TData = unknown>(
     });
 }
 
-async function get<T>(url: string, params?: API.Params, options?: API.RequestOptions<any>) {
+async function get<T>(url: string, params?: API.Params, options?: API.RequestOptions) {
   options = {
     params,
     ...options,
   };
-  return fetchRequest<T, undefined>(url, "GET", options);
+  return fetchRequest<T>(url, "GET", options);
 }
 
 async function post<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
@@ -144,7 +146,7 @@ async function patch<T, TData = unknown>(url: string, body?: TData, options?: AP
 }
 
 async function del<T>(url: string, options?: API.RequestOptions) {
-  return fetchRequest<T, unknown>(url, "DELETE", options);
+  return fetchRequest<T>(url, "DELETE", options);
 }
 
 export { request, get, post, put, patch, del, fetchRequest };
