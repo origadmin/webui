@@ -1,4 +1,4 @@
-import { logout, login } from "@/pages/apis/system/login";
+import { logout, login } from "@/api/system/login";
 import { SIGN_IN_URL } from "@/types";
 import { fetchRequest, Method } from "@/utils/request";
 import { getRefreshToken } from "@/utils/storage";

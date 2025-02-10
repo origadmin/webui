@@ -6,13 +6,10 @@ declare global {
   namespace API {
     namespace System {
       type User = components["schemas"]["api.v1.services.system.User"];
-      type Resource = components["schemas"]["api.v1.services.system.Resource"];
       type Role = components["schemas"]["api.v1.services.system.Role"];
+      type Menu = components["schemas"]["api.v1.services.system.Menu"];
+      type Resource = components["schemas"]["api.v1.services.system.Resource"];
     }
-    type FakeCaptcha = {
-      code?: number;
-      status?: string;
-    };
 
     type Captcha = {
       /** Captcha ID */
@@ -55,43 +52,6 @@ declare global {
       old_password: string;
     };
 
-    type Menu = {
-      /** Child menus */
-      children?: Menu[];
-      /** Code of menu (unique for each level) */
-      code?: string;
-      /** Create time */
-      created_at?: string;
-      /** Details about menu */
-      description?: string;
-      /** Unique ID */
-      id?: string;
-      /** Display name of menu */
-      name?: string;
-      /** I18n of menu */
-      name_i18n?: string;
-      /** Parent ID (From Menu.ID) */
-      parent_id?: string;
-      /** Parent path (split by .) */
-      parent_path?: string;
-      /** Access path of menu */
-      path?: string;
-      /** Properties of menu (JSON) */
-      properties?: string;
-      /** Resources of menu */
-      resources?: MenuResource[];
-      /** Sequence for sorting */
-      sequence?: number;
-      /** Status of menu (disabled, enabled) */
-      status?: string;
-      /** Type of menu (page, button) */
-      type?: string;
-      /** Update time */
-      updated_at?: string;
-      status_checked?: boolean;
-      parent_name?: string;
-    };
-
     type MenuResource = {
       /** Create time */
       created_at?: string;
@@ -120,48 +80,19 @@ declare global {
       updated_at?: string;
     };
 
-    // type User = {
-    //   /** Create time */
-    //   created_at?: string;
-    //   /** Unique ID */
-    //   id?: string;
-    //   /** Avatar of user */
-    //   avatar?: string;
-    //   /** Username for login */
-    //   username?: string;
-    //   /** Name of user */
-    //   name?: string;
-    //   /** Email of user */
-    //   email?: string;
-    //   /** Phone number of user */
-    //   phone?: string;
-    //   /** Remark of user */
-    //   remark?: string;
-    //   /** Roles of user */
-    //   roles?: UserRole[];
-    //   /** Status of user (activated, freezed) */
-    //   status?: string;
-    //   /** Login password */
-    //   password?: string;
-    //   /** Update time */
-    //   updated_at?: string;
-    //   /** status_checked */
-    //   status_checked?: boolean;
-    // };
-
     type UserRole = {
-      /** Create time */
-      created_at?: string;
       /** Unique ID */
       id?: string;
+      /** From User.ID */
+      user_id?: string;
       /** From Role.ID */
       role_id?: string;
       /** From Role.Name */
       role_name?: string;
+      /** Create time */
+      created_at?: string;
       /** Update time */
       updated_at?: string;
-      /** From User.ID */
-      user_id?: string;
     };
 
     type Logger = {
