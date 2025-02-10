@@ -1,40 +1,34 @@
-import { mockUsers } from "@/mocks/mock-sidebar";
 import { Pagination } from "@/utils";
-import { fetchRequest } from "@/utils/service";
+import { post, get, put, del, patch } from "@/utils/service";
+
 
 /** Query user list GET /api/v1/sys/users */
 export async function listUser(params: API.Params, options?: API.RequestOptions) {
-  if (process.env.NODE_ENV === "development") {
-    // 返回 mock 数据
-    return Promise.resolve({
-      data: mockUsers,
-    });
-  }
   params = Pagination.parseParams(params);
-  return fetchRequest<API.System.User[]>("/api/v1/sys/users", "GET", undefined, options, params);
+  return get<API.System.User[]>("/api/v1/sys/users", params, options);
 }
 
 /** Create user record POST /api/v1/sys/users */
 export async function addUser(body: API.System.User, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<API.System.User>>("/api/v1/sys/users", "POST", body, options);
+  return post<API.Result<API.System.User>>("/api/v1/sys/users", body, options);
 }
 
 /** Get user record by ID GET /api/v1/sys/users/${id} */
 export async function getUser(id: string, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<API.System.User>>(`/api/v1/sys/users/${id}`, "GET", undefined, options);
+  return get<API.Result<API.System.User>>(`/api/v1/sys/users/${id}`, undefined, options);
 }
 
 /** Update user record by ID PUT /api/v1/sys/users/${id} */
 export async function updateUser(id: string, body: API.System.User, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<any>>(`/api/v1/sys/users/${id}`, "PUT", body, options);
+  return put<API.Result<unknown>>(`/api/v1/sys/users/${id}`, body, options);
 }
 
 /** Delete user record by ID DELETE /api/v1/sys/users/${id} */
 export async function deleteUser(id: string, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<any>>(`/api/v1/sys/users/${id}`, "DELETE", undefined, options);
+  return del<API.Result<unknown>>(`/api/v1/sys/users/${id}`, options);
 }
 
 /** Reset user password by ID PATCH /api/v1/sys/users/${id}/reset */
 export async function resetUserPassword(id: string, options?: API.RequestOptions) {
-  return fetchRequest<API.Result<any>>(`/api/v1/sys/users/${id}/reset`, "PATCH", undefined, options);
+  return patch<API.Result<unknown>>(`/api/v1/sys/users/${id}/reset`, undefined, options);
 }

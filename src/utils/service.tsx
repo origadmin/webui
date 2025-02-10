@@ -121,4 +121,30 @@ async function post<T, TData = unknown>(url: string, body?: TData, options?: API
   return fetchRequest<T, TData>(url, "POST", options);
 }
 
-export { request, get, post, fetchRequest };
+async function put<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
+  options = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body,
+    ...options,
+  };
+  return fetchRequest<T, TData>(url, "PUT", options);
+}
+
+async function patch<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
+  options = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body,
+    ...options,
+  };
+  return fetchRequest<T, TData>(url, "PATCH", options);
+}
+
+async function del<T>(url: string, options?: API.RequestOptions) {
+  return fetchRequest<T, unknown>(url, "DELETE", options);
+}
+
+export { request, get, post, put, patch, del, fetchRequest };

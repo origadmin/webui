@@ -1,48 +1,28 @@
 import { Pagination } from "@/utils";
-import { request } from "@/utils/service";
+import { get, post, put, del } from "@/utils/service";
 
 /** Query resource list GET /api/v1/sys/resources */
 export async function listResource(params: API.Params, options?: API.RequestOptions) {
   params = Pagination.parseParams(params);
-  return request<API.Result<API.Resource[]>>("/api/v1/sys/resources", {
-    method: "GET",
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
+  return get<API.Result<API.Resource[]>>("/api/v1/sys/resources", params, options);
 }
 
 /** Create resource record POST /api/v1/sys/resources */
 export async function addResource(body: API.Resource, options?: API.RequestOptions) {
-  return request<API.Result<API.Resource>>("/api/v1/sys/resources", {
-    method: "POST",
-    data: body,
-    ...(options || {}),
-  });
+  return post<API.Result<API.Resource>>("/api/v1/sys/resources", body, options);
 }
 
 /** Get resource record by ID GET /api/v1/sys/resources/${id} */
 export async function getResource(id: string, options?: API.RequestOptions) {
-  return request<API.Result<API.Resource>>(`/api/v1/sys/resources/${id}`, {
-    method: "GET",
-    ...(options || {}),
-  });
+  return get<API.Result<API.Resource>>(`/api/v1/sys/resources/${id}`, undefined, options);
 }
 
 /** Update resource record by ID PUT /api/v1/sys/resources/${id} */
 export async function updateResource(id: string, body: API.Resource, options?: API.RequestOptions) {
-  return request<API.Result<any>>(`/api/v1/sys/resources/${id}`, {
-    method: "PUT",
-    data: body,
-    ...(options || {}),
-  });
+  return put<API.Result<unknown>>(`/api/v1/sys/resources/${id}`, body, options);
 }
 
 /** Delete resource record by ID DELETE /api/v1/sys/resources/${id} */
 export async function deleteResource(id: string, options?: API.RequestOptions) {
-  return request<API.Result<any>>(`/api/v1/sys/resources/${id}`, {
-    method: "DELETE",
-    ...(options || {}),
-  });
+  return del<API.Result<unknown>>(`/api/v1/sys/resources/${id}`, options);
 }
