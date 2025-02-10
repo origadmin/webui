@@ -2,22 +2,32 @@
 // @ts-ignore
 import { TablerIcon } from "@tabler/icons-react";
 import { RouteObject } from "@tanstack/react-router";
+import { AxiosRequestConfig } from "axios";
 import { LucideIcon } from "lucide-react";
 
 
 declare global {
   namespace API {
-    type Params = {
+    type Pagination = {
       current?: number;
+      page_token?: string; // page token used for automatic pagination
       page_size?: number;
-      [key: string]: any;
+      only_count?: boolean;
+      no_paging?: boolean;
+      sort?: string;
+      // update_mask?: string; // update mask used for partial update
     };
 
-    type RequestOptions =
-      | Map<string, any>
-      | {
-          [key: string]: any;
-        };
+    type Params = Record<string, unknown> & Pagination;
+
+    type RequestOptions<TBody = unknown> = Record<string, unknown> & {
+      url?: string;
+      method?: string;
+      params?: Params;
+      headers?: Record<string, unknown>;
+      body?: TBody;
+      config?: Omit<AxiosRequestConfig, "url", "method", "params", "data">;
+    };
 
     type Error = {
       id?: string;
@@ -92,7 +102,7 @@ declare global {
       sequence?: number;
       visible?: boolean;
       tree_path?: string;
-      properties?: Map<string, string>;
+      properties?: Record<string, string>;
       description?: string;
       parent_id?: string;
       children?: Resource[];
