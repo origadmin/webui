@@ -58,8 +58,8 @@ export function Footer({ className, ...props }: FooterProps) {
         </div>
       )}
       {logo && (
-        <div className='flex w-full flex-col justify-center'>
-          <img src={logo} alt='Logo' className='h-8 w-auto' />
+        <div className='flex w-full flex-col justify-center items-center'>
+          <img src={logo} alt='Logo' className='h-8 w-8' />
         </div>
       )}
     </footer>

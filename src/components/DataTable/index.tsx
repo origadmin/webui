@@ -145,6 +145,7 @@ function DataTable<T>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    // getStreamedValueFromCell: getStreamedValueFromCell(),
   });
 
   return (
