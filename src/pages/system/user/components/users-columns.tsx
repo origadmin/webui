@@ -86,7 +86,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statuses[row.getValue("status") || 0]}
+            {statuses[row.getValue("status") as number]}
           </Badge>
         </div>
       );
