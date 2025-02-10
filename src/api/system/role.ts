@@ -1,5 +1,5 @@
 import { Pagination } from "@/utils";
-import { get, post, put, del } from "@/utils/service";
+import { get, post, put, del } from "@/utils/request";
 
 /** Query role list GET /api/v1/sys/roles */
 export async function listRole(params: API.Params, options?: API.RequestOptions) {

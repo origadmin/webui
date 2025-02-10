@@ -1,6 +1,6 @@
-import { logout, login } from "@/services/system/login";
+import { logout, login } from "@/pages/apis/system/login";
 import { SIGN_IN_URL } from "@/types";
-import { fetchRequest, Method } from "@/utils/service";
+import { fetchRequest, Method } from "@/utils/request";
 import { getRefreshToken } from "@/utils/storage";
 import config from "@config";
 

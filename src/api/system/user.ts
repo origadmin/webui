@@ -1,6 +1,5 @@
 import { Pagination } from "@/utils";
-import { post, get, put, del, patch } from "@/utils/service";
-
+import { post, get, put, del, patch } from "@/utils/request";
 
 /** Query user list GET /api/v1/sys/users */
 export async function listUser(params: API.Params, options?: API.RequestOptions) {

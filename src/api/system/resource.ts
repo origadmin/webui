@@ -1,5 +1,5 @@
 import { Pagination } from "@/utils";
-import { get, post, put, del } from "@/utils/service";
+import { get, post, put, del } from "@/utils/request";
 
 /** Query resource list GET /api/v1/sys/resources */
 export async function listResource(params: API.Params, options?: API.RequestOptions) {

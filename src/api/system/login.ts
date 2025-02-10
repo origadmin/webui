@@ -1,6 +1,5 @@
 import { Pagination } from "@/utils";
-import { fetchRequest, post, get } from "@/utils/service";
-
+import { fetchRequest, post, get } from "@/utils/request";
 
 /** Get captcha ID GET /api/v1/captcha/id */
 export async function getCaptchaID(options?: API.RequestOptions) {

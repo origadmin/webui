@@ -2,7 +2,7 @@
 // @ts-ignore
 import { TablerIcon } from "@tabler/icons-react";
 import { RouteObject } from "@tanstack/react-router";
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosBasicCredentials } from "axios";
 import { LucideIcon } from "lucide-react";
 
 
@@ -20,13 +20,24 @@ declare global {
 
     type Params = Record<string, unknown> & Pagination;
 
+    type BearerAuth = {
+      headerKey?: string;
+      tokenType?: string;
+      token?: string;
+    };
+
+    type AxiosAuthConfig = BearerAuth | (() => BearerAuth) | string | (() => string) | AxiosBasicCredentials;
+
     type RequestOptions<TBody = unknown> = Record<string, unknown> & {
-      url?: string;
+      urlPrefix?: string;
+      path?: string;
       method?: string;
       params?: Params;
       headers?: Record<string, unknown>;
       body?: TBody;
-      config?: Omit<AxiosRequestConfig, "url", "method", "params", "data">;
+      useAuth?: "auto" | "none" | "bearer" | "bearer_token" | "basic";
+      auth?: AxiosAuthConfig;
+      config?: Omit<AxiosRequestConfig, "url", "method", "params", "data", "headers", "auth">;
     };
 
     type Error = {

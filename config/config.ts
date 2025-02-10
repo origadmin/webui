@@ -4,6 +4,9 @@ const config = {
     // baseURL: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
     timeout: 30000,
   },
+  api: {
+    urlPrefix: "/api/v1",
+  },
   auth: {
     verifyEmail: {
       url: "/api/v1/personal/verify-email",
