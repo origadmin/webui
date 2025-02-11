@@ -52,3 +52,9 @@ export function searchParamsToSortingState(searchParams: URLSearchParams, props?
     return { id, desc: desc === "desc" };
   });
 }
+
+export function getPaginationState(searchParams: URLSearchParams, paginationState: PaginationState): PaginationState {
+  const current = Number(searchParams.get("current")) - 1 || paginationState.pageIndex;
+  const pageSize = searchParams.get("page_size") || paginationState.pageSize;
+  return { pageIndex: current, pageSize: Number(pageSize) };
+}

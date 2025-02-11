@@ -1,7 +1,5 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
-import { Pagination as PaginationUtil } from "@/utils";
-import { useRouter } from "@tanstack/react-router";
 import {
   ColumnFiltersState,
   PaginationOptions,
@@ -25,6 +23,7 @@ import {
   ColumnMeta,
   Row,
   HeaderGroup,
+  OnChangeFn,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -55,7 +54,15 @@ interface SortProps {
   key?: string;
   delimiter?: string;
   contact?: string;
+  sorting?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
 }
+
+const DefaultSortProps = {
+  key: "sort_by",
+  delimiter: ",",
+  contact: ".",
+};
 
 interface DataTableProps<T> {
   data: T[];
@@ -129,14 +136,9 @@ function DataTable<T>({
   sizeOptions = PAGE_SIZE_OPTIONS,
   paginationProps,
   titleBarProps,
-  sortProps = {
-    key: "sort_by",
-    contact: ".",
-  },
+  sortProps,
   isLoading,
 }: DataTableProps<T>) {
-  const router = useRouter();
-  const searchParams = router.routeTree.useSearch();
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -147,32 +149,12 @@ function DataTable<T>({
     // isSaving: isCreatingUser || isUpdatingUser || isDeletingUser,
     setPagination: _setPagination,
   };
-  const oldSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
-  const currentSearch = oldSearchParams.toString();
-  const [sorting, setSorting] = useState<SortingState>(
-    PaginationUtil.searchParamsToSortingState(oldSearchParams, sortProps),
-  );
-  console.log("sorting", sorting);
+  const [_sorting, _setSorting] = useState<SortingState>([]);
+  const { sorting, setSorting } = sortProps ?? {
+    sorting: _sorting,
+    setSorting: _setSorting,
+  };
 
-  useEffect(() => {
-    const currentPathname = router.state.location.pathname;
-    const currentSearchParams = new URLSearchParams(currentSearch);
-    if (sorting.length === 0) {
-      return;
-    }
-    console.log("pathname", currentPathname);
-    currentSearchParams.set(
-      sortProps?.key || "sort_by",
-      sorting.map((sort) => `${sort.id}${sortProps?.contact || "."}${sort.desc ? "desc" : "asc"}`).join(","),
-    );
-    const nextSearch = currentSearchParams.toString();
-
-    if (currentSearch !== nextSearch) {
-      console.log("currentSearchParams", nextSearch, "currentSearch", currentSearch);
-      const path = `${currentPathname}?${nextSearch}`;
-      router.history.push(path.replaceAll("%3A", ":"));
-    }
-  }, [router, sorting, currentSearch]);
   const manualProps = useManual
     ? {
         manualFiltering: true,
@@ -256,4 +238,4 @@ export {
   ColumnHeader as DataTableColumnHeader,
   SearchBar as DataTableSearchBar,
 };
-export { DataTable };
+export { DataTable, DefaultSortProps };

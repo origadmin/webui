@@ -6,6 +6,11 @@ const config = {
   },
   api: {
     urlPrefix: "/api/v1",
+    sort: {
+      key: "sort_by",
+      delimiter: ",",
+      contact: ".",
+    },
   },
   mocks: {},
   auth: {
