@@ -81,7 +81,6 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status } = row.original;
-      console.log("status", status, "value", row.getValue("status"), "original", row.original);
       const badgeColor = callTypes.get(status || 0);
       return (
         <div className='flex space-x-2'>

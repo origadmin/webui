@@ -1,4 +1,6 @@
 import { StrictMode } from "react";
+import { queryClient } from "@/router";
+import { QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import MainApp from "@/app/MainApp";
@@ -8,8 +10,10 @@ const rootElement = document.getElementById("root");
 
 ReactDOM.createRoot(rootElement!).render(
   <StrictMode>
-    <ThemeProvider>
-      <MainApp />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <MainApp />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );

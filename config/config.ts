@@ -1,12 +1,13 @@
 const config = {
   request: {
-    baseURL: undefined,
+    baseURL: "",
     // baseURL: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
     timeout: 30000,
   },
   api: {
     urlPrefix: "/api/v1",
   },
+  mocks: {},
   auth: {
     verifyEmail: {
       url: "/api/v1/personal/verify-email",

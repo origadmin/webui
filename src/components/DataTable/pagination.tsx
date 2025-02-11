@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
-import { Table } from "@tanstack/react-table";
+import { OnChangeFn, PaginationState, Table } from "@tanstack/react-table";
 import { ToolbarProps } from "src/components/DataTable/toolbar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,6 +9,8 @@ export interface PaginationProps<T> {
   table: Table<T>;
   toolbars?: ToolbarProps["toolbars"];
   sizeOptions?: string[];
+  pagination?: PaginationState;
+  setPagination?: OnChangeFn<PaginationState>;
 }
 
 export function Pagination<T>({ table, sizeOptions = [], toolbars }: PaginationProps<T>) {

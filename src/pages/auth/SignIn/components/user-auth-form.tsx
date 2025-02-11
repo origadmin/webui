@@ -1,7 +1,7 @@
 import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from "react";
 import Placeholder from "@/assets/static/placeholder.jpg";
 import { signIn } from "@/utils/auth";
-import { fetchRequest } from "@/utils/service";
+import { get } from "@/utils/request";
 import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Image } from "@/components/Image";
-import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/LoadingButton";
 import { PasswordInput } from "@/components/password-input";
 
 export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
@@ -70,15 +70,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       captcha_code: "",
     },
   });
-  // const refreshCaptcha = async () => {
-  //   const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
-  //   const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
-  //   const { data, isLoading, error } = useQuery("getCaptcha", () => fetchRequest<Captcha>(url, "GET"));
-  //   if (error) {
-  //     console.error("Captcha Err:", error);
-  //     return
-  //   }
-  // };
 
   const refreshCaptcha = useCallback(async () => {
     // Avoid refreshing the CAPTCHA when submitting a login form
@@ -91,10 +82,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     // const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
     // const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
     // =>
-    const url = `/api/v1/captcha${captcha.id ? `?id=${captcha.id}&reload=true` : ""}`;
+    const url = `/captcha${captcha.id ? `?id=${captcha.id}&reload=true` : ""}`;
 
     try {
-      const response = await fetchRequest<Captcha>(url);
+      const response = await get<Captcha>(url);
       if (response.success && response.data) {
         setCaptcha({
           id: response.data.id,
@@ -123,14 +114,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     values.captcha_id = captcha.id || "";
     console.log("form data:", values);
     startTransition(async () => {
-      await signIn<API.Result<API.Token>>(values, {
+      await signIn<API.Token>(values, {
         redirectUrl: redirectUrl,
         onSuccess: (data) => {
           toast({
             description: "Signed In Successfully!",
           });
-          if (data.data) {
-            setAuth(data.data);
+          if (data) {
+            setAuth(data);
           }
           console.log("location", location.pathname, redirectUrl);
           window.location.href = redirectUrl;
@@ -195,7 +186,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                       </FormControl>
                       <Image
                         isLoading={isLoading}
-                        src={captcha.data}
+                        src={captcha.data || Placeholder}
                         alt='CAPTCHA'
                         className='w-[120px]'
                         size='sm'
@@ -208,9 +199,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 )}
               />
             </div>
-            <Button type='submit' className='mt-2' loading={submitting}>
+            <LoadingButton type='submit' className='mt-2' loading={submitting}>
               Login
-            </Button>
+            </LoadingButton>
 
             <div className='relative my-2'>
               <div className='absolute inset-0 flex items-center'>
@@ -222,7 +213,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
 
             <div className='flex items-center gap-2'>
-              <Button
+              <LoadingButton
                 variant='outline'
                 className='w-full'
                 type='button'
@@ -230,8 +221,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 leftSection={<IconBrandGithub className='size-4' />}
               >
                 GitHub
-              </Button>
-              <Button
+              </LoadingButton>
+              <LoadingButton
                 variant='outline'
                 className='w-full'
                 type='button'
@@ -239,7 +230,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 leftSection={<IconBrandFacebook className='size-4' />}
               >
                 Facebook
-              </Button>
+              </LoadingButton>
             </div>
             <div className='grid gap-2'>
               <div className='text-center text-sm'>

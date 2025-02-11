@@ -1,11 +1,11 @@
 import { OtpForm } from "@/pages/auth/Otp/components/otp-form";
-import { fetchRequest } from "@/utils/service";
+import { get } from "@/utils/request";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 function OtpPage() {
   const resendCode = async () => {
-    await fetchRequest("/resent-new-code")
+    await get("/resent-new-code")
       .then((res) => {
         console.log(res);
         return res;

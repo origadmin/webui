@@ -14,6 +14,7 @@ export interface TitleBarProps<TData> {
   showSearch?: boolean;
   showOption?: boolean;
   showStatistics?: boolean;
+  total?: number;
   statisticsRender?: (total: number, filtered?: number) => JSX.Element;
   searchBarRender?: (table: Table<TData>) => JSX.Element;
   toolbarRender?: (table: Table<TData>) => JSX.Element;
@@ -73,8 +74,9 @@ export function TitleBar<TData>({
   showStatistics,
   statisticsRender = renderStatistics,
   searchBarRender = renderSearchBar,
+  total,
 }: TitleBarProps<TData>) {
-  const total = table.getFilteredRowModel().rows.length;
+  total = total || table.getFilteredRowModel().rows.length;
   const selected = table.getSelectedRowModel().rows.length;
 
   const renderToolbar = (table: Table<TData>, _toolbars?: JSX.Element) => (

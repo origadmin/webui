@@ -10,12 +10,13 @@ export default function MainLayout() {
   const { token } = useAuth();
   const { initialData } = useInitialData<InitialDataConfig>();
 
-  if (initialData) {
-    console.log("initialData is ", initialData);
-  }
+  useEffect(() => {
+    console.log("layout: initialData is ", initialData);
+  }, [initialData]);
+
   useEffect(() => {
     if (token) {
-      console.log("token is ", token);
+      console.log("layout: token is ", token);
     }
   }, [token]);
   const props: LayoutProps = {

@@ -1,10 +1,11 @@
-import { HOST, HOST_REQUEST_TIMEOUT } from "@/types";
+import mocks from "@/mocks";
+import { HOST_REQUEST_TIMEOUT, HOST } from "@/types";
 import GlobalConfig from "@config";
 import axios, { AxiosBasicCredentials, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Create an instance of axios
 const request = axios.create({
-  baseURL: GlobalConfig.request.baseURL ? GlobalConfig.request.baseURL : HOST, // Replace with your API base URL
+  baseURL: GlobalConfig.request.baseURL || HOST || window.location.origin, // Replace with your API base URL
   timeout: GlobalConfig.request.timeout ? GlobalConfig.request.timeout : HOST_REQUEST_TIMEOUT, // The request timeout period
 });
 
@@ -117,7 +118,7 @@ const tryBasic = (auth: API.AxiosAuthConfig) => {
   }
   return {};
 };
-const authorization = (options: API.RequestOptions) => {
+const getAuthorization = (options: API.RequestOptions) => {
   const { useAuth = "auto", auth } = options;
   const { headers = {} } = options;
   if ((useAuth === "auto" || useAuth === "none") && auth === undefined) {
@@ -156,12 +157,74 @@ const authorization = (options: API.RequestOptions) => {
   return headers;
 };
 
+const fillBody = <TData,>(bodyOrOptions?: TData | API.RequestOptions<TData>, options?: API.RequestOptions<TData>) => {
+  if (options) {
+    options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      ...options,
+      body: bodyOrOptions as TData,
+    };
+  } else if (bodyOrOptions) {
+    options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      ...(bodyOrOptions as API.RequestOptions<TData>),
+    };
+  } else {
+    options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+  }
+  return options;
+};
+
+const fillParams = <TData,>(
+  paramOrOptions?: API.Params | API.RequestOptions<TData>,
+  options?: API.RequestOptions<TData>,
+) => {
+  if (options) {
+    options = {
+      ...options,
+      params: paramOrOptions as API.Params,
+    };
+  } else if (paramOrOptions) {
+    options = {
+      ...(paramOrOptions as API.RequestOptions<TData>),
+    };
+  } else {
+    options = {};
+  }
+  return options;
+};
+
 /** Generic API request handler */
 async function fetchRequest<T, TData = unknown>(
   url: string,
   method: Method = "GET",
   options: API.RequestOptions<TData> = {},
 ): Promise<API.Result<T>> {
+  console.log("fetchRequest:", url, method, "options:", options);
+  console.log("request url", request.defaults.baseURL);
+
+  if (GlobalConfig.mocks) {
+    console.log("mock request:", url, method, options);
+    return new Promise<API.Result<T>>((resolve, reject) => {
+      setTimeout(() => {
+        const data = mocks<T>(url, options.params);
+        console.log("mock data:", data);
+        if (data.success) {
+          resolve(data);
+          return;
+        }
+        reject(data);
+      }, 1000);
+    });
+  }
   const localVarUrlObj = new URL(url, request.defaults.baseURL);
   const searchParams = new URLSearchParams(localVarUrlObj.search);
   for (const key in options.params) {
@@ -171,15 +234,15 @@ async function fetchRequest<T, TData = unknown>(
     }
     searchParams.set(key, value);
   }
-
   localVarUrlObj.search = searchParams.toString();
   url = localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash;
+  url = GlobalConfig.api.urlPrefix ? GlobalConfig.api.urlPrefix + url : url;
 
   const needsSerialization =
     typeof options.body !== "string" ||
     (options.headers && stringifyParam(options.headers["Content-Type"]) === "application/json");
 
-  options.headers = authorization(options);
+  options.headers = getAuthorization(options);
 
   const config = {
     method,
@@ -187,7 +250,6 @@ async function fetchRequest<T, TData = unknown>(
     data: needsSerialization ? JSON.stringify(options.body || {}) : options.body,
     ...options.config,
   } as AxiosRequestConfig<TData>;
-
   return request<API.Result<T>>(url, config)
     .then((resp: AxiosResponse<API.Result<T>>) => resp.data)
     .catch((respErr: AxiosError<API.Result<T>>) => {
@@ -196,48 +258,40 @@ async function fetchRequest<T, TData = unknown>(
     });
 }
 
-async function get<T>(url: string, params?: API.Params, options?: API.RequestOptions) {
-  options = {
-    params,
-    ...options,
-  };
+async function get<T>(url: string, _paramsOrOptions?: API.Params | API.RequestOptions, options?: API.RequestOptions) {
+  options = fillParams(_paramsOrOptions, options);
   return fetchRequest<T>(url, "GET", options);
 }
 
-async function post<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
-  options = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body,
-    ...options,
-  };
+async function post<T, TData = unknown>(
+  url: string,
+  bodyOrOptions?: TData | API.RequestOptions<TData>,
+  options?: API.RequestOptions<TData>,
+) {
+  options = fillBody(bodyOrOptions, options);
   return fetchRequest<T, TData>(url, "POST", options);
 }
 
-async function put<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
-  options = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body,
-    ...options,
-  };
+async function put<T, TData = unknown>(
+  url: string,
+  bodyOrOptions?: TData | API.RequestOptions<TData>,
+  options?: API.RequestOptions<TData>,
+) {
+  options = fillBody(bodyOrOptions, options);
   return fetchRequest<T, TData>(url, "PUT", options);
 }
 
-async function patch<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
-  options = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body,
-    ...options,
-  };
+async function patch<T, TData = unknown>(
+  url: string,
+  bodyOrOptions?: TData | API.RequestOptions<TData>,
+  options?: API.RequestOptions<TData>,
+) {
+  options = fillBody(bodyOrOptions, options);
   return fetchRequest<T, TData>(url, "PATCH", options);
 }
 
-async function del<T>(url: string, options?: API.RequestOptions) {
+async function del<T>(url: string, paramsOrOptions?: API.Params | API.RequestOptions, options?: API.RequestOptions) {
+  options = fillParams(paramsOrOptions, options);
   return fetchRequest<T>(url, "DELETE", options);
 }
 

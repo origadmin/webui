@@ -4,6 +4,7 @@ const roleSchema = z.object({
   id: z.string(),
   name: z.string(),
   keyword: z.string(),
+  description: z.string(),
   status: z.number(),
   create_time: z.string(),
   update_time: z.string(),

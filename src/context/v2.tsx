@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { addMenu, updateMenu, deleteMenu } from "@/api/system/menu.ts";
+import { addMenu, updateMenu, deleteMenu } from "@/api/system/menu";
 
 // ... (keep the existing interfaces)
 

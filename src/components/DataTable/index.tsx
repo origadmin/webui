@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
+import { Pagination as PaginationUtil } from "@/utils";
 import { useRouter } from "@tanstack/react-router";
 import {
   ColumnFiltersState,
@@ -22,6 +23,8 @@ import {
   ColumnDef,
   Table as ReactTable,
   ColumnMeta,
+  Row,
+  HeaderGroup,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -48,30 +51,29 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   meta: ColumnMeta<TData, TValue>;
 };
 
+interface SortProps {
+  key?: string;
+  delimiter?: string;
+  contact?: string;
+}
+
 interface DataTableProps<T> {
   data: T[];
   columns: ColumnType<T>[];
+  total?: number;
   searchBarProps?: SearchBarProps<T>;
   showToolbarStatistics?: boolean;
   showPagination?: boolean;
+  useManual?: boolean;
   toolbarPosition?: "top" | "bottom";
   toolbars?: TitleBarProps<T>["toolbars"];
   paginationState?: PaginationState;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
-  paginationProps?: PaginationProps<T>;
+  paginationProps?: Omit<PaginationProps<T>, "table">;
   titleBarProps?: TitleBarProps<T>;
+  sortProps?: SortProps;
+  isLoading?: boolean;
 }
-
-const searchParamsToSortingState = (searchParams: URLSearchParams): SortingState => {
-  const sort = searchParams.get("sort");
-  if (sort === null) {
-    return [];
-  }
-  return sort.split(",").map((sort) => {
-    const [id, desc] = sort.split(":");
-    return { id, desc: desc === "desc" };
-  });
-};
 
 const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderContext<TData, TValue>> => {
   const columnDef = column.columnDef as ColumnType<TData, TValue>;
@@ -80,29 +82,76 @@ const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderCo
   }
   return column.columnDef.header;
 };
+const renderRow = <TData,>(groups: HeaderGroup<TData>[]) => {
+  return groups.map((headerGroup) => (
+    <TableRow key={headerGroup.id} className='group/row'>
+      {headerGroup.headers.map((header) => {
+        return (
+          <TableHead key={header.id} colSpan={header.colSpan} className={header.column.columnDef.meta?.className ?? ""}>
+            {header.isPlaceholder ? null : flexRender(renderHeader(header.column), header.getContext())}
+          </TableHead>
+        );
+      })}
+    </TableRow>
+  ));
+};
+const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
+  if (rows && rows.length > 0) {
+    return rows.map((row) => (
+      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className='group/row'>
+        {row.getVisibleCells().map((cell) => (
+          <TableCell key={cell.id} className={cell.column.columnDef.meta?.className ?? ""}>
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </TableCell>
+        ))}
+      </TableRow>
+    ));
+  }
+  return (
+    <TableRow>
+      <TableCell colSpan={rows.length} className='h-24 text-center'>
+        No results.
+      </TableCell>
+    </TableRow>
+  );
+};
 
 function DataTable<T>({
   columns,
   toolbars,
   data,
+  total = 0,
   paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
   showToolbarStatistics = true,
   showPagination = true,
+  useManual = true,
   toolbarPosition = "top",
   sizeOptions = PAGE_SIZE_OPTIONS,
   paginationProps,
   titleBarProps,
+  sortProps = {
+    key: "sort_by",
+    contact: ".",
+  },
+  isLoading,
 }: DataTableProps<T>) {
   const router = useRouter();
   const searchParams = router.routeTree.useSearch();
-
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
+  const [_pagination, _setPagination] = useState<PaginationState>(paginationState);
+  const { pagination, setPagination } = paginationProps ?? {
+    pagination: _pagination,
+    isLoading: isLoading,
+    // isSaving: isCreatingUser || isUpdatingUser || isDeletingUser,
+    setPagination: _setPagination,
+  };
   const oldSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
   const currentSearch = oldSearchParams.toString();
-  const [sorting, setSorting] = useState<SortingState>(searchParamsToSortingState(oldSearchParams));
+  const [sorting, setSorting] = useState<SortingState>(
+    PaginationUtil.searchParamsToSortingState(oldSearchParams, sortProps),
+  );
   console.log("sorting", sorting);
 
   useEffect(() => {
@@ -112,7 +161,10 @@ function DataTable<T>({
       return;
     }
     console.log("pathname", currentPathname);
-    currentSearchParams.set("sort", sorting.map((sort) => `${sort.id}:${sort.desc ? "desc" : "asc"}`).join(","));
+    currentSearchParams.set(
+      sortProps?.key || "sort_by",
+      sorting.map((sort) => `${sort.id}${sortProps?.contact || "."}${sort.desc ? "desc" : "asc"}`).join(","),
+    );
     const nextSearch = currentSearchParams.toString();
 
     if (currentSearch !== nextSearch) {
@@ -121,11 +173,19 @@ function DataTable<T>({
       router.history.push(path.replaceAll("%3A", ":"));
     }
   }, [router, sorting, currentSearch]);
-
+  const manualProps = useManual
+    ? {
+        manualFiltering: true,
+        manualSorting: true,
+        manualPagination: true,
+      }
+    : {};
   const table = useReactTable({
     data,
     columns,
+    rowCount: total,
     state: {
+      pagination,
       sorting,
       columnVisibility,
       rowSelection,
@@ -134,6 +194,7 @@ function DataTable<T>({
     initialState: {
       pagination: paginationState,
     },
+    ...manualProps,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -141,60 +202,27 @@ function DataTable<T>({
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: !useManual ? getPaginationRowModel() : undefined,
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    // getStreamedValueFromCell: getStreamedValueFromCell(),
+    onPaginationChange: useManual ? setPagination : undefined,
   });
 
   return (
     <div className='space-y-4'>
       <SearchBar table={table} columns={columns} />
       <TitleBar
+        {...titleBarProps}
         table={table}
         toolbars={toolbarPosition === "top" ? toolbars : undefined}
         showStatistics={showToolbarStatistics}
-        {...titleBarProps}
+        total={total}
       />
       <div className='rounded-md border'>
         <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className='group/row'>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className={header.column.columnDef.meta?.className ?? ""}
-                    >
-                      {header.isPlaceholder ? null : flexRender(renderHeader(header.column), header.getContext())}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className='group/row'>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className={cell.column.columnDef.meta?.className ?? ""}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className='h-24 text-center'>
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <TableHeader>{renderRow(table.getHeaderGroups())}</TableHeader>
+          <TableBody>{renderCell(table.getRowModel().rows)}</TableBody>
         </Table>
       </div>
       {showPagination && (

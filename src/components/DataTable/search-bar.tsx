@@ -20,7 +20,7 @@ export function SearchBar<TData>({ table, columns }: SearchBarProps<TData>) {
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
         {searchColumns.length > 0 &&
-          searchColumns.map((column) => {
+          searchColumns.map((column, index) => {
             const key = column.accessorKey ?? "";
             if (key === "") {
               return null;
@@ -28,6 +28,7 @@ export function SearchBar<TData>({ table, columns }: SearchBarProps<TData>) {
             console.log("search columns:", column, "value:", table.getColumn(key));
             return (
               <Input
+                key={index}
                 placeholder={`Filter ${column.headerTitle || key}...`}
                 value={(table.getColumn(key)?.getFilterValue() as string) ?? ""}
                 onChange={(event) => table.getColumn(key)?.setFilterValue(event.target.value)}
