@@ -102,6 +102,7 @@ const renderRow = <TData,>(groups: HeaderGroup<TData>[]) => {
     </TableRow>
   ));
 };
+
 const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
   if (rows && rows.length > 0) {
     return rows.map((row) => (

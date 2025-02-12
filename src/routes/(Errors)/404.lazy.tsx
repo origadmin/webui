@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/pages/errors";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/(Errors)/404")({
@@ -5,5 +6,5 @@ export const Route = createLazyFileRoute("/(Errors)/404")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/(Errors)/not-found-error"!</div>;
+  return NotFoundError();
 }

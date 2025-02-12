@@ -1,10 +1,10 @@
-import { Fragment } from "react";
 import { InternalServerError, NotFoundError } from "@/pages/errors";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { AuthContextType } from "@/hooks/use-auth";
+import { LocaleProvider } from "@/hooks/use-locale";
 
 export const Route = createRootRouteWithContext<{
   auth: AuthContextType;
@@ -17,7 +17,7 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   return (
-    <Fragment>
+    <LocaleProvider>
       <Outlet />
       {import.meta.env.MODE === "development" && (
         <>
@@ -25,6 +25,6 @@ function RootComponent() {
           <TanStackRouterDevtools position='bottom-right' />
         </>
       )}
-    </Fragment>
+    </LocaleProvider>
   );
 }

@@ -1,3 +1,4 @@
+import { ForbiddenError } from "@/pages/errors";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/(Errors)/403")({
@@ -5,5 +6,5 @@ export const Route = createLazyFileRoute("/(Errors)/403")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/(Errors)/forbidden-error"!</div>;
+  return ForbiddenError();
 }

@@ -5,4 +5,6 @@ import * as Pagination from "./pagination";
 import * as Request from "./request";
 import * as Storage from "./storage";
 
-export { Storage, Pagination, Crypto, Auth, Request, Chat };
+const noop = () => {};
+
+export { Storage, Pagination, Crypto, Auth, Request, Chat, noop };

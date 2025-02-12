@@ -3,11 +3,11 @@ import { useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-interface GeneralErrorProps extends HTMLAttributes<HTMLDivElement> {
+interface InternalServerErrorProps extends HTMLAttributes<HTMLDivElement> {
   minimal?: boolean;
 }
 
-export default function InternalServerError({ className, minimal = false }: GeneralErrorProps) {
+export default function InternalServerError({ className, minimal }: InternalServerErrorProps) {
   const { navigate, history } = useRouter();
   return (
     <div className={cn("h-svh w-full", className)}>

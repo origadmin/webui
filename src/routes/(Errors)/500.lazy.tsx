@@ -1,3 +1,4 @@
+import { InternalServerError } from "@/pages/errors";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/(Errors)/500")({
@@ -5,5 +6,5 @@ export const Route = createLazyFileRoute("/(Errors)/500")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/(Errors)/internal-server-error"!</div>;
+  return InternalServerError({});
 }
