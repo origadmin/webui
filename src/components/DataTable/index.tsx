@@ -58,11 +58,7 @@ interface SortProps {
   setSorting?: OnChangeFn<SortingState>;
 }
 
-const DefaultSortProps = {
-  key: "sort_by",
-  delimiter: ",",
-  contact: ".",
-};
+
 
 interface DataTableProps<T> {
   data: T[];

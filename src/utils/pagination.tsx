@@ -1,4 +1,5 @@
 import { PAGE_SIZE, START_PAGE } from "@/types";
+import GlobalConfig from "@config";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 
 
@@ -35,14 +36,8 @@ export function parseState(
   };
 }
 
-type SortProps = {
-  key?: string;
-  delimiter?: string;
-  contact?: string;
-};
-
-export function searchParamsToSortingState(searchParams: URLSearchParams, props?: SortProps): SortingState {
-  const { key = "sort_by", delimiter = ",", contact = "." } = props ?? {};
+export function searchParamsToSortingState(searchParams: URLSearchParams): SortingState {
+  const { key = "sort_by", delimiter = ",", contact = "." } = GlobalConfig.api?.searchOptions?.sort ?? {};
   const sort = searchParams.get(key);
   if (sort === null) {
     return [];
@@ -53,8 +48,34 @@ export function searchParamsToSortingState(searchParams: URLSearchParams, props?
   });
 }
 
-export function getPaginationState(searchParams: URLSearchParams, paginationState: PaginationState): PaginationState {
-  const current = Number(searchParams.get("current")) - 1 || paginationState.pageIndex;
-  const pageSize = searchParams.get("page_size") || paginationState.pageSize;
-  return { pageIndex: current, pageSize: Number(pageSize) };
+export function getSortingState(searchParams: URLSearchParams): SortingState {
+  const { key, delimiter, contact } = GlobalConfig.api?.searchOptions?.sort || {
+    key: "sort_by",
+    delimiter: ",",
+    contact: ".",
+  };
+  if (!searchParams.has(key)) {
+    return [];
+  }
+  const sort = searchParams.get(key);
+  if (sort === null) {
+    return [];
+  }
+  return sort.split(delimiter).map((sort) => {
+    const [id, desc] = sort.split(contact);
+    return { id, desc: desc === "desc" };
+  });
+}
+
+export function getPaginationState(searchParams: URLSearchParams): PaginationState {
+  const { key, pageSizeKey, defaultPageSize, defaultCurrent } = GlobalConfig.api?.searchOptions?.pagination || {
+    key: "current",
+    pageSizeKey: "page_size",
+    defaultPageSize: PAGE_SIZE,
+    defaultCurrent: START_PAGE,
+  };
+
+  const current = searchParams.has("current") ? Number(searchParams.get(key)) - 1 : defaultCurrent;
+  const pageSize = searchParams.has(pageSizeKey) ? Number(searchParams.get(pageSizeKey)) : defaultPageSize;
+  return { pageIndex: current, pageSize: pageSize };
 }

@@ -46,6 +46,8 @@ export default function UserPage() {
     setData(users.data || []);
     setTotal(users.total || 0);
   }, [isLoading, users.data, users.total]);
+
+  // Listen for changes in order and update URLs
   useEffect(() => {
     const currentPathname = router.state.location.pathname;
     const currentSearchParams = new URLSearchParams(currentSearch);
