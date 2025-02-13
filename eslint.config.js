@@ -1,4 +1,5 @@
 import eslint from "@eslint/js";
+import pluginRouter from "@tanstack/eslint-plugin-router";
 import prettierConfig from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactPlugin from "eslint-plugin-react";
@@ -228,4 +229,5 @@ export default tseslint.config([
   prettierPluginConfig, // reactPlugin.configs.recommended,
   reactConfig, // ...tailwindcss.configs["flat/recommended"],
   // tailwindcssConfig,
+  ...pluginRouter.configs["flat/recommended"],
 ]);

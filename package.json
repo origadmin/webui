@@ -94,6 +94,7 @@
     "@rsbuild/core": "^1.1.13",
     "@rsbuild/plugin-react": "^1.1.0",
     "@rspack/cli": "^1.1.8",
+    "@tanstack/eslint-plugin-router": "^1.102.2",
     "@tanstack/react-query-devtools": "^5.64.2",
     "@tanstack/router-devtools": "^1.97.21",
     "@trivago/prettier-plugin-sort-imports": "^5.2.1",
