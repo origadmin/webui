@@ -2,8 +2,10 @@ import { Pagination } from "@/utils";
 import { post, get, put, del, patch } from "@/utils/request";
 import { queryOptions } from "@tanstack/react-query";
 
+
 /** Query user list GET /sys/users */
 export async function listUser(params: API.Params, options?: API.RequestOptions) {
+  console.log("listUser", params, options);
   options = {
     params: Pagination.parseParams(params),
     ...options,

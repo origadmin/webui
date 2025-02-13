@@ -1,6 +1,7 @@
 import { Pagination } from "@/utils";
 import { post, get, put } from "@/utils/request";
 
+
 /** Get captcha ID GET /api/v1/captcha/id */
 export async function getCaptchaID(options?: API.RequestOptions) {
   return get<API.Captcha>("/api/v1/captcha/id", options);
@@ -12,8 +13,8 @@ export function getCaptchaImageURL(id: string) {
 }
 
 /** Login system with username and password POST /api/v1/login */
-export async function login(body: API.LoginForm, options?: API.RequestOptions) {
-  return post<API.Token>("/api/v1/login", body, options);
+export async function login<T extends API.Token = API.Token>(body: API.LoginForm, options?: API.RequestOptions) {
+  return post<T>("/api/v1/login", body, options);
 }
 
 /** Logout system POST /api/v1/personal/logout */
