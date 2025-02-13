@@ -1,4 +1,6 @@
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 const defaultConfig = {
   request: {
@@ -51,9 +53,25 @@ const defaultConfig = {
 
 type RuntimeConfigType = Partial<typeof defaultConfig>;
 
-const defineConfig = (config?: RuntimeConfigType) => {
+const defineConfig = (config?: RuntimeConfigType): RuntimeConfigType => {
+  // Attempt to read the root directory .config 文件
+  const configPath = path.resolve(__dirname, "..", "..", ".config");
+  if (fs.existsSync(configPath)) {
+    try {
+      const configFileContent = fs.readFileSync(configPath, "utf-8");
+      const configFromFile: RuntimeConfigType = JSON.parse(configFileContent) as RuntimeConfigType;
+      return {
+        ...defaultConfig,
+        ...config,
+        ...configFromFile,
+      };
+    } catch (error) {
+      console.error("Error reading or parsing .config file:", error);
+    }
+  }
+
   return {
-    defaultConfig,
+    ...defaultConfig,
     ...config,
   };
 };
