@@ -1,6 +1,4 @@
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
-import * as fs from "node:fs";
-import * as path from "node:path";
 
 const defaultConfig = {
   request: {
@@ -15,8 +13,9 @@ const defaultConfig = {
       pagination: {
         key: "current",
         pageSizeKey: "page_size",
-        defaultPageSize: PAGE_SIZE,
         defaultCurrent: START_PAGE,
+        defaultPageSize: PAGE_SIZE,
+        backendPageStart: 1,
       },
       sizeOptions: PAGE_SIZE_OPTIONS,
       sort: {
@@ -51,24 +50,25 @@ const defaultConfig = {
   },
 };
 
-type RuntimeConfigType = Partial<typeof defaultConfig>;
+type RuntimeConfigType = typeof defaultConfig;
+type PartialRuntimeConfigType = Partial<RuntimeConfigType>;
 
-const defineConfig = (config?: RuntimeConfigType): RuntimeConfigType => {
+const defineConfig = (config?: PartialRuntimeConfigType): RuntimeConfigType => {
   // Attempt to read the root directory .config 文件
-  const configPath = path.resolve(__dirname, "..", "..", ".config");
-  if (fs.existsSync(configPath)) {
-    try {
-      const configFileContent = fs.readFileSync(configPath, "utf-8");
-      const configFromFile: RuntimeConfigType = JSON.parse(configFileContent) as RuntimeConfigType;
-      return {
-        ...defaultConfig,
-        ...config,
-        ...configFromFile,
-      };
-    } catch (error) {
-      console.warn("Error reading or parsing .config file:", error);
-    }
-  }
+  // const configPath = path.resolve(__dirname, "..", "..", ".config");
+  // if (fs.existsSync(configPath)) {
+  //   try {
+  //     const configFileContent = fs.readFileSync(configPath, "utf-8");
+  //     const configFromFile: RuntimeConfigType = JSON.parse(configFileContent) as RuntimeConfigType;
+  //     return {
+  //       ...defaultConfig,
+  //       ...config,
+  //       ...configFromFile,
+  //     };
+  //   } catch (error) {
+  //     console.warn("Error reading or parsing .config file:", error);
+  //   }
+  // }
 
   return {
     ...defaultConfig,

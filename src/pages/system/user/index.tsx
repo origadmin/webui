@@ -1,75 +1,53 @@
 import { useEffect, useMemo, useState } from "react";
 import { usersQueryOptions } from "@/api/system/user";
-import { PAGE_SIZE, START_PAGE } from "@/types";
 import { Pagination as PaginationUtil } from "@/utils";
-import { parseState } from "@/utils/pagination";
-import GlobalConfig from "@config";
+import { fillSearchParams } from "@/utils/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
-import { PaginationState, SortingState } from "@tanstack/react-table";
+import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DataTable, DefaultSortProps } from "@/components/DataTable";
+import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/users-columns";
 import { UsersDialogs } from "./components/users-dialogs";
 import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
-const sortProps = GlobalConfig.api.sort || DefaultSortProps;
-
 export default function UserPage() {
   const router = useRouter();
-  const searchParams = router.routeTree.useSearch();
-  const oldSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
-  const currentSearch = oldSearchParams.toString();
+  const search = router.routeTree.useSearch();
+  const searchParams = useMemo(() => new URLSearchParams(search), [search]);
+  const [sorting, setSorting] = useState<SortingState>(PaginationUtil.getSortingState(searchParams));
+  const [pagination, setPagination] = useState<PaginationState>(PaginationUtil.getPaginationState(searchParams));
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(PaginationUtil.getColumnFilters(searchParams));
+  const [params, setParams] = useState<API.Params>({
+    ...PaginationUtil.parsePagination(pagination),
+    ...PaginationUtil.parseSorting(sorting),
+    ...PaginationUtil.parseColumnFilters(columnFilters),
+  });
 
-  const [sorting, setSorting] = useState<SortingState>(
-    PaginationUtil.searchParamsToSortingState(oldSearchParams, sortProps),
-  );
-  console.log("sorting", sorting);
-  const [pagination, setPagination] = useState<PaginationState>(
-    PaginationUtil.getPaginationState(oldSearchParams, {
-      pageIndex: START_PAGE,
-      pageSize: PAGE_SIZE,
-    }),
-  );
-  const { data: users = {}, isLoading } = useQuery(
-    usersQueryOptions({
-      ...parseState(pagination),
-      [sortProps.key]: oldSearchParams.get(sortProps.key),
-    }),
-  );
-  const [data, setData] = useState<API.System.User[]>(users.data || []);
-  const [total, setTotal] = useState(users.total || 0);
   useEffect(() => {
-    if (isLoading) return;
-    setData(users.data || []);
-    setTotal(users.total || 0);
-  }, [isLoading, users.data, users.total]);
+    setParams({
+      ...PaginationUtil.parsePagination(pagination),
+      ...PaginationUtil.parseSorting(sorting),
+      ...PaginationUtil.parseColumnFilters(columnFilters),
+    });
+  }, [columnFilters, pagination, sorting]);
 
+  const { data: users = {}, isLoading } = useQuery(usersQueryOptions(params));
+  console.log("user page render", params, "users", users);
   // Listen for changes in order and update URLs
   useEffect(() => {
     const currentPathname = router.state.location.pathname;
-    const currentSearchParams = new URLSearchParams(currentSearch);
-    if (sorting.length === 0) {
-      return;
-    }
+    const currentSearchParams = fillSearchParams(searchParams, params);
     console.log("pathname", currentPathname);
-    currentSearchParams.set(
-      sortProps.key,
-      sorting.map((sort) => `${sort.id}${sortProps?.contact}${sort.desc ? "desc" : "asc"}`).join(","),
-    );
-    currentSearchParams.set("current", `${pagination.pageIndex + 1}`);
-    currentSearchParams.set("page_size", `${pagination.pageSize}`);
-
     const nextSearch = currentSearchParams.toString();
-
-    if (currentSearch !== nextSearch) {
-      console.log("currentSearchParams", nextSearch, "currentSearch", currentSearch);
+    if (searchParams.toString() !== nextSearch) {
+      console.log("currentSearchParams", currentSearchParams, "currentSearch", searchParams);
       const path = `${currentPathname}?${nextSearch}`;
       router.history.push(path.replaceAll("%3A", ":"));
     }
-  }, [router, sorting, currentSearch, isLoading, users.data, users.total, pagination.pageIndex, pagination.pageSize]);
+  }, [router, searchParams, params]);
 
   return (
     <UserTableProvider>
@@ -82,19 +60,23 @@ export default function UserPage() {
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
               <DataTable<API.System.User>
-                data={data}
-                total={total}
+                isLoading={isLoading}
+                sourceData={users.data}
+                total={users.total}
                 columns={columns}
                 toolbars={<UsersPrimaryButtons />}
                 toolbarPosition={"bottom"}
                 sortProps={{
-                  ...sortProps,
                   sorting,
                   setSorting,
                 }}
                 paginationProps={{
                   pagination,
                   setPagination,
+                }}
+                columnFilterProps={{
+                  columnFilters,
+                  setColumnFilters,
                 }}
               />
             </div>

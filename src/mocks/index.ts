@@ -7,9 +7,9 @@ const mockData: Record<string, unknown> = {
 };
 
 const getPaginationData = (data: unknown, params?: API.Params) => {
-  const { current = 0, page_size = 15 } = params || {};
+  const { current = 1, page_size = 15 } = params || {};
   if (data && Array.isArray(data)) {
-    const startIndex = current * page_size;
+    const startIndex = (current - 1) * page_size;
     const endIndex = startIndex + page_size;
 
     const paginatedData = data.slice(startIndex, endIndex);

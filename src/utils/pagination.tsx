@@ -1,6 +1,6 @@
 import { PAGE_SIZE, START_PAGE } from "@/types";
 import GlobalConfig from "@config";
-import { PaginationState, SortingState } from "@tanstack/react-table";
+import { ColumnFilter, ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 
 
 /**
@@ -24,19 +24,37 @@ export function parseParams(params: API.Params, defaultCurrent = START_PAGE, def
   };
 }
 
-export function parseState(
-  state?: PaginationState,
-  defaultCurrent = START_PAGE,
-  defaultPageSize = PAGE_SIZE,
-): API.Params {
+export function parsePagination(state?: PaginationState): API.Params {
+  const { key, pageSizeKey, defaultPageSize, defaultCurrent, backendPageStart } =
+    GlobalConfig.api?.searchOptions?.pagination || {};
   const { pageIndex = defaultCurrent, pageSize = defaultPageSize } = state ?? {};
   return {
-    current: pageIndex,
-    page_size: pageSize,
+    [key]: pageIndex + backendPageStart,
+    [pageSizeKey]: pageSize,
   };
 }
 
-export function searchParamsToSortingState(searchParams: URLSearchParams): SortingState {
+export function getPaginationState(searchParams: URLSearchParams): PaginationState {
+  const { key, pageSizeKey, defaultPageSize, defaultCurrent, backendPageStart } =
+    GlobalConfig.api?.searchOptions?.pagination || {};
+
+  const current = searchParams.has(key) ? Number(searchParams.get(key)) - backendPageStart : defaultCurrent;
+  const pageSize = searchParams.has(pageSizeKey) ? Number(searchParams.get(pageSizeKey)) : defaultPageSize;
+  return { pageIndex: current, pageSize: pageSize };
+}
+
+export function parseSorting(state?: SortingState): API.Params {
+  if (!state || state.length === 0) {
+    return {};
+  }
+  const { key = "sort_by", delimiter = ",", contact = "." } = GlobalConfig.api?.searchOptions?.sort ?? {};
+  const sort = state.map(({ id, desc }) => `${id}${contact}${desc ? "desc" : "asc"}`).join(delimiter);
+  return {
+    [key]: sort,
+  };
+}
+
+export function getSortingState(searchParams: URLSearchParams): SortingState {
   const { key = "sort_by", delimiter = ",", contact = "." } = GlobalConfig.api?.searchOptions?.sort ?? {};
   const sort = searchParams.get(key);
   if (sort === null) {
@@ -48,34 +66,42 @@ export function searchParamsToSortingState(searchParams: URLSearchParams): Sorti
   });
 }
 
-export function getSortingState(searchParams: URLSearchParams): SortingState {
-  const { key, delimiter, contact } = GlobalConfig.api?.searchOptions?.sort || {
-    key: "sort_by",
-    delimiter: ",",
-    contact: ".",
-  };
-  if (!searchParams.has(key)) {
-    return [];
+export function fillSearchParams(searchParams: URLSearchParams, params?: API.Params): URLSearchParams {
+  if (!GlobalConfig.api.bindSearch || !params) {
+    return searchParams;
   }
-  const sort = searchParams.get(key);
-  if (sort === null) {
-    return [];
-  }
-  return sort.split(delimiter).map((sort) => {
-    const [id, desc] = sort.split(contact);
-    return { id, desc: desc === "desc" };
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === null || value === undefined) {
+      searchParams.delete(key);
+    } else {
+      searchParams.set(key, value.toString());
+    }
   });
+
+  return searchParams;
 }
 
-export function getPaginationState(searchParams: URLSearchParams): PaginationState {
-  const { key, pageSizeKey, defaultPageSize, defaultCurrent } = GlobalConfig.api?.searchOptions?.pagination || {
-    key: "current",
-    pageSizeKey: "page_size",
-    defaultPageSize: PAGE_SIZE,
-    defaultCurrent: START_PAGE,
-  };
+export function getColumnFilters(searchParams: URLSearchParams, filters?: string[]): ColumnFiltersState {
+  if (!filters || filters.length === 0) {
+    return [];
+  }
+  return filters
+    .filter((key) => searchParams.has(key))
+    .map((key) => ({
+      id: key,
+      value: searchParams.get(key) ?? "",
+    }));
+}
 
-  const current = searchParams.has("current") ? Number(searchParams.get(key)) - 1 : defaultCurrent;
-  const pageSize = searchParams.has(pageSizeKey) ? Number(searchParams.get(pageSizeKey)) : defaultPageSize;
-  return { pageIndex: current, pageSize: pageSize };
+export function parseColumnFilters(columnFilters: ColumnFiltersState): API.Params {
+  if (!columnFilters || columnFilters.length === 0) {
+    return {};
+  }
+
+  const params: API.Params = {};
+  columnFilters.forEach(({ id, value }: ColumnFilter) => {
+    params[id] = value;
+  });
+  return params;
 }

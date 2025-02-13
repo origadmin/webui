@@ -31,7 +31,7 @@ export async function refreshToken() {
   return "";
 }
 
-export type SignProps<T = API.Token> = {
+export type SignProps<T extends API.Token> = {
   redirectUrl?: string;
   options?: API.RequestOptions;
   callback?: (token: T | Promise<T>) => void;

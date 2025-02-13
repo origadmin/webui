@@ -1,4 +1,4 @@
-import defineConfig from "@/utils/config";
+import defineConfig from "@/utils/configuration";
 
 const config = {};
 

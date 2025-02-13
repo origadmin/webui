@@ -3,7 +3,9 @@ import { UserIconRowActions } from "@/pages/system/user/components/users-row-act
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { DataTableColumnType } from "@/components/DataTable";
+import { FacetedFilter } from "@/components/DataTable/faceted-filter";
 import LongText from "@/components/long-text";
 
 const headerMeta = {
@@ -59,6 +61,16 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
     meta: headerMeta.meta,
+    searchable: true,
+    renderSearch: (column, index, table) => (
+      <Input
+        key={index}
+        placeholder={`Filter ${column.headerTitle || "nickname"}...`}
+        value={(table.getColumn("nickname")?.getFilterValue() as string) ?? ""}
+        onChange={(event) => table.getColumn("nickname")?.setFilterValue(event.target.value)}
+        className='h-8 w-[120px] lg:w-[250px]'
+      />
+    ),
   },
   {
     accessorKey: "email",
@@ -93,6 +105,19 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     filterFn: (row, id, value: string[]) => {
       return value.includes(row.getValue(id));
     },
+    searchable: true,
+    renderSearch: (_column, _index, table) => (
+      <FacetedFilter
+        column={table.getColumn("status")}
+        title={"Status"}
+        options={[
+          { label: "Active", value: "active" },
+          { label: "Inactive", value: "inactive" },
+          { label: "Invited", value: "invited" },
+          { label: "Suspended", value: "suspended" },
+        ]}
+      />
+    ),
     meta: headerMeta.meta,
     enableHiding: false,
     enableSorting: false,
