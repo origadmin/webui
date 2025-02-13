@@ -66,7 +66,7 @@ const defineConfig = (config?: RuntimeConfigType): RuntimeConfigType => {
         ...configFromFile,
       };
     } catch (error) {
-      console.error("Error reading or parsing .config file:", error);
+      console.warn("Error reading or parsing .config file:", error);
     }
   }
 
