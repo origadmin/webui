@@ -9,12 +9,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DataTableColumnType } from "@/components/DataTable";
 
 export interface ViewOptionsProps<TData> {
   table: Table<TData>;
 }
 
 export function ViewOptions<TData>({ table }: ViewOptionsProps<TData>) {
+  const columns = table
+    .getAllColumns()
+    .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide());
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -26,21 +31,19 @@ export function ViewOptions<TData>({ table }: ViewOptionsProps<TData>) {
       <DropdownMenuContent align='end' className='w-[150px]'>
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {table
-          .getAllColumns()
-          .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
-          .map((column) => {
-            return (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                className='capitalize'
-                checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
-              >
-                {column.id}
-              </DropdownMenuCheckboxItem>
-            );
-          })}
+        {columns.map((column) => {
+          const columnDef = column.columnDef as DataTableColumnType<TData, never>;
+          return (
+            <DropdownMenuCheckboxItem
+              key={column.id}
+              className='capitalize'
+              checked={column.getIsVisible()}
+              onCheckedChange={(value) => column.toggleVisibility(!!value)}
+            >
+              {columnDef.headerTitle || column.id}
+            </DropdownMenuCheckboxItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

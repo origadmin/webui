@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import {
   ColumnFiltersState,
@@ -45,10 +45,20 @@ declare module "@tanstack/react-table" {
 type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   accessorKey?: string;
   searchable?: boolean;
-  renderSearch?: (column: Column<TData, TValue>, table: ReactTable<TData>) => ReactNode;
+  renderSearch?: (column: ColumnType<TData, TValue>, index: number, table: ReactTable<TData>) => ReactNode;
   headerTitle?: string;
   meta: ColumnMeta<TData, TValue>;
 };
+
+// type QueryOption<
+//   TQueryFnData = unknown,
+//   TError = DefaultError,
+//   TData = TQueryFnData,
+//   TQueryKey extends QueryKey = QueryKey,
+// > =
+//   | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
+//   | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
+//   | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>;
 
 interface SortProps {
   key?: string;
@@ -58,11 +68,14 @@ interface SortProps {
   setSorting?: OnChangeFn<SortingState>;
 }
 
-
+interface ColumnFilterProps {
+  columnFilters?: ColumnFiltersState;
+  setColumnFilters?: OnChangeFn<ColumnFiltersState>;
+}
 
 interface DataTableProps<T> {
-  data: T[];
   columns: ColumnType<T>[];
+  sourceData?: T[];
   total?: number;
   searchBarProps?: SearchBarProps<T>;
   showToolbarStatistics?: boolean;
@@ -71,8 +84,10 @@ interface DataTableProps<T> {
   toolbarPosition?: "top" | "bottom";
   toolbars?: TitleBarProps<T>["toolbars"];
   paginationState?: PaginationState;
+  columnFiltersState?: ColumnFiltersState;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
   paginationProps?: Omit<PaginationProps<T>, "table">;
+  columnFilterProps?: ColumnFilterProps;
   titleBarProps?: TitleBarProps<T>;
   sortProps?: SortProps;
   isLoading?: boolean;
@@ -123,27 +138,27 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
 function DataTable<T>({
   columns,
   toolbars,
-  data,
+  sourceData = [],
   total = 0,
   paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
+  columnFiltersState = [],
   showToolbarStatistics = true,
   showPagination = true,
   useManual = true,
   toolbarPosition = "top",
   sizeOptions = PAGE_SIZE_OPTIONS,
   paginationProps,
+  columnFilterProps,
   titleBarProps,
   sortProps,
   isLoading,
 }: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [_columnFilters, _setColumnFilters] = useState<ColumnFiltersState>(columnFiltersState);
   const [_pagination, _setPagination] = useState<PaginationState>(paginationState);
   const { pagination, setPagination } = paginationProps ?? {
     pagination: _pagination,
-    isLoading: isLoading,
-    // isSaving: isCreatingUser || isUpdatingUser || isDeletingUser,
     setPagination: _setPagination,
   };
   const [_sorting, _setSorting] = useState<SortingState>([]);
@@ -151,6 +166,18 @@ function DataTable<T>({
     sorting: _sorting,
     setSorting: _setSorting,
   };
+  const { columnFilters, setColumnFilters } = columnFilterProps ?? {
+    columnFilters: _columnFilters,
+    setColumnFilters: _setColumnFilters,
+  };
+
+  const [data, setData] = useState(sourceData || []);
+  const [rowCount, setRowCount] = useState(total || 0);
+  useEffect(() => {
+    if (isLoading) return;
+    setData(sourceData);
+    setRowCount(total);
+  }, [isLoading, sourceData, total]);
 
   const manualProps = useManual
     ? {
@@ -162,7 +189,7 @@ function DataTable<T>({
   const table = useReactTable({
     data,
     columns,
-    rowCount: total,
+    rowCount,
     state: {
       pagination,
       sorting,
@@ -196,7 +223,7 @@ function DataTable<T>({
         table={table}
         toolbars={toolbarPosition === "top" ? toolbars : undefined}
         showStatistics={showToolbarStatistics}
-        total={total}
+        total={rowCount}
       />
       <div className='rounded-md border'>
         <Table>
@@ -235,4 +262,4 @@ export {
   ColumnHeader as DataTableColumnHeader,
   SearchBar as DataTableSearchBar,
 };
-export { DataTable, DefaultSortProps };
+export { DataTable };

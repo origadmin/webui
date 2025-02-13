@@ -15,7 +15,8 @@ export interface PaginationProps<T> {
 
 export function Pagination<T>({ table, sizeOptions = [], toolbars }: PaginationProps<T>) {
   const pageSize = table.getState().pagination.pageSize;
-  const pageIndex = table.getState().pagination.pageIndex;
+  const pageCount = table.getPageCount();
+  const pageIndex = pageCount === 0 ? 0 : table.getState().pagination.pageIndex + 1;
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
   const totalCount = table.getFilteredRowModel().rows.length;
 
@@ -48,7 +49,7 @@ export function Pagination<T>({ table, sizeOptions = [], toolbars }: PaginationP
           </Select>
         </div>
         <div className='flex w-[120px] items-center justify-center text-sm font-medium'>
-          Page {pageIndex + 1} of {table.getPageCount()}
+          Page {pageIndex} of {pageCount}
         </div>
         <div className='flex items-center space-x-2'>
           <Button
