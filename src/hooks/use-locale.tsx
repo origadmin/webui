@@ -3,7 +3,7 @@ import enUS from "@/locales/en-US";
 import jaJP from "@/locales/ja-JP";
 import zhCN from "@/locales/zh-CN";
 import zhTW from "@/locales/zh-TW";
-import { noop } from "@tanstack/react-table";
+import { noop } from "@/utils";
 import { IntlProvider } from "react-intl";
 
 const defaultLocale = "en-US";

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { Storage } from "@/utils";
+import { Storage, noop } from "@/utils";
 
 type ContextType<T = unknown> = {
   isAuthenticated: () => boolean;
@@ -18,10 +18,10 @@ type ContextType<T = unknown> = {
 const Context = createContext<ContextType>({
   isAuthenticated: () => false,
   token: null,
-  setToken: () => void {},
-  setAccess: () => void {},
+  setToken: noop,
+  setAccess: noop,
   initialData: {} as unknown,
-  setInitialData: () => void {},
+  setInitialData: noop,
 });
 
 export type AuthProviderProps<T = unknown> = {
