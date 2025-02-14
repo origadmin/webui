@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router";
-
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
@@ -17,63 +15,32 @@ import { Route as OpenapiImport } from "./routes/openapi";
 import { Route as AuthorizationImport } from "./routes/_authorization";
 import { Route as AuthorizationIndexImport } from "./routes/_authorization/index";
 import { Route as ErrorsComingSoonImport } from "./routes/(Errors)/coming-soon";
+import { Route as Errors503Import } from "./routes/(Errors)/503";
+import { Route as Errors500Import } from "./routes/(Errors)/500";
+import { Route as Errors404Import } from "./routes/(Errors)/404";
+import { Route as Errors403Import } from "./routes/(Errors)/403";
+import { Route as Errors401Import } from "./routes/(Errors)/401";
 import { Route as AuthSignUpImport } from "./routes/(Auth)/sign-up";
 import { Route as AuthSignIn2Import } from "./routes/(Auth)/sign-in-2";
 import { Route as AuthSignInImport } from "./routes/(Auth)/sign-in";
 import { Route as AuthOtpImport } from "./routes/(Auth)/otp";
 import { Route as AuthForgotPasswordImport } from "./routes/(Auth)/forgot-password";
+import { Route as AuthorizationTasksIndexImport } from "./routes/_authorization/tasks/index";
 import { Route as AuthorizationDashboardIndexImport } from "./routes/_authorization/dashboard/index";
+import { Route as AuthorizationChatsIndexImport } from "./routes/_authorization/chats/index";
+import { Route as AuthorizationAppsIndexImport } from "./routes/_authorization/apps/index";
+import { Route as AuthorizationSystemUserImport } from "./routes/_authorization/system/user";
+import { Route as AuthorizationSystemSettingsImport } from "./routes/_authorization/system/settings";
+import { Route as AuthorizationSystemRoleImport } from "./routes/_authorization/system/role";
+import { Route as AuthorizationDashboardSettingsImport } from "./routes/_authorization/dashboard/settings";
+import { Route as AuthorizationDashboardProductsImport } from "./routes/_authorization/dashboard/products";
+import { Route as AuthorizationDashboardOverviewImport } from "./routes/_authorization/dashboard/overview";
+import { Route as AuthorizationDashboardMonitorImport } from "./routes/_authorization/dashboard/monitor";
+import { Route as AuthorizationDashboardCustomersImport } from "./routes/_authorization/dashboard/customers";
 import { Route as AuthorizationExamplesListIndexImport } from "./routes/_authorization/examples/list/index";
-
-// Create Virtual Routes
-
-const Errors503LazyImport = createFileRoute("/(Errors)/503")();
-const Errors500LazyImport = createFileRoute("/(Errors)/500")();
-const Errors404LazyImport = createFileRoute("/(Errors)/404")();
-const Errors403LazyImport = createFileRoute("/(Errors)/403")();
-const Errors401LazyImport = createFileRoute("/(Errors)/401")();
-const AuthorizationTasksIndexLazyImport = createFileRoute(
-  "/_authorization/tasks/",
-)();
-const AuthorizationChatsIndexLazyImport = createFileRoute(
-  "/_authorization/chats/",
-)();
-const AuthorizationAppsIndexLazyImport = createFileRoute(
-  "/_authorization/apps/",
-)();
-const AuthorizationSystemUserLazyImport = createFileRoute(
-  "/_authorization/system/user",
-)();
-const AuthorizationSystemSettingsLazyImport = createFileRoute(
-  "/_authorization/system/settings",
-)();
-const AuthorizationSystemRoleLazyImport = createFileRoute(
-  "/_authorization/system/role",
-)();
-const AuthorizationDashboardSettingsLazyImport = createFileRoute(
-  "/_authorization/dashboard/settings",
-)();
-const AuthorizationDashboardProductsLazyImport = createFileRoute(
-  "/_authorization/dashboard/products",
-)();
-const AuthorizationDashboardOverviewLazyImport = createFileRoute(
-  "/_authorization/dashboard/overview",
-)();
-const AuthorizationDashboardMonitorLazyImport = createFileRoute(
-  "/_authorization/dashboard/monitor",
-)();
-const AuthorizationDashboardCustomersLazyImport = createFileRoute(
-  "/_authorization/dashboard/customers",
-)();
-const AuthorizationExamplesFormSimpleLazyImport = createFileRoute(
-  "/_authorization/examples/form/simple",
-)();
-const AuthorizationExamplesFormBasicLazyImport = createFileRoute(
-  "/_authorization/examples/form/basic",
-)();
-const AuthorizationExamplesFormAdvancedLazyImport = createFileRoute(
-  "/_authorization/examples/form/advanced",
-)();
+import { Route as AuthorizationExamplesFormSimpleImport } from "./routes/_authorization/examples/form/simple";
+import { Route as AuthorizationExamplesFormBasicImport } from "./routes/_authorization/examples/form/basic";
+import { Route as AuthorizationExamplesFormAdvancedImport } from "./routes/_authorization/examples/form/advanced";
 
 // Create/Update Routes
 
@@ -94,39 +61,39 @@ const AuthorizationIndexRoute = AuthorizationIndexImport.update({
   getParentRoute: () => AuthorizationRoute,
 } as any);
 
-const Errors503LazyRoute = Errors503LazyImport.update({
-  id: "/(Errors)/503",
-  path: "/503",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/(Errors)/503.lazy").then((d) => d.Route));
-
-const Errors500LazyRoute = Errors500LazyImport.update({
-  id: "/(Errors)/500",
-  path: "/500",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/(Errors)/500.lazy").then((d) => d.Route));
-
-const Errors404LazyRoute = Errors404LazyImport.update({
-  id: "/(Errors)/404",
-  path: "/404",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/(Errors)/404.lazy").then((d) => d.Route));
-
-const Errors403LazyRoute = Errors403LazyImport.update({
-  id: "/(Errors)/403",
-  path: "/403",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/(Errors)/403.lazy").then((d) => d.Route));
-
-const Errors401LazyRoute = Errors401LazyImport.update({
-  id: "/(Errors)/401",
-  path: "/401",
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/(Errors)/401.lazy").then((d) => d.Route));
-
 const ErrorsComingSoonRoute = ErrorsComingSoonImport.update({
   id: "/(Errors)/coming-soon",
   path: "/coming-soon",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const Errors503Route = Errors503Import.update({
+  id: "/(Errors)/503",
+  path: "/503",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const Errors500Route = Errors500Import.update({
+  id: "/(Errors)/500",
+  path: "/500",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const Errors404Route = Errors404Import.update({
+  id: "/(Errors)/404",
+  path: "/404",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const Errors403Route = Errors403Import.update({
+  id: "/(Errors)/403",
+  path: "/403",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const Errors401Route = Errors401Import.update({
+  id: "/(Errors)/401",
+  path: "/401",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -160,33 +127,11 @@ const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
-const AuthorizationTasksIndexLazyRoute =
-  AuthorizationTasksIndexLazyImport.update({
-    id: "/tasks/",
-    path: "/tasks/",
-    getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/tasks/index.lazy").then((d) => d.Route),
-  );
-
-const AuthorizationChatsIndexLazyRoute =
-  AuthorizationChatsIndexLazyImport.update({
-    id: "/chats/",
-    path: "/chats/",
-    getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/chats/index.lazy").then((d) => d.Route),
-  );
-
-const AuthorizationAppsIndexLazyRoute = AuthorizationAppsIndexLazyImport.update(
-  {
-    id: "/apps/",
-    path: "/apps/",
-    getParentRoute: () => AuthorizationRoute,
-  } as any,
-).lazy(() =>
-  import("./routes/_authorization/apps/index.lazy").then((d) => d.Route),
-);
+const AuthorizationTasksIndexRoute = AuthorizationTasksIndexImport.update({
+  id: "/tasks/",
+  path: "/tasks/",
+  getParentRoute: () => AuthorizationRoute,
+} as any);
 
 const AuthorizationDashboardIndexRoute =
   AuthorizationDashboardIndexImport.update({
@@ -195,87 +140,71 @@ const AuthorizationDashboardIndexRoute =
     getParentRoute: () => AuthorizationRoute,
   } as any);
 
-const AuthorizationSystemUserLazyRoute =
-  AuthorizationSystemUserLazyImport.update({
-    id: "/system/user",
-    path: "/system/user",
-    getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/system/user.lazy").then((d) => d.Route),
-  );
+const AuthorizationChatsIndexRoute = AuthorizationChatsIndexImport.update({
+  id: "/chats/",
+  path: "/chats/",
+  getParentRoute: () => AuthorizationRoute,
+} as any);
 
-const AuthorizationSystemSettingsLazyRoute =
-  AuthorizationSystemSettingsLazyImport.update({
+const AuthorizationAppsIndexRoute = AuthorizationAppsIndexImport.update({
+  id: "/apps/",
+  path: "/apps/",
+  getParentRoute: () => AuthorizationRoute,
+} as any);
+
+const AuthorizationSystemUserRoute = AuthorizationSystemUserImport.update({
+  id: "/system/user",
+  path: "/system/user",
+  getParentRoute: () => AuthorizationRoute,
+} as any);
+
+const AuthorizationSystemSettingsRoute =
+  AuthorizationSystemSettingsImport.update({
     id: "/system/settings",
     path: "/system/settings",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/system/settings.lazy").then((d) => d.Route),
-  );
+  } as any);
 
-const AuthorizationSystemRoleLazyRoute =
-  AuthorizationSystemRoleLazyImport.update({
-    id: "/system/role",
-    path: "/system/role",
-    getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/system/role.lazy").then((d) => d.Route),
-  );
+const AuthorizationSystemRoleRoute = AuthorizationSystemRoleImport.update({
+  id: "/system/role",
+  path: "/system/role",
+  getParentRoute: () => AuthorizationRoute,
+} as any);
 
-const AuthorizationDashboardSettingsLazyRoute =
-  AuthorizationDashboardSettingsLazyImport.update({
+const AuthorizationDashboardSettingsRoute =
+  AuthorizationDashboardSettingsImport.update({
     id: "/dashboard/settings",
     path: "/dashboard/settings",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/dashboard/settings.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
-const AuthorizationDashboardProductsLazyRoute =
-  AuthorizationDashboardProductsLazyImport.update({
+const AuthorizationDashboardProductsRoute =
+  AuthorizationDashboardProductsImport.update({
     id: "/dashboard/products",
     path: "/dashboard/products",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/dashboard/products.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
-const AuthorizationDashboardOverviewLazyRoute =
-  AuthorizationDashboardOverviewLazyImport.update({
+const AuthorizationDashboardOverviewRoute =
+  AuthorizationDashboardOverviewImport.update({
     id: "/dashboard/overview",
     path: "/dashboard/overview",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/dashboard/overview.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
-const AuthorizationDashboardMonitorLazyRoute =
-  AuthorizationDashboardMonitorLazyImport.update({
+const AuthorizationDashboardMonitorRoute =
+  AuthorizationDashboardMonitorImport.update({
     id: "/dashboard/monitor",
     path: "/dashboard/monitor",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/dashboard/monitor.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
-const AuthorizationDashboardCustomersLazyRoute =
-  AuthorizationDashboardCustomersLazyImport.update({
+const AuthorizationDashboardCustomersRoute =
+  AuthorizationDashboardCustomersImport.update({
     id: "/dashboard/customers",
     path: "/dashboard/customers",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/dashboard/customers.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
 const AuthorizationExamplesListIndexRoute =
   AuthorizationExamplesListIndexImport.update({
@@ -284,38 +213,26 @@ const AuthorizationExamplesListIndexRoute =
     getParentRoute: () => AuthorizationRoute,
   } as any);
 
-const AuthorizationExamplesFormSimpleLazyRoute =
-  AuthorizationExamplesFormSimpleLazyImport.update({
+const AuthorizationExamplesFormSimpleRoute =
+  AuthorizationExamplesFormSimpleImport.update({
     id: "/examples/form/simple",
     path: "/examples/form/simple",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/examples/form/simple.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
-const AuthorizationExamplesFormBasicLazyRoute =
-  AuthorizationExamplesFormBasicLazyImport.update({
+const AuthorizationExamplesFormBasicRoute =
+  AuthorizationExamplesFormBasicImport.update({
     id: "/examples/form/basic",
     path: "/examples/form/basic",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/examples/form/basic.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
-const AuthorizationExamplesFormAdvancedLazyRoute =
-  AuthorizationExamplesFormAdvancedLazyImport.update({
+const AuthorizationExamplesFormAdvancedRoute =
+  AuthorizationExamplesFormAdvancedImport.update({
     id: "/examples/form/advanced",
     path: "/examples/form/advanced",
     getParentRoute: () => AuthorizationRoute,
-  } as any).lazy(() =>
-    import("./routes/_authorization/examples/form/advanced.lazy").then(
-      (d) => d.Route,
-    ),
-  );
+  } as any);
 
 // Populate the FileRoutesByPath interface
 
@@ -370,46 +287,46 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthSignUpImport;
       parentRoute: typeof rootRoute;
     };
-    "/(Errors)/coming-soon": {
-      id: "/(Errors)/coming-soon";
-      path: "/coming-soon";
-      fullPath: "/coming-soon";
-      preLoaderRoute: typeof ErrorsComingSoonImport;
-      parentRoute: typeof rootRoute;
-    };
     "/(Errors)/401": {
       id: "/(Errors)/401";
       path: "/401";
       fullPath: "/401";
-      preLoaderRoute: typeof Errors401LazyImport;
+      preLoaderRoute: typeof Errors401Import;
       parentRoute: typeof rootRoute;
     };
     "/(Errors)/403": {
       id: "/(Errors)/403";
       path: "/403";
       fullPath: "/403";
-      preLoaderRoute: typeof Errors403LazyImport;
+      preLoaderRoute: typeof Errors403Import;
       parentRoute: typeof rootRoute;
     };
     "/(Errors)/404": {
       id: "/(Errors)/404";
       path: "/404";
       fullPath: "/404";
-      preLoaderRoute: typeof Errors404LazyImport;
+      preLoaderRoute: typeof Errors404Import;
       parentRoute: typeof rootRoute;
     };
     "/(Errors)/500": {
       id: "/(Errors)/500";
       path: "/500";
       fullPath: "/500";
-      preLoaderRoute: typeof Errors500LazyImport;
+      preLoaderRoute: typeof Errors500Import;
       parentRoute: typeof rootRoute;
     };
     "/(Errors)/503": {
       id: "/(Errors)/503";
       path: "/503";
       fullPath: "/503";
-      preLoaderRoute: typeof Errors503LazyImport;
+      preLoaderRoute: typeof Errors503Import;
+      parentRoute: typeof rootRoute;
+    };
+    "/(Errors)/coming-soon": {
+      id: "/(Errors)/coming-soon";
+      path: "/coming-soon";
+      fullPath: "/coming-soon";
+      preLoaderRoute: typeof ErrorsComingSoonImport;
       parentRoute: typeof rootRoute;
     };
     "/_authorization/": {
@@ -423,56 +340,70 @@ declare module "@tanstack/react-router" {
       id: "/_authorization/dashboard/customers";
       path: "/dashboard/customers";
       fullPath: "/dashboard/customers";
-      preLoaderRoute: typeof AuthorizationDashboardCustomersLazyImport;
+      preLoaderRoute: typeof AuthorizationDashboardCustomersImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/dashboard/monitor": {
       id: "/_authorization/dashboard/monitor";
       path: "/dashboard/monitor";
       fullPath: "/dashboard/monitor";
-      preLoaderRoute: typeof AuthorizationDashboardMonitorLazyImport;
+      preLoaderRoute: typeof AuthorizationDashboardMonitorImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/dashboard/overview": {
       id: "/_authorization/dashboard/overview";
       path: "/dashboard/overview";
       fullPath: "/dashboard/overview";
-      preLoaderRoute: typeof AuthorizationDashboardOverviewLazyImport;
+      preLoaderRoute: typeof AuthorizationDashboardOverviewImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/dashboard/products": {
       id: "/_authorization/dashboard/products";
       path: "/dashboard/products";
       fullPath: "/dashboard/products";
-      preLoaderRoute: typeof AuthorizationDashboardProductsLazyImport;
+      preLoaderRoute: typeof AuthorizationDashboardProductsImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/dashboard/settings": {
       id: "/_authorization/dashboard/settings";
       path: "/dashboard/settings";
       fullPath: "/dashboard/settings";
-      preLoaderRoute: typeof AuthorizationDashboardSettingsLazyImport;
+      preLoaderRoute: typeof AuthorizationDashboardSettingsImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/system/role": {
       id: "/_authorization/system/role";
       path: "/system/role";
       fullPath: "/system/role";
-      preLoaderRoute: typeof AuthorizationSystemRoleLazyImport;
+      preLoaderRoute: typeof AuthorizationSystemRoleImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/system/settings": {
       id: "/_authorization/system/settings";
       path: "/system/settings";
       fullPath: "/system/settings";
-      preLoaderRoute: typeof AuthorizationSystemSettingsLazyImport;
+      preLoaderRoute: typeof AuthorizationSystemSettingsImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/system/user": {
       id: "/_authorization/system/user";
       path: "/system/user";
       fullPath: "/system/user";
-      preLoaderRoute: typeof AuthorizationSystemUserLazyImport;
+      preLoaderRoute: typeof AuthorizationSystemUserImport;
+      parentRoute: typeof AuthorizationImport;
+    };
+    "/_authorization/apps/": {
+      id: "/_authorization/apps/";
+      path: "/apps";
+      fullPath: "/apps";
+      preLoaderRoute: typeof AuthorizationAppsIndexImport;
+      parentRoute: typeof AuthorizationImport;
+    };
+    "/_authorization/chats/": {
+      id: "/_authorization/chats/";
+      path: "/chats";
+      fullPath: "/chats";
+      preLoaderRoute: typeof AuthorizationChatsIndexImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/dashboard/": {
@@ -482,46 +413,32 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationDashboardIndexImport;
       parentRoute: typeof AuthorizationImport;
     };
-    "/_authorization/apps/": {
-      id: "/_authorization/apps/";
-      path: "/apps";
-      fullPath: "/apps";
-      preLoaderRoute: typeof AuthorizationAppsIndexLazyImport;
-      parentRoute: typeof AuthorizationImport;
-    };
-    "/_authorization/chats/": {
-      id: "/_authorization/chats/";
-      path: "/chats";
-      fullPath: "/chats";
-      preLoaderRoute: typeof AuthorizationChatsIndexLazyImport;
-      parentRoute: typeof AuthorizationImport;
-    };
     "/_authorization/tasks/": {
       id: "/_authorization/tasks/";
       path: "/tasks";
       fullPath: "/tasks";
-      preLoaderRoute: typeof AuthorizationTasksIndexLazyImport;
+      preLoaderRoute: typeof AuthorizationTasksIndexImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/examples/form/advanced": {
       id: "/_authorization/examples/form/advanced";
       path: "/examples/form/advanced";
       fullPath: "/examples/form/advanced";
-      preLoaderRoute: typeof AuthorizationExamplesFormAdvancedLazyImport;
+      preLoaderRoute: typeof AuthorizationExamplesFormAdvancedImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/examples/form/basic": {
       id: "/_authorization/examples/form/basic";
       path: "/examples/form/basic";
       fullPath: "/examples/form/basic";
-      preLoaderRoute: typeof AuthorizationExamplesFormBasicLazyImport;
+      preLoaderRoute: typeof AuthorizationExamplesFormBasicImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/examples/form/simple": {
       id: "/_authorization/examples/form/simple";
       path: "/examples/form/simple";
       fullPath: "/examples/form/simple";
-      preLoaderRoute: typeof AuthorizationExamplesFormSimpleLazyImport;
+      preLoaderRoute: typeof AuthorizationExamplesFormSimpleImport;
       parentRoute: typeof AuthorizationImport;
     };
     "/_authorization/examples/list/": {
@@ -538,49 +455,42 @@ declare module "@tanstack/react-router" {
 
 interface AuthorizationRouteChildren {
   AuthorizationIndexRoute: typeof AuthorizationIndexRoute;
-  AuthorizationDashboardCustomersLazyRoute: typeof AuthorizationDashboardCustomersLazyRoute;
-  AuthorizationDashboardMonitorLazyRoute: typeof AuthorizationDashboardMonitorLazyRoute;
-  AuthorizationDashboardOverviewLazyRoute: typeof AuthorizationDashboardOverviewLazyRoute;
-  AuthorizationDashboardProductsLazyRoute: typeof AuthorizationDashboardProductsLazyRoute;
-  AuthorizationDashboardSettingsLazyRoute: typeof AuthorizationDashboardSettingsLazyRoute;
-  AuthorizationSystemRoleLazyRoute: typeof AuthorizationSystemRoleLazyRoute;
-  AuthorizationSystemSettingsLazyRoute: typeof AuthorizationSystemSettingsLazyRoute;
-  AuthorizationSystemUserLazyRoute: typeof AuthorizationSystemUserLazyRoute;
+  AuthorizationDashboardCustomersRoute: typeof AuthorizationDashboardCustomersRoute;
+  AuthorizationDashboardMonitorRoute: typeof AuthorizationDashboardMonitorRoute;
+  AuthorizationDashboardOverviewRoute: typeof AuthorizationDashboardOverviewRoute;
+  AuthorizationDashboardProductsRoute: typeof AuthorizationDashboardProductsRoute;
+  AuthorizationDashboardSettingsRoute: typeof AuthorizationDashboardSettingsRoute;
+  AuthorizationSystemRoleRoute: typeof AuthorizationSystemRoleRoute;
+  AuthorizationSystemSettingsRoute: typeof AuthorizationSystemSettingsRoute;
+  AuthorizationSystemUserRoute: typeof AuthorizationSystemUserRoute;
+  AuthorizationAppsIndexRoute: typeof AuthorizationAppsIndexRoute;
+  AuthorizationChatsIndexRoute: typeof AuthorizationChatsIndexRoute;
   AuthorizationDashboardIndexRoute: typeof AuthorizationDashboardIndexRoute;
-  AuthorizationAppsIndexLazyRoute: typeof AuthorizationAppsIndexLazyRoute;
-  AuthorizationChatsIndexLazyRoute: typeof AuthorizationChatsIndexLazyRoute;
-  AuthorizationTasksIndexLazyRoute: typeof AuthorizationTasksIndexLazyRoute;
-  AuthorizationExamplesFormAdvancedLazyRoute: typeof AuthorizationExamplesFormAdvancedLazyRoute;
-  AuthorizationExamplesFormBasicLazyRoute: typeof AuthorizationExamplesFormBasicLazyRoute;
-  AuthorizationExamplesFormSimpleLazyRoute: typeof AuthorizationExamplesFormSimpleLazyRoute;
+  AuthorizationTasksIndexRoute: typeof AuthorizationTasksIndexRoute;
+  AuthorizationExamplesFormAdvancedRoute: typeof AuthorizationExamplesFormAdvancedRoute;
+  AuthorizationExamplesFormBasicRoute: typeof AuthorizationExamplesFormBasicRoute;
+  AuthorizationExamplesFormSimpleRoute: typeof AuthorizationExamplesFormSimpleRoute;
   AuthorizationExamplesListIndexRoute: typeof AuthorizationExamplesListIndexRoute;
 }
 
 const AuthorizationRouteChildren: AuthorizationRouteChildren = {
   AuthorizationIndexRoute: AuthorizationIndexRoute,
-  AuthorizationDashboardCustomersLazyRoute:
-    AuthorizationDashboardCustomersLazyRoute,
-  AuthorizationDashboardMonitorLazyRoute:
-    AuthorizationDashboardMonitorLazyRoute,
-  AuthorizationDashboardOverviewLazyRoute:
-    AuthorizationDashboardOverviewLazyRoute,
-  AuthorizationDashboardProductsLazyRoute:
-    AuthorizationDashboardProductsLazyRoute,
-  AuthorizationDashboardSettingsLazyRoute:
-    AuthorizationDashboardSettingsLazyRoute,
-  AuthorizationSystemRoleLazyRoute: AuthorizationSystemRoleLazyRoute,
-  AuthorizationSystemSettingsLazyRoute: AuthorizationSystemSettingsLazyRoute,
-  AuthorizationSystemUserLazyRoute: AuthorizationSystemUserLazyRoute,
+  AuthorizationDashboardCustomersRoute: AuthorizationDashboardCustomersRoute,
+  AuthorizationDashboardMonitorRoute: AuthorizationDashboardMonitorRoute,
+  AuthorizationDashboardOverviewRoute: AuthorizationDashboardOverviewRoute,
+  AuthorizationDashboardProductsRoute: AuthorizationDashboardProductsRoute,
+  AuthorizationDashboardSettingsRoute: AuthorizationDashboardSettingsRoute,
+  AuthorizationSystemRoleRoute: AuthorizationSystemRoleRoute,
+  AuthorizationSystemSettingsRoute: AuthorizationSystemSettingsRoute,
+  AuthorizationSystemUserRoute: AuthorizationSystemUserRoute,
+  AuthorizationAppsIndexRoute: AuthorizationAppsIndexRoute,
+  AuthorizationChatsIndexRoute: AuthorizationChatsIndexRoute,
   AuthorizationDashboardIndexRoute: AuthorizationDashboardIndexRoute,
-  AuthorizationAppsIndexLazyRoute: AuthorizationAppsIndexLazyRoute,
-  AuthorizationChatsIndexLazyRoute: AuthorizationChatsIndexLazyRoute,
-  AuthorizationTasksIndexLazyRoute: AuthorizationTasksIndexLazyRoute,
-  AuthorizationExamplesFormAdvancedLazyRoute:
-    AuthorizationExamplesFormAdvancedLazyRoute,
-  AuthorizationExamplesFormBasicLazyRoute:
-    AuthorizationExamplesFormBasicLazyRoute,
-  AuthorizationExamplesFormSimpleLazyRoute:
-    AuthorizationExamplesFormSimpleLazyRoute,
+  AuthorizationTasksIndexRoute: AuthorizationTasksIndexRoute,
+  AuthorizationExamplesFormAdvancedRoute:
+    AuthorizationExamplesFormAdvancedRoute,
+  AuthorizationExamplesFormBasicRoute: AuthorizationExamplesFormBasicRoute,
+  AuthorizationExamplesFormSimpleRoute: AuthorizationExamplesFormSimpleRoute,
   AuthorizationExamplesListIndexRoute: AuthorizationExamplesListIndexRoute,
 };
 
@@ -596,28 +506,28 @@ export interface FileRoutesByFullPath {
   "/sign-in": typeof AuthSignInRoute;
   "/sign-in-2": typeof AuthSignIn2Route;
   "/sign-up": typeof AuthSignUpRoute;
+  "/401": typeof Errors401Route;
+  "/403": typeof Errors403Route;
+  "/404": typeof Errors404Route;
+  "/500": typeof Errors500Route;
+  "/503": typeof Errors503Route;
   "/coming-soon": typeof ErrorsComingSoonRoute;
-  "/401": typeof Errors401LazyRoute;
-  "/403": typeof Errors403LazyRoute;
-  "/404": typeof Errors404LazyRoute;
-  "/500": typeof Errors500LazyRoute;
-  "/503": typeof Errors503LazyRoute;
   "/": typeof AuthorizationIndexRoute;
-  "/dashboard/customers": typeof AuthorizationDashboardCustomersLazyRoute;
-  "/dashboard/monitor": typeof AuthorizationDashboardMonitorLazyRoute;
-  "/dashboard/overview": typeof AuthorizationDashboardOverviewLazyRoute;
-  "/dashboard/products": typeof AuthorizationDashboardProductsLazyRoute;
-  "/dashboard/settings": typeof AuthorizationDashboardSettingsLazyRoute;
-  "/system/role": typeof AuthorizationSystemRoleLazyRoute;
-  "/system/settings": typeof AuthorizationSystemSettingsLazyRoute;
-  "/system/user": typeof AuthorizationSystemUserLazyRoute;
+  "/dashboard/customers": typeof AuthorizationDashboardCustomersRoute;
+  "/dashboard/monitor": typeof AuthorizationDashboardMonitorRoute;
+  "/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
+  "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
+  "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/system/role": typeof AuthorizationSystemRoleRoute;
+  "/system/settings": typeof AuthorizationSystemSettingsRoute;
+  "/system/user": typeof AuthorizationSystemUserRoute;
+  "/apps": typeof AuthorizationAppsIndexRoute;
+  "/chats": typeof AuthorizationChatsIndexRoute;
   "/dashboard": typeof AuthorizationDashboardIndexRoute;
-  "/apps": typeof AuthorizationAppsIndexLazyRoute;
-  "/chats": typeof AuthorizationChatsIndexLazyRoute;
-  "/tasks": typeof AuthorizationTasksIndexLazyRoute;
-  "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedLazyRoute;
-  "/examples/form/basic": typeof AuthorizationExamplesFormBasicLazyRoute;
-  "/examples/form/simple": typeof AuthorizationExamplesFormSimpleLazyRoute;
+  "/tasks": typeof AuthorizationTasksIndexRoute;
+  "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedRoute;
+  "/examples/form/basic": typeof AuthorizationExamplesFormBasicRoute;
+  "/examples/form/simple": typeof AuthorizationExamplesFormSimpleRoute;
   "/examples/list": typeof AuthorizationExamplesListIndexRoute;
 }
 
@@ -628,28 +538,28 @@ export interface FileRoutesByTo {
   "/sign-in": typeof AuthSignInRoute;
   "/sign-in-2": typeof AuthSignIn2Route;
   "/sign-up": typeof AuthSignUpRoute;
+  "/401": typeof Errors401Route;
+  "/403": typeof Errors403Route;
+  "/404": typeof Errors404Route;
+  "/500": typeof Errors500Route;
+  "/503": typeof Errors503Route;
   "/coming-soon": typeof ErrorsComingSoonRoute;
-  "/401": typeof Errors401LazyRoute;
-  "/403": typeof Errors403LazyRoute;
-  "/404": typeof Errors404LazyRoute;
-  "/500": typeof Errors500LazyRoute;
-  "/503": typeof Errors503LazyRoute;
   "/": typeof AuthorizationIndexRoute;
-  "/dashboard/customers": typeof AuthorizationDashboardCustomersLazyRoute;
-  "/dashboard/monitor": typeof AuthorizationDashboardMonitorLazyRoute;
-  "/dashboard/overview": typeof AuthorizationDashboardOverviewLazyRoute;
-  "/dashboard/products": typeof AuthorizationDashboardProductsLazyRoute;
-  "/dashboard/settings": typeof AuthorizationDashboardSettingsLazyRoute;
-  "/system/role": typeof AuthorizationSystemRoleLazyRoute;
-  "/system/settings": typeof AuthorizationSystemSettingsLazyRoute;
-  "/system/user": typeof AuthorizationSystemUserLazyRoute;
+  "/dashboard/customers": typeof AuthorizationDashboardCustomersRoute;
+  "/dashboard/monitor": typeof AuthorizationDashboardMonitorRoute;
+  "/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
+  "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
+  "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/system/role": typeof AuthorizationSystemRoleRoute;
+  "/system/settings": typeof AuthorizationSystemSettingsRoute;
+  "/system/user": typeof AuthorizationSystemUserRoute;
+  "/apps": typeof AuthorizationAppsIndexRoute;
+  "/chats": typeof AuthorizationChatsIndexRoute;
   "/dashboard": typeof AuthorizationDashboardIndexRoute;
-  "/apps": typeof AuthorizationAppsIndexLazyRoute;
-  "/chats": typeof AuthorizationChatsIndexLazyRoute;
-  "/tasks": typeof AuthorizationTasksIndexLazyRoute;
-  "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedLazyRoute;
-  "/examples/form/basic": typeof AuthorizationExamplesFormBasicLazyRoute;
-  "/examples/form/simple": typeof AuthorizationExamplesFormSimpleLazyRoute;
+  "/tasks": typeof AuthorizationTasksIndexRoute;
+  "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedRoute;
+  "/examples/form/basic": typeof AuthorizationExamplesFormBasicRoute;
+  "/examples/form/simple": typeof AuthorizationExamplesFormSimpleRoute;
   "/examples/list": typeof AuthorizationExamplesListIndexRoute;
 }
 
@@ -662,28 +572,28 @@ export interface FileRoutesById {
   "/(Auth)/sign-in": typeof AuthSignInRoute;
   "/(Auth)/sign-in-2": typeof AuthSignIn2Route;
   "/(Auth)/sign-up": typeof AuthSignUpRoute;
+  "/(Errors)/401": typeof Errors401Route;
+  "/(Errors)/403": typeof Errors403Route;
+  "/(Errors)/404": typeof Errors404Route;
+  "/(Errors)/500": typeof Errors500Route;
+  "/(Errors)/503": typeof Errors503Route;
   "/(Errors)/coming-soon": typeof ErrorsComingSoonRoute;
-  "/(Errors)/401": typeof Errors401LazyRoute;
-  "/(Errors)/403": typeof Errors403LazyRoute;
-  "/(Errors)/404": typeof Errors404LazyRoute;
-  "/(Errors)/500": typeof Errors500LazyRoute;
-  "/(Errors)/503": typeof Errors503LazyRoute;
   "/_authorization/": typeof AuthorizationIndexRoute;
-  "/_authorization/dashboard/customers": typeof AuthorizationDashboardCustomersLazyRoute;
-  "/_authorization/dashboard/monitor": typeof AuthorizationDashboardMonitorLazyRoute;
-  "/_authorization/dashboard/overview": typeof AuthorizationDashboardOverviewLazyRoute;
-  "/_authorization/dashboard/products": typeof AuthorizationDashboardProductsLazyRoute;
-  "/_authorization/dashboard/settings": typeof AuthorizationDashboardSettingsLazyRoute;
-  "/_authorization/system/role": typeof AuthorizationSystemRoleLazyRoute;
-  "/_authorization/system/settings": typeof AuthorizationSystemSettingsLazyRoute;
-  "/_authorization/system/user": typeof AuthorizationSystemUserLazyRoute;
+  "/_authorization/dashboard/customers": typeof AuthorizationDashboardCustomersRoute;
+  "/_authorization/dashboard/monitor": typeof AuthorizationDashboardMonitorRoute;
+  "/_authorization/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
+  "/_authorization/dashboard/products": typeof AuthorizationDashboardProductsRoute;
+  "/_authorization/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/_authorization/system/role": typeof AuthorizationSystemRoleRoute;
+  "/_authorization/system/settings": typeof AuthorizationSystemSettingsRoute;
+  "/_authorization/system/user": typeof AuthorizationSystemUserRoute;
+  "/_authorization/apps/": typeof AuthorizationAppsIndexRoute;
+  "/_authorization/chats/": typeof AuthorizationChatsIndexRoute;
   "/_authorization/dashboard/": typeof AuthorizationDashboardIndexRoute;
-  "/_authorization/apps/": typeof AuthorizationAppsIndexLazyRoute;
-  "/_authorization/chats/": typeof AuthorizationChatsIndexLazyRoute;
-  "/_authorization/tasks/": typeof AuthorizationTasksIndexLazyRoute;
-  "/_authorization/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedLazyRoute;
-  "/_authorization/examples/form/basic": typeof AuthorizationExamplesFormBasicLazyRoute;
-  "/_authorization/examples/form/simple": typeof AuthorizationExamplesFormSimpleLazyRoute;
+  "/_authorization/tasks/": typeof AuthorizationTasksIndexRoute;
+  "/_authorization/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedRoute;
+  "/_authorization/examples/form/basic": typeof AuthorizationExamplesFormBasicRoute;
+  "/_authorization/examples/form/simple": typeof AuthorizationExamplesFormSimpleRoute;
   "/_authorization/examples/list/": typeof AuthorizationExamplesListIndexRoute;
 }
 
@@ -697,12 +607,12 @@ export interface FileRouteTypes {
     | "/sign-in"
     | "/sign-in-2"
     | "/sign-up"
-    | "/coming-soon"
     | "/401"
     | "/403"
     | "/404"
     | "/500"
     | "/503"
+    | "/coming-soon"
     | "/"
     | "/dashboard/customers"
     | "/dashboard/monitor"
@@ -712,9 +622,9 @@ export interface FileRouteTypes {
     | "/system/role"
     | "/system/settings"
     | "/system/user"
-    | "/dashboard"
     | "/apps"
     | "/chats"
+    | "/dashboard"
     | "/tasks"
     | "/examples/form/advanced"
     | "/examples/form/basic"
@@ -728,12 +638,12 @@ export interface FileRouteTypes {
     | "/sign-in"
     | "/sign-in-2"
     | "/sign-up"
-    | "/coming-soon"
     | "/401"
     | "/403"
     | "/404"
     | "/500"
     | "/503"
+    | "/coming-soon"
     | "/"
     | "/dashboard/customers"
     | "/dashboard/monitor"
@@ -743,9 +653,9 @@ export interface FileRouteTypes {
     | "/system/role"
     | "/system/settings"
     | "/system/user"
-    | "/dashboard"
     | "/apps"
     | "/chats"
+    | "/dashboard"
     | "/tasks"
     | "/examples/form/advanced"
     | "/examples/form/basic"
@@ -760,12 +670,12 @@ export interface FileRouteTypes {
     | "/(Auth)/sign-in"
     | "/(Auth)/sign-in-2"
     | "/(Auth)/sign-up"
-    | "/(Errors)/coming-soon"
     | "/(Errors)/401"
     | "/(Errors)/403"
     | "/(Errors)/404"
     | "/(Errors)/500"
     | "/(Errors)/503"
+    | "/(Errors)/coming-soon"
     | "/_authorization/"
     | "/_authorization/dashboard/customers"
     | "/_authorization/dashboard/monitor"
@@ -775,9 +685,9 @@ export interface FileRouteTypes {
     | "/_authorization/system/role"
     | "/_authorization/system/settings"
     | "/_authorization/system/user"
-    | "/_authorization/dashboard/"
     | "/_authorization/apps/"
     | "/_authorization/chats/"
+    | "/_authorization/dashboard/"
     | "/_authorization/tasks/"
     | "/_authorization/examples/form/advanced"
     | "/_authorization/examples/form/basic"
@@ -794,12 +704,12 @@ export interface RootRouteChildren {
   AuthSignInRoute: typeof AuthSignInRoute;
   AuthSignIn2Route: typeof AuthSignIn2Route;
   AuthSignUpRoute: typeof AuthSignUpRoute;
+  Errors401Route: typeof Errors401Route;
+  Errors403Route: typeof Errors403Route;
+  Errors404Route: typeof Errors404Route;
+  Errors500Route: typeof Errors500Route;
+  Errors503Route: typeof Errors503Route;
   ErrorsComingSoonRoute: typeof ErrorsComingSoonRoute;
-  Errors401LazyRoute: typeof Errors401LazyRoute;
-  Errors403LazyRoute: typeof Errors403LazyRoute;
-  Errors404LazyRoute: typeof Errors404LazyRoute;
-  Errors500LazyRoute: typeof Errors500LazyRoute;
-  Errors503LazyRoute: typeof Errors503LazyRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -810,12 +720,12 @@ const rootRouteChildren: RootRouteChildren = {
   AuthSignInRoute: AuthSignInRoute,
   AuthSignIn2Route: AuthSignIn2Route,
   AuthSignUpRoute: AuthSignUpRoute,
+  Errors401Route: Errors401Route,
+  Errors403Route: Errors403Route,
+  Errors404Route: Errors404Route,
+  Errors500Route: Errors500Route,
+  Errors503Route: Errors503Route,
   ErrorsComingSoonRoute: ErrorsComingSoonRoute,
-  Errors401LazyRoute: Errors401LazyRoute,
-  Errors403LazyRoute: Errors403LazyRoute,
-  Errors404LazyRoute: Errors404LazyRoute,
-  Errors500LazyRoute: Errors500LazyRoute,
-  Errors503LazyRoute: Errors503LazyRoute,
 };
 
 export const routeTree = rootRoute
@@ -835,12 +745,12 @@ export const routeTree = rootRoute
         "/(Auth)/sign-in",
         "/(Auth)/sign-in-2",
         "/(Auth)/sign-up",
-        "/(Errors)/coming-soon",
         "/(Errors)/401",
         "/(Errors)/403",
         "/(Errors)/404",
         "/(Errors)/500",
-        "/(Errors)/503"
+        "/(Errors)/503",
+        "/(Errors)/coming-soon"
       ]
     },
     "/_authorization": {
@@ -855,9 +765,9 @@ export const routeTree = rootRoute
         "/_authorization/system/role",
         "/_authorization/system/settings",
         "/_authorization/system/user",
-        "/_authorization/dashboard/",
         "/_authorization/apps/",
         "/_authorization/chats/",
+        "/_authorization/dashboard/",
         "/_authorization/tasks/",
         "/_authorization/examples/form/advanced",
         "/_authorization/examples/form/basic",
@@ -883,86 +793,86 @@ export const routeTree = rootRoute
     "/(Auth)/sign-up": {
       "filePath": "(Auth)/sign-up.tsx"
     },
-    "/(Errors)/coming-soon": {
-      "filePath": "(Errors)/coming-soon.tsx"
-    },
     "/(Errors)/401": {
-      "filePath": "(Errors)/401.lazy.tsx"
+      "filePath": "(Errors)/401.tsx"
     },
     "/(Errors)/403": {
-      "filePath": "(Errors)/403.lazy.tsx"
+      "filePath": "(Errors)/403.tsx"
     },
     "/(Errors)/404": {
-      "filePath": "(Errors)/404.lazy.tsx"
+      "filePath": "(Errors)/404.tsx"
     },
     "/(Errors)/500": {
-      "filePath": "(Errors)/500.lazy.tsx"
+      "filePath": "(Errors)/500.tsx"
     },
     "/(Errors)/503": {
-      "filePath": "(Errors)/503.lazy.tsx"
+      "filePath": "(Errors)/503.tsx"
+    },
+    "/(Errors)/coming-soon": {
+      "filePath": "(Errors)/coming-soon.tsx"
     },
     "/_authorization/": {
       "filePath": "_authorization/index.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/dashboard/customers": {
-      "filePath": "_authorization/dashboard/customers.lazy.tsx",
+      "filePath": "_authorization/dashboard/customers.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/dashboard/monitor": {
-      "filePath": "_authorization/dashboard/monitor.lazy.tsx",
+      "filePath": "_authorization/dashboard/monitor.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/dashboard/overview": {
-      "filePath": "_authorization/dashboard/overview.lazy.tsx",
+      "filePath": "_authorization/dashboard/overview.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/dashboard/products": {
-      "filePath": "_authorization/dashboard/products.lazy.tsx",
+      "filePath": "_authorization/dashboard/products.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/dashboard/settings": {
-      "filePath": "_authorization/dashboard/settings.lazy.tsx",
+      "filePath": "_authorization/dashboard/settings.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/system/role": {
-      "filePath": "_authorization/system/role.lazy.tsx",
+      "filePath": "_authorization/system/role.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/system/settings": {
-      "filePath": "_authorization/system/settings.lazy.tsx",
+      "filePath": "_authorization/system/settings.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/system/user": {
-      "filePath": "_authorization/system/user.lazy.tsx",
+      "filePath": "_authorization/system/user.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/apps/": {
+      "filePath": "_authorization/apps/index.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/chats/": {
+      "filePath": "_authorization/chats/index.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/dashboard/": {
       "filePath": "_authorization/dashboard/index.tsx",
       "parent": "/_authorization"
     },
-    "/_authorization/apps/": {
-      "filePath": "_authorization/apps/index.lazy.tsx",
-      "parent": "/_authorization"
-    },
-    "/_authorization/chats/": {
-      "filePath": "_authorization/chats/index.lazy.tsx",
-      "parent": "/_authorization"
-    },
     "/_authorization/tasks/": {
-      "filePath": "_authorization/tasks/index.lazy.tsx",
+      "filePath": "_authorization/tasks/index.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/examples/form/advanced": {
-      "filePath": "_authorization/examples/form/advanced.lazy.tsx",
+      "filePath": "_authorization/examples/form/advanced.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/examples/form/basic": {
-      "filePath": "_authorization/examples/form/basic.lazy.tsx",
+      "filePath": "_authorization/examples/form/basic.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/examples/form/simple": {
-      "filePath": "_authorization/examples/form/simple.lazy.tsx",
+      "filePath": "_authorization/examples/form/simple.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/examples/list/": {

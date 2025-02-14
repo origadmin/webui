@@ -184,13 +184,13 @@ const fillBody = <TData,>(bodyOrOptions?: TData | API.RequestOptions<TData>, opt
 };
 
 const fillParams = <TData,>(
-  paramOrOptions?: API.Params | API.RequestOptions<TData>,
+  paramOrOptions?: API.SearchParams | API.RequestOptions<TData>,
   options?: API.RequestOptions<TData>,
 ) => {
   if (options) {
     options = {
       ...options,
-      params: paramOrOptions as API.Params,
+      params: paramOrOptions as API.SearchParams,
     };
   } else if (paramOrOptions) {
     options = {
@@ -258,7 +258,7 @@ async function fetchRequest<T, TData = unknown>(
     });
 }
 
-async function get<T>(url: string, _paramsOrOptions?: API.Params | API.RequestOptions, options?: API.RequestOptions) {
+async function get<T>(url: string, _paramsOrOptions?: API.SearchParams | API.RequestOptions, options?: API.RequestOptions) {
   options = fillParams(_paramsOrOptions, options);
   return fetchRequest<T>(url, "GET", options);
 }
@@ -290,7 +290,7 @@ async function patch<T, TData = unknown>(
   return fetchRequest<T, TData>(url, "PATCH", options);
 }
 
-async function del<T>(url: string, paramsOrOptions?: API.Params | API.RequestOptions, options?: API.RequestOptions) {
+async function del<T>(url: string, paramsOrOptions?: API.SearchParams | API.RequestOptions, options?: API.RequestOptions) {
   options = fillParams(paramsOrOptions, options);
   return fetchRequest<T>(url, "DELETE", options);
 }

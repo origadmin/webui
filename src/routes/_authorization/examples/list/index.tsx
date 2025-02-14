@@ -6,5 +6,5 @@ export const Route = createFileRoute("/_authorization/examples/list/")({
 });
 
 function RouteComponent() {
-  return ListPage();
+  return <ListPage />;
 }

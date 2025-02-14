@@ -1,3 +1,4 @@
+import { ComingSoon } from "@/pages/errors";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(Errors)/coming-soon")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/(Errors)/coming-soon")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/(Errors)/coming-soon"!</div>;
+  return <ComingSoon />;
 }
