@@ -69,8 +69,9 @@ interface SortProps {
 }
 
 interface ColumnFilterProps {
-  columnFilters?: ColumnFiltersState;
-  setColumnFilters?: OnChangeFn<ColumnFiltersState>;
+  // columnFilters?: ColumnFiltersState;
+  // setColumnFilters?: OnChangeFn<ColumnFiltersState>;
+  onSearchCommit?: (filter: ColumnFiltersState) => void;
 }
 
 interface DataTableProps<T> {
@@ -155,7 +156,7 @@ function DataTable<T>({
 }: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [_columnFilters, _setColumnFilters] = useState<ColumnFiltersState>(columnFiltersState);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(columnFiltersState);
   const [_pagination, _setPagination] = useState<PaginationState>(paginationState);
   const { pagination, setPagination } = paginationProps ?? {
     pagination: _pagination,
@@ -166,10 +167,10 @@ function DataTable<T>({
     sorting: _sorting,
     setSorting: _setSorting,
   };
-  const { columnFilters, setColumnFilters } = columnFilterProps ?? {
-    columnFilters: _columnFilters,
-    setColumnFilters: _setColumnFilters,
-  };
+  // const { columnFilters, setColumnFilters } = columnFilterProps ?? {
+  //   columnFilters: _columnFilters,
+  //   setColumnFilters: _setColumnFilters,
+  // };
 
   const [data, setData] = useState(sourceData || []);
   const [rowCount, setRowCount] = useState(total || 0);
@@ -217,7 +218,7 @@ function DataTable<T>({
 
   return (
     <div className='space-y-4'>
-      <SearchBar table={table} columns={columns} />
+      <SearchBar table={table} columns={columns} onSearchCommit={columnFilterProps?.onSearchCommit} />
       <TitleBar
         {...titleBarProps}
         table={table}

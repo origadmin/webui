@@ -1,17 +1,19 @@
+import { Fragment } from "react";
 import { noop } from "@/utils";
-import { Table } from "@tanstack/react-table";
+import { ColumnFiltersState, Table } from "@tanstack/react-table";
 import { X as XIcon, Search as SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnType } from "@/components/DataTable";
 
 export interface SearchBarProps<TData> {
+  key?: string;
   table: Table<TData>;
   columns: DataTableColumnType<TData>[];
   col?: number;
-  searchCommit?: () => void;
+  onSearchCommit?: (filters: ColumnFiltersState) => void;
 }
 
-export function SearchBar<TData>({ table, columns, searchCommit = noop }: SearchBarProps<TData>) {
+export function SearchBar<TData>({ table, columns, onSearchCommit = noop }: SearchBarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const searchColumns = columns.filter((column) => column.searchable === true) as DataTableColumnType<TData>[];
@@ -26,7 +28,11 @@ export function SearchBar<TData>({ table, columns, searchCommit = noop }: Search
               return null;
             }
             // console.log("search columns:", column, "value:", table.getColumn(key));
-            return <div className='flex gap-x-2'>{column.renderSearch(column, index, table)}</div>;
+            return (
+              <Fragment key={key}>
+                <div className='flex gap-x-2'>{column.renderSearch(column, index, table)}</div>
+              </Fragment>
+            );
           })}
         <div className='flex w-full text-sm text-muted-foreground' />
         <div className='flex gap-x-2 text-sm text-muted-foreground'>
@@ -43,7 +49,12 @@ export function SearchBar<TData>({ table, columns, searchCommit = noop }: Search
             </Button>
           </div>
           <div className='flex-1'>
-            <Button disabled={!isFiltered} onClick={() => searchCommit} size='sm' className='w-18 px-2 lg:px-3'>
+            <Button
+              disabled={!isFiltered}
+              onClick={() => onSearchCommit(table.getState().columnFilters)}
+              size='sm'
+              className='w-18 px-2 lg:px-3'
+            >
               <SearchIcon className='h-4 w-4' />
               Search
             </Button>
