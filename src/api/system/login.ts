@@ -1,4 +1,3 @@
-import { Search } from "@/utils";
 import { post, get, put } from "@/utils/request";
 
 
@@ -25,7 +24,7 @@ export async function logout(options?: API.RequestOptions) {
 /** Query personal user menus based on the personal user role GET /api/v1/personal/menus */
 export async function listPersonalMenus(params: API.SearchParams, options?: API.RequestOptions) {
   options = {
-    params: Search.parseParams(params),
+    params,
     ...options,
   };
   return get<API.System.Menu[]>("/api/v1/personal/menus", options);

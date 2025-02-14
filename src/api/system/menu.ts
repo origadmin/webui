@@ -6,7 +6,7 @@ import { post, get, put, del } from "@/utils/request";
 /** Query menu list GET /api/v1/sys/menus */
 export async function listMenu(params: API.SearchParams, options?: API.RequestOptions) {
   options = {
-    params: Search.parseParams(params),
+    params,
     ...options,
   };
   return get<API.System.Menu[]>("/api/v1/sys/menus", options);

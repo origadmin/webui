@@ -29,6 +29,22 @@ export function encodeToBinary(str: string): string {
   );
 }
 
+export function parse({
+  pagination,
+  sorting,
+  columnFilters,
+}: {
+  pagination?: PaginationState;
+  sorting?: SortingState;
+  columnFilters?: ColumnFiltersState;
+}): API.SearchParams {
+  return {
+    ...parsePagination(pagination),
+    ...parseSorting(sorting),
+    ...parseColumnFilters(columnFilters),
+  };
+}
+
 /**
  * Transfer pagination parameter by converting page size to a different key.
  *
@@ -123,7 +139,7 @@ export function getColumnFilters(searchParams: URLSearchParams, filters?: string
     }));
 }
 
-export function parseColumnFilters(columnFilters: ColumnFiltersState): API.SearchParams {
+export function parseColumnFilters(columnFilters?: ColumnFiltersState): API.SearchParams {
   if (!columnFilters || columnFilters.length === 0) {
     return {};
   }

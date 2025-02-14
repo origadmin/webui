@@ -1,10 +1,10 @@
-import { Search } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
+
 
 /** Query role list GET /api/v1/sys/roles */
 export async function listRole(params: API.SearchParams, options?: API.RequestOptions) {
   options = {
-    params: Search.parseParams(params),
+    params,
     ...options,
   };
   return get<API.System.Role[]>("/api/v1/sys/roles", options);

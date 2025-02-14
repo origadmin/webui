@@ -1,4 +1,3 @@
-import { Search } from "@/utils";
 import { post, get, put, del, patch } from "@/utils/request";
 import { queryOptions } from "@tanstack/react-query";
 
@@ -7,7 +6,7 @@ import { queryOptions } from "@tanstack/react-query";
 export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
   console.log("listUser", params, options);
   options = {
-    params: Search.parseParams(params),
+    params,
     ...options,
   };
   return get<API.System.User[]>("/sys/users", options);

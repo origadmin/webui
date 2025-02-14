@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usersQueryOptions } from "@/api/system/user";
-import { Pagination as PaginationUtil } from "@/utils";
-import { fillSearchParams } from "@/utils/pagination";
+import { Search } from "@/utils";
+import { fillSearchParams } from "@/utils/search";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
@@ -17,20 +17,20 @@ export default function UserPage() {
   const router = useRouter();
   const search = router.routeTree.useSearch();
   const searchParams = useMemo(() => new URLSearchParams(search), [search]);
-  const [sorting, setSorting] = useState<SortingState>(PaginationUtil.getSortingState(searchParams));
-  const [pagination, setPagination] = useState<PaginationState>(PaginationUtil.getPaginationState(searchParams));
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(PaginationUtil.getColumnFilters(searchParams));
-  const [params, setParams] = useState<API.Params>({
-    ...PaginationUtil.parsePagination(pagination),
-    ...PaginationUtil.parseSorting(sorting),
-    ...PaginationUtil.parseColumnFilters(columnFilters),
+  const [sorting, setSorting] = useState<SortingState>(Search.getSorting(searchParams));
+  const [pagination, setPagination] = useState<PaginationState>(Search.getPagination(searchParams));
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(Search.getColumnFilters(searchParams));
+  const [params, setParams] = useState<API.SearchParams>({
+    ...Search.parsePagination(pagination),
+    ...Search.parseSorting(sorting),
+    ...Search.parseColumnFilters(columnFilters),
   });
 
   useEffect(() => {
     setParams({
-      ...PaginationUtil.parsePagination(pagination),
-      ...PaginationUtil.parseSorting(sorting),
-      ...PaginationUtil.parseColumnFilters(columnFilters),
+      ...Search.parsePagination(pagination),
+      ...Search.parseSorting(sorting),
+      ...Search.parseColumnFilters(columnFilters),
     });
   }, [columnFilters, pagination, sorting]);
 
@@ -74,9 +74,9 @@ export default function UserPage() {
                   pagination,
                   setPagination,
                 }}
+                columnFiltersState={columnFilters}
                 columnFilterProps={{
-                  columnFilters,
-                  setColumnFilters,
+                  onSearchCommit: setColumnFilters,
                 }}
               />
             </div>

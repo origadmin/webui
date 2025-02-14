@@ -8,7 +8,7 @@ import { LucideIcon } from "lucide-react";
 
 declare global {
   namespace API {
-    type Pagination = {
+    type Search = {
       current?: number;
       page_token?: string; // page token used for automatic pagination
       page_size?: number;
@@ -18,7 +18,7 @@ declare global {
       // update_mask?: string; // update mask used for partial update
     };
 
-    type Params = Record<string, unknown> & Pagination;
+    type SearchParams = Record<string, unknown> & Search;
 
     type BearerAuth = {
       headerKey?: string;
@@ -32,7 +32,7 @@ declare global {
       urlPrefix?: string;
       path?: string;
       method?: string;
-      params?: Params;
+      params?: SearchParams;
       headers?: Record<string, unknown>;
       body?: TBody;
       useAuth?: "auto" | "none" | "bearer" | "bearer_token" | "basic";
