@@ -6,5 +6,5 @@ export const Route = createFileRoute("/_authorization")({
 });
 
 function RouteComponent() {
-  return MainLayout();
+  return <MainLayout />;
 }
