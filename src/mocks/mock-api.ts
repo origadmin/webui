@@ -99,7 +99,7 @@ export const fakeProducts = {
     });
     const totalProducts = allProducts.length;
 
-    // Pagination logic
+    // Search logic
     const offset = (page - 1) * limit;
     const paginatedProducts = allProducts.slice(offset, offset + limit);
 

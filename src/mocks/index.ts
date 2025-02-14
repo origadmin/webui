@@ -6,7 +6,7 @@ const mockData: Record<string, unknown> = {
   "/sys/roles": roles,
 };
 
-const getPaginationData = (data: unknown, params?: API.Params) => {
+const getPaginationData = (data: unknown, params?: API.SearchParams) => {
   const { current = 1, page_size = 15 } = params || {};
   if (data && Array.isArray(data)) {
     const startIndex = (current - 1) * page_size;
@@ -24,7 +24,7 @@ const getPaginationData = (data: unknown, params?: API.Params) => {
   };
 };
 
-const sortData = (mockData: unknown, params?: API.Params) => {
+const sortData = (mockData: unknown, params?: API.SearchParams) => {
   if (!params) {
     return mockData;
   }
@@ -39,7 +39,7 @@ const sortData = (mockData: unknown, params?: API.Params) => {
   // }
   return mockData;
 };
-const mocks = <T>(path: string, params?: API.Params) => {
+const mocks = <T>(path: string, params?: API.SearchParams) => {
   const data = sortData(mockData[path], params);
 
   const pageData = getPaginationData(data, params);
