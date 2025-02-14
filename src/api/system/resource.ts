@@ -1,10 +1,10 @@
-import { Pagination } from "@/utils";
+import { Search } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 
 /** Query resource list GET /api/v1/sys/resources */
-export async function listResource(params: API.Params, options?: API.RequestOptions) {
+export async function listResource(params: API.SearchParams, options?: API.RequestOptions) {
   options = {
-    params: Pagination.parseParams(params),
+    params: Search.parseParams(params),
     ...options,
   };
   return get<API.System.Resource[]>("/api/v1/sys/resources", options);

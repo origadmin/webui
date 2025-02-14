@@ -1,12 +1,12 @@
 /* eslint-disable */
 // @ts-ignore
-import { Pagination } from "@/utils";
+import { Search } from "@/utils";
 import { post, get, put, del } from "@/utils/request";
 
 /** Query menu list GET /api/v1/sys/menus */
-export async function listMenu(params: API.Params, options?: API.RequestOptions) {
+export async function listMenu(params: API.SearchParams, options?: API.RequestOptions) {
   options = {
-    params: Pagination.parseParams(params),
+    params: Search.parseParams(params),
     ...options,
   };
   return get<API.System.Menu[]>("/api/v1/sys/menus", options);

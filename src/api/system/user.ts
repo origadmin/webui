@@ -1,13 +1,13 @@
-import { Pagination } from "@/utils";
+import { Search } from "@/utils";
 import { post, get, put, del, patch } from "@/utils/request";
 import { queryOptions } from "@tanstack/react-query";
 
 
 /** Query user list GET /sys/users */
-export async function listUser(params: API.Params, options?: API.RequestOptions) {
+export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
   console.log("listUser", params, options);
   options = {
-    params: Pagination.parseParams(params),
+    params: Search.parseParams(params),
     ...options,
   };
   return get<API.System.User[]>("/sys/users", options);
@@ -38,10 +38,10 @@ export async function resetUserPassword(id: string, options?: API.RequestOptions
   return patch<never>(`/sys/users/${id}/reset`, options);
 }
 
-export const usersQueryOptions = (opts?: API.Params) =>
+export const usersQueryOptions = (opts?: API.SearchParams) =>
   queryOptions({
     queryKey: ["/sys/users", { ...opts }],
-    queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.Params] }) => listUser({ ...opts }),
+    queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listUser({ ...opts }),
   });
 
 export const userQueryOptions = (userId: string) =>
