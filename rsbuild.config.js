@@ -69,14 +69,7 @@ const config = defineConfig({
   plugins: [pluginReact()],
   tools: {
     rspack: {
-      plugins: [
-        TanStackRouterRspack({
-          quoteStyle: "double",
-          generatedRouteTree: "./src/routes.gen.ts",
-          semicolons: true,
-          // virtualRouteConfig: "./src/routes.ts",
-        }),
-      ],
+      plugins: [TanStackRouterRspack(import("./tsr.config.json"))],
     },
   },
 });

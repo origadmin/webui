@@ -1,0 +1,6 @@
+{
+  "quoteStyle": "double",
+  "generatedRouteTree": "./src/routes.gen.ts",
+  "semicolons": true,
+  "autoCodeSplitting": true
+}

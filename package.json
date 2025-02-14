@@ -6,6 +6,8 @@
   "private": true,
   "scripts": {
     "start": "bun run dev",
+    "route:generate": "tsr generate",
+    "route:watch": "tsr watch",
     "dev": "bun tailwind:dev && rsbuild dev --open",
     "dev:web": "bun tailwind:min && rsbuild dev --open",
     "build": "bun tailwind && rsbuild build",
@@ -96,6 +98,7 @@
     "@rspack/cli": "^1.1.8",
     "@tanstack/eslint-plugin-router": "^1.102.2",
     "@tanstack/react-query-devtools": "^5.64.2",
+    "@tanstack/router-cli": "^1.104.1",
     "@tanstack/router-devtools": "^1.97.21",
     "@trivago/prettier-plugin-sort-imports": "^5.2.1",
     "@types/bun": "latest",
