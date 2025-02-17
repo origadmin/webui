@@ -56,7 +56,10 @@ export function SearchBar<TData>({ table, columns, onSearch = noop, onReset = no
           <div className='flex-1'>
             <Button
               disabled={!isFiltered}
-              onClick={() => onSearch(table.getState().columnFilters)}
+              onClick={() => {
+                // table.setColumnFilters(table.getState().columnFilters);
+                onSearch(table.getState().columnFilters);
+              }}
               size='sm'
               className='w-18 h-8 px-2 lg:px-3'
             >

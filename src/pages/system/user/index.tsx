@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { usersQueryOptions } from "@/api/system/user";
 import { Search } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import { ColumnFiltersState, PaginationState, SortingState, Updater } from "@tanstack/react-table";
+import { PaginationState, SortingState, Updater } from "@tanstack/react-table";
 import { useFilters } from "@/hooks/use-filters";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
@@ -17,7 +17,7 @@ export default function UserPage() {
   console.log("useFilters", search);
   const sorting = Search.getSorting(search);
   const pagination = Search.getPagination(search);
-  const columnFilters = Search.getColumnFilters(search);
+  const [columnFilters, _setColumnFilters] = useState(Search.getColumnFilters(search));
   const [updating, setUpdating] = useState(false);
   const [params, setParams] = useState<API.SearchParams>({
     ...Search.parsePagination(pagination),
@@ -41,16 +41,6 @@ export default function UserPage() {
     setParams({
       ...params,
       ...Search.parsePagination(state),
-    });
-    setUpdating(true);
-  };
-
-  const setColumnFilters = (updaterOrValue: Updater<ColumnFiltersState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(columnFilters) : updaterOrValue;
-    console.log("setColumnFilters", columnFilters);
-    setParams({
-      ...params,
-      ...Search.parseColumnFilters(state),
     });
     setUpdating(true);
   };
@@ -102,10 +92,16 @@ export default function UserPage() {
                 paginationState={pagination}
                 columnFiltersState={columnFilters}
                 searchBarProps={{
-                  setColumnFilters,
+                  setColumnFilters: _setColumnFilters,
                   onSearch: (filters) => {
                     console.log("search", filters);
-                    setColumnFilters(filters);
+                    setParams({
+                      ...params,
+                      ...Search.parseColumnFilters(columnFilters),
+                      current: 1,
+                    });
+                    setUpdating(true);
+                    // onSearch(filters);
                   },
                   onReset: () => {
                     resetFilters();

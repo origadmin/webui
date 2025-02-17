@@ -202,7 +202,7 @@ function DataTable<T>({
 
   return (
     <div className='space-y-4'>
-      <SearchBar table={table} columns={columns} {...searchBarProps} />
+      <SearchBar table={table} columns={columns} columnFilters={columnFiltersState} {...searchBarProps} />
       <TitleBar
         {...titleBarProps}
         table={table}
