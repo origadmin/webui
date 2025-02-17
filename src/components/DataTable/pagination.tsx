@@ -13,10 +13,13 @@ export interface PaginationProps<T> {
   setPagination?: OnChangeFn<PaginationState>;
 }
 
-export function Pagination<T>({ table, sizeOptions = [], toolbars }: PaginationProps<T>) {
-  const pageSize = table.getState().pagination.pageSize;
+export function Pagination<T>({ table, sizeOptions = [], toolbars, pagination }: PaginationProps<T>) {
+  // const pageSize = table.getState().pagination.pageSize;
   const pageCount = table.getPageCount();
-  const pageIndex = pageCount === 0 ? 0 : table.getState().pagination.pageIndex + 1;
+
+  const { pageSize, pageIndex: _pageIndex = 0 } = pagination ?? table.getState().pagination;
+  console.log("pagination", pagination, "state", table.getState().pagination, "page", pageSize, _pageIndex);
+  const pageIndex = pageCount === 0 ? 0 : _pageIndex + 1;
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
   const totalCount = table.getFilteredRowModel().rows.length;
 

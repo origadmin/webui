@@ -68,27 +68,20 @@ interface SortProps {
   setSorting?: OnChangeFn<SortingState>;
 }
 
-interface ColumnFilterProps {
-  // columnFilters?: ColumnFiltersState;
-  // setColumnFilters?: OnChangeFn<ColumnFiltersState>;
-  onSearchCommit?: (filter: ColumnFiltersState) => void;
-}
-
 interface DataTableProps<T> {
   columns: ColumnType<T>[];
   sourceData?: T[];
   total?: number;
-  searchBarProps?: SearchBarProps<T>;
   showToolbarStatistics?: boolean;
   showPagination?: boolean;
   useManual?: boolean;
   toolbarPosition?: "top" | "bottom";
-  toolbars?: TitleBarProps<T>["toolbars"];
   paginationState?: PaginationState;
   columnFiltersState?: ColumnFiltersState;
+  searchBarProps?: Omit<SearchBarProps<T>, "table" | "columns" | "columnFilters">;
   sizeOptions?: PaginationProps<T>["sizeOptions"];
-  paginationProps?: Omit<PaginationProps<T>, "table">;
-  columnFilterProps?: ColumnFilterProps;
+  paginationProps?: Omit<PaginationProps<T>, "table" | "pagination">;
+  toolbars?: TitleBarProps<T>["toolbars"];
   titleBarProps?: TitleBarProps<T>;
   sortProps?: SortProps;
   isLoading?: boolean;
@@ -149,28 +142,19 @@ function DataTable<T>({
   toolbarPosition = "top",
   sizeOptions = PAGE_SIZE_OPTIONS,
   paginationProps,
-  columnFilterProps,
+  searchBarProps,
   titleBarProps,
   sortProps,
   isLoading,
 }: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(columnFiltersState);
-  const [_pagination, _setPagination] = useState<PaginationState>(paginationState);
-  const { pagination, setPagination } = paginationProps ?? {
-    pagination: _pagination,
-    setPagination: _setPagination,
-  };
-  const [_sorting, _setSorting] = useState<SortingState>([]);
-  const { sorting, setSorting } = sortProps ?? {
-    sorting: _sorting,
-    setSorting: _setSorting,
-  };
-  // const { columnFilters, setColumnFilters } = columnFilterProps ?? {
-  //   columnFilters: _columnFilters,
-  //   setColumnFilters: _setColumnFilters,
-  // };
+  // const [columnFilters, _setColumnFilters] = useState<ColumnFiltersState>(columnFiltersState);
+  // const [pagination, _setPagination] = useState<PaginationState>(paginationState);
+  const { setPagination } = paginationProps ?? {};
+  // const [_sorting, _setSorting] = useState<SortingState>([]);
+  const { sorting, setSorting } = sortProps ?? {};
+  const { setColumnFilters } = searchBarProps ?? {};
 
   const [data, setData] = useState(sourceData || []);
   const [rowCount, setRowCount] = useState(total || 0);
@@ -192,15 +176,15 @@ function DataTable<T>({
     columns,
     rowCount,
     state: {
-      pagination,
+      pagination: paginationState,
       sorting,
       columnVisibility,
       rowSelection,
-      columnFilters,
+      columnFilters: columnFiltersState,
     },
-    initialState: {
-      pagination: paginationState,
-    },
+    // initialState: {
+    //   pagination: paginationState,
+    // },
     ...manualProps,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -218,7 +202,7 @@ function DataTable<T>({
 
   return (
     <div className='space-y-4'>
-      <SearchBar table={table} columns={columns} onSearchCommit={columnFilterProps?.onSearchCommit} />
+      <SearchBar table={table} columns={columns} {...searchBarProps} />
       <TitleBar
         {...titleBarProps}
         table={table}
@@ -237,6 +221,7 @@ function DataTable<T>({
           table={table}
           sizeOptions={sizeOptions}
           toolbars={toolbarPosition === "bottom" ? toolbars : undefined}
+          pagination={paginationState}
           {...paginationProps}
         />
       )}
