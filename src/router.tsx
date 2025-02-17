@@ -1,7 +1,6 @@
 import { InternalServerError, NotFoundError } from "@/pages/errors";
-import { decodeFromBinary, encodeToBinary } from "@/utils/search";
 import { QueryClient } from "@tanstack/react-query";
-import { createRouter, parseSearchWith, stringifySearchWith } from "@tanstack/react-router";
+import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routes.gen";
 
 export const queryClient = new QueryClient();
@@ -12,8 +11,8 @@ export const queryClient = new QueryClient();
 export const router = createRouter({
   routeTree,
   context: { queryClient, auth: undefined! },
-  parseSearch: parseSearchWith((value) => JSON.parse(decodeFromBinary(value))),
-  stringifySearch: stringifySearchWith((value) => encodeToBinary(JSON.stringify(value))),
+  // parseSearch: parseSearchWith((value) => decodeFromBinary(value)),
+  // stringifySearch: stringifySearchWith((value) => encodeToBinary(value)),
   defaultPreload: "intent",
   defaultPreloadStaleTime: 0,
   defaultErrorComponent: InternalServerError,

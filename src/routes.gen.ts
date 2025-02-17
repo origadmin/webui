@@ -156,7 +156,9 @@ const AuthorizationSystemUserRoute = AuthorizationSystemUserImport.update({
   id: "/system/user",
   path: "/system/user",
   getParentRoute: () => AuthorizationRoute,
-} as any);
+} as any).lazy(() =>
+  import("./routes/_authorization/system/user.lazy").then((d) => d.Route),
+);
 
 const AuthorizationSystemSettingsRoute =
   AuthorizationSystemSettingsImport.update({

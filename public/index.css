@@ -7800,6 +7800,10 @@ body {
   border-color: hsl(var(--sidebar-border));
 }
 
+.group\/row[data-row="even"] .group-data-\[row\=even\]\/row\:bg-muted {
+  background-color: hsl(var(--muted));
+}
+
 .group\/row[data-state="selected"] .group-data-\[state\=selected\]\/row\:bg-muted {
   background-color: hsl(var(--muted));
 }
