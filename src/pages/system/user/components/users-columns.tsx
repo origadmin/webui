@@ -12,7 +12,7 @@ const headerMeta = {
   meta: {
     className: cn(
       "p-2 drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
-      "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
+      "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted group-data-[row=even]/row:bg-muted",
       "sticky left-6 md:table-cell",
     ),
   },
@@ -31,7 +31,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     ),
     meta: {
       className: cn(
-        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
+        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted group-data-[row=even]/row:bg-muted",
         "md:table-cell",
       ),
     },
@@ -48,7 +48,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "username",
-    headerTitle: "Username",
+    header: "Username",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
     meta: headerMeta.meta,
@@ -57,7 +57,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "nickname",
-    headerTitle: "Nickname",
+    header: "Nickname",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
     meta: headerMeta.meta,
@@ -65,7 +65,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     renderSearch: (column, index, table) => (
       <Input
         key={index}
-        placeholder={`Filter ${column.headerTitle || "nickname"}...`}
+        placeholder={`Filter ${typeof column.header === "string" ? column.header : "nickname"}...`}
         value={(table.getColumn("nickname")?.getFilterValue() as string) ?? ""}
         onChange={(event) => table.getColumn("nickname")?.setFilterValue(event.target.value)}
         className='h-8 w-[120px] lg:w-[250px]'
@@ -74,14 +74,14 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "email",
-    headerTitle: "Email",
+    header: "Email",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("email")}</div>,
     meta: headerMeta.meta,
   },
   {
     accessorKey: "phone",
-    headerTitle: "Phone",
+    header: "Phone",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
     cell: ({ row }) => <div>{row.getValue("phone")}</div>,
     meta: headerMeta.meta,
@@ -89,7 +89,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "status",
-    headerTitle: "Status",
+    header: "Status",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status } = row.original;
@@ -124,7 +124,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "create_time",
-    headerTitle: "Create Time",
+    header: "Create Time",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Create Time' />,
     cell: ({ row }) => <div>{row.original.create_time}</div>,
     meta: headerMeta.meta,
@@ -132,7 +132,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "update_time",
-    headerTitle: "Update Time",
+    header: "Update Time",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Update Time' />,
     cell: ({ row }) => <div>{row.getValue("update_time")}</div>,
     meta: headerMeta.meta,
@@ -140,7 +140,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     id: "options",
-    headerTitle: "Options",
+    header: "Options",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
     cell: UserIconRowActions,
     meta: headerMeta.meta,

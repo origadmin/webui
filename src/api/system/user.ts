@@ -1,5 +1,5 @@
 import { post, get, put, del, patch } from "@/utils/request";
-import { queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 
 
 /** Query user list GET /sys/users */
@@ -41,6 +41,7 @@ export const usersQueryOptions = (opts?: API.SearchParams) =>
   queryOptions({
     queryKey: ["/sys/users", { ...opts }],
     queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listUser({ ...opts }),
+    placeholderData: keepPreviousData,
   });
 
 export const userQueryOptions = (userId: string) =>

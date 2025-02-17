@@ -10,6 +10,7 @@ const defaultConfig = {
     urlPrefix: "/api/v1",
     bindSearch: true,
     searchOptions: {
+      codec: "array", // array or json
       pagination: {
         key: "current",
         pageSizeKey: "page_size",

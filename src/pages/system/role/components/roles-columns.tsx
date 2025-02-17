@@ -46,7 +46,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   },
   {
     accessorKey: "name",
-    headerTitle: "Name",
+    header: "Name",
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Rolename' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("name")}</LongText>,
@@ -56,7 +56,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   },
   {
     accessorKey: "keyword",
-    headerTitle: "Keyword",
+    header: "Keyword",
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("keyword")}</LongText>,
@@ -64,14 +64,14 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   },
   {
     accessorKey: "description",
-    headerTitle: "Description",
+    header: "Description",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
     meta: headerMeta.meta,
   },
   {
     accessorKey: "status",
-    headerTitle: "Status",
+    header: "Status",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status } = row.original;
@@ -93,7 +93,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   },
   {
     id: "options",
-    headerTitle: "Options",
+    header: "Options",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
     cell: RoleIconRowActions,
     meta: headerMeta.meta,

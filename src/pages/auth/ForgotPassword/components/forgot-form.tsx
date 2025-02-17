@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/LoadingButton";
 
 export type ForgotFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -48,9 +48,9 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' loading={isLoading}>
+            <LoadingButton className='mt-2' loading={isLoading}>
               Continue
-            </Button>
+            </LoadingButton>
           </div>
         </form>
       </Form>

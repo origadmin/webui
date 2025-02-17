@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
-import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/LoadingButton";
 
 export type OtpFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -88,9 +88,9 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' disabled={disabledBtn} loading={isLoading}>
+            <LoadingButton className='mt-2' disabled={disabledBtn} loading={isLoading}>
               Verify
-            </Button>
+            </LoadingButton>
           </div>
         </form>
       </Form>

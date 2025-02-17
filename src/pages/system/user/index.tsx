@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { usersQueryOptions } from "@/api/system/user";
 import { Search } from "@/utils";
-import { fillSearchParams } from "@/utils/search";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
-import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
+import { ColumnFiltersState, PaginationState, SortingState, Updater } from "@tanstack/react-table";
+import { useFilters } from "@/hooks/use-filters";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
@@ -14,41 +13,67 @@ import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
 export default function UserPage() {
-  const router = useRouter();
-  const search = router.routeTree.useSearch();
-  const searchParams = useMemo(() => new URLSearchParams(search), [search]);
-  const [sorting, setSorting] = useState<SortingState>(Search.getSorting(searchParams));
-  const [pagination, setPagination] = useState<PaginationState>(Search.getPagination(searchParams));
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(Search.getColumnFilters(searchParams));
+  const { search, setFilters, resetFilters } = useFilters();
+  console.log("useFilters", search);
+  const sorting = Search.getSorting(search);
+  const pagination = Search.getPagination(search);
+  const columnFilters = Search.getColumnFilters(search);
+  const [updating, setUpdating] = useState(false);
   const [params, setParams] = useState<API.SearchParams>({
     ...Search.parsePagination(pagination),
     ...Search.parseSorting(sorting),
     ...Search.parseColumnFilters(columnFilters),
   });
-
-  useEffect(() => {
+  const setSorting = (updaterOrValue: Updater<SortingState>) => {
+    const state = typeof updaterOrValue === "function" ? updaterOrValue(sorting) : updaterOrValue;
+    console.log("setSorting", state);
     setParams({
-      ...Search.parsePagination(pagination),
-      ...Search.parseSorting(sorting),
-      ...Search.parseColumnFilters(columnFilters),
+      ...params,
+      ...Search.parseSorting(state),
     });
-  }, [columnFilters, pagination, sorting]);
+    setUpdating(true);
+  };
 
-  const { data: users = {}, isLoading } = useQuery(usersQueryOptions(params));
-  console.log("user page render", params, "users", users);
-  // Listen for changes in order and update URLs
+  const setPagination = (updaterOrValue: Updater<PaginationState>) => {
+    const state = typeof updaterOrValue === "function" ? updaterOrValue(pagination) : updaterOrValue;
+
+    console.log("setPagination", state);
+    setParams({
+      ...params,
+      ...Search.parsePagination(state),
+    });
+    setUpdating(true);
+  };
+
+  const setColumnFilters = (updaterOrValue: Updater<ColumnFiltersState>) => {
+    const state = typeof updaterOrValue === "function" ? updaterOrValue(columnFilters) : updaterOrValue;
+    console.log("setColumnFilters", columnFilters);
+    setParams({
+      ...params,
+      ...Search.parseColumnFilters(state),
+    });
+    setUpdating(true);
+  };
+
+  const { data: users = {}, isLoading } = useQuery(usersQueryOptions(search));
   useEffect(() => {
-    const currentPathname = router.state.location.pathname;
-    const currentSearchParams = fillSearchParams(searchParams, params);
-    console.log("pathname", currentPathname);
-    const nextSearch = currentSearchParams.toString();
-    if (searchParams.toString() !== nextSearch) {
-      console.log("currentSearchParams", currentSearchParams, "currentSearch", searchParams);
-      const path = `${currentPathname}?${nextSearch}`;
-      router.history.push(path.replaceAll("%3A", ":"));
+    if (updating) {
+      setFilters(params);
+      setUpdating(false);
     }
-  }, [router, searchParams, params]);
+  }, [params, setFilters, updating]);
+  // const { isLoading } = router.state;
 
+  // const [search, setSearch] = useState<API.SearchParams>(params);
+  // const { data: users = [], total, ...others } = router.routeTree.useLoaderData();
+  // const { isLoading, data } = router.state;
+  // console.log("user page render", search, "users", users);
+  // useEffect(() => {
+  //   setFilters(params);
+  // }, [setFilters, params]);
+
+  // console.log("user load", router.load, "state", router.state);
+  // useLoaderData(router.state);
   return (
     <UserTableProvider>
       <PageContainer>
@@ -60,6 +85,7 @@ export default function UserPage() {
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
               <DataTable<API.System.User>
+                useManual={true}
                 isLoading={isLoading}
                 sourceData={users.data}
                 total={users.total}
@@ -71,12 +97,19 @@ export default function UserPage() {
                   setSorting,
                 }}
                 paginationProps={{
-                  pagination,
                   setPagination,
                 }}
+                paginationState={pagination}
                 columnFiltersState={columnFilters}
-                columnFilterProps={{
-                  onSearchCommit: setColumnFilters,
+                searchBarProps={{
+                  setColumnFilters,
+                  onSearch: (filters) => {
+                    console.log("search", filters);
+                    setColumnFilters(filters);
+                  },
+                  onReset: () => {
+                    resetFilters();
+                  },
                 }}
               />
             </div>

@@ -9,16 +9,16 @@ import { LucideIcon } from "lucide-react";
 declare global {
   namespace API {
     type Search = {
-      current?: number;
-      page_token?: string; // page token used for automatic pagination
-      page_size?: number;
-      only_count?: boolean;
-      no_paging?: boolean;
-      sort?: string;
+      current: number;
+      page_token: string; // page token used for automatic pagination
+      page_size: number;
+      only_count: boolean;
+      no_paging: boolean;
+      sort: string;
       // update_mask?: string; // update mask used for partial update
     };
 
-    type SearchParams = Record<string, unknown> & Search;
+    type SearchParams = Record<string, unknown> & Partial<Search>;
 
     type BearerAuth = {
       headerKey?: string;

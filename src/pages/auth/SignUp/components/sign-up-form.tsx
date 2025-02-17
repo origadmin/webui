@@ -6,7 +6,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/LoadingButton";
 import { PasswordInput } from "@/components/password-input";
 
 export type SignUpFormProps = HTMLAttributes<HTMLDivElement>;
@@ -94,9 +94,9 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' loading={isLoading}>
+            <LoadingButton className='mt-2' loading={isLoading}>
               Create Account
-            </Button>
+            </LoadingButton>
 
             <div className='relative my-2'>
               <div className='absolute inset-0 flex items-center'>
@@ -108,7 +108,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             </div>
 
             <div className='flex items-center gap-2'>
-              <Button
+              <LoadingButton
                 variant='outline'
                 className='w-full'
                 type='button'
@@ -116,8 +116,8 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 leftSection={<IconBrandGithub className='size-4' />}
               >
                 GitHub
-              </Button>
-              <Button
+              </LoadingButton>
+              <LoadingButton
                 variant='outline'
                 className='w-full'
                 type='button'
@@ -125,7 +125,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 leftSection={<IconBrandFacebook className='size-4' />}
               >
                 Facebook
-              </Button>
+              </LoadingButton>
             </div>
           </div>
         </form>
