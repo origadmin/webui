@@ -17,12 +17,6 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     console.log("type config:", config);
-    // What to do before sending a request
-    // 获取 token，这里假设 token 存储在 localStorage 中
-    // const token = getAccessToken();
-    // if (token) {
-    //   config.headers["Authorization"] = `Bearer ${token}`;
-    // }
     return config;
   },
   (error) => {
@@ -71,7 +65,7 @@ const convertError = <T,>(error: AxiosError<API.Result<T>>) => {
   return error;
 };
 
-const resultBearer = (bearerToken: API.BearerAuth) => {
+const headerAuth = (bearerToken: API.BearerAuth) => {
   if (bearerToken.token) {
     return {
       [bearerToken.headerKey || "Authorization"]: `${bearerToken.tokenType || "Bearer"} ${bearerToken.token}`,
@@ -80,41 +74,42 @@ const resultBearer = (bearerToken: API.BearerAuth) => {
   return {};
 };
 
-const tryBearer = (auth: API.AxiosAuthConfig) => {
-  if (typeof auth === "string") {
-    return {
-      Authorization: `Bearer ${auth}`,
-    };
+const fetchBearerToken = (auth: API.AxiosAuthConfig | null) => {
+  let token: API.BearerAuth;
+  if (auth === null) {
+    return {};
   }
 
-  let bearerToken = {} as API.BearerAuth | undefined;
-  if (typeof auth === "object") {
-    bearerToken = auth as API.BearerAuth;
-    return resultBearer(bearerToken);
-  }
-  if (typeof auth === "function") {
+  if (typeof auth === "string") {
+    token = { headerKey: "Authorization", tokenType: "Bearer", token: auth };
+  } else if (typeof auth === "object") {
+    token = auth as API.BearerAuth;
+  } else if (typeof auth === "function") {
     const _bearerToken = auth();
     if (typeof _bearerToken === "string") {
-      return {
-        Authorization: `${bearerToken}`,
-      };
+      token = { headerKey: "Authorization", tokenType: "Bearer", token: _bearerToken };
+    } else {
+      token = _bearerToken;
     }
-    bearerToken = _bearerToken as API.BearerAuth;
-    return resultBearer(bearerToken);
+  } else {
+    return {};
   }
-  return {};
+
+  return headerAuth(token);
 };
 
-const tryBasic = (auth: API.AxiosAuthConfig) => {
+const fetchBasicToken = (auth: API.AxiosAuthConfig | null) => {
   if (typeof auth === "object") {
     const basicToken = auth as AxiosBasicCredentials;
-    return {
-      Authorization: `Basic ${basicToken.username}:${basicToken.password}`,
-    };
+    return headerAuth({
+      headerKey: "Authorization",
+      tokenType: "Basic",
+      token: `${basicToken.username}:${basicToken.password}`,
+    });
   }
   return {};
 };
-const getAuthorization = (options: API.RequestOptions) => {
+const fetchHeader = (options: API.RequestOptions) => {
   const { useAuth = "auto", auth = getAccessToken() } = options;
   const { headers = {} } = options;
   if ((useAuth === "auto" || useAuth === "none") && auth === undefined) {
@@ -122,8 +117,8 @@ const getAuthorization = (options: API.RequestOptions) => {
   }
   switch (useAuth) {
     case "auto": {
-      const bearerToken = tryBearer(auth || {});
-      const basicToken = tryBasic(auth || {});
+      const bearerToken = fetchBearerToken(auth);
+      const basicToken = fetchBasicToken(auth);
       return {
         ...headers,
         ...bearerToken,
@@ -131,25 +126,30 @@ const getAuthorization = (options: API.RequestOptions) => {
       };
     }
     case "bearer_token": {
-      const { Authorization: token } = tryBearer(auth || {});
+      const requestToken = fetchBearerToken(auth);
       return {
         ...headers,
-        Authorization: `Bearer ${token}`,
+        ...requestToken,
       };
     }
     case "bearer": {
       return {
         ...headers,
-        ...tryBearer(auth || {}),
+        ...fetchBearerToken(auth),
       };
     }
     case "basic": {
       return {
         ...headers,
-        ...tryBasic(auth || {}),
+        ...fetchBasicToken(auth),
       };
     }
   }
+
+  // todo: add middleware
+  GlobalConfig.api.middlewares.map(({ beforeRequest }) => {
+    return typeof beforeRequest === "function" ? beforeRequest(options) : undefined;
+  });
   return headers;
 };
 
@@ -225,7 +225,7 @@ async function fetchRequest<T, TData = unknown>(
     typeof options.body !== "string" ||
     (options.headers && stringifyParam(options.headers["Content-Type"]) === "application/json");
 
-  options.headers = getAuthorization(options);
+  options.headers = fetchHeader(options);
 
   const config = {
     method,
