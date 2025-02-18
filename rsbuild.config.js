@@ -60,16 +60,31 @@ const config = defineConfig({
     },
   },
   output: {
-    copy: [
-      // `./src/assets/image.png` -> `./dist/image.png`
-      { from: "./public" },
-      process.env.NODE_ENV === "development" ? { from: "./resources/docs/", to: "docs/" } : {},
-    ],
+    copy:
+      process.env.NODE_ENV === "development"
+        ? [
+            { from: "./public" },
+            {
+              from: "./resources/docs/",
+              to: "docs/",
+            },
+          ]
+        : [
+            // `./src/assets/image.png` -> `./dist/image.png`
+            { from: "./public" },
+          ],
   },
   plugins: [pluginReact()],
   tools: {
     rspack: {
-      plugins: [TanStackRouterRspack(import("./tsr.config.json"))],
+      plugins: [
+        TanStackRouterRspack({
+          quoteStyle: "double",
+          generatedRouteTree: "./src/routes.gen.ts",
+          semicolons: true,
+          autoCodeSplitting: true,
+        }),
+      ],
     },
   },
 });
