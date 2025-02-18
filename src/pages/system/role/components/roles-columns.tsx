@@ -63,6 +63,21 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     meta: headerMeta.meta,
   },
   {
+    accessorKey: "type",
+    header: "Type",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("type")}</div>,
+    meta: headerMeta.meta,
+  },
+  {
+    accessorKey: "sequence",
+    header: "Sequence",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("sequence")}</div>,
+    meta: headerMeta.meta,
+  },
+
+  {
     accessorKey: "description",
     header: "Description",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
@@ -91,6 +106,14 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     enableHiding: false,
     enableSorting: false,
   },
+  {
+    accessorKey: "is_system",
+    header: "Is System",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("is_system") ? "Yes" : "No"}</div>,
+    meta: headerMeta.meta,
+  },
+
   {
     id: "options",
     header: "Options",

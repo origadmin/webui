@@ -1,5 +1,7 @@
+import { Query } from "@/utils";
 import { post, get, put, del, patch } from "@/utils/request";
-import { QueryClient, queryOptions } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
+
 
 /** Query user list GET /sys/users */
 export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
@@ -33,35 +35,27 @@ export async function resetUserPassword(id: string, options?: API.RequestOptions
 }
 
 export const usersQueryOptions = (opts?: API.SearchParams) =>
-  queryOptions({
-    queryKey: ["/sys/users", { ...opts }],
-    queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listUser({ ...opts }),
-    // placeholderData: keepPreviousData,
-  });
+  Query.createQueryOptions(["/sys/users", { ...opts }], listUser);
 
-export const userQueryOptions = (id: string) =>
-  queryOptions({
-    queryKey: ["/sys/users", id],
-    queryFn: () => getUser(id),
-  });
+export const userQueryOptions = (id: string) => Query.createQueryOptions(["/sys/users", id], getUser);
 
 export const userCreateOption = (queryClient: QueryClient) => {
   return {
     mutationFn: (user: Omit<API.System.User, "id">) => addUser(user),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
   };
 };
 
 export const userUpdateOption = (queryClient: QueryClient, id: string) => {
   return {
     mutationFn: (user: Omit<API.System.User, "id">) => updateUser(id, user),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
   };
 };
 
 export const userDeleteOption = (queryClient: QueryClient) => {
   return {
     mutationFn: (id: string) => deleteUser(id),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
   };
 };

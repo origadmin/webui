@@ -1,17 +1,15 @@
+import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
+
 
 /** Query role list GET /sys/roles */
 export async function listRole(params: API.SearchParams, options?: API.RequestOptions) {
-  options = {
-    params,
-    ...options,
-  };
-  return get<API.System.Role[]>("/sys/roles", options);
+  return get<API.System.Role[]>("/sys/roles", params, options);
 }
 
 /** Create role record POST /sys/roles */
-export async function addRole(body: API.System.Role, options?: API.RequestOptions) {
+export async function addRole(body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
   return post<API.System.Role>("/sys/roles", body, options);
 }
 
@@ -21,7 +19,7 @@ export async function getRole(id: string, options?: API.RequestOptions) {
 }
 
 /** Update role record by ID PUT /sys/roles/${id} */
-export async function updateRole(id: string, body: API.System.Role, options?: API.RequestOptions) {
+export async function updateRole(id: string, body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
   return put<never>(`/sys/roles/${id}`, body, options);
 }
 
@@ -31,14 +29,26 @@ export async function deleteRole(id: string, options?: API.RequestOptions) {
 }
 
 export const rolesQueryOptions = (opts?: API.SearchParams) =>
-  queryOptions({
-    queryKey: ["/sys/roles", { ...opts }],
-    queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listRole({ ...opts }),
-    placeholderData: keepPreviousData,
-  });
+  Query.createQueryOptions(["/sys/roles", { ...opts }], listRole);
+export const roleQueryOptions = (roleID: string) => Query.createQueryOptions(["/sys/roles", roleID], getRole);
 
-export const roleQueryOptions = (roleID: string) =>
-  queryOptions({
-    queryKey: ["roles", roleID],
-    queryFn: () => getRole(roleID),
-  });
+export const roleCreateOption = (queryClient: QueryClient) => {
+  return {
+    mutationFn: (role: Omit<API.System.Role, "id">) => addRole(role),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+  };
+};
+
+export const roleUpdateOption = (queryClient: QueryClient, id: string) => {
+  return {
+    mutationFn: (role: Omit<API.System.Role, "id">) => updateRole(id, role),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+  };
+};
+
+export const roleDeleteOption = (queryClient: QueryClient) => {
+  return {
+    mutationFn: (id: string) => deleteRole(id),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+  };
+};

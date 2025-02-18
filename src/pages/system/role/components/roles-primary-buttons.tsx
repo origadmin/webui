@@ -1,5 +1,5 @@
 import { useRoleTable } from "@/pages/system/role/components/roles-table-provider";
-import { IconMailPlus, IconRolePlus } from "@tabler/icons-react";
+import { IconMailPlus, IconUserPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 
 export function RolesPrimaryButtons() {
@@ -10,7 +10,7 @@ export function RolesPrimaryButtons() {
         <span>Invite Role</span> <IconMailPlus size={18} />
       </Button>
       <Button variant='secondary' size='sm' className='ml-auto hidden h-8 lg:flex' onClick={() => setOpen("add")}>
-        <span>Add Role</span> <IconRolePlus size={18} />
+        <span>Add Role</span> <IconUserPlus size={18} />
       </Button>
     </div>
   );

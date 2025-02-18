@@ -111,7 +111,6 @@ export default function UserPage() {
                       current: 1,
                     });
                     setUpdating(true);
-                    // onSearch(filters);
                   },
                   onReset: () => {
                     resetFilters();
