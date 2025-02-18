@@ -1,5 +1,6 @@
 import mocks from "@/mocks";
 import { HOST_REQUEST_TIMEOUT, HOST } from "@/types";
+import { getAccessToken } from "@/utils/storage";
 import GlobalConfig from "@config";
 import axios, { AxiosBasicCredentials, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -82,7 +83,7 @@ const resultBearer = (bearerToken: API.BearerAuth) => {
 const tryBearer = (auth: API.AxiosAuthConfig) => {
   if (typeof auth === "string") {
     return {
-      Authorization: `${auth}`,
+      Authorization: `Bearer ${auth}`,
     };
   }
 
@@ -105,11 +106,6 @@ const tryBearer = (auth: API.AxiosAuthConfig) => {
 };
 
 const tryBasic = (auth: API.AxiosAuthConfig) => {
-  if (typeof auth === "string") {
-    return {
-      Authorization: `Basic ${auth}`,
-    };
-  }
   if (typeof auth === "object") {
     const basicToken = auth as AxiosBasicCredentials;
     return {
@@ -119,7 +115,7 @@ const tryBasic = (auth: API.AxiosAuthConfig) => {
   return {};
 };
 const getAuthorization = (options: API.RequestOptions) => {
-  const { useAuth = "auto", auth } = options;
+  const { useAuth = "auto", auth = getAccessToken() } = options;
   const { headers = {} } = options;
   if ((useAuth === "auto" || useAuth === "none") && auth === undefined) {
     return headers;
@@ -157,47 +153,34 @@ const getAuthorization = (options: API.RequestOptions) => {
   return headers;
 };
 
-const fillBody = <TData,>(bodyOrOptions?: TData | API.RequestOptions<TData>, options?: API.RequestOptions<TData>) => {
-  if (options) {
+const fillBody = <TData,>(body?: TData, options?: API.RequestOptions<TData>) => {
+  if (options || body) {
     options = {
       headers: {
         "Content-Type": "application/json",
       },
       ...options,
-      body: bodyOrOptions as TData,
-    };
-  } else if (bodyOrOptions) {
-    options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      ...(bodyOrOptions as API.RequestOptions<TData>),
+      body: body,
     };
   } else {
     options = {
       headers: {
         "Content-Type": "application/json",
       },
+      ...(options || {}),
     };
   }
   return options;
 };
 
-const fillParams = <TData,>(
-  paramOrOptions?: API.SearchParams | API.RequestOptions<TData>,
-  options?: API.RequestOptions<TData>,
-) => {
-  if (options) {
+const fillParams = <TData,>(params?: API.SearchParams, options?: API.RequestOptions<TData>) => {
+  if (options || params) {
     options = {
       ...options,
-      params: paramOrOptions as API.SearchParams,
-    };
-  } else if (paramOrOptions) {
-    options = {
-      ...(paramOrOptions as API.RequestOptions<TData>),
+      params,
     };
   } else {
-    options = {};
+    /* empty */
   }
   return options;
 };
@@ -258,39 +241,31 @@ async function fetchRequest<T, TData = unknown>(
     });
 }
 
-async function get<T>(url: string, _paramsOrOptions?: API.SearchParams | API.RequestOptions, options?: API.RequestOptions) {
+async function get<T>(url: string, _paramsOrOptions?: API.SearchParams, options?: API.RequestOptions) {
   options = fillParams(_paramsOrOptions, options);
   return fetchRequest<T>(url, "GET", options);
 }
 
-async function post<T, TData = unknown>(
-  url: string,
-  bodyOrOptions?: TData | API.RequestOptions<TData>,
-  options?: API.RequestOptions<TData>,
-) {
+async function post<T, TData = unknown>(url: string, bodyOrOptions?: TData, options?: API.RequestOptions<TData>) {
   options = fillBody(bodyOrOptions, options);
   return fetchRequest<T, TData>(url, "POST", options);
 }
 
-async function put<T, TData = unknown>(
-  url: string,
-  bodyOrOptions?: TData | API.RequestOptions<TData>,
-  options?: API.RequestOptions<TData>,
-) {
+async function put<T, TData = unknown>(url: string, bodyOrOptions?: TData, options?: API.RequestOptions<TData>) {
   options = fillBody(bodyOrOptions, options);
   return fetchRequest<T, TData>(url, "PUT", options);
 }
 
-async function patch<T, TData = unknown>(
-  url: string,
-  bodyOrOptions?: TData | API.RequestOptions<TData>,
-  options?: API.RequestOptions<TData>,
-) {
+async function patch<T, TData = unknown>(url: string, bodyOrOptions?: TData, options?: API.RequestOptions<TData>) {
   options = fillBody(bodyOrOptions, options);
   return fetchRequest<T, TData>(url, "PATCH", options);
 }
 
-async function del<T>(url: string, paramsOrOptions?: API.SearchParams | API.RequestOptions, options?: API.RequestOptions) {
+async function del<T>(
+  url: string,
+  paramsOrOptions?: API.SearchParams | API.RequestOptions,
+  options?: API.RequestOptions,
+) {
   options = fillParams(paramsOrOptions, options);
   return fetchRequest<T>(url, "DELETE", options);
 }

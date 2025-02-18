@@ -19,7 +19,6 @@ import { PasswordInput } from "@/components/password-input";
 const formSchema = z
   .object({
     nickname: z.string().min(1, { message: "Nickname is required." }),
-    rolename: z.string().min(1, { message: "Rolename is required." }),
     phoneNumber: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
     password: z.string().transform((pwd) => pwd.trim()),

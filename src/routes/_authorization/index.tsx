@@ -1,22 +1,14 @@
-import { DEFAULT_MAIN_PAGE, SIGN_IN_URL } from "@/types";
-import { redirect, createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authorization/")({
   component: RouteComponent,
-  beforeLoad: ({ context, location }) => {
-    console.log("location", location);
-    if (context.auth.isAuthenticated()) {
+  beforeLoad: ({ location }) => {
+    if (location.pathname === "/") {
       throw redirect({
-        to: DEFAULT_MAIN_PAGE,
+        to: "/dashboard/overview",
         replace: true,
       });
     }
-    throw redirect({
-      to: SIGN_IN_URL,
-      search: {
-        redirect: location.href,
-      },
-    });
   },
 });
 

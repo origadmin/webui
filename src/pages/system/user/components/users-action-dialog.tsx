@@ -136,12 +136,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
+            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
               <FormField
                 control={form.control}
                 name='nickname'
                 render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
+                  <FormItem className='grid grid-cols-6 items-center gap-4 gap-y-1 space-y-0'>
                     <FormLabel className='col-span-2 text-right'>Nickname</FormLabel>
                     <FormControl>
                       <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
@@ -154,7 +154,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
                 control={form.control}
                 name='username'
                 render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
+                  <FormItem className='grid grid-cols-6 items-center gap-4 gap-y-1 space-y-0'>
                     <FormLabel className='col-span-2 text-right'>Username</FormLabel>
                     <FormControl>
                       <Input placeholder='john_doe' className='col-span-4' {...field} />

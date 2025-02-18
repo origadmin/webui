@@ -1,51 +1,51 @@
 import { post, get, put } from "@/utils/request";
 
 
-/** Get captcha ID GET /api/v1/captcha/id */
+/** Get captcha ID GET /captcha/id */
 export async function getCaptchaID(options?: API.RequestOptions) {
-  return get<API.Captcha>("/api/v1/captcha/id", options);
+  return get<API.Captcha>("/captcha/id", options);
 }
 
-/** Response captcha image GET /api/v1/captcha/image */
+/** Response captcha image GET /captcha/image */
 export function getCaptchaImageURL(id: string) {
-  return `/api/v1/captcha/image?id=${id}&reload=1&ts=${new Date().getTime()}`;
+  return `/captcha/image?id=${id}&reload=1&ts=${new Date().getTime()}`;
 }
 
-/** Login system with username and password POST /api/v1/login */
+/** Login system with username and password POST /login */
 export async function login<T extends API.Token = API.Token>(body: API.LoginForm, options?: API.RequestOptions) {
-  return post<T>("/api/v1/login", body, options);
+  return post<T>("/login", body, options);
 }
 
-/** Logout system POST /api/v1/personal/logout */
+/** Logout system POST /personal/logout */
 export async function logout(options?: API.RequestOptions) {
-  return post<never>("/api/v1/personal/logout", options);
+  return post<never>("/personal/logout", options);
 }
 
-/** Query personal user menus based on the personal user role GET /api/v1/personal/menus */
+/** Query personal user menus based on the personal user role GET /personal/menus */
 export async function listPersonalMenus(params: API.SearchParams, options?: API.RequestOptions) {
   options = {
     params,
     ...options,
   };
-  return get<API.System.Menu[]>("/api/v1/personal/menus", options);
+  return get<API.System.Menu[]>("/personal/menus", options);
 }
 
-/** Change personal user password PUT /api/v1/personal/password */
+/** Change personal user password PUT /personal/password */
 export async function updatePersonalPassword(body: API.UpdateLoginPassword, options?: API.RequestOptions) {
-  return put<unknown>("/api/v1/personal/password", body, options);
+  return put<unknown>("/personal/password", body, options);
 }
 
-/** Refresh personal access token POST /api/v1/personal/refresh/token */
+/** Refresh personal access token POST /personal/refresh/token */
 export async function refreshToken(options?: API.RequestOptions) {
-  return post<API.LoginToken>("/api/v1/personal/refresh/token", options);
+  return post<API.LoginToken>("/personal/refresh/token", options);
 }
 
-/** Get personal user info GET /api/v1/personal/user */
+/** Get personal user info GET /personal/user */
 export async function getPersonalUser(options?: API.RequestOptions) {
-  return get<API.System.User>("/api/v1/personal/user", options);
+  return get<API.System.User>("/personal/user", options);
 }
 
-/** Change personal user info PUT /api/v1/personal/user */
+/** Change personal user info PUT /personal/user */
 export async function updatePersonalUser(body: API.System.User, options?: API.RequestOptions) {
-  return put<unknown>("/api/v1/personal/user", body, options);
+  return put<unknown>("/personal/user", body, options);
 }

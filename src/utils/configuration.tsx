@@ -1,9 +1,9 @@
-import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
+import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS, HOST } from "@/types";
 
 const defaultConfig = {
   request: {
-    baseURL: "",
-    // baseURL: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
+    // baseURL: "",
+    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
     timeout: 30000,
   },
   api: {

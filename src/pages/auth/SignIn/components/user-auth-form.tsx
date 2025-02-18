@@ -5,7 +5,7 @@ import { get } from "@/utils/request";
 import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -58,7 +58,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [submitting, startTransition] = useTransition();
   const { toast } = useToast();
-  const urlParams = new URLSearchParams(window.location.search);
+  const navigate = useNavigate();
+  const urlParams = new URLSearchParams(location.search);
+  // This method jumps to the location of the redirect parameter
   const redirectUrl = urlParams.get("redirect") || "/";
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -77,13 +79,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       return;
     }
     setIsLoading(true);
-    // Simulate API call to get new CAPTCHA
-
-    // const reload = captcha.id ? `id=${captcha.id}&reload=true` : "";
-    // const url = reload !== "" ? `/api/v1/captcha?${reload}` : "/api/v1/captcha";
-    // =>
     const url = `/captcha${captcha.id ? `?id=${captcha.id}&reload=true` : ""}`;
-
     try {
       const response = await get<Captcha>(url);
       if (response.success && response.data) {
@@ -120,14 +116,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           toast({
             description: "Signed In Successfully!",
           });
+          console.log("location", location.pathname, redirectUrl, "data", data);
           if (data) {
             setAuth(data);
           }
-          console.log("location", location.pathname, redirectUrl);
-          window.location.href = redirectUrl;
+          // window.location.href = redirectUrl;
+          navigate({
+            to: redirectUrl,
+            replace: true,
+          });
         },
         onError: (err) => {
           console.error("SignIn Err:", err);
+          setCaptcha(defaultCaptcha);
           toast({
             variant: "destructive",
             description: err && err.message ? err.message : "unknown error",

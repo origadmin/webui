@@ -2,10 +2,10 @@ import { logout, login } from "@/api/system/login";
 import { SIGN_IN_URL } from "@/types";
 import { fetchRequest, Method } from "@/utils/request";
 import { getRefreshToken } from "@/utils/storage";
-import config from "@config";
+import GlobalConfig from "@config";
 
 export async function refreshToken() {
-  const { url, method } = config.auth.refreshToken;
+  const { url, method } = GlobalConfig.auth.refreshToken;
   // Assuming the refresh token is stored in localStorage
   const refreshToken = getRefreshToken();
   if (!refreshToken) {
@@ -70,38 +70,20 @@ export const signIn = async <T extends API.Token>(
   { login: _login = login, options, ...props }: SignProps<T>,
 ) => {
   console.log("param value:", params);
-  if (params.username !== "admin") {
-    if (props.onError) {
-      props.onError(new Error("Invalid username or password"));
+  if (GlobalConfig.mocks) {
+    if (params.username !== "admin") {
+      if (props.onError) {
+        props.onError(new Error("Invalid username or password"));
+      }
+      return;
     }
-    return;
-  }
-  if (params.password !== "orig.admin") {
-    if (props.onError) {
-      props.onError(new Error("Invalid username or password"));
+    if (params.password !== "orig.admin") {
+      if (props.onError) {
+        props.onError(new Error("Invalid username or password"));
+      }
+      return;
     }
-    return;
   }
-
-  // setTimeout(() => {
-  //   // 模拟登录成功
-  //   const token = mockToken;
-  //   if (token) {
-  //     // Storage.setUserID(token.user_id);
-  //     // Storage.setAccessToken(token.access_token);
-  //     // const time = new Date().setTime(token.expires_at);
-  //     // Storage.setExpirationTime(time.toString());
-  //     // 登录成功后，跳转到 callbackUrl
-  //     // window.location.href = param.callbackUrl;
-  //     if (props.onSuccess) {
-  //       props.onSuccess({ success: true, data: token } as T);
-  //     }
-  //   } else {
-  //     if (props.onError) {
-  //       props.onError(new Error("Invalid username or password"));
-  //     }
-  //   }
-  // }, 1000); // 等待 3 秒
 
   try {
     const resp = await _login(params, options);

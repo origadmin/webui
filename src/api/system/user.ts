@@ -5,11 +5,7 @@ import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 /** Query user list GET /sys/users */
 export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
   console.log("listUser", params, options);
-  options = {
-    params,
-    ...options,
-  };
-  return get<API.System.User[]>("/sys/users", options);
+  return get<API.System.User[]>("/sys/users", params, options);
 }
 
 /** Create user record POST /sys/users */

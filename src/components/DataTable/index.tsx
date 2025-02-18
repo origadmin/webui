@@ -171,6 +171,7 @@ function DataTable<T>({
         manualPagination: true,
       }
     : {};
+
   const table = useReactTable({
     data,
     columns,
@@ -198,6 +199,22 @@ function DataTable<T>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange: useManual ? setPagination : undefined,
+    // //syntax 1
+    // onPaginationChange: (updater) => {
+    //   setPagination((old) => {
+    //     const newPaginationValue = updater instanceof Function ? updater(old) : updater;
+    //     //do something with the new pagination value
+    //     //...
+    //     return useManual ? newPaginationValue : undefined;
+    //   });
+    // },
+    // //syntax 2
+    // onSortingChange: (updater) => {
+    //   const newSortingValue = updater instanceof Function ? updater(sorting) : updater;
+    //   //do something with the new sorting value
+    //   //...
+    //   setSorting(updater); //normal state update
+    // },
   });
 
   return (
