@@ -1,10 +1,10 @@
 const auth = {
   verifyEmail: {
-    url: "/api/v1/personal/verify-email",
+    url: "/personal/verify-email",
     method: "POST",
   },
   getCaptcha: {
-    url: "/api/v1/captcha/id",
+    url: "/captcha/id",
     method: "GET",
     params: {
       reload: 1, // 是否重新生成验证码
@@ -12,11 +12,11 @@ const auth = {
     },
   },
   resetPassword: {
-    url: "/api/v1/personal/reset-password",
+    url: "/personal/reset-password",
     method: "POST",
   },
   refreshToken: {
-    url: "/api/v1/personal/refresh",
+    url: "/token/refresh",
     method: "POST",
   },
 };

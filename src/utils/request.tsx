@@ -241,33 +241,29 @@ async function fetchRequest<T, TData = unknown>(
     });
 }
 
-async function get<T>(url: string, _paramsOrOptions?: API.SearchParams, options?: API.RequestOptions) {
-  options = fillParams(_paramsOrOptions, options);
+async function get<T>(url: string, params?: API.SearchParams, options?: API.RequestOptions) {
+  options = fillParams(params, options);
   return fetchRequest<T>(url, "GET", options);
 }
 
-async function post<T, TData = unknown>(url: string, bodyOrOptions?: TData, options?: API.RequestOptions<TData>) {
-  options = fillBody(bodyOrOptions, options);
+async function del<T>(url: string, params?: API.SearchParams, options?: API.RequestOptions) {
+  options = fillParams(params, options);
+  return fetchRequest<T>(url, "DELETE", options);
+}
+
+async function post<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
+  options = fillBody(body, options);
   return fetchRequest<T, TData>(url, "POST", options);
 }
 
-async function put<T, TData = unknown>(url: string, bodyOrOptions?: TData, options?: API.RequestOptions<TData>) {
-  options = fillBody(bodyOrOptions, options);
+async function put<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
+  options = fillBody(body, options);
   return fetchRequest<T, TData>(url, "PUT", options);
 }
 
-async function patch<T, TData = unknown>(url: string, bodyOrOptions?: TData, options?: API.RequestOptions<TData>) {
-  options = fillBody(bodyOrOptions, options);
+async function patch<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
+  options = fillBody(body, options);
   return fetchRequest<T, TData>(url, "PATCH", options);
-}
-
-async function del<T>(
-  url: string,
-  paramsOrOptions?: API.SearchParams | API.RequestOptions,
-  options?: API.RequestOptions,
-) {
-  options = fillParams(paramsOrOptions, options);
-  return fetchRequest<T>(url, "DELETE", options);
 }
 
 export { request, get, post, put, patch, del, fetchRequest };

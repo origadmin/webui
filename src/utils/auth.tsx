@@ -1,28 +1,32 @@
+import auth from "@/api/auth";
 import { logout, login } from "@/api/system/login";
+import { mockLogin } from "@/mocks/mock-login";
 import { SIGN_IN_URL } from "@/types";
-import { fetchRequest, Method } from "@/utils/request";
-import { getRefreshToken } from "@/utils/storage";
+import { post } from "@/utils/request";
+import { getRefreshToken, setAuth } from "@/utils/storage";
 import GlobalConfig from "@config";
 
 export async function refreshToken() {
-  const { url, method } = GlobalConfig.auth.refreshToken;
+  const { url } = auth.refreshToken;
   // Assuming the refresh token is stored in localStorage
   const refreshToken = getRefreshToken();
   if (!refreshToken) {
-    throw new Error("No refresh token found");
+    console.warn("refresh token is empty, perhaps the system is not support refresh token");
+    return "";
   }
   if (url === "") {
     return;
   }
 
   try {
-    const response = await fetchRequest<API.Token>(url, method as Method, { refresh_token: refreshToken });
+    const response = await post<API.Token>(url, { refresh_token: refreshToken });
     if (response && response.success && response.data) {
       const { access_token } = response.data;
       // Update localStorage with the new tokens
-      if (access_token) {
-        localStorage.setItem("access_token", access_token);
-      }
+      setAuth(response.data);
+      // if (access_token) {
+      //   localStorage.setItem("access_token", access_token);
+      // }
       return access_token || "";
     }
   } catch (err) {
@@ -71,17 +75,16 @@ export const signIn = async <T extends API.Token>(
 ) => {
   console.log("param value:", params);
   if (GlobalConfig.mocks) {
-    if (params.username !== "admin") {
-      if (props.onError) {
-        props.onError(new Error("Invalid username or password"));
-      }
+    console.log("mock login:", params);
+    const result = mockLogin(params);
+    if (result.success) {
+      setAuth(result.data as API.Token);
       return;
     }
-    if (params.password !== "orig.admin") {
-      if (props.onError) {
-        props.onError(new Error("Invalid username or password"));
-      }
-      return;
+
+    const message = result.error?.message || "unknown error";
+    if (props.onError) {
+      props.onError(new Error(message));
     }
   }
 
@@ -90,7 +93,7 @@ export const signIn = async <T extends API.Token>(
     if (resp && resp.success && resp.data) {
       const token = resp.data;
       if (token) {
-        localStorage.setItem("access_token", token.access_token);
+        setAuth(token);
         if (props.onSuccess) {
           props.onSuccess(token);
         }

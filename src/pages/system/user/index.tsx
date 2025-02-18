@@ -52,6 +52,16 @@ export default function UserPage() {
       setUpdating(false);
     }
   }, [params, setFilters, updating]);
+
+  // useEffect(() => {
+  //   if (!isError) return;
+  //   console.log("error", error.cause as API.Error);
+  //   const cause = error.cause as API.Error;
+  //   if (cause.id === "http.response.status.SECURITY_ERROR_REASON_TOKEN_EXPIRED") {
+  //     refreshToken().then((r) => console.log("refreshToken", r));
+  //   }
+  // }, [isError, error]);
+
   // const { isLoading } = router.state;
 
   // const [search, setSearch] = useState<API.SearchParams>(params);
