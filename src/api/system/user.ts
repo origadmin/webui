@@ -1,6 +1,5 @@
 import { post, get, put, del, patch } from "@/utils/request";
-import { keepPreviousData, queryOptions } from "@tanstack/react-query";
-
+import { QueryClient, queryOptions } from "@tanstack/react-query";
 
 /** Query user list GET /sys/users */
 export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
@@ -19,7 +18,7 @@ export async function getUser(id: string, options?: API.RequestOptions) {
 }
 
 /** Update user record by ID PUT /sys/users/${id} */
-export async function updateUser(id: string, body: API.System.User, options?: API.RequestOptions) {
+export async function updateUser(id: string, body: Omit<API.System.User, "id">, options?: API.RequestOptions) {
   return put<never>(`/sys/users/${id}`, body, options);
 }
 
@@ -37,11 +36,32 @@ export const usersQueryOptions = (opts?: API.SearchParams) =>
   queryOptions({
     queryKey: ["/sys/users", { ...opts }],
     queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listUser({ ...opts }),
-    placeholderData: keepPreviousData,
+    // placeholderData: keepPreviousData,
   });
 
-export const userQueryOptions = (userId: string) =>
+export const userQueryOptions = (id: string) =>
   queryOptions({
-    queryKey: ["users", userId],
-    queryFn: () => getUser(userId),
+    queryKey: ["/sys/users", id],
+    queryFn: () => getUser(id),
   });
+
+export const userCreateOption = (queryClient: QueryClient) => {
+  return {
+    mutationFn: (user: Omit<API.System.User, "id">) => addUser(user),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+  };
+};
+
+export const userUpdateOption = (queryClient: QueryClient, id: string) => {
+  return {
+    mutationFn: (user: Omit<API.System.User, "id">) => updateUser(id, user),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+  };
+};
+
+export const userDeleteOption = (queryClient: QueryClient) => {
+  return {
+    mutationFn: (id: string) => deleteUser(id),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+  };
+};

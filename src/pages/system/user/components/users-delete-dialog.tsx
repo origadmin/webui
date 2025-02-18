@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { userDeleteOption } from "@/api/system/user";
 import { IconAlertTriangle } from "@tabler/icons-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
@@ -14,9 +16,15 @@ interface Props<T> {
 
 export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props<API.System.User>) {
   const [value, setValue] = useState("");
-
+  const id = currentRow?.id || "";
+  const queryClient = useQueryClient();
+  const { mutate: deleteUser, isPending: isDeletePending } = useMutation(userDeleteOption(queryClient));
   const handleDelete = () => {
     if (value.trim() !== currentRow.username) return;
+
+    if (id !== "") {
+      deleteUser(id);
+    }
 
     onOpenChange(false);
     toast({
@@ -35,6 +43,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
       disabled={value.trim() !== currentRow.username}
+      isLoading={isDeletePending}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle className='mr-1 inline-block stroke-destructive' size={18} /> Delete User
@@ -46,7 +55,8 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
             Are you sure you want to delete <span className='font-bold'>{currentRow.username}</span>?
             <br />
             This action will permanently remove the user with the role of{" "}
-            <span className='font-bold'>{currentRow.role.toUpperCase()}</span> from the system. This cannot be undone.
+            <span className='font-bold'>{currentRow.username?.toUpperCase()}</span> from the system. This cannot be
+            undone.
           </p>
 
           <Label className='my-2'>

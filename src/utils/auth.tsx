@@ -110,3 +110,19 @@ export const signIn = async <T extends API.Token>(
     }
   }
 };
+
+export const failureRetry = (failureCount: number, error: Error) => {
+  console.log("failureCount", failureCount, error);
+  const cause = error.cause as API.Error;
+  if (cause.code === 500 && failureCount < 2) {
+    try {
+      const resp = refreshToken();
+      console.log("Token refreshed successfully");
+      return resp !== undefined; // Retry the query
+    } catch (refreshError) {
+      console.error("Refresh token failed", refreshError);
+      return false; // Don't retry if refresh failed
+    }
+  }
+  return false; // Don't retry for other errors
+};

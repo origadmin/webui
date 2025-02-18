@@ -4,3771 +4,3775 @@
  */
 
 export interface paths {
-  "/captcha": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/captcha": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["LoginService_Captcha"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["LoginService_Captcha"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/captcha/audio": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/captcha/audio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["LoginService_CaptchaAudio"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["LoginService_CaptchaAudio"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/captcha/id": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/captcha/id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["LoginService_CaptchaId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["LoginService_CaptchaId"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/captcha/image": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/captcha/image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["LoginService_CaptchaImage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["LoginService_CaptchaImage"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/login": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["LoginService_Login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations["LoginService_Login"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/logout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["LoginService_Logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations["LoginService_Logout"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/register": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["LoginService_Register"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations["LoginService_Register"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/auth/authenticate": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/auth/authenticate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthService_Authenticate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations["AuthService_Authenticate"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/auth/destroy": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/auth/destroy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description DestroyToken invalidates a JWT token. */
+        post: operations["AuthService_DestroyToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** @description DestroyToken invalidates a JWT token. */
-    post: operations["AuthService_DestroyToken"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/auth/logout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthService_AuthLogout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations["AuthService_AuthLogout"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/auth/resources": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/auth/resources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["AuthService_ListAuthResources"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["AuthService_ListAuthResources"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/auth/token": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/auth/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description CreateToken generates a new JWT token for the given user. */
+        post: operations["AuthService_CreateToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** @description CreateToken generates a new JWT token for the given user. */
-    post: operations["AuthService_CreateToken"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/auth/validate": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/auth/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description ValidateToken verifies the validity of a JWT token. */
+        get: operations["AuthService_ValidateToken"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description ValidateToken verifies the validity of a JWT token. */
-    get: operations["AuthService_ValidateToken"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/departments": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/departments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["DepartmentService_ListDepartments"];
+        put?: never;
+        post: operations["DepartmentService_CreateDepartment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["DepartmentService_ListDepartments"];
-    put?: never;
-    post: operations["DepartmentService_CreateDepartment"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/departments/{department.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/departments/{department.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["DepartmentService_UpdateDepartment"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["DepartmentService_UpdateDepartment"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/departments/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/departments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["DepartmentService_GetDepartment"];
+        put?: never;
+        post?: never;
+        delete: operations["DepartmentService_DeleteDepartment"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["DepartmentService_GetDepartment"];
-    put?: never;
-    post?: never;
-    delete: operations["DepartmentService_DeleteDepartment"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/menus": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/menus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MenuService_ListMenus"];
+        put?: never;
+        post: operations["MenuService_CreateMenu"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["MenuService_ListMenus"];
-    put?: never;
-    post: operations["MenuService_CreateMenu"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/menus/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/menus/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MenuService_GetMenu"];
+        put?: never;
+        post?: never;
+        delete: operations["MenuService_DeleteMenu"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["MenuService_GetMenu"];
-    put?: never;
-    post?: never;
-    delete: operations["MenuService_DeleteMenu"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/menus/{menu.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/menus/{menu.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["MenuService_UpdateMenu"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["MenuService_UpdateMenu"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/permissions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PermissionService_ListPermissions"];
+        put?: never;
+        post: operations["PermissionService_CreatePermission"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["PermissionService_ListPermissions"];
-    put?: never;
-    post: operations["PermissionService_CreatePermission"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/permissions/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/permissions/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PermissionService_GetPermission"];
+        put?: never;
+        post?: never;
+        delete: operations["PermissionService_DeletePermission"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["PermissionService_GetPermission"];
-    put?: never;
-    post?: never;
-    delete: operations["PermissionService_DeletePermission"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/permissions/{permission.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/permissions/{permission.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["PermissionService_UpdatePermission"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["PermissionService_UpdatePermission"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/logout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description PersonalLogout Personal user logs out */
+        post: operations["PersonalService_PersonalLogout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** @description PersonalLogout Personal user logs out */
-    post: operations["PersonalService_PersonalLogout"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/menus": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/menus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description ListPersonalResources List the personal user's menu */
+        get: operations["PersonalService_ListPersonalResources"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description ListPersonalResources List the personal user's menu */
-    get: operations["PersonalService_ListPersonalResources"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/password": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description UpdatePersonalProfilePassword The user changes the password */
+        put: operations["PersonalService_UpdatePersonalPassword"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    /** @description UpdatePersonalProfilePassword The user changes the password */
-    put: operations["PersonalService_UpdatePersonalPassword"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/profile": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description GetPersonalProfile Update the personal user information */
+        get: operations["PersonalService_GetPersonalProfile"];
+        /** @description UpdatePersonalProfile Update the personal user information */
+        put: operations["PersonalService_UpdatePersonalProfile"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description GetPersonalProfile Update the personal user information */
-    get: operations["PersonalService_GetPersonalProfile"];
-    /** @description UpdatePersonalProfile Update the personal user information */
-    put: operations["PersonalService_UpdatePersonalProfile"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/roles": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description ListPersonalResources List the personal user's menu */
+        get: operations["PersonalService_ListPersonalRoles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description ListPersonalResources List the personal user's menu */
-    get: operations["PersonalService_ListPersonalRoles"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/setting": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/setting": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description UpdatePersonalSetting User settings are saved */
+        put: operations["PersonalService_UpdatePersonalSetting"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    /** @description UpdatePersonalSetting User settings are saved */
-    put: operations["PersonalService_UpdatePersonalSetting"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/personal/token/refresh": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/personal/token/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description RefreshPersonalToken Refresh the personal user's token */
+        post: operations["PersonalService_RefreshPersonalToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** @description RefreshPersonalToken Refresh the personal user's token */
-    post: operations["PersonalService_RefreshPersonalToken"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/positions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/positions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PositionService_ListPositions"];
+        put?: never;
+        post: operations["PositionService_CreatePosition"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["PositionService_ListPositions"];
-    put?: never;
-    post: operations["PositionService_CreatePosition"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/positions/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/positions/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PositionService_GetPosition"];
+        put?: never;
+        post?: never;
+        delete: operations["PositionService_DeletePosition"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["PositionService_GetPosition"];
-    put?: never;
-    post?: never;
-    delete: operations["PositionService_DeletePosition"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/positions/{position.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/positions/{position.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["PositionService_UpdatePosition"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["PositionService_UpdatePosition"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/resources": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/resources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ResourceService_ListResources"];
+        put?: never;
+        post: operations["ResourceService_CreateResource"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["ResourceService_ListResources"];
-    put?: never;
-    post: operations["ResourceService_CreateResource"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/resources/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/resources/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ResourceService_GetResource"];
+        put?: never;
+        post?: never;
+        delete: operations["ResourceService_DeleteResource"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["ResourceService_GetResource"];
-    put?: never;
-    post?: never;
-    delete: operations["ResourceService_DeleteResource"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/resources/{resource.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/resources/{resource.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["ResourceService_UpdateResource"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["ResourceService_UpdateResource"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/roles": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["RoleService_ListRoles"];
+        put?: never;
+        post: operations["RoleService_CreateRole"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["RoleService_ListRoles"];
-    put?: never;
-    post: operations["RoleService_CreateRole"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/roles/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/roles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["RoleService_GetRole"];
+        put?: never;
+        post?: never;
+        delete: operations["RoleService_DeleteRole"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["RoleService_GetRole"];
-    put?: never;
-    post?: never;
-    delete: operations["RoleService_DeleteRole"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/roles/{role.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/roles/{role.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["RoleService_UpdateRole"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["RoleService_UpdateRole"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/users": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserService_ListUsers"];
+        put?: never;
+        post: operations["UserService_CreateUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["UserService_ListUsers"];
-    put?: never;
-    post: operations["UserService_CreateUser"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/users/password/reset": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/users/password/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description ResetUserPassword reset the user s password */
+        post: operations["UserService_ResetUserPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** @description ResetUserPassword reset the user s password */
-    post: operations["UserService_ResetUserPassword"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/users/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserService_GetUser"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get: operations["UserService_GetUser"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/users/{user.id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/users/{user.id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["UserService_UpdateUser"];
+        post?: never;
+        delete: operations["UserService_DeleteUser"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put: operations["UserService_UpdateUser"];
-    post?: never;
-    delete: operations["UserService_DeleteUser"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/users/{user.id}/roles": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/users/{user.id}/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description UpdateUserRoles update the user roles */
+        put: operations["UserService_UpdateUserRoles"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    /** @description UpdateUserRoles update the user roles */
-    put: operations["UserService_UpdateUserRoles"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sys/users/{user.id}/status": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sys/users/{user.id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** @description UpdateUserStatus Update the status of the user information */
+        put: operations["UserService_UpdateUserStatus"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    /** @description UpdateUserStatus Update the status of the user information */
-    put: operations["UserService_UpdateUserStatus"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/token/refresh": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/token/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["LoginService_TokenRefresh"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations["LoginService_TokenRefresh"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
-  schemas: {
-    "api.v1.services.system.AuthLogoutRequest_Data": {
-      token?: string;
-    };
-    "api.v1.services.system.AuthLogoutResponse": Record<string, never>;
-    "api.v1.services.system.AuthenticateRequest_Data": {
-      token?: string;
-      path?: string;
-      method?: string;
-      operation?: string;
-    };
-    "api.v1.services.system.AuthenticateResponse": {
-      is_valid?: boolean;
-    };
-    /** @description The response message containing the greetings */
-    "api.v1.services.system.CaptchaAudioResponse": {
-      headers?: {
-        [key: string]: string;
-      };
-      /** Format: bytes */
-      audio?: string;
-    };
-    "api.v1.services.system.CaptchaIdResponse": {
-      data?: string;
-    };
-    /** @description The response message containing the greetings */
-    "api.v1.services.system.CaptchaImageResponse": {
-      headers?: {
-        [key: string]: string;
-      };
-      /** Format: bytes */
-      image?: string;
-    };
-    "api.v1.services.system.CaptchaResponse": {
-      id?: string;
-      type?: string;
-      data?: string;
-    };
-    "api.v1.services.system.CreateDepartmentResponse": {
-      department?: components["schemas"]["api.v1.services.system.Department"];
-    };
-    /** @description CreateMenuResponse is the response for the MenuService.CreateMenu method. */
-    "api.v1.services.system.CreateMenuResponse": {
-      menu?: components["schemas"]["api.v1.services.system.Menu"];
-    };
-    "api.v1.services.system.CreatePermissionResponse": {
-      permission?: components["schemas"]["api.v1.services.system.Permission"];
-    };
-    "api.v1.services.system.CreatePositionResponse": {
-      position?: components["schemas"]["api.v1.services.system.Position"];
-    };
-    /** @description CreateResourceResponse is the response for the ResourceService.CreateResource method. */
-    "api.v1.services.system.CreateResourceResponse": {
-      resource?: components["schemas"]["api.v1.services.system.Resource"];
-    };
-    "api.v1.services.system.CreateRoleResponse": {
-      role?: components["schemas"]["api.v1.services.system.Role"];
-    };
-    "api.v1.services.system.CreateTokenRequest_Data": {
-      user_id?: string;
-      scopes?: string[];
-    };
-    /** @description CreateTokenResponse contains the generated token. */
-    "api.v1.services.system.CreateTokenResponse": {
-      token?: string;
-    };
-    "api.v1.services.system.CreateUserResponse": {
-      user?: components["schemas"]["api.v1.services.system.User"];
-    };
-    "api.v1.services.system.DeleteDepartmentResponse": Record<string, never>;
-    /** @description DeleteMenuResponse is the response for the MenuService.DeleteMenu method. */
-    "api.v1.services.system.DeleteMenuResponse": Record<string, never>;
-    "api.v1.services.system.DeletePermissionResponse": Record<string, never>;
-    "api.v1.services.system.DeletePositionResponse": Record<string, never>;
-    /** @description DeleteResourceResponse is the response for the ResourceService.DeleteResource method. */
-    "api.v1.services.system.DeleteResourceResponse": Record<string, never>;
-    "api.v1.services.system.DeleteRoleResponse": Record<string, never>;
-    "api.v1.services.system.DeleteUserResponse": Record<string, never>;
-    /** @description department.table.comment */
-    "api.v1.services.system.Department": {
-      /** @description ID of the ent.
-       *      field.primary_key.comment */
-      id?: string;
-      /**
-       * Format: date-time
-       * @description create_time.field.comment
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description update_time.field.comment
-       */
-      update_time?: string;
-      /** @description department.field.keyword */
-      keyword?: string;
-      /** @description department.field.name */
-      name?: string;
-      /** @description menu.field.tree_path */
-      tree_path?: string;
-      /**
-       * Format: int32
-       * @description department.field.sequence
-       */
-      sequence?: number;
-      /**
-       * Format: int32
-       * @description department.field.status
-       */
-      status?: number;
-      /**
-       * Format: int32
-       * @description department.field.level
-       */
-      level?: number;
-      /** @description department.field.description */
-      description?: string;
-      /** @description department.field.parent_id */
-      parent_id?: string;
-      /** @description Children holds the value of the children edge. */
-      children?: components["schemas"]["api.v1.services.system.Department"][];
-      /** @description Parent holds the value of the parent edge. */
-      parent?: components["schemas"]["api.v1.services.system.Department"];
-    };
-    "api.v1.services.system.DestroyTokenRequest_Data": {
-      token?: string;
-    };
-    /** @description DestroyTokenResponse contains the result of the invalidation. */
-    "api.v1.services.system.DestroyTokenResponse": Record<string, never>;
-    "api.v1.services.system.GetDepartmentResponse": {
-      department?: components["schemas"]["api.v1.services.system.Department"];
-    };
-    /** @description GetMenuResponse is the response for the MenuService.GetMenu method. */
-    "api.v1.services.system.GetMenuResponse": {
-      /** @description The field id should match the Noun in the method id. */
-      menu?: components["schemas"]["api.v1.services.system.Menu"];
-    };
-    "api.v1.services.system.GetPermissionResponse": {
-      permission?: components["schemas"]["api.v1.services.system.Permission"];
-    };
-    "api.v1.services.system.GetPersonalProfileResponse": {
-      user?: components["schemas"]["api.v1.services.system.User"];
-    };
-    "api.v1.services.system.GetPositionResponse": {
-      position?: components["schemas"]["api.v1.services.system.Position"];
-    };
-    /** @description GetResourceResponse is the response for the ResourceService.GetResource method. */
-    "api.v1.services.system.GetResourceResponse": {
-      /** @description The field id should match the Noun in the method id. */
-      resource?: components["schemas"]["api.v1.services.system.Resource"];
-    };
-    "api.v1.services.system.GetRoleResponse": {
-      role?: components["schemas"]["api.v1.services.system.Role"];
-    };
-    "api.v1.services.system.GetUserResponse": {
-      user?: components["schemas"]["api.v1.services.system.User"];
-    };
-    "api.v1.services.system.ListAuthResourcesResponse": {
-      /** @description The list of Auths. */
-      resources?: components["schemas"]["api.v1.services.system.Resource"][];
-      /**
-       * Format: int32
-       * @description The total number of Auths in the result set.
-       */
-      total_size?: number;
-    };
-    "api.v1.services.system.ListDepartmentsResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging menus */
-      departments?: components["schemas"]["api.v1.services.system.Department"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    /** @description ListMenusResponse is the response for the MenuService.ListMenus method. */
-    "api.v1.services.system.ListMenusResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging menus */
-      menus?: components["schemas"]["api.v1.services.system.Menu"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    "api.v1.services.system.ListPermissionsResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging menus */
-      permissions?: components["schemas"]["api.v1.services.system.Permission"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    "api.v1.services.system.ListPersonalResourcesResponse": {
-      menus?: components["schemas"]["api.v1.services.system.Menu"][];
-    };
-    "api.v1.services.system.ListPersonalRolesResponse": {
-      roles?: components["schemas"]["api.v1.services.system.Role"][];
-    };
-    "api.v1.services.system.ListPositionsResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging menus */
-      positions?: components["schemas"]["api.v1.services.system.Position"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    /** @description ListResourcesResponse is the response for the ResourceService.ListResources method. */
-    "api.v1.services.system.ListResourcesResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging resources */
-      resources?: components["schemas"]["api.v1.services.system.Resource"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    "api.v1.services.system.ListRolesResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging menus */
-      roles?: components["schemas"]["api.v1.services.system.Role"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    "api.v1.services.system.ListUsersResponse": {
-      /**
-       * Format: int32
-       * @description The total number of items in the list.
-       */
-      total_size?: number;
-      /** @description The paging menus */
-      users?: components["schemas"]["api.v1.services.system.User"][];
-      /**
-       * Format: int32
-       * @description The current page number.
-       */
-      current?: number;
-      /**
-       * Format: int32
-       * @description The maximum number of items to return.
-       */
-      page_size?: number;
-      /** @description Token to retrieve the next page of results, or empty if there are no
-       *      more results in the list. */
-      next_page_token?: string;
-      /** @description Additional information about this response.
-       *      content to be added without destroying the current data format */
-      extra?: components["schemas"]["google.protobuf.Any"];
-    };
-    "api.v1.services.system.LoginRequest_Data": {
-      username?: string;
-      password?: string;
-      captcha_id?: string;
-      captcha_code?: string;
-    };
-    "api.v1.services.system.LoginResponse": {
-      token?: components["schemas"]["security.jwt.v1.Token"];
-    };
-    "api.v1.services.system.LogoutResponse": {
-      success?: boolean;
-    };
-    /** @description Menu is the model entity for the Menu schema. */
-    "api.v1.services.system.Menu": {
-      /** @description ID of the ent. */
-      id?: string;
-      /**
-       * Format: date-time
-       * @description CreateTime holds the value of the "create_time" field.
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description UpdateTime holds the value of the "update_time" field.
-       */
-      update_time?: string;
-      /** @description Code holds the value of the "keyword" field. */
-      keyword?: string;
-      /** @description Name holds the value of the "name" field. */
-      name?: string;
-      /** @description I18nKey holds the value */
-      i18n_key?: string;
-      /** @description Description holds the value of the "description" field. */
-      description?: string;
-      /**
-       * Format: int32
-       * @description Sequence holds the value of the "sequence" field.
-       */
-      sequence?: number;
-      /** @description Type holds the value of the "type" field. */
-      type?: string;
-      /** @description Icon holds the value of the "icon" field. */
-      icon?: string;
-      /** @description Path holds the value of the "path" field. */
-      path?: string;
-      /** @description Properties holds the value of the "properties" field. */
-      properties?: string;
-      /**
-       * Format: int32
-       * @description Status holds the value of the "status" field.
-       */
-      status?: number;
-      /** @description ParentID holds the value of the "parent_id" field. */
-      parent_id?: string;
-      /** @description ParentPath holds the value of the "parent_path" field. */
-      parent_path?: string;
-      /** @description Children holds the value of the children edge. */
-      children?: components["schemas"]["api.v1.services.system.Menu"][];
-      /** @description Parent holds the value of the parent edge. */
-      parent?: components["schemas"]["api.v1.services.system.Menu"];
-      /** @description Resources holds the value of the resources edge. */
-      resources?: components["schemas"]["api.v1.services.system.Resource"][];
-      /** @description Roles holds the value of the roles edge. */
-      roles?: components["schemas"]["api.v1.services.system.Role"][];
-    };
-    /** @description permission.table.comment */
-    "api.v1.services.system.Permission": {
-      /** @description ID of the ent.
-       *      field.primary_key.comment */
-      id?: string;
-      /**
-       * Format: date-time
-       * @description create_time.field.comment
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description update_time.field.comment
-       */
-      update_time?: string;
-      /** @description permission.field.name */
-      name?: string;
-      /** @description permission.field.keyword */
-      keyword?: string;
-      /** @description permission.field.description */
-      description?: string;
-      /** @description permission.field.data_scope */
-      data_scope?: string;
-      /** @description permission.field.data_rules */
-      data_rules?: {
-        [key: string]: string;
-      };
-    };
-    "api.v1.services.system.PersonalLogoutResponse": {
-      success?: boolean;
-    };
-    /** @description position.table.comment */
-    "api.v1.services.system.Position": {
-      /** @description ID of the ent.
-       *      field.primary_key.comment */
-      id?: string;
-      /**
-       * Format: date-time
-       * @description create_time.field.comment
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description update_time.field.comment
-       */
-      update_time?: string;
-      /** @description position.field.name */
-      name?: string;
-      /** @description position.field.keyword */
-      keyword?: string;
-      /** @description position.field.description */
-      description?: string;
-      /** @description department.field.department_id */
-      department_id?: string;
-    };
-    "api.v1.services.system.RefreshPersonalTokenResponse": {
-      token?: string;
-    };
-    "api.v1.services.system.RegisterRequest_Data": {
-      username?: string;
-      password?: string;
-      captcha_id?: string;
-      captcha_code?: string;
-    };
-    "api.v1.services.system.RegisterResponse": {
-      success?: boolean;
-      data?: components["schemas"]["api.v1.services.system.RegisterResponse_Data"];
-    };
-    "api.v1.services.system.RegisterResponse_Data": {
-      redirect?: string;
-    };
-    "api.v1.services.system.ResetUserPasswordResponse": Record<string, never>;
-    /** @description Resource is the model entity for the Resource schema. */
-    "api.v1.services.system.Resource": {
-      /** @description ID of the ent.
-       *      field.primary_key.comment */
-      id?: string;
-      /**
-       * Format: date-time
-       * @description create_time.field.comment
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description update_time.field.comment
-       */
-      update_time?: string;
-      /** @description resource.field.name */
-      name?: string;
-      /** @description resource.field.keyword */
-      keyword?: string;
-      /** @description resource.field.i18n_key */
-      i18n_key?: string;
-      /** @description resource.field.type */
-      type?: string;
-      /**
-       * Format: int32
-       * @description resource.field.status
-       */
-      status?: number;
-      /** @description resource.field.uri */
-      uri?: string;
-      /** @description resource.field.operation */
-      operation?: string;
-      /** @description resource.field.method */
-      method?: string;
-      /** @description resource.field.component */
-      component?: string;
-      /** @description resource.field.icon */
-      icon?: string;
-      /**
-       * Format: int32
-       * @description resource.field.sequence
-       */
-      sequence?: number;
-      /** @description resource.field.visible */
-      visible?: boolean;
-      /** @description resource.field.tree_path */
-      tree_path?: string;
-      /** @description resource.field.properties */
-      properties?: {
-        [key: string]: string;
-      };
-      /** @description resource.field.description */
-      description?: string;
-      /** @description resource.field.parent_id */
-      parent_id?: string;
-      /** @description Children holds the value of the children edge. */
-      children?: components["schemas"]["api.v1.services.system.Resource"][];
-      /** @description Parent holds the value of the parent edge. */
-      parent?: components["schemas"]["api.v1.services.system.Resource"];
-    };
-    /** @description Role is the model entity for the Role schema. */
-    "api.v1.services.system.Role": {
-      /** @description ID of the ent.
-       *      field.primary_key.comment */
-      id?: string;
-      /**
-       * Format: date-time
-       * @description create_time.field.comment
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description update_time.field.comment
-       */
-      update_time?: string;
-      /** @description role.field.keyword */
-      keyword?: string;
-      /** @description role.field.name */
-      name?: string;
-      /** @description role.field.description */
-      description?: string;
-      /**
-       * Format: int32
-       * @description role.field.type
-       */
-      type?: number;
-      /**
-       * Format: int32
-       * @description role.field.sequence
-       */
-      sequence?: number;
-      /**
-       * Format: int32
-       * @description role.field.status
-       */
-      status?: number;
-      /** @description role.field.is_system */
-      is_system?: boolean;
-      /** @description Menus holds the value of the menus edge. */
-      menus?: components["schemas"]["api.v1.services.system.Menu"][];
-      /** @description Users holds the value of the users edge. */
-      users?: components["schemas"]["api.v1.services.system.User"][];
-    };
-    "api.v1.services.system.TokenRefreshRequest_Data": {
-      refresh_token?: string;
-    };
-    "api.v1.services.system.TokenRefreshResponse": {
-      token?: components["schemas"]["security.jwt.v1.Token"];
-    };
-    "api.v1.services.system.UpdateDepartmentResponse": {
-      department?: components["schemas"]["api.v1.services.system.Department"];
-    };
-    /** @description UpdateMenuResponse is the response for the MenuService.UpdateMenu method. */
-    "api.v1.services.system.UpdateMenuResponse": {
-      menu?: components["schemas"]["api.v1.services.system.Menu"];
-    };
-    "api.v1.services.system.UpdatePermissionResponse": {
-      permission?: components["schemas"]["api.v1.services.system.Permission"];
-    };
-    "api.v1.services.system.UpdatePersonalPasswordResponse": Record<string, never>;
-    "api.v1.services.system.UpdatePersonalProfileResponse": Record<string, never>;
-    "api.v1.services.system.UpdatePersonalSettingResponse": Record<string, never>;
-    "api.v1.services.system.UpdatePositionResponse": {
-      position?: components["schemas"]["api.v1.services.system.Position"];
-    };
-    /** @description UpdateResourceResponse is the response for the ResourceService.UpdateResource method. */
-    "api.v1.services.system.UpdateResourceResponse": {
-      resource?: components["schemas"]["api.v1.services.system.Resource"];
-    };
-    "api.v1.services.system.UpdateRoleResponse": {
-      role?: components["schemas"]["api.v1.services.system.Role"];
-    };
-    "api.v1.services.system.UpdateUserResponse": {
-      user?: components["schemas"]["api.v1.services.system.User"];
-    };
-    "api.v1.services.system.UpdateUserRolesRequest_Data": {
-      role_ids?: string[];
-    };
-    "api.v1.services.system.UpdateUserRolesResponse": {
-      user?: components["schemas"]["api.v1.services.system.User"];
-    };
-    "api.v1.services.system.UpdateUserStatusResponse": Record<string, never>;
-    /** @description User is the model entity for the User schema. */
-    "api.v1.services.system.User": {
-      /** @description ID of the ent.
-       *      field.primary_key.comment */
-      id?: string;
-      /** @description create_author.field.comment */
-      create_author?: string;
-      /** @description update_author.field.comment */
-      update_author?: string;
-      /**
-       * Format: date-time
-       * @description create_time.field.comment
-       */
-      create_time?: string;
-      /**
-       * Format: date-time
-       * @description update_time.field.comment
-       */
-      update_time?: string;
-      /** @description user.field.uuid */
-      uuid?: string;
-      /** @description user.field.allowed_ip */
-      allowed_ip?: string;
-      /** @description user.field.username */
-      username?: string;
-      /** @description user.field.nickname */
-      nickname?: string;
-      /** @description user.field.avatar */
-      avatar?: string;
-      /** @description user.field.nickname */
-      name?: string;
-      /** @description user.field.gender */
-      gender?: string;
-      /** @description user.field.password */
-      password?: string;
-      /** @description user.field.salt */
-      salt?: string;
-      /** @description user.field.phone */
-      phone?: string;
-      /** @description user.field.email */
-      email?: string;
-      /** @description user.field.remark */
-      remark?: string;
-      /** @description user.field.token */
-      token?: string;
-      /**
-       * Format: int32
-       * @description user.field.status
-       */
-      status?: number;
-      /** @description user.field.last_login_ip */
-      last_login_ip?: string;
-      /**
-       * Format: date-time
-       * @description user.field.last_login_time
-       */
-      last_login_time?: string;
-      /**
-       * Format: date-time
-       * @description user.field.sanction_date
-       */
-      sanction_date?: string;
-      /** @description user.field.manager_id */
-      manager_id?: string;
-      /** @description user.field.manager */
-      manager?: string;
-    };
-    /** @description VerifyTokenResponse contains the result of the verification. */
-    "api.v1.services.system.ValidateTokenResponse": {
-      is_valid?: boolean;
-      claims?: {
-        [key: string]: string;
-      };
-    };
-    /** @description Contains an arbitrary serialized message along with a @type that describes the type of the serialized message. */
-    "google.protobuf.Any": {
-      /** @description The type of the serialized message. */
-      "@type"?: string;
-    } & {
-      [key: string]: unknown;
-    };
-    /** @description The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). */
-    "google.rpc.Status": {
-      /**
-       * Format: int32
-       * @description The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-       */
-      code?: number;
-      /** @description A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
-      message?: string;
-      /** @description A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
-      details?: components["schemas"]["google.protobuf.Any"][];
-    };
-    /** @description PWT is a web token that can be used to authenticate a user with protobuf services. */
-    "security.jwt.v1.Token": {
-      /** @description The client ID associated with the token. */
-      client_id?: string;
-      /** @description The ID of the user associated with the token. */
-      user_id?: string;
-      /** @description The web access token used for authentication. */
-      access_token?: string;
-      /** @description The refresh token used to obtain a new access token. */
-      refresh_token?: string;
-      /** @description The expiration time of the token. */
-      expiration_time?: string;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    schemas: {
+        "api.v1.services.system.AuthLogoutRequest_Data": {
+            token?: string;
+        };
+        "api.v1.services.system.AuthLogoutResponse": Record<string, never>;
+        "api.v1.services.system.AuthenticateRequest_Data": {
+            token?: string;
+            path?: string;
+            method?: string;
+            operation?: string;
+        };
+        "api.v1.services.system.AuthenticateResponse": {
+            is_valid?: boolean;
+        };
+        /** @description The response message containing the greetings */
+        "api.v1.services.system.CaptchaAudioResponse": {
+            headers?: {
+                [key: string]: string;
+            };
+            /** Format: bytes */
+            audio?: string;
+        };
+        "api.v1.services.system.CaptchaIdResponse": {
+            data?: string;
+        };
+        /** @description The response message containing the greetings */
+        "api.v1.services.system.CaptchaImageResponse": {
+            headers?: {
+                [key: string]: string;
+            };
+            /** Format: bytes */
+            image?: string;
+        };
+        "api.v1.services.system.CaptchaResponse": {
+            id?: string;
+            type?: string;
+            data?: string;
+        };
+        "api.v1.services.system.CreateDepartmentResponse": {
+            department?: components["schemas"]["api.v1.services.system.Department"];
+        };
+        /** @description CreateMenuResponse is the response for the MenuService.CreateMenu method. */
+        "api.v1.services.system.CreateMenuResponse": {
+            menu?: components["schemas"]["api.v1.services.system.Menu"];
+        };
+        "api.v1.services.system.CreatePermissionResponse": {
+            permission?: components["schemas"]["api.v1.services.system.Permission"];
+        };
+        "api.v1.services.system.CreatePositionResponse": {
+            position?: components["schemas"]["api.v1.services.system.Position"];
+        };
+        /** @description CreateResourceResponse is the response for the ResourceService.CreateResource method. */
+        "api.v1.services.system.CreateResourceResponse": {
+            resource?: components["schemas"]["api.v1.services.system.Resource"];
+        };
+        "api.v1.services.system.CreateRoleResponse": {
+            role?: components["schemas"]["api.v1.services.system.Role"];
+        };
+        "api.v1.services.system.CreateTokenRequest_Data": {
+            user_id?: string;
+            scopes?: string[];
+        };
+        /** @description CreateTokenResponse contains the generated token. */
+        "api.v1.services.system.CreateTokenResponse": {
+            token?: string;
+        };
+        "api.v1.services.system.CreateUserResponse": {
+            user?: components["schemas"]["api.v1.services.system.User"];
+        };
+        "api.v1.services.system.DeleteDepartmentResponse": Record<string, never>;
+        /** @description DeleteMenuResponse is the response for the MenuService.DeleteMenu method. */
+        "api.v1.services.system.DeleteMenuResponse": Record<string, never>;
+        "api.v1.services.system.DeletePermissionResponse": Record<string, never>;
+        "api.v1.services.system.DeletePositionResponse": Record<string, never>;
+        /** @description DeleteResourceResponse is the response for the ResourceService.DeleteResource method. */
+        "api.v1.services.system.DeleteResourceResponse": Record<string, never>;
+        "api.v1.services.system.DeleteRoleResponse": Record<string, never>;
+        "api.v1.services.system.DeleteUserResponse": Record<string, never>;
+        /** @description department.table.comment */
+        "api.v1.services.system.Department": {
+            /** @description ID of the ent.
+             *      field.primary_key.comment */
+            id?: string;
+            /**
+             * Format: date-time
+             * @description create_time.field.comment
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description update_time.field.comment
+             */
+            update_time?: string;
+            /** @description department.field.keyword */
+            keyword?: string;
+            /** @description department.field.name */
+            name?: string;
+            /** @description menu.field.tree_path */
+            tree_path?: string;
+            /**
+             * Format: int32
+             * @description department.field.sequence
+             */
+            sequence?: number;
+            /**
+             * Format: int32
+             * @description department.field.status
+             */
+            status?: number;
+            /**
+             * Format: int32
+             * @description department.field.level
+             */
+            level?: number;
+            /** @description department.field.description */
+            description?: string;
+            /** @description department.field.parent_id */
+            parent_id?: string;
+            /** @description Children holds the value of the children edge. */
+            children?: components["schemas"]["api.v1.services.system.Department"][];
+            /** @description Parent holds the value of the parent edge. */
+            parent?: components["schemas"]["api.v1.services.system.Department"];
+        };
+        "api.v1.services.system.DestroyTokenRequest_Data": {
+            token?: string;
+        };
+        /** @description DestroyTokenResponse contains the result of the invalidation. */
+        "api.v1.services.system.DestroyTokenResponse": Record<string, never>;
+        "api.v1.services.system.GetDepartmentResponse": {
+            department?: components["schemas"]["api.v1.services.system.Department"];
+        };
+        /** @description GetMenuResponse is the response for the MenuService.GetMenu method. */
+        "api.v1.services.system.GetMenuResponse": {
+            /** @description The field id should match the Noun in the method id. */
+            menu?: components["schemas"]["api.v1.services.system.Menu"];
+        };
+        "api.v1.services.system.GetPermissionResponse": {
+            permission?: components["schemas"]["api.v1.services.system.Permission"];
+        };
+        "api.v1.services.system.GetPersonalProfileResponse": {
+            user?: components["schemas"]["api.v1.services.system.User"];
+        };
+        "api.v1.services.system.GetPositionResponse": {
+            position?: components["schemas"]["api.v1.services.system.Position"];
+        };
+        /** @description GetResourceResponse is the response for the ResourceService.GetResource method. */
+        "api.v1.services.system.GetResourceResponse": {
+            /** @description The field id should match the Noun in the method id. */
+            resource?: components["schemas"]["api.v1.services.system.Resource"];
+        };
+        "api.v1.services.system.GetRoleResponse": {
+            role?: components["schemas"]["api.v1.services.system.Role"];
+        };
+        "api.v1.services.system.GetUserResponse": {
+            user?: components["schemas"]["api.v1.services.system.User"];
+        };
+        "api.v1.services.system.ListAuthResourcesResponse": {
+            /** @description The list of Auths. */
+            resources?: components["schemas"]["api.v1.services.system.Resource"][];
+            /**
+             * Format: int32
+             * @description The total number of Auths in the result set.
+             */
+            total_size?: number;
+        };
+        "api.v1.services.system.ListDepartmentsResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging menus */
+            departments?: components["schemas"]["api.v1.services.system.Department"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        /** @description ListMenusResponse is the response for the MenuService.ListMenus method. */
+        "api.v1.services.system.ListMenusResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging menus */
+            menus?: components["schemas"]["api.v1.services.system.Menu"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        "api.v1.services.system.ListPermissionsResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging menus */
+            permissions?: components["schemas"]["api.v1.services.system.Permission"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        "api.v1.services.system.ListPersonalResourcesResponse": {
+            menus?: components["schemas"]["api.v1.services.system.Menu"][];
+        };
+        "api.v1.services.system.ListPersonalRolesResponse": {
+            roles?: components["schemas"]["api.v1.services.system.Role"][];
+        };
+        "api.v1.services.system.ListPositionsResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging menus */
+            positions?: components["schemas"]["api.v1.services.system.Position"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        /** @description ListResourcesResponse is the response for the ResourceService.ListResources method. */
+        "api.v1.services.system.ListResourcesResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging resources */
+            resources?: components["schemas"]["api.v1.services.system.Resource"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        "api.v1.services.system.ListRolesResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging menus */
+            roles?: components["schemas"]["api.v1.services.system.Role"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        "api.v1.services.system.ListUsersResponse": {
+            /**
+             * Format: int32
+             * @description The total number of items in the list.
+             */
+            total_size?: number;
+            /** @description The paging menus */
+            users?: components["schemas"]["api.v1.services.system.User"][];
+            /**
+             * Format: int32
+             * @description The current page number.
+             */
+            current?: number;
+            /**
+             * Format: int32
+             * @description The maximum number of items to return.
+             */
+            page_size?: number;
+            /** @description Token to retrieve the next page of results, or empty if there are no
+             *      more results in the list. */
+            next_page_token?: string;
+            /** @description Additional information about this response.
+             *      content to be added without destroying the current data format */
+            extra?: components["schemas"]["google.protobuf.Any"];
+        };
+        "api.v1.services.system.LoginRequest_Data": {
+            username?: string;
+            password?: string;
+            captcha_id?: string;
+            captcha_code?: string;
+        };
+        "api.v1.services.system.LoginResponse": {
+            token?: components["schemas"]["security.jwt.v1.Token"];
+        };
+        "api.v1.services.system.LogoutResponse": {
+            success?: boolean;
+        };
+        /** @description Menu is the model entity for the Menu schema. */
+        "api.v1.services.system.Menu": {
+            /** @description ID of the ent. */
+            id?: string;
+            /**
+             * Format: date-time
+             * @description CreateTime holds the value of the "create_time" field.
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description UpdateTime holds the value of the "update_time" field.
+             */
+            update_time?: string;
+            /** @description Code holds the value of the "keyword" field. */
+            keyword?: string;
+            /** @description Name holds the value of the "name" field. */
+            name?: string;
+            /** @description I18nKey holds the value */
+            i18n_key?: string;
+            /** @description Description holds the value of the "description" field. */
+            description?: string;
+            /**
+             * Format: int32
+             * @description Sequence holds the value of the "sequence" field.
+             */
+            sequence?: number;
+            /** @description Type holds the value of the "type" field. */
+            type?: string;
+            /** @description Icon holds the value of the "icon" field. */
+            icon?: string;
+            /** @description Path holds the value of the "path" field. */
+            path?: string;
+            /** @description Properties holds the value of the "properties" field. */
+            properties?: string;
+            /**
+             * Format: int32
+             * @description Status holds the value of the "status" field.
+             */
+            status?: number;
+            /** @description ParentID holds the value of the "parent_id" field. */
+            parent_id?: string;
+            /** @description ParentPath holds the value of the "parent_path" field. */
+            parent_path?: string;
+            /** @description Children holds the value of the children edge. */
+            children?: components["schemas"]["api.v1.services.system.Menu"][];
+            /** @description Parent holds the value of the parent edge. */
+            parent?: components["schemas"]["api.v1.services.system.Menu"];
+            /** @description Resources holds the value of the resources edge. */
+            resources?: components["schemas"]["api.v1.services.system.Resource"][];
+            /** @description Roles holds the value of the roles edge. */
+            roles?: components["schemas"]["api.v1.services.system.Role"][];
+        };
+        /** @description permission.table.comment */
+        "api.v1.services.system.Permission": {
+            /** @description ID of the ent.
+             *      field.primary_key.comment */
+            id?: string;
+            /**
+             * Format: date-time
+             * @description create_time.field.comment
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description update_time.field.comment
+             */
+            update_time?: string;
+            /** @description permission.field.name */
+            name?: string;
+            /** @description permission.field.keyword */
+            keyword?: string;
+            /** @description permission.field.description */
+            description?: string;
+            /** @description permission.field.data_scope */
+            data_scope?: string;
+            /** @description permission.field.data_rules */
+            data_rules?: {
+                [key: string]: string;
+            };
+        };
+        "api.v1.services.system.PersonalLogoutResponse": {
+            success?: boolean;
+        };
+        /** @description position.table.comment */
+        "api.v1.services.system.Position": {
+            /** @description ID of the ent.
+             *      field.primary_key.comment */
+            id?: string;
+            /**
+             * Format: date-time
+             * @description create_time.field.comment
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description update_time.field.comment
+             */
+            update_time?: string;
+            /** @description position.field.name */
+            name?: string;
+            /** @description position.field.keyword */
+            keyword?: string;
+            /** @description position.field.description */
+            description?: string;
+            /** @description department.field.department_id */
+            department_id?: string;
+        };
+        "api.v1.services.system.RefreshPersonalTokenResponse": {
+            token?: string;
+        };
+        "api.v1.services.system.RegisterRequest_Data": {
+            username?: string;
+            password?: string;
+            captcha_id?: string;
+            captcha_code?: string;
+        };
+        "api.v1.services.system.RegisterResponse": {
+            success?: boolean;
+            data?: components["schemas"]["api.v1.services.system.RegisterResponse_Data"];
+        };
+        "api.v1.services.system.RegisterResponse_Data": {
+            redirect?: string;
+        };
+        "api.v1.services.system.ResetUserPasswordResponse": Record<string, never>;
+        /** @description Resource is the model entity for the Resource schema. */
+        "api.v1.services.system.Resource": {
+            /** @description ID of the ent.
+             *      field.primary_key.comment */
+            id?: string;
+            /**
+             * Format: date-time
+             * @description create_time.field.comment
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description update_time.field.comment
+             */
+            update_time?: string;
+            /** @description resource.field.name */
+            name?: string;
+            /** @description resource.field.keyword */
+            keyword?: string;
+            /** @description resource.field.i18n_key */
+            i18n_key?: string;
+            /** @description resource.field.type */
+            type?: string;
+            /**
+             * Format: int32
+             * @description resource.field.status
+             */
+            status?: number;
+            /** @description resource.field.uri */
+            uri?: string;
+            /** @description resource.field.operation */
+            operation?: string;
+            /** @description resource.field.method */
+            method?: string;
+            /** @description resource.field.component */
+            component?: string;
+            /** @description resource.field.icon */
+            icon?: string;
+            /**
+             * Format: int32
+             * @description resource.field.sequence
+             */
+            sequence?: number;
+            /** @description resource.field.visible */
+            visible?: boolean;
+            /** @description resource.field.tree_path */
+            tree_path?: string;
+            /** @description resource.field.properties */
+            properties?: {
+                [key: string]: string;
+            };
+            /** @description resource.field.description */
+            description?: string;
+            /** @description resource.field.parent_id */
+            parent_id?: string;
+            /** @description Children holds the value of the children edge. */
+            children?: components["schemas"]["api.v1.services.system.Resource"][];
+            /** @description Parent holds the value of the parent edge. */
+            parent?: components["schemas"]["api.v1.services.system.Resource"];
+        };
+        /** @description Role is the model entity for the Role schema. */
+        "api.v1.services.system.Role": {
+            /** @description ID of the ent.
+             *      field.primary_key.comment */
+            id?: string;
+            /**
+             * Format: date-time
+             * @description create_time.field.comment
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description update_time.field.comment
+             */
+            update_time?: string;
+            /** @description role.field.keyword */
+            keyword?: string;
+            /** @description role.field.name */
+            name?: string;
+            /** @description role.field.description */
+            description?: string;
+            /**
+             * Format: int32
+             * @description role.field.type
+             */
+            type?: number;
+            /**
+             * Format: int32
+             * @description role.field.sequence
+             */
+            sequence?: number;
+            /**
+             * Format: int32
+             * @description role.field.status
+             */
+            status?: number;
+            /** @description role.field.is_system */
+            is_system?: boolean;
+            /** @description Menus holds the value of the menus edge. */
+            menus?: components["schemas"]["api.v1.services.system.Menu"][];
+            /** @description Users holds the value of the users edge. */
+            users?: components["schemas"]["api.v1.services.system.User"][];
+        };
+        "api.v1.services.system.TokenRefreshRequest_Data": {
+            refresh_token?: string;
+        };
+        "api.v1.services.system.TokenRefreshResponse": {
+            token?: components["schemas"]["security.jwt.v1.Token"];
+        };
+        "api.v1.services.system.UpdateDepartmentResponse": {
+            department?: components["schemas"]["api.v1.services.system.Department"];
+        };
+        /** @description UpdateMenuResponse is the response for the MenuService.UpdateMenu method. */
+        "api.v1.services.system.UpdateMenuResponse": {
+            menu?: components["schemas"]["api.v1.services.system.Menu"];
+        };
+        "api.v1.services.system.UpdatePermissionResponse": {
+            permission?: components["schemas"]["api.v1.services.system.Permission"];
+        };
+        "api.v1.services.system.UpdatePersonalPasswordResponse": Record<string, never>;
+        "api.v1.services.system.UpdatePersonalProfileResponse": Record<string, never>;
+        "api.v1.services.system.UpdatePersonalSettingResponse": Record<string, never>;
+        "api.v1.services.system.UpdatePositionResponse": {
+            position?: components["schemas"]["api.v1.services.system.Position"];
+        };
+        /** @description UpdateResourceResponse is the response for the ResourceService.UpdateResource method. */
+        "api.v1.services.system.UpdateResourceResponse": {
+            resource?: components["schemas"]["api.v1.services.system.Resource"];
+        };
+        "api.v1.services.system.UpdateRoleResponse": {
+            role?: components["schemas"]["api.v1.services.system.Role"];
+        };
+        "api.v1.services.system.UpdateUserResponse": {
+            user?: components["schemas"]["api.v1.services.system.User"];
+        };
+        "api.v1.services.system.UpdateUserRolesRequest_Data": {
+            role_ids?: string[];
+        };
+        "api.v1.services.system.UpdateUserRolesResponse": {
+            user?: components["schemas"]["api.v1.services.system.User"];
+        };
+        "api.v1.services.system.UpdateUserStatusResponse": Record<string, never>;
+        /** @description User is the model entity for the User schema. */
+        "api.v1.services.system.User": {
+            /** @description ID of the ent.
+             *      field.primary_key.comment */
+            id?: string;
+            /** @description create_author.field.comment */
+            create_author?: string;
+            /** @description update_author.field.comment */
+            update_author?: string;
+            /**
+             * Format: date-time
+             * @description create_time.field.comment
+             */
+            create_time?: string;
+            /**
+             * Format: date-time
+             * @description update_time.field.comment
+             */
+            update_time?: string;
+            /** @description user.field.uuid */
+            uuid?: string;
+            /** @description user.field.allowed_ip */
+            allowed_ip?: string;
+            /** @description user.field.username */
+            username?: string;
+            /** @description user.field.nickname */
+            nickname?: string;
+            /** @description user.field.avatar */
+            avatar?: string;
+            /** @description user.field.nickname */
+            name?: string;
+            /** @description user.field.gender */
+            gender?: string;
+            /** @description user.field.password
+             *      @Decrypted don't show this field in response */
+            password?: string;
+            /** @description user.field.salt
+             *      @Decrypted don't show this field in response */
+            salt?: string;
+            /** @description user.field.phone */
+            phone?: string;
+            /** @description user.field.email */
+            email?: string;
+            /** @description user.field.remark */
+            remark?: string;
+            /** @description user.field.token */
+            token?: string;
+            /**
+             * Format: int32
+             * @description user.field.status
+             */
+            status?: number;
+            /** @description user.field.last_login_ip */
+            last_login_ip?: string;
+            /**
+             * Format: date-time
+             * @description user.field.last_login_time
+             */
+            last_login_time?: string;
+            /**
+             * Format: date-time
+             * @description user.field.sanction_date
+             */
+            sanction_date?: string;
+            /** @description user.field.manager_id */
+            manager_id?: string;
+            /** @description user.field.manager */
+            manager?: string;
+            /** @description Roles holds the value of the roles edge. */
+            roles?: components["schemas"]["api.v1.services.system.Role"][];
+        };
+        /** @description VerifyTokenResponse contains the result of the verification. */
+        "api.v1.services.system.ValidateTokenResponse": {
+            is_valid?: boolean;
+            claims?: {
+                [key: string]: string;
+            };
+        };
+        /** @description Contains an arbitrary serialized message along with a @type that describes the type of the serialized message. */
+        "google.protobuf.Any": {
+            /** @description The type of the serialized message. */
+            "@type"?: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** @description The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). */
+        "google.rpc.Status": {
+            /**
+             * Format: int32
+             * @description The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+             */
+            code?: number;
+            /** @description A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+            message?: string;
+            /** @description A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
+            details?: components["schemas"]["google.protobuf.Any"][];
+        };
+        /** @description PWT is a web token that can be used to authenticate a user with protobuf services. */
+        "security.jwt.v1.Token": {
+            /** @description The client ID associated with the token. */
+            client_id?: string;
+            /** @description The ID of the user associated with the token. */
+            user_id?: string;
+            /** @description The web access token used for authentication. */
+            access_token?: string;
+            /** @description The refresh token used to obtain a new access token. */
+            refresh_token?: string;
+            /** @description The expiration time of the token. */
+            expiration_time?: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
 export interface operations {
-  LoginService_Captcha: {
-    parameters: {
-      query?: {
-        id?: string;
-        type?: string;
-        reload?: boolean;
-        /** @description The timestamp of the request prevent caching of the same result */
-        ts?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CaptchaResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_CaptchaAudio: {
-    parameters: {
-      query?: {
-        id?: string;
-        reload?: string;
-        /** @description A URL/resource name that uniquely identifies the type of the serialized
-         *      protocol buffer message. This string must contain at least
-         *      one "/" character. The last segment of the URL's path must represent
-         *      the fully qualified name of the type (as in
-         *      `path/google.protobuf.Duration`). The name should be in a canonical form
-         *      (e.g., leading "." is not accepted).
-         *
-         *      In practice, teams usually precompile into the binary all types that they
-         *      expect it to use in the context of Any. However, for URLs which use the
-         *      scheme `http`, `https`, or no scheme, one can optionally set up a type
-         *      server that maps type URLs to message definitions as follows:
-         *
-         *      * If no scheme is provided, `https` is assumed.
-         *      * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-         *        value in binary format, or produce an error.
-         *      * Applications are allowed to cache lookup results based on the
-         *        URL, or have them precompiled into a binary to avoid any
-         *        lookup. Therefore, binary compatibility needs to be preserved
-         *        on changes to types. (Use versioned type names to manage
-         *        breaking changes.)
-         *
-         *      Note: this functionality is not currently available in the official
-         *      protobuf release, and it is not used for type URLs beginning with
-         *      type.googleapis.com. As of May 2023, there are no widely used type server
-         *      implementations and no plans to implement one.
-         *
-         *      Schemes other than `http`, `https` (or the empty scheme) might be
-         *      used with implementation specific semantics. */
-        "data.type_url"?: string;
-        /** @description Must be a valid serialized protocol buffer of the above specified type. */
-        "data.value"?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CaptchaAudioResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_CaptchaId: {
-    parameters: {
-      query?: {
-        /** @description The timestamp of the request prevent caching of the same result */
-        ts?: string;
-        reload?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CaptchaIdResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_CaptchaImage: {
-    parameters: {
-      query?: {
-        id?: string;
-        reload?: string;
-        /** @description A URL/resource name that uniquely identifies the type of the serialized
-         *      protocol buffer message. This string must contain at least
-         *      one "/" character. The last segment of the URL's path must represent
-         *      the fully qualified name of the type (as in
-         *      `path/google.protobuf.Duration`). The name should be in a canonical form
-         *      (e.g., leading "." is not accepted).
-         *
-         *      In practice, teams usually precompile into the binary all types that they
-         *      expect it to use in the context of Any. However, for URLs which use the
-         *      scheme `http`, `https`, or no scheme, one can optionally set up a type
-         *      server that maps type URLs to message definitions as follows:
-         *
-         *      * If no scheme is provided, `https` is assumed.
-         *      * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-         *        value in binary format, or produce an error.
-         *      * Applications are allowed to cache lookup results based on the
-         *        URL, or have them precompiled into a binary to avoid any
-         *        lookup. Therefore, binary compatibility needs to be preserved
-         *        on changes to types. (Use versioned type names to manage
-         *        breaking changes.)
-         *
-         *      Note: this functionality is not currently available in the official
-         *      protobuf release, and it is not used for type URLs beginning with
-         *      type.googleapis.com. As of May 2023, there are no widely used type server
-         *      implementations and no plans to implement one.
-         *
-         *      Schemes other than `http`, `https` (or the empty scheme) might be
-         *      used with implementation specific semantics. */
-        "data.type_url"?: string;
-        /** @description Must be a valid serialized protocol buffer of the above specified type. */
-        "data.value"?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CaptchaImageResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_Login: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.LoginRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.LoginResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_Logout: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.LogoutResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_Register: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.RegisterRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.RegisterResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  AuthService_Authenticate: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.AuthenticateRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.AuthenticateResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  AuthService_DestroyToken: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.DestroyTokenRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DestroyTokenResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  AuthService_AuthLogout: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.AuthLogoutRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.AuthLogoutResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  AuthService_ListAuthResources: {
-    parameters: {
-      query?: {
-        /** @description The maximum number of Auths to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListAuthResourcesResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  AuthService_CreateToken: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.CreateTokenRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreateTokenResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  AuthService_ValidateToken: {
-    parameters: {
-      query?: {
-        token?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ValidateTokenResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  DepartmentService_ListDepartments: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListDepartmentsResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  DepartmentService_CreateDepartment: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the department is to be created. */
-        parent?: string;
-        /** @description The department id to use for this department. */
-        department_id?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Department"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreateDepartmentResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  DepartmentService_UpdateDepartment: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "department.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Department"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateDepartmentResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  DepartmentService_GetDepartment: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/departments/department2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetDepartmentResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  DepartmentService_DeleteDepartment: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The resource id of the department to be deleted, for example:
-         *      "shelves/shelf1/departments/department2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeleteDepartmentResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  MenuService_ListMenus: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListMenusResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  MenuService_CreateMenu: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the menu is to be created. */
-        parent?: string;
-        /** @description The menu id to use for this menu. */
-        menu_id?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Menu"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreateMenuResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  MenuService_GetMenu: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/menus/menu2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetMenuResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  MenuService_DeleteMenu: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The resource id of the menu to be deleted, for example:
-         *      "shelves/shelf1/menus/menu2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeleteMenuResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  MenuService_UpdateMenu: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "menu.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Menu"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateMenuResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PermissionService_ListPermissions: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListPermissionsResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PermissionService_CreatePermission: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the permission is to be created. */
-        parent?: string;
-        /** @description The permission id to use for this permission. */
-        permission_id?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Permission"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreatePermissionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PermissionService_GetPermission: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/permissions/permission2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetPermissionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PermissionService_DeletePermission: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The resource id of the permission to be deleted, for example:
-         *      "shelves/shelf1/permissions/permission2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeletePermissionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PermissionService_UpdatePermission: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "permission.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Permission"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdatePermissionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_PersonalLogout: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.PersonalLogoutResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_ListPersonalResources: {
-    parameters: {
-      query?: {
-        /** @description A URL/resource name that uniquely identifies the type of the serialized
-         *      protocol buffer message. This string must contain at least
-         *      one "/" character. The last segment of the URL's path must represent
-         *      the fully qualified name of the type (as in
-         *      `path/google.protobuf.Duration`). The name should be in a canonical form
-         *      (e.g., leading "." is not accepted).
-         *
-         *      In practice, teams usually precompile into the binary all types that they
-         *      expect it to use in the context of Any. However, for URLs which use the
-         *      scheme `http`, `https`, or no scheme, one can optionally set up a type
-         *      server that maps type URLs to message definitions as follows:
-         *
-         *      * If no scheme is provided, `https` is assumed.
-         *      * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-         *        value in binary format, or produce an error.
-         *      * Applications are allowed to cache lookup results based on the
-         *        URL, or have them precompiled into a binary to avoid any
-         *        lookup. Therefore, binary compatibility needs to be preserved
-         *        on changes to types. (Use versioned type names to manage
-         *        breaking changes.)
-         *
-         *      Note: this functionality is not currently available in the official
-         *      protobuf release, and it is not used for type URLs beginning with
-         *      type.googleapis.com. As of May 2023, there are no widely used type server
-         *      implementations and no plans to implement one.
-         *
-         *      Schemes other than `http`, `https` (or the empty scheme) might be
-         *      used with implementation specific semantics. */
-        "data.type_url"?: string;
-        /** @description Must be a valid serialized protocol buffer of the above specified type. */
-        "data.value"?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListPersonalResourcesResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_UpdatePersonalPassword: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdatePersonalPasswordResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_GetPersonalProfile: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetPersonalProfileResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_UpdatePersonalProfile: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdatePersonalProfileResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_ListPersonalRoles: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListPersonalRolesResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_UpdatePersonalSetting: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdatePersonalSettingResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PersonalService_RefreshPersonalToken: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.RefreshPersonalTokenResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PositionService_ListPositions: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListPositionsResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PositionService_CreatePosition: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the position is to be created. */
-        parent?: string;
-        /** @description The position id to use for this position. */
-        position_id?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Position"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreatePositionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PositionService_GetPosition: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/positions/position2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetPositionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PositionService_DeletePosition: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The resource id of the position to be deleted, for example:
-         *      "shelves/shelf1/positions/position2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeletePositionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  PositionService_UpdatePosition: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "position.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Position"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdatePositionResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  ResourceService_ListResources: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListResourcesResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  ResourceService_CreateResource: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the resource is to be created. */
-        parent?: string;
-        /** @description The resource id to use for this resource. */
-        resource_id?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Resource"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreateResourceResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  ResourceService_GetResource: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/resources/resource2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetResourceResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  ResourceService_DeleteResource: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The resource id of the resource to be deleted, for example:
-         *      "shelves/shelf1/resources/resource2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeleteResourceResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  ResourceService_UpdateResource: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "resource.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Resource"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateResourceResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  RoleService_ListRoles: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListRolesResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  RoleService_CreateRole: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the role is to be created. */
-        parent?: string;
-        /** @description The role id to use for this role. */
-        role_id?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Role"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreateRoleResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  RoleService_GetRole: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/roles/role2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetRoleResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  RoleService_DeleteRole: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The resource id of the role to be deleted, for example:
-         *      "shelves/shelf1/roles/role2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeleteRoleResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  RoleService_UpdateRole: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "role.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.Role"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateRoleResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_ListUsers: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id, for example, "shelves/shelf1". */
-        id?: string;
-        /** @description The current page number. */
-        current?: number;
-        /** @description The maximum number of items to return. */
-        page_size?: number;
-        /** @description The next_page_token value returned from a previous List request, if any. */
-        page_token?: string;
-        /** @description The no_paging is used to disable pagination. */
-        no_paging?: boolean;
-        /** @description The only_count is the query parameter for set only to query the total number */
-        only_count?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ListUsersResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_CreateUser: {
-    parameters: {
-      query?: {
-        /** @description The parent resource id where the user is to be created. */
-        parent?: string;
-        /** @description The user id to use for this user. */
-        user_id?: string;
-        /** @description The user is_admin to use for this user. */
-        is_admin?: boolean;
-        /** @description The random_password is the query parameter for set only to generate a random password */
-        random_password?: boolean;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.User"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.CreateUserResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_ResetUserPassword: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["google.protobuf.Any"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.ResetUserPasswordResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_GetUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description The field will contain id of the resource requested, for example:
-         *      "shelves/shelf1/users/user2" */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.GetUserResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_UpdateUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "user.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.User"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateUserResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_DeleteUser: {
-    parameters: {
-      query?: {
-        /** @description ID of the ent.
-         *      field.primary_key.comment */
-        "user.id"?: string;
-        /** @description create_author.field.comment */
-        "user.create_author"?: string;
-        /** @description update_author.field.comment */
-        "user.update_author"?: string;
-        /** @description create_time.field.comment */
-        "user.create_time"?: string;
-        /** @description update_time.field.comment */
-        "user.update_time"?: string;
-        /** @description user.field.uuid */
-        "user.uuid"?: string;
-        /** @description user.field.allowed_ip */
-        "user.allowed_ip"?: string;
-        /** @description user.field.username */
-        "user.username"?: string;
-        /** @description user.field.nickname */
-        "user.nickname"?: string;
-        /** @description user.field.avatar */
-        "user.avatar"?: string;
-        /** @description user.field.nickname */
-        "user.name"?: string;
-        /** @description user.field.gender */
-        "user.gender"?: string;
-        /** @description user.field.password */
-        "user.password"?: string;
-        /** @description user.field.salt */
-        "user.salt"?: string;
-        /** @description user.field.phone */
-        "user.phone"?: string;
-        /** @description user.field.email */
-        "user.email"?: string;
-        /** @description user.field.remark */
-        "user.remark"?: string;
-        /** @description user.field.token */
-        "user.token"?: string;
-        /** @description user.field.status */
-        "user.status"?: number;
-        /** @description user.field.last_login_ip */
-        "user.last_login_ip"?: string;
-        /** @description user.field.last_login_time */
-        "user.last_login_time"?: string;
-        /** @description user.field.sanction_date */
-        "user.sanction_date"?: string;
-        /** @description user.field.manager_id */
-        "user.manager_id"?: string;
-        /** @description user.field.manager */
-        "user.manager"?: string;
-      };
-      header?: never;
-      path: {
-        "user.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.DeleteUserResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_UpdateUserRoles: {
-    parameters: {
-      query?: {
-        /** @description ID of the ent.
-         *      field.primary_key.comment */
-        "user.id"?: string;
-        /** @description create_author.field.comment */
-        "user.create_author"?: string;
-        /** @description update_author.field.comment */
-        "user.update_author"?: string;
-        /** @description create_time.field.comment */
-        "user.create_time"?: string;
-        /** @description update_time.field.comment */
-        "user.update_time"?: string;
-        /** @description user.field.uuid */
-        "user.uuid"?: string;
-        /** @description user.field.allowed_ip */
-        "user.allowed_ip"?: string;
-        /** @description user.field.username */
-        "user.username"?: string;
-        /** @description user.field.nickname */
-        "user.nickname"?: string;
-        /** @description user.field.avatar */
-        "user.avatar"?: string;
-        /** @description user.field.nickname */
-        "user.name"?: string;
-        /** @description user.field.gender */
-        "user.gender"?: string;
-        /** @description user.field.password */
-        "user.password"?: string;
-        /** @description user.field.salt */
-        "user.salt"?: string;
-        /** @description user.field.phone */
-        "user.phone"?: string;
-        /** @description user.field.email */
-        "user.email"?: string;
-        /** @description user.field.remark */
-        "user.remark"?: string;
-        /** @description user.field.token */
-        "user.token"?: string;
-        /** @description user.field.status */
-        "user.status"?: number;
-        /** @description user.field.last_login_ip */
-        "user.last_login_ip"?: string;
-        /** @description user.field.last_login_time */
-        "user.last_login_time"?: string;
-        /** @description user.field.sanction_date */
-        "user.sanction_date"?: string;
-        /** @description user.field.manager_id */
-        "user.manager_id"?: string;
-        /** @description user.field.manager */
-        "user.manager"?: string;
-        is_add?: boolean;
-      };
-      header?: never;
-      path: {
-        "user.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.UpdateUserRolesRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateUserRolesResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  UserService_UpdateUserStatus: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        "user.id": string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.User"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.UpdateUserStatusResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
-    };
-  };
-  LoginService_TokenRefresh: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["api.v1.services.system.TokenRefreshRequest_Data"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["api.v1.services.system.TokenRefreshResponse"];
-        };
-      };
-      /** @description Default error response */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["google.rpc.Status"];
-        };
-      };
+    LoginService_Captcha: {
+        parameters: {
+            query?: {
+                id?: string;
+                type?: string;
+                reload?: boolean;
+                /** @description The timestamp of the request prevent caching of the same result */
+                ts?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CaptchaResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_CaptchaAudio: {
+        parameters: {
+            query?: {
+                id?: string;
+                reload?: string;
+                /** @description A URL/resource name that uniquely identifies the type of the serialized
+                 *      protocol buffer message. This string must contain at least
+                 *      one "/" character. The last segment of the URL's path must represent
+                 *      the fully qualified name of the type (as in
+                 *      `path/google.protobuf.Duration`). The name should be in a canonical form
+                 *      (e.g., leading "." is not accepted).
+                 *
+                 *      In practice, teams usually precompile into the binary all types that they
+                 *      expect it to use in the context of Any. However, for URLs which use the
+                 *      scheme `http`, `https`, or no scheme, one can optionally set up a type
+                 *      server that maps type URLs to message definitions as follows:
+                 *
+                 *      * If no scheme is provided, `https` is assumed.
+                 *      * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                 *        value in binary format, or produce an error.
+                 *      * Applications are allowed to cache lookup results based on the
+                 *        URL, or have them precompiled into a binary to avoid any
+                 *        lookup. Therefore, binary compatibility needs to be preserved
+                 *        on changes to types. (Use versioned type names to manage
+                 *        breaking changes.)
+                 *
+                 *      Note: this functionality is not currently available in the official
+                 *      protobuf release, and it is not used for type URLs beginning with
+                 *      type.googleapis.com. As of May 2023, there are no widely used type server
+                 *      implementations and no plans to implement one.
+                 *
+                 *      Schemes other than `http`, `https` (or the empty scheme) might be
+                 *      used with implementation specific semantics. */
+                "data.type_url"?: string;
+                /** @description Must be a valid serialized protocol buffer of the above specified type. */
+                "data.value"?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CaptchaAudioResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_CaptchaId: {
+        parameters: {
+            query?: {
+                /** @description The timestamp of the request prevent caching of the same result */
+                ts?: string;
+                reload?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CaptchaIdResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_CaptchaImage: {
+        parameters: {
+            query?: {
+                id?: string;
+                reload?: string;
+                /** @description A URL/resource name that uniquely identifies the type of the serialized
+                 *      protocol buffer message. This string must contain at least
+                 *      one "/" character. The last segment of the URL's path must represent
+                 *      the fully qualified name of the type (as in
+                 *      `path/google.protobuf.Duration`). The name should be in a canonical form
+                 *      (e.g., leading "." is not accepted).
+                 *
+                 *      In practice, teams usually precompile into the binary all types that they
+                 *      expect it to use in the context of Any. However, for URLs which use the
+                 *      scheme `http`, `https`, or no scheme, one can optionally set up a type
+                 *      server that maps type URLs to message definitions as follows:
+                 *
+                 *      * If no scheme is provided, `https` is assumed.
+                 *      * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                 *        value in binary format, or produce an error.
+                 *      * Applications are allowed to cache lookup results based on the
+                 *        URL, or have them precompiled into a binary to avoid any
+                 *        lookup. Therefore, binary compatibility needs to be preserved
+                 *        on changes to types. (Use versioned type names to manage
+                 *        breaking changes.)
+                 *
+                 *      Note: this functionality is not currently available in the official
+                 *      protobuf release, and it is not used for type URLs beginning with
+                 *      type.googleapis.com. As of May 2023, there are no widely used type server
+                 *      implementations and no plans to implement one.
+                 *
+                 *      Schemes other than `http`, `https` (or the empty scheme) might be
+                 *      used with implementation specific semantics. */
+                "data.type_url"?: string;
+                /** @description Must be a valid serialized protocol buffer of the above specified type. */
+                "data.value"?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CaptchaImageResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_Login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.LoginRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.LoginResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_Logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.LogoutResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_Register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.RegisterRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.RegisterResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_Authenticate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.AuthenticateRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.AuthenticateResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_DestroyToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.DestroyTokenRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DestroyTokenResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_AuthLogout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.AuthLogoutRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.AuthLogoutResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_ListAuthResources: {
+        parameters: {
+            query?: {
+                /** @description The maximum number of Auths to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListAuthResourcesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_CreateToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.CreateTokenRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreateTokenResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_ValidateToken: {
+        parameters: {
+            query?: {
+                token?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ValidateTokenResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    DepartmentService_ListDepartments: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListDepartmentsResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    DepartmentService_CreateDepartment: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the department is to be created. */
+                parent?: string;
+                /** @description The department id to use for this department. */
+                department_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Department"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreateDepartmentResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    DepartmentService_UpdateDepartment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "department.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Department"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateDepartmentResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    DepartmentService_GetDepartment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/departments/department2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetDepartmentResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    DepartmentService_DeleteDepartment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource id of the department to be deleted, for example:
+                 *      "shelves/shelf1/departments/department2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeleteDepartmentResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    MenuService_ListMenus: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListMenusResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    MenuService_CreateMenu: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the menu is to be created. */
+                parent?: string;
+                /** @description The menu id to use for this menu. */
+                menu_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Menu"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreateMenuResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    MenuService_GetMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/menus/menu2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetMenuResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    MenuService_DeleteMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource id of the menu to be deleted, for example:
+                 *      "shelves/shelf1/menus/menu2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeleteMenuResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    MenuService_UpdateMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "menu.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Menu"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateMenuResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PermissionService_ListPermissions: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListPermissionsResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PermissionService_CreatePermission: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the permission is to be created. */
+                parent?: string;
+                /** @description The permission id to use for this permission. */
+                permission_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Permission"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreatePermissionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PermissionService_GetPermission: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/permissions/permission2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetPermissionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PermissionService_DeletePermission: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource id of the permission to be deleted, for example:
+                 *      "shelves/shelf1/permissions/permission2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeletePermissionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PermissionService_UpdatePermission: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "permission.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Permission"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdatePermissionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_PersonalLogout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.PersonalLogoutResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_ListPersonalResources: {
+        parameters: {
+            query?: {
+                /** @description A URL/resource name that uniquely identifies the type of the serialized
+                 *      protocol buffer message. This string must contain at least
+                 *      one "/" character. The last segment of the URL's path must represent
+                 *      the fully qualified name of the type (as in
+                 *      `path/google.protobuf.Duration`). The name should be in a canonical form
+                 *      (e.g., leading "." is not accepted).
+                 *
+                 *      In practice, teams usually precompile into the binary all types that they
+                 *      expect it to use in the context of Any. However, for URLs which use the
+                 *      scheme `http`, `https`, or no scheme, one can optionally set up a type
+                 *      server that maps type URLs to message definitions as follows:
+                 *
+                 *      * If no scheme is provided, `https` is assumed.
+                 *      * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                 *        value in binary format, or produce an error.
+                 *      * Applications are allowed to cache lookup results based on the
+                 *        URL, or have them precompiled into a binary to avoid any
+                 *        lookup. Therefore, binary compatibility needs to be preserved
+                 *        on changes to types. (Use versioned type names to manage
+                 *        breaking changes.)
+                 *
+                 *      Note: this functionality is not currently available in the official
+                 *      protobuf release, and it is not used for type URLs beginning with
+                 *      type.googleapis.com. As of May 2023, there are no widely used type server
+                 *      implementations and no plans to implement one.
+                 *
+                 *      Schemes other than `http`, `https` (or the empty scheme) might be
+                 *      used with implementation specific semantics. */
+                "data.type_url"?: string;
+                /** @description Must be a valid serialized protocol buffer of the above specified type. */
+                "data.value"?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListPersonalResourcesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_UpdatePersonalPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdatePersonalPasswordResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_GetPersonalProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetPersonalProfileResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_UpdatePersonalProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdatePersonalProfileResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_ListPersonalRoles: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListPersonalRolesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_UpdatePersonalSetting: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdatePersonalSettingResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PersonalService_RefreshPersonalToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.RefreshPersonalTokenResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PositionService_ListPositions: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListPositionsResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PositionService_CreatePosition: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the position is to be created. */
+                parent?: string;
+                /** @description The position id to use for this position. */
+                position_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Position"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreatePositionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PositionService_GetPosition: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/positions/position2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetPositionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PositionService_DeletePosition: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource id of the position to be deleted, for example:
+                 *      "shelves/shelf1/positions/position2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeletePositionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    PositionService_UpdatePosition: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "position.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Position"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdatePositionResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    ResourceService_ListResources: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListResourcesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    ResourceService_CreateResource: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the resource is to be created. */
+                parent?: string;
+                /** @description The resource id to use for this resource. */
+                resource_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Resource"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreateResourceResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    ResourceService_GetResource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/resources/resource2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetResourceResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    ResourceService_DeleteResource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource id of the resource to be deleted, for example:
+                 *      "shelves/shelf1/resources/resource2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeleteResourceResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    ResourceService_UpdateResource: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "resource.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Resource"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateResourceResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    RoleService_ListRoles: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListRolesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    RoleService_CreateRole: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the role is to be created. */
+                parent?: string;
+                /** @description The role id to use for this role. */
+                role_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Role"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreateRoleResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    RoleService_GetRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/roles/role2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetRoleResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    RoleService_DeleteRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The resource id of the role to be deleted, for example:
+                 *      "shelves/shelf1/roles/role2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeleteRoleResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    RoleService_UpdateRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "role.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.Role"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateRoleResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_ListUsers: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id, for example, "shelves/shelf1". */
+                id?: string;
+                /** @description The current page number. */
+                current?: number;
+                /** @description The maximum number of items to return. */
+                page_size?: number;
+                /** @description The next_page_token value returned from a previous List request, if any. */
+                page_token?: string;
+                /** @description The no_paging is used to disable pagination. */
+                no_paging?: boolean;
+                /** @description The only_count is the query parameter for set only to query the total number */
+                only_count?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListUsersResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_CreateUser: {
+        parameters: {
+            query?: {
+                /** @description The parent resource id where the user is to be created. */
+                parent?: string;
+                /** @description The user id to use for this user. */
+                user_id?: string;
+                /** @description The user is_admin to use for this user. */
+                is_admin?: boolean;
+                /** @description The random_password is the query parameter for set only to generate a random password */
+                random_password?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.User"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.CreateUserResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_ResetUserPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ResetUserPasswordResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_GetUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The field will contain id of the resource requested, for example:
+                 *      "shelves/shelf1/users/user2" */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.GetUserResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_UpdateUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "user.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.User"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateUserResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_DeleteUser: {
+        parameters: {
+            query?: {
+                /** @description ID of the ent.
+                 *      field.primary_key.comment */
+                "user.id"?: string;
+                /** @description create_author.field.comment */
+                "user.create_author"?: string;
+                /** @description update_author.field.comment */
+                "user.update_author"?: string;
+                /** @description create_time.field.comment */
+                "user.create_time"?: string;
+                /** @description update_time.field.comment */
+                "user.update_time"?: string;
+                /** @description user.field.uuid */
+                "user.uuid"?: string;
+                /** @description user.field.allowed_ip */
+                "user.allowed_ip"?: string;
+                /** @description user.field.username */
+                "user.username"?: string;
+                /** @description user.field.nickname */
+                "user.nickname"?: string;
+                /** @description user.field.avatar */
+                "user.avatar"?: string;
+                /** @description user.field.nickname */
+                "user.name"?: string;
+                /** @description user.field.gender */
+                "user.gender"?: string;
+                /** @description user.field.password
+                 *      @Decrypted don't show this field in response */
+                "user.password"?: string;
+                /** @description user.field.salt
+                 *      @Decrypted don't show this field in response */
+                "user.salt"?: string;
+                /** @description user.field.phone */
+                "user.phone"?: string;
+                /** @description user.field.email */
+                "user.email"?: string;
+                /** @description user.field.remark */
+                "user.remark"?: string;
+                /** @description user.field.token */
+                "user.token"?: string;
+                /** @description user.field.status */
+                "user.status"?: number;
+                /** @description user.field.last_login_ip */
+                "user.last_login_ip"?: string;
+                /** @description user.field.last_login_time */
+                "user.last_login_time"?: string;
+                /** @description user.field.sanction_date */
+                "user.sanction_date"?: string;
+                /** @description user.field.manager_id */
+                "user.manager_id"?: string;
+                /** @description user.field.manager */
+                "user.manager"?: string;
+            };
+            header?: never;
+            path: {
+                "user.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.DeleteUserResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_UpdateUserRoles: {
+        parameters: {
+            query?: {
+                /** @description ID of the ent.
+                 *      field.primary_key.comment */
+                "user.id"?: string;
+                /** @description create_author.field.comment */
+                "user.create_author"?: string;
+                /** @description update_author.field.comment */
+                "user.update_author"?: string;
+                /** @description create_time.field.comment */
+                "user.create_time"?: string;
+                /** @description update_time.field.comment */
+                "user.update_time"?: string;
+                /** @description user.field.uuid */
+                "user.uuid"?: string;
+                /** @description user.field.allowed_ip */
+                "user.allowed_ip"?: string;
+                /** @description user.field.username */
+                "user.username"?: string;
+                /** @description user.field.nickname */
+                "user.nickname"?: string;
+                /** @description user.field.avatar */
+                "user.avatar"?: string;
+                /** @description user.field.nickname */
+                "user.name"?: string;
+                /** @description user.field.gender */
+                "user.gender"?: string;
+                /** @description user.field.password
+                 *      @Decrypted don't show this field in response */
+                "user.password"?: string;
+                /** @description user.field.salt
+                 *      @Decrypted don't show this field in response */
+                "user.salt"?: string;
+                /** @description user.field.phone */
+                "user.phone"?: string;
+                /** @description user.field.email */
+                "user.email"?: string;
+                /** @description user.field.remark */
+                "user.remark"?: string;
+                /** @description user.field.token */
+                "user.token"?: string;
+                /** @description user.field.status */
+                "user.status"?: number;
+                /** @description user.field.last_login_ip */
+                "user.last_login_ip"?: string;
+                /** @description user.field.last_login_time */
+                "user.last_login_time"?: string;
+                /** @description user.field.sanction_date */
+                "user.sanction_date"?: string;
+                /** @description user.field.manager_id */
+                "user.manager_id"?: string;
+                /** @description user.field.manager */
+                "user.manager"?: string;
+                is_add?: boolean;
+            };
+            header?: never;
+            path: {
+                "user.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.UpdateUserRolesRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateUserRolesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_UpdateUserStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                "user.id": string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.User"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.UpdateUserStatusResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    LoginService_TokenRefresh: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.system.TokenRefreshRequest_Data"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.TokenRefreshResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
     };
-  };
 }

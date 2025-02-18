@@ -1,5 +1,5 @@
 import { InternalServerError, NotFoundError } from "@/pages/errors";
-import { refreshToken } from "@/utils/auth";
+import { failureRetry } from "@/utils/auth";
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routes.gen";
@@ -7,19 +7,7 @@ import { routeTree } from "./routes.gen";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: (failureCount, error) => {
-        if (error.response?.status === 500 && failureCount < 2) {
-          try {
-            const resp = refreshToken();
-            console.log("Token refreshed successfully");
-            return resp !== undefined; // Retry the query
-          } catch (refreshError) {
-            console.error("Refresh token failed", refreshError);
-            return false; // Don't retry if refresh failed
-          }
-        }
-        return false; // Don't retry for other errors
-      },
+      retry: failureRetry,
     },
   },
 });

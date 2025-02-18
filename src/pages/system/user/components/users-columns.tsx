@@ -49,7 +49,6 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "username",
     header: "Username",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Username' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
     meta: headerMeta.meta,
     enableSorting: true,
@@ -58,7 +57,6 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "nickname",
     header: "Nickname",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
     meta: headerMeta.meta,
     searchable: true,
@@ -75,14 +73,12 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("email")}</div>,
     meta: headerMeta.meta,
   },
   {
     accessorKey: "phone",
     header: "Phone",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Phone Number' />,
     cell: ({ row }) => <div>{row.getValue("phone")}</div>,
     meta: headerMeta.meta,
     enableSorting: false,
@@ -90,7 +86,6 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status } = row.original;
       const badgeColor = callTypes.get(status || 0);
@@ -125,7 +120,6 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "create_time",
     header: "Create Time",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Create Time' />,
     cell: ({ row }) => <div>{row.original.create_time}</div>,
     meta: headerMeta.meta,
     enableSorting: false,
@@ -133,15 +127,13 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "update_time",
     header: "Update Time",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Update Time' />,
     cell: ({ row }) => <div>{row.getValue("update_time")}</div>,
     meta: headerMeta.meta,
     enableSorting: false,
   },
   {
-    id: "options",
-    header: "Options",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
+    id: "actions",
+    header: "Actions",
     cell: UserIconRowActions,
     meta: headerMeta.meta,
   },
