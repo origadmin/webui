@@ -1,7 +1,7 @@
 import defineConfig from "@/utils/configuration";
 
 const config = {
-  mocks: false,
+  mocks: true,
 };
 
 export default defineConfig(config);
