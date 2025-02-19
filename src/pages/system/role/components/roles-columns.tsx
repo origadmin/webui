@@ -1,20 +1,11 @@
 import { callTypes, statuses } from "@/mocks/role/data";
 import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
+import { defaultHeaderMeta } from "@/types";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
-
-const headerMeta = {
-  meta: {
-    className: cn(
-      "p-2 drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
-      "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-      "sticky left-6 md:table-cell",
-    ),
-  },
-};
 
 export const columns: DataTableColumnType<API.System.Role>[] = [
   {
@@ -50,7 +41,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Rolename' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("name")}</LongText>,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
   },
@@ -60,21 +51,21 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("keyword")}</LongText>,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "type",
     header: "Type",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("type")}</div>,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "sequence",
     header: "Sequence",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("sequence")}</div>,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
   },
 
   {
@@ -82,7 +73,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Description",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "status",
@@ -102,7 +93,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     filterFn: (row, id, value: string[]) => {
       return value.includes(row.getValue(id));
     },
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
     enableHiding: false,
     enableSorting: false,
   },
@@ -111,7 +102,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Is System",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("is_system") ? "Yes" : "No"}</div>,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
   },
 
   {
@@ -119,6 +110,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Options",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
     cell: RoleIconRowActions,
-    meta: headerMeta.meta,
+    meta: defaultHeaderMeta.meta,
   },
 ];
