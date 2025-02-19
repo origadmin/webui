@@ -1,12 +1,5 @@
-import {
-  ACCESS_TOKEN_KEY,
-  EXPIRATION_TIME_KEY,
-  REFRESH_TOKEN_KEY,
-  USER_ID_KEY,
-  USER_KEY,
-  USERNAME_KEY,
-  AUTHORIZATION_KEY,
-} from "@/types";
+import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USER_ID_KEY, USER_KEY, USERNAME_KEY, AUTHORIZATION_KEY, LOCALE_KEY, defaultLocale } from "@/types";
+
 
 /**
  * Remove the specified token from local storage
@@ -261,4 +254,16 @@ export const IsExpired = () => {
   const currentTime = new Date().getTime();
   const expirationTimeInMilliseconds = expirationTime * 1000;
   return currentTime > expirationTimeInMilliseconds;
+};
+
+export const getLocaleLanguage = () => {
+  const locale = localStorage.getItem(LOCALE_KEY);
+  if (locale) {
+    return locale;
+  }
+  return navigator?.language || defaultLocale;
+};
+
+export const setLocaleLanguage = (locale: string) => {
+  localStorage.setItem(LOCALE_KEY, locale);
 };

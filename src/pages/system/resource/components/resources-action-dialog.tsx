@@ -25,7 +25,7 @@ const formSchema = z
     phoneNumber: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
     password: z.string().transform((pwd) => pwd.trim()),
-    role: z.string().min(1, { message: "Role is required." }),
+    resource: z.string().min(1, { message: "Resource is required." }),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
     isEdit: z.boolean(),
   })
@@ -72,7 +72,7 @@ const formSchema = z
       }
     }
   });
-type RoleForm = z.infer<typeof formSchema>;
+type ResourceForm = z.infer<typeof formSchema>;
 
 interface Props<T> {
   currentRow?: T;
@@ -80,9 +80,9 @@ interface Props<T> {
   onOpenChange: (open: boolean) => void;
 }
 
-export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.System.Role>) {
+export function ResourcesActionDialog({ currentRow, open, onOpenChange }: Props<API.System.Resource>) {
   const isEdit = !!currentRow;
-  const form = useForm<RoleForm>({
+  const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
       ? {
@@ -94,7 +94,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
       : {
           nickname: "",
           email: "",
-          role: "",
+          resource: "",
           phoneNumber: "",
           password: "",
           confirmPassword: "",
@@ -102,7 +102,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
         },
   });
 
-  const onSubmit = (values: RoleForm) => {
+  const onSubmit = (values: ResourceForm) => {
     form.reset();
     toast({
       title: "You submitted the following values:",
@@ -127,15 +127,15 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-left'>
-          <DialogTitle>{isEdit ? "Edit Role" : "Add New Role"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit Resource" : "Add New Resource"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "Update the role here. " : "Create new role here. "}
+            {isEdit ? "Update the resource here. " : "Create new resource here. "}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='role-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
+            <form id='resource-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
               <FormField
                 control={form.control}
                 name='nickname'
@@ -151,10 +151,10 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
               />
               <FormField
                 control={form.control}
-                name='role'
+                name='resource'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Role</FormLabel>
+                    <FormLabel className='col-span-2 text-right'>Resource</FormLabel>
                     <FormControl>
                       <Input placeholder='john_doe' className='col-span-4' {...field} />
                     </FormControl>
@@ -223,7 +223,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
           </Form>
         </ScrollArea>
         <DialogFooter>
-          <Button type='submit' form='role-form'>
+          <Button type='submit' form='resource-form'>
             Save changes
           </Button>
         </DialogFooter>

@@ -13,6 +13,7 @@ export const USER_ID_KEY = "user_id";
 export const USERNAME_KEY = "username";
 export const EXPIRATION_TIME_KEY = "expiration_time";
 export const AUTHORIZATION_KEY = "authorization";
+export const LOCALE_KEY = "locale";
 
 // Frontend page constants
 export const DEFAULT_MAIN_PAGE = "/dashboard/overview";
@@ -23,6 +24,8 @@ export const SIGN_OUT_URL = `/sign-out`;
 // Backend API constants
 export const API_REFRESH_TOKEN_URL = `/auth/refresh`;
 
+// the system default values
+export const defaultLocale = "en-US";
 export const defaultHeaderMeta = {
   meta: {
     className: cn(

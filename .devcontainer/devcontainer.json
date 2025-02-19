@@ -1,4 +1,11 @@
 {
   "name": "OrigAdmin Panel",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:latest"
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
+  "customizations": {
+    "jetbrains": {
+      "settings": {
+        "com.intellij:app:HttpConfigurable.keep_proxy_password": true
+      }
+    }
+  }
 }
