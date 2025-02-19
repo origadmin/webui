@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { OnChangeFn, PaginationState, Table } from "@tanstack/react-table";
 import { ToolbarProps } from "src/components/DataTable/toolbar";
@@ -14,7 +13,6 @@ export interface PaginationProps<T> {
 }
 
 export function Pagination<T>({ table, sizeOptions = [], toolbars, pagination }: PaginationProps<T>) {
-  // const pageSize = table.getState().pagination.pageSize;
   const pageCount = table.getPageCount();
 
   const { pageSize, pageIndex: _pageIndex = 0 } = pagination ?? table.getState().pagination;
@@ -23,11 +21,11 @@ export function Pagination<T>({ table, sizeOptions = [], toolbars, pagination }:
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
   const totalCount = table.getFilteredRowModel().rows.length;
 
-  const mergedSizeOptions = useMemo(() => {
-    return sizeOptions ? sizeOptions.map((option) => Number(option)) : undefined;
-  }, [sizeOptions]);
+  // const mergedSizeOptions = useMemo(() => {
+  //   return sizeOptions ? sizeOptions.map((optionValue) => Number(optionValue)) : undefined;
+  // }, [sizeOptions]);
 
-  const renderSizeOptions = (sizeOptions?: number[]) => {
+  const renderSizeOptions = (_sizeOptions?: string[]) => {
     return (
       <div className='flex items-center sm:space-x-6 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
@@ -42,10 +40,10 @@ export function Pagination<T>({ table, sizeOptions = [], toolbars, pagination }:
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side='top'>
-              {sizeOptions &&
-                sizeOptions.map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
-                    {pageSize}
+              {_sizeOptions &&
+                _sizeOptions.map((pageSize) => (
+                  <SelectItem key={Number(pageSize)} value={`${pageSize}`}>
+                    {Number(pageSize)}
                   </SelectItem>
                 ))}
             </SelectContent>
@@ -100,7 +98,7 @@ export function Pagination<T>({ table, sizeOptions = [], toolbars, pagination }:
       <div className='flex text-sm text-muted-foreground sm:space-x-6 lg:space-x-8'>
         {selectedCount} of {totalCount} row(s) selected.
       </div>
-      {renderSizeOptions(mergedSizeOptions)}
+      {renderSizeOptions(sizeOptions)}
       <div className='flex items-center space-x-2 px-2'>{toolbars}</div>
     </div>
   );

@@ -16,7 +16,7 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
   const [value, setValue] = useState("");
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.resourcename) return;
+    if (value.trim() !== currentRow.keyword) return;
 
     onOpenChange(false);
     toast({
@@ -34,7 +34,7 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.resourcename}
+      disabled={value.trim() !== currentRow.keyword}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle className='mr-1 inline-block stroke-destructive' size={18} /> Delete Resource
@@ -43,10 +43,10 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
       desc={
         <div className='space-y-4'>
           <p className='mb-2'>
-            Are you sure you want to delete <span className='font-bold'>{currentRow.resourcename}</span>?
+            Are you sure you want to delete <span className='font-bold'>{currentRow.keyword}</span>?
             <br />
             This action will permanently remove the resource with the resource of{" "}
-            <span className='font-bold'>{currentRow.resource.toUpperCase()}</span> from the system. This cannot be
+            <span className='font-bold'>{currentRow.keyword?.toUpperCase()}</span> from the system. This cannot be
             undone.
           </p>
 

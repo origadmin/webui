@@ -1,4 +1,4 @@
-import { text } from "@/utils/locale";
+import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,7 +20,7 @@ import { PasswordInput } from "@/components/password-input";
 const formSchema = z
   .object({
     nickname: z.string().min(1, {
-      message: text("nickname.required"),
+      message: t("nickname.required"),
     }),
     phoneNumber: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),

@@ -1,6 +1,7 @@
 import { callTypes, statuses } from "@/mocks/resource/data";
 import { ResourceIconRowActions } from "@/pages/system/resource/components/resources-row-actions";
 import { defaultHeaderMeta } from "@/types";
+import { icons } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -61,18 +62,51 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
-    accessorKey: "sequence",
-    header: "Sequence",
+    accessorKey: "method",
+    header: "Method",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("sequence")}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("method")}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "uri",
+    header: "URI",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("uri")}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "operation",
+    header: "Operation",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("operation")}</div>,
     meta: defaultHeaderMeta.meta,
   },
 
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "component",
+    header: "Component",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("component")}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "icon",
+    header: "Icon",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => {
+      const iconValue = row.getValue("icon") as keyof typeof icons | undefined;
+      const IconComponent = iconValue ? icons[iconValue] : null;
+
+      return <div className='w-fit max-w-36 text-nowrap'>{IconComponent ? <IconComponent /> : "-"}</div>;
+    },
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "sequence",
+    header: "Sequence",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("sequence")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -98,16 +132,22 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "is_system",
-    header: "Is System",
+    accessorKey: "visible",
+    header: "Visible",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("is_system") ? "Yes" : "No"}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("visible") ? "Yes" : "No"}</div>,
     meta: defaultHeaderMeta.meta,
   },
-
   {
-    id: "options",
-    header: "Options",
+    accessorKey: "description",
+    header: "Description",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    id: "actions",
+    header: "Actions",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
     cell: ResourceIconRowActions,
     meta: defaultHeaderMeta.meta,

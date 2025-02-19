@@ -1,7 +1,7 @@
-import RolesPage from "@/pages/system/role";
+import ResourcesPage from "@/pages/system/resource";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authorization/system/role")({
+export const Route = createFileRoute("/_authorization/system/resource")({
   // loader: async (ctx) => {
   //   const { deps, context } = ctx;
   //   const { queryClient } = context;
@@ -13,5 +13,5 @@ export const Route = createFileRoute("/_authorization/system/role")({
 });
 
 function RouteComponent() {
-  return <RolesPage />;
+  return <ResourcesPage />;
 }

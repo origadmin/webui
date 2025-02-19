@@ -1,7 +1,7 @@
-import { userCreateOption, userUpdateOption } from "@/api/system/user";
+import { useUserCreate, useUserUpdate } from "@/api/system/user";
 import { userTypes } from "@/mocks/user/data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
@@ -106,8 +106,8 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
   });
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
-  const { mutate: createUser, isPending: isCreatePending } = useMutation(userCreateOption(queryClient));
-  const { mutate: updateUser, isPending: isUpdatePending } = useMutation(userUpdateOption(queryClient, id));
+  const { mutate: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
+  const { mutate: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
   const onSubmit = (values: UserForm) => {
     form.reset();
 

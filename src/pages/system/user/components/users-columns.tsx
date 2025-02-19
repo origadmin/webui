@@ -1,7 +1,7 @@
 import { callTypes, statuses } from "@/mocks/user/data";
 import { UserIconRowActions } from "@/pages/system/user/components/users-row-actions";
 import { defaultHeaderMeta } from "@/types";
-import { intl } from "@/utils/locale";
+import { t } from "@/utils/locale";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,7 +40,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   },
   {
     accessorKey: "username",
-    header: intl.formatMessage({ id: "pages.system.users.columns.username", defaultMessage: "Username" }),
+    header: t("pages.system.users.columns.username"),
     cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,

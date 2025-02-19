@@ -32,6 +32,7 @@ import { Route as AuthorizationAppsIndexImport } from "./routes/_authorization/a
 import { Route as AuthorizationSystemUserImport } from "./routes/_authorization/system/user";
 import { Route as AuthorizationSystemSettingsImport } from "./routes/_authorization/system/settings";
 import { Route as AuthorizationSystemRoleImport } from "./routes/_authorization/system/role";
+import { Route as AuthorizationSystemResourceImport } from "./routes/_authorization/system/resource";
 import { Route as AuthorizationDashboardSettingsImport } from "./routes/_authorization/dashboard/settings";
 import { Route as AuthorizationDashboardProductsImport } from "./routes/_authorization/dashboard/products";
 import { Route as AuthorizationDashboardOverviewImport } from "./routes/_authorization/dashboard/overview";
@@ -172,6 +173,13 @@ const AuthorizationSystemRoleRoute = AuthorizationSystemRoleImport.update({
   path: "/system/role",
   getParentRoute: () => AuthorizationRoute,
 } as any);
+
+const AuthorizationSystemResourceRoute =
+  AuthorizationSystemResourceImport.update({
+    id: "/system/resource",
+    path: "/system/resource",
+    getParentRoute: () => AuthorizationRoute,
+  } as any);
 
 const AuthorizationDashboardSettingsRoute =
   AuthorizationDashboardSettingsImport.update({
@@ -373,6 +381,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationDashboardSettingsImport;
       parentRoute: typeof AuthorizationImport;
     };
+    "/_authorization/system/resource": {
+      id: "/_authorization/system/resource";
+      path: "/system/resource";
+      fullPath: "/system/resource";
+      preLoaderRoute: typeof AuthorizationSystemResourceImport;
+      parentRoute: typeof AuthorizationImport;
+    };
     "/_authorization/system/role": {
       id: "/_authorization/system/role";
       path: "/system/role";
@@ -462,6 +477,7 @@ interface AuthorizationRouteChildren {
   AuthorizationDashboardOverviewRoute: typeof AuthorizationDashboardOverviewRoute;
   AuthorizationDashboardProductsRoute: typeof AuthorizationDashboardProductsRoute;
   AuthorizationDashboardSettingsRoute: typeof AuthorizationDashboardSettingsRoute;
+  AuthorizationSystemResourceRoute: typeof AuthorizationSystemResourceRoute;
   AuthorizationSystemRoleRoute: typeof AuthorizationSystemRoleRoute;
   AuthorizationSystemSettingsRoute: typeof AuthorizationSystemSettingsRoute;
   AuthorizationSystemUserRoute: typeof AuthorizationSystemUserRoute;
@@ -482,6 +498,7 @@ const AuthorizationRouteChildren: AuthorizationRouteChildren = {
   AuthorizationDashboardOverviewRoute: AuthorizationDashboardOverviewRoute,
   AuthorizationDashboardProductsRoute: AuthorizationDashboardProductsRoute,
   AuthorizationDashboardSettingsRoute: AuthorizationDashboardSettingsRoute,
+  AuthorizationSystemResourceRoute: AuthorizationSystemResourceRoute,
   AuthorizationSystemRoleRoute: AuthorizationSystemRoleRoute,
   AuthorizationSystemSettingsRoute: AuthorizationSystemSettingsRoute,
   AuthorizationSystemUserRoute: AuthorizationSystemUserRoute,
@@ -520,6 +537,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
   "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/system/resource": typeof AuthorizationSystemResourceRoute;
   "/system/role": typeof AuthorizationSystemRoleRoute;
   "/system/settings": typeof AuthorizationSystemSettingsRoute;
   "/system/user": typeof AuthorizationSystemUserRoute;
@@ -552,6 +570,7 @@ export interface FileRoutesByTo {
   "/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
   "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/system/resource": typeof AuthorizationSystemResourceRoute;
   "/system/role": typeof AuthorizationSystemRoleRoute;
   "/system/settings": typeof AuthorizationSystemSettingsRoute;
   "/system/user": typeof AuthorizationSystemUserRoute;
@@ -586,6 +605,7 @@ export interface FileRoutesById {
   "/_authorization/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
   "/_authorization/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/_authorization/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/_authorization/system/resource": typeof AuthorizationSystemResourceRoute;
   "/_authorization/system/role": typeof AuthorizationSystemRoleRoute;
   "/_authorization/system/settings": typeof AuthorizationSystemSettingsRoute;
   "/_authorization/system/user": typeof AuthorizationSystemUserRoute;
@@ -621,6 +641,7 @@ export interface FileRouteTypes {
     | "/dashboard/overview"
     | "/dashboard/products"
     | "/dashboard/settings"
+    | "/system/resource"
     | "/system/role"
     | "/system/settings"
     | "/system/user"
@@ -652,6 +673,7 @@ export interface FileRouteTypes {
     | "/dashboard/overview"
     | "/dashboard/products"
     | "/dashboard/settings"
+    | "/system/resource"
     | "/system/role"
     | "/system/settings"
     | "/system/user"
@@ -684,6 +706,7 @@ export interface FileRouteTypes {
     | "/_authorization/dashboard/overview"
     | "/_authorization/dashboard/products"
     | "/_authorization/dashboard/settings"
+    | "/_authorization/system/resource"
     | "/_authorization/system/role"
     | "/_authorization/system/settings"
     | "/_authorization/system/user"
@@ -764,6 +787,7 @@ export const routeTree = rootRoute
         "/_authorization/dashboard/overview",
         "/_authorization/dashboard/products",
         "/_authorization/dashboard/settings",
+        "/_authorization/system/resource",
         "/_authorization/system/role",
         "/_authorization/system/settings",
         "/_authorization/system/user",
@@ -835,6 +859,10 @@ export const routeTree = rootRoute
     },
     "/_authorization/dashboard/settings": {
       "filePath": "_authorization/dashboard/settings.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/system/resource": {
+      "filePath": "_authorization/system/resource.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/system/role": {

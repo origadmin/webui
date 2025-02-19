@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
-import { resourcesQueryOptions } from "@/api/system/resource";
+import { useResourcesQuery } from "@/api/system/resource";
 import { ResourcesPrimaryButtons } from "@/pages/system/resource/components/resources-primary-buttons";
-import { Search } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
-import { PaginationState, SortingState, Updater } from "@tanstack/react-table";
-import { useFilters } from "@/hooks/use-filters";
+import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
@@ -13,45 +9,20 @@ import { ResourcesDialogs } from "./components/resources-dialogs";
 import { ResourceTableProvider } from "./components/resources-table-provider";
 
 export default function ResourcesPage() {
-  const { search, setFilters, resetFilters } = useFilters();
-  console.log("useFilters", search);
-  const sorting = Search.getSorting(search);
-  const pagination = Search.getPagination(search);
-  const [columnFilters, _setColumnFilters] = useState(Search.getColumnFilters(search));
-  const [updating, setUpdating] = useState(false);
-  const [params, setParams] = useState<API.SearchParams>({
-    ...Search.parsePagination(pagination),
-    ...Search.parseSorting(sorting),
-    ...Search.parseColumnFilters(columnFilters),
+  const {
+    sorting,
+    pagination,
+    columnFilters,
+    isLoading,
+    data: resources = {},
+    setSorting,
+    setPagination,
+    setColumnFilters,
+    handleSearch,
+    handleReset,
+  } = useDataTable({
+    useQuery: (params) => useResourcesQuery(params),
   });
-  const setSorting = (updaterOrValue: Updater<SortingState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(sorting) : updaterOrValue;
-    console.log("setSorting", state);
-    setParams({
-      ...params,
-      ...Search.parseSorting(state),
-    });
-    setUpdating(true);
-  };
-
-  const setPagination = (updaterOrValue: Updater<PaginationState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(pagination) : updaterOrValue;
-
-    console.log("setPagination", state);
-    setParams({
-      ...params,
-      ...Search.parsePagination(state),
-    });
-    setUpdating(true);
-  };
-
-  const { data: resources = {}, isLoading } = useQuery(resourcesQueryOptions(search));
-  useEffect(() => {
-    if (updating) {
-      setFilters(params);
-      setUpdating(false);
-    }
-  }, [params, setFilters, updating]);
 
   return (
     <ResourceTableProvider>
@@ -81,19 +52,9 @@ export default function ResourcesPage() {
                 paginationState={pagination}
                 columnFiltersState={columnFilters}
                 searchBarProps={{
-                  setColumnFilters: _setColumnFilters,
-                  onSearch: (filters) => {
-                    console.log("search", filters);
-                    setParams({
-                      ...params,
-                      ...Search.parseColumnFilters(columnFilters),
-                      current: 1,
-                    });
-                    setUpdating(true);
-                  },
-                  onReset: () => {
-                    resetFilters();
-                  },
+                  setColumnFilters,
+                  onSearch: handleSearch,
+                  onReset: handleReset,
                 }}
               />
             </div>

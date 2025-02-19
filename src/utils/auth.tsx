@@ -114,7 +114,7 @@ export const signIn = async <T extends API.Token>(
 export const failureRetry = (failureCount: number, error: Error) => {
   console.log("failureCount", failureCount, error);
   const cause = error.cause as API.Error;
-  if (cause.code === 500 && failureCount < 2) {
+  if (cause && cause.code === 500 && failureCount < 2) {
     try {
       const resp = refreshToken();
       console.log("Token refreshed successfully");

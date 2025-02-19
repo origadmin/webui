@@ -13,12 +13,12 @@ import {
   IconNotification,
   IconPackages,
   IconPalette,
+  icons,
   IconServerOff,
   IconSettings,
   IconTool,
   IconUserCog,
   IconUserOff,
-  IconUsers,
 } from "@tabler/icons-react";
 import { Command, LifeBuoy, Send } from "lucide-react";
 
@@ -110,19 +110,25 @@ export const mockSidebar: API.SidebarData = {
             {
               title: "Settings",
               path: "/system/settings",
-              icon: IconSettings,
+              icon: icons["IconSettings"],
               shortcut: ["s", "s"],
+            },
+            {
+              title: "Resource",
+              path: "/system/resource",
+              icon: icons["IconDatabase"],
+              shortcut: ["r", "r"],
             },
             {
               title: "Users",
               path: "/system/user",
-              icon: IconUsers,
+              icon: icons["IconUsers"],
               shortcut: ["u", "u"],
             },
             {
               title: "Roles",
               path: "/system/role",
-              icon: IconUsers,
+              icon: icons["IconShield"],
               shortcut: ["r", "r"],
             },
           ],

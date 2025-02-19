@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
-import { usersQueryOptions } from "@/api/system/user";
-import { Search } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
-import { PaginationState, SortingState, Updater } from "@tanstack/react-table";
-import { useFilters } from "@/hooks/use-filters";
+import { useUsersQuery } from "@/api/system/user";
+import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
@@ -13,67 +9,21 @@ import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
 export default function UserPage() {
-  const { search, setFilters, resetFilters } = useFilters();
-  console.log("useFilters", search);
-  const sorting = Search.getSorting(search);
-  const pagination = Search.getPagination(search);
-  const [columnFilters, _setColumnFilters] = useState(Search.getColumnFilters(search));
-  const [updating, setUpdating] = useState(false);
-  const [params, setParams] = useState<API.SearchParams>({
-    ...Search.parsePagination(pagination),
-    ...Search.parseSorting(sorting),
-    ...Search.parseColumnFilters(columnFilters),
+  const {
+    sorting,
+    pagination,
+    columnFilters,
+    isLoading,
+    data: users = {},
+    setSorting,
+    setPagination,
+    setColumnFilters,
+    handleSearch,
+    handleReset,
+  } = useDataTable({
+    useQuery: (params) => useUsersQuery(params),
   });
-  const setSorting = (updaterOrValue: Updater<SortingState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(sorting) : updaterOrValue;
-    console.log("setSorting", state);
-    setParams({
-      ...params,
-      ...Search.parseSorting(state),
-    });
-    setUpdating(true);
-  };
 
-  const setPagination = (updaterOrValue: Updater<PaginationState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(pagination) : updaterOrValue;
-
-    console.log("setPagination", state);
-    setParams({
-      ...params,
-      ...Search.parsePagination(state),
-    });
-    setUpdating(true);
-  };
-
-  const { data: users = {}, isLoading } = useQuery(usersQueryOptions(search));
-  useEffect(() => {
-    if (updating) {
-      setFilters(params);
-      setUpdating(false);
-    }
-  }, [params, setFilters, updating]);
-
-  // useEffect(() => {
-  //   if (!isError) return;
-  //   console.log("error", error.cause as API.Error);
-  //   const cause = error.cause as API.Error;
-  //   if (cause.id === "http.response.status.SECURITY_ERROR_REASON_TOKEN_EXPIRED") {
-  //     refreshToken().then((r) => console.log("refreshToken", r));
-  //   }
-  // }, [isError, error]);
-
-  // const { isLoading } = router.state;
-
-  // const [search, setSearch] = useState<API.SearchParams>(params);
-  // const { data: users = [], total, ...others } = router.routeTree.useLoaderData();
-  // const { isLoading, data } = router.state;
-  // console.log("user page render", search, "users", users);
-  // useEffect(() => {
-  //   setFilters(params);
-  // }, [setFilters, params]);
-
-  // console.log("user load", router.load, "state", router.state);
-  // useLoaderData(router.state);
   return (
     <UserTableProvider>
       <PageContainer>
@@ -102,19 +52,9 @@ export default function UserPage() {
                 paginationState={pagination}
                 columnFiltersState={columnFilters}
                 searchBarProps={{
-                  setColumnFilters: _setColumnFilters,
-                  onSearch: (filters) => {
-                    console.log("search", filters);
-                    setParams({
-                      ...params,
-                      ...Search.parseColumnFilters(columnFilters),
-                      current: 1,
-                    });
-                    setUpdating(true);
-                  },
-                  onReset: () => {
-                    resetFilters();
-                  },
+                  setColumnFilters,
+                  onSearch: handleSearch,
+                  onReset: handleReset,
                 }}
               />
             </div>

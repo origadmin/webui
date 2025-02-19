@@ -1,7 +1,6 @@
 import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
-import { QueryClient } from "@tanstack/react-query";
-
+import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
 /** Query role list GET /sys/roles */
 export async function listRole(params: API.SearchParams, options?: API.RequestOptions) {
@@ -28,27 +27,41 @@ export async function deleteRole(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/roles/${id}`, options);
 }
 
-export const rolesQueryOptions = (opts?: API.SearchParams) =>
-  Query.createQueryOptions(["/sys/roles", { ...opts }], listRole);
-export const roleQueryOptions = (roleID: string) => Query.createQueryOptions(["/sys/roles", roleID], getRole);
+export const useRolesQuery = (opts?: API.SearchParams) => {
+  return useQuery(
+    queryOptions({
+      queryKey: ["/sys/roles", { ...opts }],
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listRole(opts),
+    }),
+  );
+};
 
-export const roleCreateOption = (queryClient: QueryClient) => {
-  return {
+export const useRoleQuery = (id: string) => {
+  return useQuery(
+    queryOptions({
+      queryKey: ["/sys/roles", id],
+      queryFn: ({ queryKey: [, id] }) => getRole(id),
+    }),
+  );
+};
+
+export const useRoleCreate = (queryClient: QueryClient) => {
+  return useMutation({
     mutationFn: (role: Omit<API.System.Role, "id">) => addRole(role),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
-  };
+  });
 };
 
-export const roleUpdateOption = (queryClient: QueryClient, id: string) => {
-  return {
+export const useRoleUpdate = (queryClient: QueryClient, id: string) => {
+  return useMutation({
     mutationFn: (role: Omit<API.System.Role, "id">) => updateRole(id, role),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
-  };
+  });
 };
 
-export const roleDeleteOption = (queryClient: QueryClient) => {
-  return {
+export const useRoleDelete = (queryClient: QueryClient) => {
+  return useMutation({
     mutationFn: (id: string) => deleteRole(id),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
-  };
+  });
 };

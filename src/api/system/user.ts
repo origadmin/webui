@@ -1,6 +1,6 @@
 import { Query } from "@/utils";
 import { post, get, put, del, patch } from "@/utils/request";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
 
 /** Query user list GET /sys/users */
@@ -34,28 +34,41 @@ export async function resetUserPassword(id: string, options?: API.RequestOptions
   return patch<never>(`/sys/users/${id}/reset`, options);
 }
 
-export const usersQueryOptions = (opts?: API.SearchParams) =>
-  Query.createQueryOptions(["/sys/users", { ...opts }], listUser);
+export const useUsersQuery = (opts?: API.SearchParams) => {
+  return useQuery(
+    queryOptions({
+      queryKey: ["/sys/users", { ...opts }],
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listUser(opts),
+    }),
+  );
+};
 
-export const userQueryOptions = (id: string) => Query.createQueryOptions(["/sys/users", id], getUser);
+export const useUserQuery = (id: string) => {
+  return useQuery(
+    queryOptions({
+      queryKey: ["/sys/users", id],
+      queryFn: ({ queryKey: [, id] }) => getUser(id),
+    }),
+  );
+};
 
-export const userCreateOption = (queryClient: QueryClient) => {
-  return {
+export const useUserCreate = (queryClient: QueryClient) => {
+  return useMutation({
     mutationFn: (user: Omit<API.System.User, "id">) => addUser(user),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
-  };
+  });
 };
 
-export const userUpdateOption = (queryClient: QueryClient, id: string) => {
-  return {
+export const useUserUpdate = (queryClient: QueryClient, id: string) => {
+  return useMutation({
     mutationFn: (user: Omit<API.System.User, "id">) => updateUser(id, user),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
-  };
+  });
 };
 
-export const userDeleteOption = (queryClient: QueryClient) => {
-  return {
+export const useUserDelete = (queryClient: QueryClient) => {
+  return useMutation({
     mutationFn: (id: string) => deleteUser(id),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
-  };
+  });
 };

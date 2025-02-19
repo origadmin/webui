@@ -1,5 +1,10 @@
 import { Query } from "@/utils/index";
-import { QueryClient, queryOptions } from "@tanstack/react-query";
+import { OmitKeyof, QueryClient, queryOptions, UseQueryOptions } from "@tanstack/react-query";
+
+export type QueryOption = <T extends object, TParam>(
+  queryKey: [string, TParam],
+  queryFn: (params: TParam) => Promise<T>,
+) => OmitKeyof<UseQueryOptions<T, Error, T, [string, TParam]>, "queryFn"> & {};
 
 const createQueryOptions = <T extends object, TParam>(
   queryKey: [string, TParam],

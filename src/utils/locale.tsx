@@ -21,6 +21,6 @@ export const getCreatedIntl = (locale = defaultLocale) => {
 };
 
 export const intl = getCreatedIntl(getLocaleLanguage());
-export const text = (id: string, values?: Record<string, string>) => {
+export const t = (id: string, values?: Record<string, string>) => {
   return intl.formatMessage({ id }, values);
 };
