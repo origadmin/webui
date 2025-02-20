@@ -1,10 +1,9 @@
-import { callTypes, statuses } from "@/mocks/user/data";
 import { UserIconRowActions } from "@/pages/system/user/components/users-row-actions";
 import { defaultHeaderMeta } from "@/types";
 import { t } from "@/utils/locale";
+import { statusValue, statusBadges } from "@/types/system";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { DataTableColumnType } from "@/components/DataTable";
 import { FacetedFilter } from "@/components/DataTable/faceted-filter";
@@ -12,36 +11,17 @@ import LongText from "@/components/long-text";
 
 export const columns: DataTableColumnType<API.System.User>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-        className='translate-y-[2px]'
-      />
-    ),
-    meta: {
-      className: cn(
-        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted group-data-[row=even]/row:bg-muted",
-        "md:table-cell",
-      ),
-    },
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-        className='translate-y-[2px]'
-      />
-    ),
-    enableSorting: false,
+    accessorKey: "id",
+    header: t("pages.system.users.columns.id"),
+    cell: ({ row }) => <LongText className='max-w-42'>{row.original.id}</LongText>,
+    meta: defaultHeaderMeta.meta,
+    enableSorting: true,
     enableHiding: false,
   },
   {
     accessorKey: "username",
     header: t("pages.system.users.columns.username"),
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("username")}</LongText>,
+    cell: ({ row }) => <LongText className='max-w-36'>{row.original.username}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
@@ -49,7 +29,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "nickname",
     header: "Nickname",
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("nickname")}</LongText>,
+    cell: ({ row }) => <LongText className='max-w-36'>{row.original.nickname}</LongText>,
     meta: defaultHeaderMeta.meta,
     searchable: true,
     renderSearch: (column, index, table) => (
@@ -65,13 +45,13 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.original.email}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "phone",
     header: "Phone",
-    cell: ({ row }) => <div>{row.getValue("phone")}</div>,
+    cell: ({ row }) => <div>{row.original.phone}</div>,
     meta: defaultHeaderMeta.meta,
     enableSorting: false,
   },
@@ -79,12 +59,12 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const { status } = row.original;
-      const badgeColor = callTypes.get(status || 0);
+      const status = row.original.status || 0;
+      const badgeColor = statusBadges.get(status);
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statuses[row.getValue("status") as number]}
+            {statusValue[status]}
           </Badge>
         </div>
       );
@@ -117,11 +97,19 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "update_time",
-    header: "Update Time",
-    cell: ({ row }) => <div>{row.getValue("update_time")}</div>,
+    accessorKey: "last_login_time",
+    header: "Last Login Time",
+    cell: ({ row }) => <div>{row.original.last_login_time}</div>,
     meta: defaultHeaderMeta.meta,
     enableSorting: false,
+  },
+  {
+    accessorKey: "update_time",
+    header: "Update Time",
+    cell: ({ row }) => <div>{row.original.update_time}</div>,
+    meta: defaultHeaderMeta.meta,
+    enableSorting: false,
+    hiddenInTable: true,
   },
   {
     id: "actions",

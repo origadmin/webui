@@ -1,6 +1,6 @@
-import { callTypes, statuses } from "@/mocks/role/data";
 import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
 import { defaultHeaderMeta } from "@/types";
+import { statusValue, statusBadges } from "@/types/system";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -80,12 +80,12 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Status",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
-      const { status } = row.original;
-      const badgeColor = callTypes.get(status || 0);
+      const { status = 0 } = row.original;
+      const badgeColor = statusBadges.get(status || 0);
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statuses[row.getValue("status") as number]}
+            {statusValue[status]}
           </Badge>
         </div>
       );

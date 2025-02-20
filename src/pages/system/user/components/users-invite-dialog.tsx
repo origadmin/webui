@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconMailPlus, IconSend } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,9 +30,10 @@ type UserInviteForm = z.infer<typeof formSchema>;
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  className?: string;
 }
 
-export function UsersInviteDialog({ open, onOpenChange }: Props) {
+export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
   const form = useForm<UserInviteForm>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: "", role: "", desc: "" },
@@ -58,7 +60,7 @@ export function UsersInviteDialog({ open, onOpenChange }: Props) {
         onOpenChange(state);
       }}
     >
-      <DialogContent className='sm:max-w-md'>
+      <DialogContent className={cn("sm:max-w-md", className)}>
         <DialogHeader className='text-left'>
           <DialogTitle className='flex items-center gap-2'>
             <IconMailPlus /> Invite User

@@ -4661,6 +4661,10 @@ body {
   visibility: hidden;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -5998,11 +6002,6 @@ body {
   border-color: hsl(var(--sidebar-primary));
 }
 
-.border-sky-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(125 211 252 / var(--tw-border-opacity, 1));
-}
-
 .border-teal-200 {
   --tw-border-opacity: 1;
   border-color: rgb(153 246 228 / var(--tw-border-opacity, 1));
@@ -6120,10 +6119,6 @@ body {
 
 .bg-sidebar-primary {
   background-color: hsl(var(--sidebar-primary));
-}
-
-.bg-sky-200\/40 {
-  background-color: rgb(186 230 253 / 0.4);
 }
 
 .bg-slate-400 {
@@ -6582,11 +6577,6 @@ body {
 
 .text-sidebar-primary-foreground {
   color: hsl(var(--sidebar-primary-foreground));
-}
-
-.text-sky-900 {
-  --tw-text-opacity: 1;
-  color: rgb(12 74 110 / var(--tw-text-opacity, 1));
 }
 
 .text-teal-900 {
@@ -7800,10 +7790,6 @@ body {
   border-color: hsl(var(--sidebar-border));
 }
 
-.group\/row[data-row="even"] .group-data-\[row\=even\]\/row\:bg-muted {
-  background-color: hsl(var(--muted));
-}
-
 .group\/row[data-state="selected"] .group-data-\[state\=selected\]\/row\:bg-muted {
   background-color: hsl(var(--muted));
 }
@@ -7907,6 +7893,10 @@ body {
 
   .sm\:w-\[480px\] {
     width: 480px;
+  }
+
+  .sm\:max-w-2xl {
+    max-width: 42rem;
   }
 
   .sm\:max-w-72 {
@@ -8345,11 +8335,6 @@ body {
 
 .dark\:text-primary:where(.dark, .dark *) {
   color: hsl(var(--primary));
-}
-
-.dark\:text-sky-100:where(.dark, .dark *) {
-  --tw-text-opacity: 1;
-  color: rgb(224 242 254 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-teal-200:where(.dark, .dark *) {

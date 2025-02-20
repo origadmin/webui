@@ -47,6 +47,7 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   searchable?: boolean;
   renderSearch?: (column: ColumnType<TData, TValue>, index: number, table: ReactTable<TData>) => ReactNode;
   headerTitle?: string;
+  hiddenInTable?: boolean;
   meta: ColumnMeta<TData, TValue>;
 };
 
@@ -122,7 +123,7 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
   }
   return (
     <TableRow>
-      <TableCell colSpan={rows.length} className='h-24 text-center'>
+      <TableCell colSpan={rows.length} className='h-24 text-center items-center'>
         No results.
       </TableCell>
     </TableRow>

@@ -1,7 +1,8 @@
-import { callTypes, statuses } from "@/mocks/resource/data";
 import { ResourceIconRowActions } from "@/pages/system/resource/components/resources-row-actions";
 import { defaultHeaderMeta } from "@/types";
 import { icons } from "@tabler/icons-react";
+import { statusValue, statusBadges } from "@/types/system";
+import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -58,7 +59,11 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     accessorKey: "type",
     header: "Type",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("type")}</div>,
+    cell: ({ row }) => (
+      <div className='w-fit max-w-36 text-nowrap'>
+        {resourceTypeValues.get(row.getValue("type")) || row.getValue("type")}
+      </div>
+    ),
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -114,12 +119,12 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     header: "Status",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
-      const { status } = row.original;
-      const badgeColor = callTypes.get(status || 0);
+      const { status = 0 } = row.original;
+      const badgeColor = statusBadges.get(status);
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statuses[row.getValue("status") as number]}
+            {statusValue[status]}
           </Badge>
         </div>
       );
@@ -138,13 +143,13 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("visible") ? "Yes" : "No"}</div>,
     meta: defaultHeaderMeta.meta,
   },
-  {
-    accessorKey: "description",
-    header: "Description",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
-    meta: defaultHeaderMeta.meta,
-  },
+  // {
+  //   accessorKey: "description",
+  //   header: "Description",
+  //   // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+  //   cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
+  //   meta: defaultHeaderMeta.meta,
+  // },
   {
     id: "actions",
     header: "Actions",

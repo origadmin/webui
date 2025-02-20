@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -80,9 +81,11 @@ interface Props<T> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  className?: string;
+  columns?: number;
 }
 
-export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.System.User>) {
+export function UsersActionDialog({ currentRow, open, onOpenChange, className }: Props<API.System.User>) {
   const isEdit = !!currentRow;
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
@@ -142,7 +145,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props<API.
         onOpenChange(state);
       }}
     >
-      <DialogContent className='sm:max-w-lg'>
+      <DialogContent className={cn("sm:max-w-lg", className)}>
         <DialogHeader className='text-left'>
           <DialogTitle>{isEdit ? "Edit User" : "Add New User"}</DialogTitle>
           <DialogDescription>

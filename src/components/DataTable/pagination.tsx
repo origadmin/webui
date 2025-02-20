@@ -21,14 +21,10 @@ export function Pagination<T>({ table, sizeOptions = [], toolbars, pagination }:
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
   const totalCount = table.getFilteredRowModel().rows.length;
 
-  // const mergedSizeOptions = useMemo(() => {
-  //   return sizeOptions ? sizeOptions.map((optionValue) => Number(optionValue)) : undefined;
-  // }, [sizeOptions]);
-
   const renderSizeOptions = (_sizeOptions?: string[]) => {
     return (
       <div className='flex items-center sm:space-x-6 lg:space-x-8'>
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center space-x-2 md:p-2'>
           <p className='hidden text-sm font-medium sm:block'>Rows per page</p>
           <Select
             value={`${pageSize}`}

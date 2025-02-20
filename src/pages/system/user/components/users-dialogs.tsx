@@ -6,13 +6,25 @@ import { useUserTable } from "./users-table-provider";
 
 export function UsersDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useUserTable();
+  const className = "sm:max-w-3xl";
   return (
     <Fragment>
-      <UsersActionDialog key='user-add' open={open === "add"} onOpenChange={() => setOpen("add")} />
-      <UsersInviteDialog key='user-invite' open={open === "invite"} onOpenChange={() => setOpen("invite")} />
+      <UsersActionDialog
+        className={className}
+        key='user-add'
+        open={open === "add"}
+        onOpenChange={() => setOpen("add")}
+      />
+      <UsersInviteDialog
+        className={className}
+        key='user-invite'
+        open={open === "invite"}
+        onOpenChange={() => setOpen("invite")}
+      />
 
       {currentRow && (
         <UsersActionDialog
+          className={className}
           key={`user-edit-${currentRow.id}`}
           open={open === "edit"}
           onOpenChange={() => {
