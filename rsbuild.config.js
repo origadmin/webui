@@ -40,7 +40,7 @@ const config = defineConfig({
         { src: "./src/assets/icons/icon-128x128.png", size: 128 },
         { src: "./src/assets/icons/icon-192x192.png", size: 192 },
         { src: "./src/assets/icons/icon-256x256.png", size: 256 },
-        // { src: "./src/assets/icons/icon-512x512.png", size: 512 },
+        { src: "./src/assets/icons/icon-512x512.png", size: 512 },
       ],
     },
   },
