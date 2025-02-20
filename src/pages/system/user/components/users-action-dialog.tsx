@@ -21,6 +21,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { PasswordInput } from "@/components/password-input";
 import { SelectDropdown } from "@/components/select-dropdown";
 
+const empty = (className?: string) => (
+  <div className={cn("col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0", className)}>
+    <div className='col-span-6' />
+  </div>
+);
+
 const formSchema = z
   .object({
     nickname: z.string().min(1, { message: "Nickname is required." }),
@@ -30,6 +36,7 @@ const formSchema = z
     password: z.string().transform((pwd) => pwd.trim()),
     role: z.string().min(1, { message: "Role is required." }),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
+    allow_ip: z.string().min(1, { message: "IP is required." }),
     isEdit: z.boolean(),
   })
   .superRefine(({ isEdit, password, confirmPassword }, ctx) => {
@@ -161,12 +168,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
             <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-12 space-y-0'>
               <FormField
                 control={form.control}
-                name='nickname'
+                name='username'
                 render={({ field }) => (
                   <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Nickname</FormLabel>
+                    <FormLabel className='col-span-2 text-left'>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
+                      <Input placeholder='john_doe' className='col-span-4' {...field} />
                     </FormControl>
                     <FormMessage className='col-span-4' />
                   </FormItem>
@@ -174,12 +181,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
               />
               <FormField
                 control={form.control}
-                name='username'
+                name='nickname'
                 render={({ field }) => (
                   <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Username</FormLabel>
+                    <FormLabel className='col-span-2 text-left'>Nickname</FormLabel>
                     <FormControl>
-                      <Input placeholder='john_doe' className='col-span-4' {...field} />
+                      <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
                     </FormControl>
                     <FormMessage className='col-span-4' />
                   </FormItem>
@@ -194,7 +201,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormControl>
                       <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
                     </FormControl>
-                    <FormMessage className='col-span-4 col-start-2' />
+                    <FormMessage className='col-span-4' />
                   </FormItem>
                 )}
               />
@@ -207,7 +214,64 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormControl>
                       <Input placeholder='+123456789' className='col-span-4' {...field} />
                     </FormControl>
+                    <FormMessage className='col-span-4' />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <FormLabel className='col-span-2 text-left'>Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+                    </FormControl>
+                    <FormMessage className='col-span-4' />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='confirmPassword'
+                render={({ field }) => (
+                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        disabled={!isPasswordTouched}
+                        placeholder='e.g., S3cur3P@ssw0rd'
+                        className='col-span-4'
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage className='col-span-4 col-start-2' />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='allow_ip'
+                render={({ field }) => (
+                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <FormLabel className='col-span-2 text-left'>Allow IP</FormLabel>
+                    <FormControl>
+                      <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
+                    </FormControl>
+                    <FormMessage className='col-span-4' />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='allow_ip'
+                render={({ field }) => (
+                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <FormLabel className='col-span-2 text-left'>Allow IP</FormLabel>
+                    <FormControl>
+                      <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
+                    </FormControl>
+                    <FormMessage className='col-span-4' />
                   </FormItem>
                 )}
               />
@@ -228,37 +292,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                       }))}
                     />
                     <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-2' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='confirmPassword'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput
-                        disabled={!isPasswordTouched}
-                        placeholder='e.g., S3cur3P@ssw0rd'
-                        className='col-span-4'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-2' />
                   </FormItem>
                 )}
               />
