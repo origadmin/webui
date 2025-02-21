@@ -1,7 +1,7 @@
 import { useUsersQuery } from "@/api/system/user";
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DataTable } from "@/components/DataTable";
+import { DataTable, DataTableProps } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/users-columns";
 import { UsersDialogs } from "./components/users-dialogs";
@@ -24,6 +24,28 @@ export default function UserPage() {
     useQuery: (params) => useUsersQuery(params),
   });
 
+  const tableProps: Omit<DataTableProps<API.System.User>, "isLoading" | "sourceData" | "total"> = {
+    columns,
+    useManual: true,
+    showPagination: true,
+    sorting,
+    setSorting,
+    paginationState: pagination,
+    setPagination,
+    columnFiltersState: columnFilters,
+    setColumnFilters,
+    props: {
+      toolbarPosition: "bottom",
+      toolbar: {
+        children: <UsersPrimaryButtons />,
+      },
+      search: {
+        onSearch: handleSearch,
+        onReset: handleReset,
+      },
+    },
+  };
+
   return (
     <UserTableProvider>
       <PageContainer>
@@ -35,27 +57,10 @@ export default function UserPage() {
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
               <DataTable<API.System.User>
-                useManual={true}
+                {...tableProps}
                 isLoading={isLoading}
                 sourceData={users.data}
                 total={users.total}
-                columns={columns}
-                toolbars={<UsersPrimaryButtons />}
-                toolbarPosition={"bottom"}
-                sortProps={{
-                  sorting,
-                  setSorting,
-                }}
-                paginationProps={{
-                  setPagination,
-                }}
-                paginationState={pagination}
-                columnFiltersState={columnFilters}
-                searchBarProps={{
-                  setColumnFilters,
-                  onSearch: handleSearch,
-                  onReset: handleReset,
-                }}
               />
             </div>
           </CardContent>

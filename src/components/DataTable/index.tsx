@@ -61,7 +61,6 @@ interface DataProps<TData> {
 interface DisplayProps<TData> {
   showToolbarStatistics?: boolean;
   showPagination?: boolean;
-
   sizeOptions?: PaginationProps<TData>["sizeOptions"];
 }
 
@@ -83,10 +82,10 @@ interface BehaviorProps {
 
 interface ComponentProps<TData> {
   search?: Omit<SearchBarProps<TData>, "table" | "columns" | "columnFilters">;
-  pagination?: Omit<PaginationProps<TData>, "table" | "toolbars">;
+  pagination?: Omit<PaginationProps<TData>, "table" | "toolbars" | "sizeOptions">;
   title?: Omit<TitleBarProps<TData>, "table" | "toolbars">;
   toolbarPosition?: "top" | "bottom";
-  toolbar: ToolbarProps<TData>;
+  toolbar: Omit<ToolbarProps<TData>, "table">;
 }
 
 interface DataTableProps<TData> extends DataProps<TData>, DisplayProps<TData>, BehaviorProps {
@@ -228,7 +227,7 @@ function DataTable<T>({
           {...pagination}
           table={table}
           sizeOptions={sizeOptions}
-          toolbars={toolbarPosition === "bottom" ? toolbar : undefined}
+          toolbar={toolbarPosition === "bottom" ? toolbar : undefined}
         />
       )}
     </div>

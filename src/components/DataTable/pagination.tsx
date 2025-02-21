@@ -2,13 +2,13 @@ import { JSX } from "react";
 import { t } from "@/utils/locale";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { ToolbarProps } from "src/components/DataTable/toolbar";
+import { ToolbarProps, Toolbar } from "src/components/DataTable/toolbar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export interface PaginationProps<T> {
   table: Table<T>;
-  toolbars?: ToolbarProps["toolbars"];
+  toolbar?: ToolbarProps<T>;
   sizeOptions?: string[];
   rowSelect?: boolean;
   rowSelectRender?: (table: Table<T>) => JSX.Element;
@@ -88,9 +88,9 @@ const renderSizeOptions = <TData,>(table: Table<TData>, _sizeOptions?: string[])
   );
 };
 
-const renderToolbar = (toolbars?: JSX.Element) => {
-  return <div className='flex items-center space-x-2 px-2'>{toolbars}</div>;
-};
+// const renderToolbar = (toolbars?: JSX.Element) => {
+//   return <div className='flex items-center space-x-2 px-2'>{toolbars}</div>;
+// };
 
 const renderRowSelect = <TData,>(table: Table<TData>) => {
   const selectedCount = table.getFilteredSelectedRowModel().rows.length;
@@ -106,7 +106,7 @@ const renderRowSelect = <TData,>(table: Table<TData>) => {
 export function Pagination<T>({
   table,
   sizeOptions = [],
-  toolbars,
+  toolbar,
   rowSelect = true,
   rowSelectRender,
 }: PaginationProps<T>) {
@@ -116,7 +116,7 @@ export function Pagination<T>({
     <div className='flex items-center justify-between overflow-auto px-2'>
       {rowSelect && rowSelectRender(table)}
       {sizeOptions && renderSizeOptions(table, sizeOptions)}
-      {toolbars && renderToolbar(toolbars)}
+      <Toolbar {...toolbar} table={table} />
     </div>
   );
 }
