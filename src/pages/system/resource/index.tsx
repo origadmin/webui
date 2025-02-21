@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useResourcesQuery } from "@/api/system/resource";
 import { ResourcesPrimaryButtons } from "@/pages/system/resource/components/resources-primary-buttons";
+import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsTrigger, TabsList } from "@/components/ui/tabs";
@@ -23,15 +24,15 @@ export default function ResourcesPage() {
     handleSearch,
     handleReset,
   } = useDataTable({
-    useQuery: (params) => useResourcesQuery(params),
+    useQuery: (params) => useResourcesQuery({ ...params, page_size: 1000 }),
   });
 
   const [tabsValue, setTabsValue] = useState("all");
 
   const tableProps: Omit<DataTableProps<API.System.Resource>, "isLoading" | "sourceData" | "total"> = {
     columns,
-    useManual: true,
-    showPagination: true,
+    useManual: false,
+    showPagination: false,
     sorting,
     setSorting,
     paginationState: pagination,
@@ -40,12 +41,52 @@ export default function ResourcesPage() {
     setColumnFilters,
     toolbarPosition: "bottom",
     toolbars: () => <ResourcesPrimaryButtons />,
+    options: {
+      getExpandedRowModel: getExpandedRowModel(),
+      getSubRows: (row: API.System.Resource) => row.children,
+    },
     props: {
       search: {
         onSearch: handleSearch,
         onReset: handleReset,
       },
     },
+  };
+
+  const buildTree = (items?: API.System.Resource[]) => {
+    const map = new Map<string, API.System.Resource>();
+    const roots: API.System.Resource[] = [];
+
+    if (!items) {
+      return roots;
+    }
+
+    // create a map of id to item
+    items.forEach((item) => {
+      if (!item.id) {
+        return;
+      }
+      item.children = [];
+      map.set(item.id, item);
+    });
+
+    // build the tree
+    items.forEach((item) => {
+      if (!item.parent_id || !item.tree_path) {
+        roots.push(item);
+        return;
+      }
+      // const pathSegments = item.tree_path.split(".");
+      // const parentId = pathSegments[pathSegments.length - 1];
+      // console.log("parentId", parentId,"tree",item.tree_path,"pathSegments",pathSegments,"item",item,"item.parent_id",item.parent_id,"item.tree_path",item.tree_path,"item.id",item.id,"item.children",item.children,"map",map,"roots",roots,"item",item,"item.parent_id",item.parent_id,"item.tree_path",item.tree_path,"item.id",item.id,"item.children",item.children,"map",map,"roots");
+      const parent = map.get(item.parent_id);
+      if (!parent || !parent.children) {
+        return;
+      }
+      parent.children.push(item);
+    });
+    console.log("tree", roots);
+    return roots;
   };
 
   return (
@@ -69,7 +110,7 @@ export default function ResourcesPage() {
                 <DataTable<API.System.Resource>
                   {...tableProps}
                   isLoading={isLoading}
-                  sourceData={resources.data}
+                  sourceData={buildTree(resources.data)}
                   total={resources.total}
                 />
               </div>

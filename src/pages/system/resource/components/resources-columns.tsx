@@ -1,39 +1,38 @@
 import { ResourceIconRowActions } from "@/pages/system/resource/components/resources-row-actions";
 import { defaultHeaderMeta } from "@/types";
 import { icons } from "@tabler/icons-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { statusValue, statusBadges } from "@/types/system";
 import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-        className='translate-y-[2px]'
-      />
-    ),
+    id: "expand",
+    // header: ({ table }) => "+",
     meta: {
       className: cn(
         "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
         "md:table-cell",
       ),
     },
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-        className='translate-y-[2px]'
-      />
-    ),
+    cell: ({ row }) => {
+      return (
+        <div className='flex items-center'>
+          {row.getCanExpand() ? (
+            <button onClick={row.getToggleExpandedHandler()} className='mr-2'>
+              {row.getIsExpanded() ? <ChevronDown className='h-4 w-4' /> : <ChevronRight className='h-4 w-4' />}
+            </button>
+          ) : (
+            <span className='w-6' />
+          )}
+        </div>
+      );
+    },
+
     enableSorting: false,
     enableHiding: false,
   },
@@ -154,7 +153,11 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     id: "actions",
     header: "Actions",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
-    cell: ResourceIconRowActions,
+    cell: ({ row }) => (
+      <div className='flex gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
+        <ResourceIconRowActions row={row} />
+      </div>
+    ),
     meta: defaultHeaderMeta.meta,
   },
 ];

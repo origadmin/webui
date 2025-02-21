@@ -24,10 +24,11 @@ import {
   Row,
   HeaderGroup,
   OnChangeFn,
+  TableOptions,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ToolbarProps } from "@/components/DataTable/toolbar";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
+import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
 import { Pagination, PaginationProps } from "./pagination";
 import { IconRowActions, RowActions, RowActionsProps } from "./row-actions";
@@ -64,10 +65,6 @@ interface DisplayProps<TData> {
   sizeOptions?: PaginationProps<TData>["sizeOptions"];
 }
 
-interface TableOptions<TData> {
-  options: TableOptions<TData>;
-}
-
 interface BehaviorProps {
   useManual?: boolean;
   paginationState?: PaginationState;
@@ -90,7 +87,7 @@ interface ComponentProps<TData> {
 interface DataTableProps<TData> extends DataProps<TData>, DisplayProps<TData>, BehaviorProps {
   toolbarPosition?: "top" | "bottom";
   toolbars?: ToolbarProps<TData>["children"] | ToolbarProps<TData>["render"];
-  options?: TableOptions<TData>;
+  options?: Partial<Omit<TableOptions<TData>, "data" | "columns">>;
   props: ComponentProps<TData>;
 }
 
@@ -114,13 +111,35 @@ const renderRow = <TData,>(groups: HeaderGroup<TData>[]) => {
     </TableRow>
   ));
 };
+// {table.getRowModel().rows.map((row) => (
+//   <TableRow key={row.id} data-state={row.getIsExpanded() ? "expanded" : "collapsed"}>
+//     {row.getVisibleCells().map((cell) => (
+//       <TableCell key={cell.id} style={{ paddingLeft: `${row.depth * 2 + 1}rem` }}>
+//         {flexRender(cell.column.columnDef.cell, cell.getContext())}
+//       </TableCell>
+//     ))}
+//   </TableRow>
+// ))}
+const dataState = <TData,>(row: Row<TData>) => {
+  if (row.getCanExpand()) {
+    return row.getIsExpanded() ? "expanded" : "collapsed";
+  }
+  if (row.getCanSelect()) {
+    return row.getIsSelected() ? "selected" : "";
+  }
+  return undefined;
+};
 
 const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
   if (rows && rows.length > 0) {
     return rows.map((row) => (
-      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className='group/row'>
+      <TableRow key={row.id} data-state={dataState(row)} className='group/row'>
         {row.getVisibleCells().map((cell) => (
-          <TableCell key={cell.id} className={cell.column.columnDef.meta?.className ?? ""}>
+          <TableCell
+            key={cell.id}
+            style={{ paddingLeft: `${row.depth * 2 + 1}rem` }}
+            className={cell.column.columnDef.meta?.className ?? ""}
+          >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </TableCell>
         ))}
@@ -157,6 +176,7 @@ function DataTable<T>({
   // titleProps,
   toolbars,
   toolbarPosition = "top",
+  options,
   props,
   isLoading,
 }: DataTableProps<T>) {
@@ -181,6 +201,7 @@ function DataTable<T>({
   onColumnVisibilityChange = onColumnVisibilityChange || setColumnVisibility;
 
   const table = useReactTable({
+    ...options,
     data,
     columns,
     rowCount,
@@ -231,16 +252,21 @@ function DataTable<T>({
         <Table>
           <TableHeader>{renderRow(table.getHeaderGroups())}</TableHeader>
           <TableBody>{renderCell(table.getRowModel().rows)}</TableBody>
+          <TableFooter></TableFooter>
         </Table>
       </div>
-      {showPagination && (
+      {showPagination ? (
         <Pagination
           {...pagination}
           table={table}
           sizeOptions={sizeOptions}
           toolbar={toolbarPosition === "bottom" ? toolbarProps : undefined}
         />
-      )}
+      ) : toolbarPosition === "bottom" ? (
+        <div className='flex items-center justify-end overflow-auto px-2'>
+          <Toolbar {...toolbarProps} table={table} />
+        </div>
+      ) : null}
     </div>
   );
 }

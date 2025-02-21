@@ -31,7 +31,7 @@ export const defaultHeaderMeta = {
     className: cn(
       "p-2 drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
       "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-      "sticky left-6 md:table-cell",
+      "sticky md:table-cell",
     ),
   },
 };
