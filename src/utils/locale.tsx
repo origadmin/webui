@@ -4,6 +4,7 @@ import zhCN from "@/locales/zh-CN";
 import zhTW from "@/locales/zh-TW";
 import { defaultLocale } from "@/types";
 import { getLocaleLanguage } from "@/utils/storage";
+import { PrimitiveType, FormatXMLElementFn } from "intl-messageformat";
 import { createIntl, createIntlCache } from "react-intl";
 
 export const messages: {
@@ -21,6 +22,6 @@ export const getCreatedIntl = (locale = defaultLocale) => {
 };
 
 export const intl = getCreatedIntl(getLocaleLanguage());
-export const t = (id: string, values?: Record<string, string>) => {
+export const t = (id: string, values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>) => {
   return intl.formatMessage({ id }, values);
 };

@@ -51,41 +51,49 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   meta: ColumnMeta<TData, TValue>;
 };
 
-// type QueryOption<
-//   TQueryFnData = unknown,
-//   TError = DefaultError,
-//   TData = TQueryFnData,
-//   TQueryKey extends QueryKey = QueryKey,
-// > =
-//   | DefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-//   | UndefinedInitialDataOptions<TQueryFnData, TError, TData, TQueryKey>
-//   | UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>;
-
-interface SortProps {
-  key?: string;
-  delimiter?: string;
-  contact?: string;
-  sorting?: SortingState;
-  setSorting?: OnChangeFn<SortingState>;
+interface DataProps<TData> {
+  columns: ColumnType<TData>[];
+  sourceData?: TData[];
+  total?: number;
+  isLoading?: boolean;
 }
 
-interface DataTableProps<T> {
-  columns: ColumnType<T>[];
-  sourceData?: T[];
-  total?: number;
+interface DisplayProps<TData> {
   showToolbarStatistics?: boolean;
   showPagination?: boolean;
-  useManual?: boolean;
   toolbarPosition?: "top" | "bottom";
+  sizeOptions?: PaginationProps<TData>["sizeOptions"];
+}
+
+interface TableOptions<TData> {
+  options: TableOptions<TData>;
+}
+
+interface BehaviorProps {
+  useManual?: boolean;
   paginationState?: PaginationState;
   columnFiltersState?: ColumnFiltersState;
-  searchBarProps?: Omit<SearchBarProps<T>, "table" | "columns" | "columnFilters">;
-  sizeOptions?: PaginationProps<T>["sizeOptions"];
-  paginationProps?: Omit<PaginationProps<T>, "table" | "pagination">;
-  toolbars?: TitleBarProps<T>["toolbars"];
-  titleBarProps?: TitleBarProps<T>;
-  sortProps?: SortProps;
-  isLoading?: boolean;
+  sorting?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
+  setColumnFilters?: OnChangeFn<ColumnFiltersState>;
+  setPagination?: OnChangeFn<PaginationState>;
+  onRowSelectionChange?: OnChangeFn<VisibilityState>;
+  onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
+}
+
+interface ChildComponentProps<TData> {
+  searchBarProps?: Omit<SearchBarProps<TData>, "table" | "columns" | "columnFilters">;
+  paginationProps?: Omit<PaginationProps<TData>, "table" | "pagination">;
+  titleProps?: TitleBarProps<TData>;
+  toolbars?: TitleBarProps<TData>["toolbars"];
+}
+
+interface DataTableProps<TData>
+  extends DataProps<TData>,
+    DisplayProps<TData>,
+    ChildComponentProps<TData>,
+    BehaviorProps {
+  options?: TableOptions<TData>;
 }
 
 const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderContext<TData, TValue>> => {
@@ -132,31 +140,29 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
 
 function DataTable<T>({
   columns,
-  toolbars,
   sourceData = [],
   total = 0,
-  paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
-  columnFiltersState = [],
   showToolbarStatistics = true,
   showPagination = true,
   useManual = true,
   toolbarPosition = "top",
   sizeOptions = PAGE_SIZE_OPTIONS,
-  paginationProps,
+  paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
+  columnFiltersState = [],
+  sorting,
+  setSorting,
+  setColumnFilters,
+  setPagination,
+  onRowSelectionChange: onRowSelectionChange,
+  onColumnVisibilityChange: onColumnVisibilityChange,
   searchBarProps,
-  titleBarProps,
-  sortProps,
+  paginationProps,
+  titleProps,
+  toolbars,
   isLoading,
 }: DataTableProps<T>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  // const [columnFilters, _setColumnFilters] = useState<ColumnFiltersState>(columnFiltersState);
-  // const [pagination, _setPagination] = useState<PaginationState>(paginationState);
-  const { setPagination } = paginationProps ?? {};
-  // const [_sorting, _setSorting] = useState<SortingState>([]);
-  const { sorting, setSorting } = sortProps ?? {};
-  const { setColumnFilters } = searchBarProps ?? {};
-
   const [data, setData] = useState(sourceData || []);
   const [rowCount, setRowCount] = useState(total || 0);
   useEffect(() => {
@@ -172,6 +178,8 @@ function DataTable<T>({
         manualPagination: true,
       }
     : {};
+  onRowSelectionChange = onRowSelectionChange || setRowSelection;
+  onColumnVisibilityChange = onColumnVisibilityChange || setColumnVisibility;
 
   const table = useReactTable({
     data,
@@ -184,15 +192,12 @@ function DataTable<T>({
       rowSelection,
       columnFilters: columnFiltersState,
     },
-    // initialState: {
-    //   pagination: paginationState,
-    // },
     ...manualProps,
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: onRowSelectionChange,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: onColumnVisibilityChange,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: !useManual ? getPaginationRowModel() : undefined,
@@ -200,29 +205,13 @@ function DataTable<T>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange: useManual ? setPagination : undefined,
-    // //syntax 1
-    // onPaginationChange: (updater) => {
-    //   setPagination((old) => {
-    //     const newPaginationValue = updater instanceof Function ? updater(old) : updater;
-    //     //do something with the new pagination value
-    //     //...
-    //     return useManual ? newPaginationValue : undefined;
-    //   });
-    // },
-    // //syntax 2
-    // onSortingChange: (updater) => {
-    //   const newSortingValue = updater instanceof Function ? updater(sorting) : updater;
-    //   //do something with the new sorting value
-    //   //...
-    //   setSorting(updater); //normal state update
-    // },
   });
 
   return (
     <div className='space-y-4'>
       <SearchBar table={table} columns={columns} columnFilters={columnFiltersState} {...searchBarProps} />
       <TitleBar
-        {...titleBarProps}
+        {...titleProps}
         table={table}
         toolbars={toolbarPosition === "top" ? toolbars : undefined}
         showStatistics={showToolbarStatistics}

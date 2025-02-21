@@ -1,3 +1,4 @@
+import components from "@/locales/en-US/components";
 import pages from "@/locales/en-US/pages";
 
 export default {
@@ -8,4 +9,5 @@ export default {
   "pages.not_found.go_back": "GO BACK",
 
   ...pages,
+  ...components,
 };
