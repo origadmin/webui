@@ -7,29 +7,27 @@ import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnType } from "@/components/DataTable";
+import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
-    id: "expand",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
-        aria-label='Select all'
-        className='translate-y-[2px]'
-      />
+    accessorKey: "name",
+    header: ({ column, table }) => (
+      <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
+        <Checkbox
+          checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
+          onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
+          aria-label='Select all'
+        />
+        <DataTableColumnHeader column={column} title='Name' />
+      </div>
     ),
-    meta: {
-      className: cn(
-        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-        "md:table-cell",
-      ),
-    },
+    searchable: true,
+    meta: defaultHeaderMeta.meta,
     cell: ({ row }) => {
       return (
-        <div className='flex items-center'>
+        <div className='flex items-center min-w-24' style={{ paddingLeft: `${row.depth}rem` }}>
           {row.getCanExpand() ? (
             <button onClick={row.getToggleExpandedHandler()} className='mr-2'>
               {row.getIsExpanded() ? <ChevronDown className='h-4 w-4' /> : <ChevronRight className='h-4 w-4' />}
@@ -37,21 +35,11 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
           ) : (
             <span className='w-6' />
           )}
+          <LongText className='max-w-48'>{row.getValue("name")}</LongText>
         </div>
       );
     },
-
     enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-    searchable: true,
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Resourcename' />,
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("name")}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    enableSorting: true,
     enableHiding: false,
   },
   {
@@ -59,47 +47,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     header: "Keyword",
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("keyword")}</LongText>,
-    meta: defaultHeaderMeta.meta,
-  },
-  {
-    accessorKey: "type",
-    header: "Type",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => (
-      <div className='w-fit max-w-36 text-nowrap'>
-        {resourceTypeValues.get(row.getValue("type")) || row.getValue("type")}
-      </div>
-    ),
-    meta: defaultHeaderMeta.meta,
-  },
-  {
-    accessorKey: "method",
-    header: "Method",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("method")}</div>,
-    meta: defaultHeaderMeta.meta,
-  },
-  {
-    accessorKey: "path",
-    header: "Path",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("path")}</div>,
-    meta: defaultHeaderMeta.meta,
-  },
-  {
-    accessorKey: "operation",
-    header: "Operation",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("operation")}</div>,
-    meta: defaultHeaderMeta.meta,
-  },
-
-  {
-    accessorKey: "component",
-    header: "Component",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("component")}</div>,
+    cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -114,6 +62,46 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     },
     meta: defaultHeaderMeta.meta,
   },
+  {
+    accessorKey: "type",
+    header: "Type",
+    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+    cell: ({ row }) => (
+      <div className='w-fit max-w-36 text-nowrap'>
+        {resourceTypeValues.get(row.getValue("type")) || row.getValue("type")}
+      </div>
+    ),
+    meta: defaultHeaderMeta.meta,
+  },
+  // {
+  //   accessorKey: "method",
+  //   header: "Method",
+  //   // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+  //   cell: ({ row }) => <div className='w-fit max-w-12 text-nowrap'>{row.getValue("method")}</div>,
+  //   meta: defaultHeaderMeta.meta,
+  // },
+  // {
+  //   accessorKey: "path",
+  //   header: "Path",
+  //   // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+  //   cell: ({ row }) => <div className='w-fit max-w-60 text-nowrap'>{row.getValue("path")}</div>,
+  //   meta: defaultHeaderMeta.meta,
+  // },
+  // {
+  //   accessorKey: "operation",
+  //   header: "Operation",
+  //   // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+  //   cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("operation")}</div>,
+  //   meta: defaultHeaderMeta.meta,
+  // },
+  //
+  // {
+  //   accessorKey: "component",
+  //   header: "Component",
+  //   // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
+  //   cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("component")}</div>,
+  //   meta: defaultHeaderMeta.meta,
+  // },
   {
     accessorKey: "sequence",
     header: "Sequence",
@@ -150,13 +138,21 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("visible") ? "Yes" : "No"}</div>,
     meta: defaultHeaderMeta.meta,
   },
-  // {
-  //   accessorKey: "description",
-  //   header: "Description",
-  //   // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-  //   cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
-  //   meta: defaultHeaderMeta.meta,
-  // },
+  {
+    accessorKey: "create_time",
+    header: "Create Time",
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.original.create_time}</div>,
+    meta: defaultHeaderMeta.meta,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "update_time",
+    header: "Update Time",
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.original.update_time}</div>,
+    meta: defaultHeaderMeta.meta,
+    enableSorting: false,
+    hiddenInTable: true,
+  },
   {
     id: "actions",
     header: "Actions",
