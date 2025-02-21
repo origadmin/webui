@@ -1254,8 +1254,8 @@ export interface components {
              * @description resource.field.status
              */
             status?: number;
-            /** @description resource.field.uri */
-            uri?: string;
+            /** @description resource.field.path */
+            path?: string;
             /** @description resource.field.operation */
             operation?: string;
             /** @description resource.field.method */
@@ -3004,6 +3004,8 @@ export interface operations {
                 no_paging?: boolean;
                 /** @description The only_count is the query parameter for set only to query the total number */
                 only_count?: boolean;
+                /** @description resource type */
+                type?: string;
             };
             header?: never;
             path?: never;

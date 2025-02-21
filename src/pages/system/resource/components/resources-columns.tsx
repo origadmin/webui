@@ -74,10 +74,10 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
-    accessorKey: "uri",
-    header: "URI",
+    accessorKey: "path",
+    header: "Path",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("uri")}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("path")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {

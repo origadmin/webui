@@ -2,7 +2,7 @@ import { useRolesQuery } from "@/api/system/role";
 import { RolesPrimaryButtons } from "@/pages/system/role/components/roles-primary-buttons";
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DataTable } from "@/components/DataTable";
+import { DataTable, DataTableProps } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/roles-columns";
 import { RolesDialogs } from "./components/roles-dialogs";
@@ -24,6 +24,26 @@ export default function RolesPage() {
     useQuery: (params) => useRolesQuery(params),
   });
 
+  const tableProps: Omit<DataTableProps<API.System.Role>, "isLoading" | "sourceData" | "total"> = {
+    columns,
+    useManual: true,
+    showPagination: true,
+    sorting,
+    setSorting,
+    paginationState: pagination,
+    setPagination,
+    columnFiltersState: columnFilters,
+    setColumnFilters,
+    toolbarPosition: "bottom",
+    toolbars: () => <RolesPrimaryButtons />,
+    props: {
+      search: {
+        onSearch: handleSearch,
+        onReset: handleReset,
+      },
+    },
+  };
+
   return (
     <RoleTableProvider>
       <PageContainer>
@@ -35,27 +55,10 @@ export default function RolesPage() {
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
               <DataTable<API.System.Role>
-                useManual={true}
+                {...tableProps}
                 isLoading={isLoading}
                 sourceData={roles.data}
                 total={roles.total}
-                columns={columns}
-                toolbars={<RolesPrimaryButtons />}
-                toolbarPosition={"bottom"}
-                sortProps={{
-                  sorting,
-                  setSorting,
-                }}
-                paginationProps={{
-                  setPagination,
-                }}
-                paginationState={pagination}
-                columnFiltersState={columnFilters}
-                searchBarProps={{
-                  setColumnFilters,
-                  onSearch: handleSearch,
-                  onReset: handleReset,
-                }}
               />
             </div>
           </CardContent>

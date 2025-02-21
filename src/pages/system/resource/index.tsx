@@ -4,7 +4,7 @@ import { ResourcesPrimaryButtons } from "@/pages/system/resource/components/reso
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsTrigger, TabsList } from "@/components/ui/tabs";
-import { DataTable } from "@/components/DataTable";
+import { DataTable, DataTableProps } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/resources-columns";
 import { ResourcesDialogs } from "./components/resources-dialogs";
@@ -28,6 +28,26 @@ export default function ResourcesPage() {
 
   const [tabsValue, setTabsValue] = useState("all");
 
+  const tableProps: Omit<DataTableProps<API.System.Resource>, "isLoading" | "sourceData" | "total"> = {
+    columns,
+    useManual: true,
+    showPagination: true,
+    sorting,
+    setSorting,
+    paginationState: pagination,
+    setPagination,
+    columnFiltersState: columnFilters,
+    setColumnFilters,
+    toolbarPosition: "bottom",
+    toolbars: () => <ResourcesPrimaryButtons />,
+    props: {
+      search: {
+        onSearch: handleSearch,
+        onReset: handleReset,
+      },
+    },
+  };
+
   return (
     <ResourceTableProvider>
       <PageContainer>
@@ -47,27 +67,10 @@ export default function ResourcesPage() {
             <CardContent>
               <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
                 <DataTable<API.System.Resource>
-                  useManual={true}
+                  {...tableProps}
                   isLoading={isLoading}
                   sourceData={resources.data}
                   total={resources.total}
-                  columns={columns}
-                  toolbars={<ResourcesPrimaryButtons />}
-                  toolbarPosition={"bottom"}
-                  sortProps={{
-                    sorting,
-                    setSorting,
-                  }}
-                  paginationProps={{
-                    setPagination,
-                  }}
-                  paginationState={pagination}
-                  columnFiltersState={columnFilters}
-                  searchBarProps={{
-                    setColumnFilters,
-                    onSearch: handleSearch,
-                    onReset: handleReset,
-                  }}
                 />
               </div>
             </CardContent>
