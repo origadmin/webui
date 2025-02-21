@@ -27,6 +27,7 @@ import {
   TableOptions,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
+import { cn } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
@@ -137,8 +138,8 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
         {row.getVisibleCells().map((cell) => (
           <TableCell
             key={cell.id}
-            style={{ paddingLeft: `${row.depth * 2 + 1}rem` }}
-            className={cell.column.columnDef.meta?.className ?? ""}
+            // style={{ paddingLeft: `${row.depth + 1}rem` }}
+            className={cn("px-4", cell.column.columnDef.meta?.className)}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </TableCell>

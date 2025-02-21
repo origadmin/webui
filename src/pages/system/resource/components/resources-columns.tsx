@@ -6,13 +6,21 @@ import { statusValue, statusBadges } from "@/types/system";
 import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
     id: "expand",
-    // header: ({ table }) => "+",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
+        onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
+        aria-label='Select all'
+        className='translate-y-[2px]'
+      />
+    ),
     meta: {
       className: cn(
         "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
