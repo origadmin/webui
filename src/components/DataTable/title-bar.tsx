@@ -4,20 +4,19 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ToolbarProps } from "@/components/DataTable/toolbar";
+import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { FacetedFilter } from "./faceted-filter";
 import { ViewOptions } from "./view-options";
 
 export interface TitleBarProps<TData> {
   table: Table<TData>;
-  toolbars?: ToolbarProps["toolbars"];
+  toolbars?: ToolbarProps<TData>;
   showSearch?: boolean;
   showOption?: boolean;
   showStatistics?: boolean;
   total?: number;
   statisticsRender?: (total: number, filtered?: number) => JSX.Element;
-  searchBarRender?: (table: Table<TData>) => JSX.Element;
-  toolbarRender?: (table: Table<TData>) => JSX.Element;
+  searchRender?: (table: Table<TData>) => JSX.Element;
 }
 
 const renderSearchBar = <TData,>(table: Table<TData>) => {
@@ -73,26 +72,19 @@ export function TitleBar<TData>({
   showOption = true,
   showStatistics,
   statisticsRender = renderStatistics,
-  searchBarRender = renderSearchBar,
+  searchRender = renderSearchBar,
   total,
 }: TitleBarProps<TData>) {
   total = total || table.getFilteredRowModel().rows.length;
   const selected = table.getSelectedRowModel().rows.length;
-
-  const renderToolbar = (table: Table<TData>, _toolbars?: JSX.Element) => (
-    <Fragment>
-      {_toolbars}
-      {showOption && <ViewOptions table={table} />}
-    </Fragment>
-  );
-
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
         {showStatistics && statisticsRender(total, selected)}
-        {showSearch && searchBarRender(table)}
+        {showSearch && searchRender(table)}
       </div>
-      <div className='flex gap-2'>{renderToolbar(table, toolbars)}</div>
+      {/*<div className="flex gap-2">{renderToolbar(table, toolbars)}</div>*/}
+      <Toolbar {...toolbars} table={table} external={showOption && <ViewOptions table={table} />} />
     </div>
   );
 }
