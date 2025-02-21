@@ -1,5 +1,5 @@
+import { useRolesQuery } from "@/api/system/role";
 import { useUserCreate, useUserUpdate } from "@/api/system/user";
-import { userTypes } from "@/mocks/user/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -11,9 +11,11 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
-import { SelectDropdown } from "@/components/select-dropdown";
 
+
+// const empty = (className?: string) => (
 
 // const empty = (className?: string) => (
 //   <div className={cn("col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0", className)}>
@@ -29,6 +31,7 @@ const formSchema = z
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
     password: z.string().transform((pwd) => pwd.trim()),
     role: z.string().min(1, { message: "Role is required." }),
+    role_ids: z.string().array(),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
     allow_ip: z.string().min(1, { message: "IP is required." }),
     isEdit: z.boolean(),
@@ -112,6 +115,9 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const queryClient = useQueryClient();
   const { mutate: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
   const { mutate: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
+
+  const { data: roles = {}, isLoading: isRolesLoading } = useRolesQuery();
+
   const onSubmit = (values: UserForm) => {
     form.reset();
 
@@ -159,136 +165,146 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-12 space-y-0'>
-              <FormField
-                control={form.control}
-                name='username'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder='john_doe' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='nickname'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Nickname</FormLabel>
-                    <FormControl>
-                      <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phone'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Phone</FormLabel>
-                    <FormControl>
-                      <Input placeholder='+123456789' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='confirmPassword'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput
-                        disabled={!isPasswordTouched}
-                        placeholder='e.g., S3cur3P@ssw0rd'
-                        className='col-span-4'
-                        {...field}
+            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-0'>
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>基本信息</h2>
+                <FormField
+                  control={form.control}
+                  name='username'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder='john_doe' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='nickname'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Nickname</FormLabel>
+                      <FormControl>
+                        <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='phone'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder='+123456789' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>安全设置</h2>
+                <FormField
+                  control={form.control}
+                  name='password'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='confirmPassword'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput
+                          disabled={!isPasswordTouched}
+                          placeholder='e.g., S3cur3P@ssw0rd'
+                          className='col-span-4'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-2' />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='allow_ip'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Allow IP</FormLabel>
+                      <FormControl>
+                        <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className='grid grid-cols-12 mb-4 border-gray-200 pt-4'>
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>角色管理</h2>
+                <FormField
+                  control={form.control}
+                  name='role_ids'
+                  render={({ field }) => (
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Role Ids</FormLabel>
+                      <MultiSelect
+                        defaultValue={
+                          !isRolesLoading && roles.data
+                            ? roles.data
+                                .map(({ id }) => id)
+                                .filter((id): id is string => !!id)
+                                .filter((id) => Array.isArray(field.value) && field.value.includes(id))
+                            : []
+                        }
+                        onValueChange={field.onChange}
+                        placeholder='Select a role'
+                        className='col-span-10'
+                        options={
+                          !isRolesLoading && roles.data
+                            ? roles.data
+                                .filter(({ id, name }) => !!id && !!name)
+                                .map(({ id, name }) => ({
+                                  value: id || "",
+                                  label: name || "",
+                                }))
+                            : []
+                        }
                       />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-2' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='allow_ip'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Allow IP</FormLabel>
-                    <FormControl>
-                      <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='allow_ip'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Allow IP</FormLabel>
-                    <FormControl>
-                      <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='role'
-                render={({ field }) => (
-                  <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-left'>Role</FormLabel>
-                    <SelectDropdown
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                      placeholder='Select a role'
-                      className='col-span-4'
-                      items={userTypes.map(({ label, value }) => ({
-                        label,
-                        value,
-                      }))}
-                    />
-                    <FormMessage className='col-span-4' />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage className='col-span-4' />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </form>
           </Form>
         </ScrollArea>
