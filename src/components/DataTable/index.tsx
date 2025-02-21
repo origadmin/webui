@@ -84,11 +84,12 @@ interface ComponentProps<TData> {
   search?: Omit<SearchBarProps<TData>, "table" | "columns" | "columnFilters">;
   pagination?: Omit<PaginationProps<TData>, "table" | "toolbars" | "sizeOptions">;
   title?: Omit<TitleBarProps<TData>, "table" | "toolbars">;
-  toolbarPosition?: "top" | "bottom";
-  toolbar: Omit<ToolbarProps<TData>, "table">;
+  toolbar?: Omit<ToolbarProps<TData>, "table" | "children" | "render">;
 }
 
 interface DataTableProps<TData> extends DataProps<TData>, DisplayProps<TData>, BehaviorProps {
+  toolbarPosition?: "top" | "bottom";
+  toolbars?: ToolbarProps<TData>["children"] | ToolbarProps<TData>["render"];
   options?: TableOptions<TData>;
   props: ComponentProps<TData>;
 }
@@ -154,7 +155,8 @@ function DataTable<T>({
   // searchBarProps,
   // paginationProps,
   // titleProps,
-  // toolbars,
+  toolbars,
+  toolbarPosition = "top",
   props,
   isLoading,
 }: DataTableProps<T>) {
@@ -204,7 +206,16 @@ function DataTable<T>({
     onPaginationChange: useManual ? setPagination : undefined,
   });
 
-  const { search, title, pagination, toolbar, toolbarPosition = "top" } = props;
+  const { search, title, pagination, toolbar } = props;
+  const toolbarProps: Omit<ToolbarProps<T>, "table"> = typeof toolbars === "function"
+    ? {
+        ...toolbar,
+        render: toolbars,
+      }
+    : {
+        ...toolbar,
+        children: toolbars,
+      };
 
   return (
     <div className='space-y-4'>
@@ -212,7 +223,7 @@ function DataTable<T>({
       <TitleBar
         {...title}
         table={table}
-        toolbars={toolbarPosition === "top" ? toolbar : undefined}
+        toolbar={toolbarPosition === "top" ? toolbarProps : undefined}
         showStatistics={showToolbarStatistics}
         total={rowCount}
       />
@@ -227,7 +238,7 @@ function DataTable<T>({
           {...pagination}
           table={table}
           sizeOptions={sizeOptions}
-          toolbar={toolbarPosition === "bottom" ? toolbar : undefined}
+          toolbar={toolbarPosition === "bottom" ? toolbarProps : undefined}
         />
       )}
     </div>

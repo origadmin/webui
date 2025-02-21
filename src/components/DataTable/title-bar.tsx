@@ -10,7 +10,7 @@ import { ViewOptions } from "./view-options";
 
 export interface TitleBarProps<TData> {
   table: Table<TData>;
-  toolbars?: ToolbarProps<TData>;
+  toolbar?: Omit<ToolbarProps<TData>, "table">;
   showSearch?: boolean;
   showOption?: boolean;
   showStatistics?: boolean;
@@ -67,7 +67,7 @@ const renderStatistics = (total: number) => (
 
 export function TitleBar<TData>({
   table,
-  toolbars,
+  toolbar,
   showSearch,
   showOption = true,
   showStatistics,
@@ -77,6 +77,20 @@ export function TitleBar<TData>({
 }: TitleBarProps<TData>) {
   total = total || table.getFilteredRowModel().rows.length;
   const selected = table.getSelectedRowModel().rows.length;
+  const options = showOption ? <ViewOptions table={table} /> : undefined;
+  const toolbarExternal = () => {
+    if (options && toolbar && toolbar.external) {
+      if (typeof toolbar.external === "function") {
+        return toolbar.external([options]);
+      } else {
+        if (Array.isArray(toolbar.external)) {
+          return [...toolbar.external, options];
+        }
+        return [toolbar.external, options];
+      }
+    }
+    return options;
+  };
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
@@ -84,7 +98,8 @@ export function TitleBar<TData>({
         {showSearch && searchRender(table)}
       </div>
       {/*<div className="flex gap-2">{renderToolbar(table, toolbars)}</div>*/}
-      <Toolbar {...toolbars} table={table} external={showOption && <ViewOptions table={table} />} />
+
+      <Toolbar {...toolbar} table={table} external={toolbarExternal()} />
     </div>
   );
 }

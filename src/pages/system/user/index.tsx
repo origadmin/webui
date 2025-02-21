@@ -34,11 +34,9 @@ export default function UserPage() {
     setPagination,
     columnFiltersState: columnFilters,
     setColumnFilters,
+    toolbarPosition: "bottom",
+    toolbars: () => <UsersPrimaryButtons />,
     props: {
-      toolbarPosition: "bottom",
-      toolbar: {
-        children: <UsersPrimaryButtons />,
-      },
       search: {
         onSearch: handleSearch,
         onReset: handleReset,

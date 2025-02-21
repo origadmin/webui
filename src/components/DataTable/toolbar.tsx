@@ -1,7 +1,7 @@
 import { Fragment, JSX } from "react";
 import { Table } from "@tanstack/react-table";
 
-type ExternalType = JSX.Element | JSX.Element[] | (() => JSX.Element[]) | false;
+type ExternalType = JSX.Element | JSX.Element[] | ((prev?: JSX.Element[]) => JSX.Element[]) | false;
 
 export type ToolbarProps<TData> = {
   table?: Table<TData>;
