@@ -153,6 +153,46 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
 
   const isPasswordTouched = !!form.formState.dirtyFields.password;
 
+  const useRandomPassword = () => (
+    <>
+      {!form.watch("random_password") && (
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => (
+            <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+              <FormLabel className='col-span-2 text-left'>Password</FormLabel>
+              <FormControl>
+                <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+              </FormControl>
+              <FormMessage className='col-span-4' />
+            </FormItem>
+          )}
+        />
+      )}
+      {!form.watch("random_password") && (
+        <FormField
+          control={form.control}
+          name='confirmPassword'
+          render={({ field }) => (
+            <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+              <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
+              <FormControl>
+                <PasswordInput
+                  disabled={!isPasswordTouched}
+                  placeholder='e.g., S3cur3P@ssw0rd'
+                  className='col-span-4'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className='col-span-4 col-start-2' />
+            </FormItem>
+          )}
+        />
+      )}
+    </>
+  );
+
   // 计算 sm:max-w-lg 类
   const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
   return (
@@ -243,41 +283,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                     </FormItem>
                   )}
                 />
-                {!form.watch("random_password") && (
-                  <FormField
-                    control={form.control}
-                    name='password'
-                    render={({ field }) => (
-                      <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                        <FormLabel className='col-span-2 text-left'>Password</FormLabel>
-                        <FormControl>
-                          <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
-                        </FormControl>
-                        <FormMessage className='col-span-4' />
-                      </FormItem>
-                    )}
-                  />
-                )}
-                {!form.watch("random_password") && (
-                  <FormField
-                    control={form.control}
-                    name='confirmPassword'
-                    render={({ field }) => (
-                      <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                        <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
-                        <FormControl>
-                          <PasswordInput
-                            disabled={!isPasswordTouched}
-                            placeholder='e.g., S3cur3P@ssw0rd'
-                            className='col-span-4'
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className='col-span-4 col-start-2' />
-                      </FormItem>
-                    )}
-                  />
-                )}
+                {useRandomPassword()}
                 <FormField
                   control={form.control}
                   name='allow_ip'
