@@ -20,7 +20,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
           onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
           aria-label='Select all'
         />
-        <DataTableColumnHeader column={column} title='Name' />
+        <DataTableColumnHeader className='px-2' column={column} title='Name' />
       </div>
     ),
     searchable: true,
@@ -35,7 +35,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
           ) : (
             <span className='w-6' />
           )}
-          <LongText className='max-w-48'>{row.getValue("name")}</LongText>
+          <LongText className='px-2 max-w-48'>{row.getValue("name")}</LongText>
         </div>
       );
     },

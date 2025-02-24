@@ -4,7 +4,7 @@ import { ResourcesPrimaryButtons } from "@/pages/system/resource/components/reso
 import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Tabs, TabsTrigger, TabsList } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/tabs";
 import { DataTable, DataTableProps } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/resources-columns";
@@ -97,12 +97,13 @@ export default function ResourcesPage() {
             <CardHeader>
               <CardTitle>Resources</CardTitle>
               <CardDescription>
-                <TabsList>
-                  <TabsTrigger value='all'>All</TabsTrigger>
-                  <TabsTrigger value='menu'>Menu</TabsTrigger>
-                  <TabsTrigger value='api'>API</TabsTrigger>
-                  <TabsTrigger value='static'>Static</TabsTrigger>
-                </TabsList>
+                {/*<TabsList>*/}
+                {/*  <TabsTrigger value='all'>All</TabsTrigger>*/}
+                {/*  <TabsTrigger value='menu'>Menu</TabsTrigger>*/}
+                {/*  <TabsTrigger value='api'>API</TabsTrigger>*/}
+                {/*  <TabsTrigger value='static'>Static</TabsTrigger>*/}
+                {/*</TabsList>*/}
+                <CardDescription>Manage your resources here.</CardDescription>
               </CardDescription>
             </CardHeader>
             <CardContent>

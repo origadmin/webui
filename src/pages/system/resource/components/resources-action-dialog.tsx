@@ -2,6 +2,7 @@ import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +20,9 @@ import { PasswordInput } from "@/components/password-input";
 
 const formSchema = z
   .object({
+    parent_id: z.string().min(1, {
+      message: t("parent_id.required"),
+    }),
     nickname: z.string().min(1, {
       message: t("nickname.required"),
     }),
@@ -78,9 +82,17 @@ interface Props<T> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  className?: string;
+  columns?: number;
 }
 
-export function ResourcesActionDialog({ currentRow, open, onOpenChange }: Props<API.System.Resource>) {
+export function ResourcesActionDialog({
+  currentRow,
+  open,
+  onOpenChange,
+  className,
+  columns = 2,
+}: Props<API.System.Resource>) {
   const isEdit = !!currentRow;
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
@@ -117,7 +129,7 @@ export function ResourcesActionDialog({ currentRow, open, onOpenChange }: Props<
   };
 
   const isPasswordTouched = !!form.formState.dirtyFields.password;
-
+  const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
   return (
     <Dialog
       open={open}
@@ -126,7 +138,7 @@ export function ResourcesActionDialog({ currentRow, open, onOpenChange }: Props<
         onOpenChange(state);
       }}
     >
-      <DialogContent className='sm:max-w-lg'>
+      <DialogContent className={cn(`${maxWClass}`, className)}>
         <DialogHeader className='text-left'>
           <DialogTitle>{isEdit ? "Edit Resource" : "Add New Resource"}</DialogTitle>
           <DialogDescription>
@@ -137,89 +149,91 @@ export function ResourcesActionDialog({ currentRow, open, onOpenChange }: Props<
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
             <form id='resource-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
-              <FormField
-                control={form.control}
-                name='nickname'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Nickname</FormLabel>
-                    <FormControl>
-                      <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='resource'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Resource</FormLabel>
-                    <FormControl>
-                      <Input placeholder='john_doe' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phoneNumber'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Phone Number</FormLabel>
-                    <FormControl>
-                      <Input placeholder='+123456789' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='confirmPassword'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Confirm Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput
-                        disabled={!isPasswordTouched}
-                        placeholder='e.g., S3cur3P@ssw0rd'
-                        className='col-span-4'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
+                <FormField
+                  control={form.control}
+                  name='parent_id'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-right'>Parent</FormLabel>
+                      <FormControl>
+                        <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='resource'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-right'>Resource</FormLabel>
+                      <FormControl>
+                        <Input placeholder='john_doe' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-right'>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='phoneNumber'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-right'>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder='+123456789' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='password'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-right'>Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='confirmPassword'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-right'>Confirm Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput
+                          disabled={!isPasswordTouched}
+                          placeholder='e.g., S3cur3P@ssw0rd'
+                          className='col-span-4'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </form>
           </Form>
         </ScrollArea>
