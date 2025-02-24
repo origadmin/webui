@@ -84,6 +84,7 @@ export function ResourcesActionDialog({ currentRow, open, onOpenChange }: Props<
   const isEdit = !!currentRow;
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
+    mode: "onSubmit",
     defaultValues: isEdit
       ? {
           ...currentRow,

@@ -5352,6 +5352,10 @@ body {
   min-width: 0px;
 }
 
+.min-w-24 {
+  min-width: 6rem;
+}
+
 .min-w-32 {
   min-width: 8rem;
 }
@@ -5372,12 +5376,24 @@ body {
   min-width: var(--radix-select-trigger-width);
 }
 
+.max-w-12 {
+  max-width: 3rem;
+}
+
 .max-w-32 {
   max-width: 8rem;
 }
 
 .max-w-36 {
   max-width: 9rem;
+}
+
+.max-w-48 {
+  max-width: 12rem;
+}
+
+.max-w-60 {
+  max-width: 15rem;
 }
 
 .max-w-\[--skeleton-width\] {

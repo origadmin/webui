@@ -103,14 +103,14 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     meta: defaultHeaderMeta.meta,
     enableSorting: false,
   },
-  {
-    accessorKey: "update_time",
-    header: "Update Time",
-    cell: ({ row }) => <div>{row.original.update_time}</div>,
-    meta: defaultHeaderMeta.meta,
-    enableSorting: false,
-    hiddenInTable: true,
-  },
+  // {
+  //   accessorKey: "update_time",
+  //   header: "Update Time",
+  //   cell: ({ row }) => <div>{row.original.update_time}</div>,
+  //   meta: defaultHeaderMeta.meta,
+  //   enableSorting: false,
+  //   hiddenInTable: true,
+  // },
   {
     id: "actions",
     header: "Actions",

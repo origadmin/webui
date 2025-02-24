@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
 
@@ -34,6 +35,7 @@ const formSchema = z
     role_ids: z.string().array(),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
     allow_ip: z.string().min(1, { message: "IP is required." }),
+    random_password: z.boolean().default(false),
     isEdit: z.boolean(),
   })
   .superRefine(({ isEdit, password, confirmPassword }, ctx) => {
@@ -93,6 +95,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const isEdit = !!currentRow;
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
+    mode: "onSubmit",
     defaultValues: isEdit
       ? {
           ...currentRow,
@@ -222,39 +225,54 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                 />
               </div>
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>安全设置</h2>
+                <h2 className='col-span-10 text-lg font-medium text-gray-900 mb-2 px-2'>安全设置</h2>
                 <FormField
                   control={form.control}
-                  name='password'
+                  name='random_password'
                   render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Password</FormLabel>
+                    <FormItem className='col-span-2 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='w-24 text-left'>随机密码</FormLabel>
                       <FormControl>
-                        <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
-                      <FormMessage className='col-span-4' />
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name='confirmPassword'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
-                      <FormControl>
-                        <PasswordInput
-                          disabled={!isPasswordTouched}
-                          placeholder='e.g., S3cur3P@ssw0rd'
-                          className='col-span-4'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-2' />
-                    </FormItem>
-                  )}
-                />
-
+                {!form.watch("random_password") && (
+                  <FormField
+                    control={form.control}
+                    name='password'
+                    render={({ field }) => (
+                      <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                        <FormLabel className='col-span-2 text-left'>Password</FormLabel>
+                        <FormControl>
+                          <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+                        </FormControl>
+                        <FormMessage className='col-span-4' />
+                      </FormItem>
+                    )}
+                  />
+                )}
+                {!form.watch("random_password") && (
+                  <FormField
+                    control={form.control}
+                    name='confirmPassword'
+                    render={({ field }) => (
+                      <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                        <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
+                        <FormControl>
+                          <PasswordInput
+                            disabled={!isPasswordTouched}
+                            placeholder='e.g., S3cur3P@ssw0rd'
+                            className='col-span-4'
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className='col-span-4 col-start-2' />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name='allow_ip'

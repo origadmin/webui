@@ -84,6 +84,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
   const isEdit = !!currentRow;
   const form = useForm<RoleForm>({
     resolver: zodResolver(formSchema),
+    mode: "onSubmit",
     defaultValues: isEdit
       ? {
           ...currentRow,
