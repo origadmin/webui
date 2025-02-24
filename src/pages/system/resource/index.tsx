@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useResourcesQuery } from "@/api/system/resource";
 import { ResourcesPrimaryButtons } from "@/pages/system/resource/components/resources-primary-buttons";
 import { getExpandedRowModel } from "@tanstack/react-table";
@@ -89,6 +89,8 @@ export default function ResourcesPage() {
     return roots;
   };
 
+  const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
+
   return (
     <ResourceTableProvider>
       <PageContainer>
@@ -111,7 +113,7 @@ export default function ResourcesPage() {
                 <DataTable<API.System.Resource>
                   {...tableProps}
                   isLoading={isLoading}
-                  sourceData={buildTree(resources.data)}
+                  sourceData={treeData}
                   total={resources.total}
                 />
               </div>

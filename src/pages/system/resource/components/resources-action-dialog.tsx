@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { icons } from "@tabler/icons-react";
+import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
@@ -19,10 +20,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 const types = ["menu", "api", "resource"] as const;
-
 const formSchema = z
   .object({
     parent_id: z.string().optional(),
@@ -36,8 +38,11 @@ const formSchema = z
     path: z.string().optional(),
     description: z.string().optional(),
     sequence: z.number().default(1),
+    icon: z.string().optional(),
     status: z.number().default(1),
     resource: z.string().min(1, { message: "Resource is required." }),
+    properties: z.record(z.string()).optional(),
+    endpoints: z.string().array().optional(),
     is_edit: z.boolean(),
   })
   .superRefine(({ is_edit }, ctx) => {
@@ -70,6 +75,7 @@ export function ResourcesActionDialog({
       ? {
           ...currentRow,
           type: currentRow.type as "menu" | "api" | "resource",
+          endpoints: [],
           is_edit,
         }
       : {
@@ -82,6 +88,8 @@ export function ResourcesActionDialog({
           keyword: "",
           parent_id: "",
           status: 1,
+          properties: "{\n\n}",
+          endpoints: [],
           is_edit,
         },
   });
@@ -110,6 +118,10 @@ export function ResourcesActionDialog({
     setSortDialogOpen(true);
     // }
   };
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "endpoints",
+  });
 
   useEffect(() => {
     if (!isKeywordTouched && pathValue) {
@@ -122,7 +134,19 @@ export function ResourcesActionDialog({
       form.setValue("keyword", generatedKeyword);
     }
   }, [form, isKeywordTouched, pathValue]);
-
+  const [searchQuery, setSearchQuery] = useState(""); // 添加状态管理
+  const iconOptions = useMemo(() => {
+    return (
+      Object.keys(icons)
+        // .filter(([name]) => name.startsWith("Icon"))
+        .slice(0, 100)
+        .map((key) => ({
+          value: key,
+          Icon: icons[key as keyof typeof icons],
+        }))
+    );
+  }, []);
+  const filteredIcons = iconOptions.filter((opt) => opt.value.includes(searchQuery));
   const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
   return (
     <Dialog
@@ -144,6 +168,23 @@ export function ResourcesActionDialog({
           <Form {...form}>
             <form id='resource-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
+                <h2 className='col-span-10 text-lg font-medium text-gray-900 mb-2 px-2'>Base Info</h2>
+                <FormField
+                  control={form.control}
+                  name='status'
+                  render={({ field }) => (
+                    <FormItem className='col-span-2 grid grid-cols-subgrid items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-1 w-24 text-left'>Status</FormLabel>
+                      <FormControl>
+                        <Switch
+                          className='col-span-1'
+                          checked={field.value === 1}
+                          onCheckedChange={(status) => field.onChange(status ? 1 : 0)}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name='parent_id'
@@ -274,16 +315,134 @@ export function ResourcesActionDialog({
 
                 <FormField
                   control={form.control}
-                  name='status'
+                  name='icon'
+                  render={({ field }) => {
+                    return (
+                      <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                        <FormLabel className='col-span-2 w-24 text-left'>Icon</FormLabel>
+                        <FormControl>
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className='w-[200px]'>
+                              <div className='flex items-center gap-2'>
+                                {field.value && field.value !== "" ? (
+                                  <>
+                                    {/*<icons[field.value] className='h-5 w-5 shrink-0' />*/}
+                                    <span className='ml-2'>{field.value}</span>
+                                  </>
+                                ) : (
+                                  <span>Select icon</span>
+                                )}
+                              </div>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <div className='p-2'>
+                                <Input
+                                  placeholder='Search icon...'
+                                  className='mb-2'
+                                  value={searchQuery}
+                                  onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <div className='h-[300px] overflow-x-auto space-y-2'>
+                                  {filteredIcons.map(({ value, Icon }) => (
+                                    <SelectItem key={value} value={value} className='flex items-center gap-3 h-12 px-3'>
+                                      <Icon className='h-5 w-5 shrink-0' />
+                                      <span className='text-sm truncate'>{value}</span>
+                                    </SelectItem>
+                                  ))}
+                                </div>
+                              </div>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name='properties'
                   render={({ field }) => (
-                    <FormItem className='col-span-2 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='w-24 text-left'>状态</FormLabel>
+                    <FormItem className='col-span-12 items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-12 w-24 text-left'>Properties</FormLabel>
                       <FormControl>
-                        <Switch
-                          checked={field.value === 1}
-                          onCheckedChange={(status) => field.onChange(status ? 1 : 0)}
+                        <Textarea
+                          placeholder='Enter properties...'
+                          className='w-full'
+                          {...field}
+                          value={JSON.stringify(field.value)}
+                          onChange={(e) => field.onChange(JSON.parse(e.target.value))}
                         />
                       </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <Separator className='col-span-12' />
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2 py-4'>Resource Properties</h2>
+                <FormField
+                  control={form.control}
+                  name='endpoints'
+                  render={() => (
+                    <FormItem className='col-span-12 space-y-4'>
+                      <div className='flex items-center justify-between'>
+                        <FormLabel className='text-lg font-medium'>API Endpoints</FormLabel>
+                        <Button
+                          type='button'
+                          variant='outline'
+                          size='sm'
+                          onClick={() => append({ method: "GET", path: "" })}
+                        >
+                          Add Endpoint
+                        </Button>
+                      </div>
+                      <div className='space-y-4'>
+                        {fields.map((field, index) => (
+                          <div key={field.id} className='flex gap-4 items-start'>
+                            {/*<FormField*/}
+                            {/*  control={form.control}*/}
+                            {/*  name={`endpoints.${index}.method`}*/}
+                            {/*  render={({ field }) => (*/}
+                            {/*    <FormItem className='flex-1'>*/}
+                            {/*      <Select onValueChange={field.onChange} value={field.value}>*/}
+                            {/*        <FormControl>*/}
+                            {/*          <SelectTrigger>*/}
+                            {/*            <SelectValue placeholder='Select method' />*/}
+                            {/*          </SelectTrigger>*/}
+                            {/*        </FormControl>*/}
+                            {/*        <SelectContent>*/}
+                            {/*          {["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => (*/}
+                            {/*            <SelectItem key={method} value={method}>*/}
+                            {/*              {method}*/}
+                            {/*            </SelectItem>*/}
+                            {/*          ))}*/}
+                            {/*        </SelectContent>*/}
+                            {/*      </Select>*/}
+                            {/*    </FormItem>*/}
+                            {/*  )}*/}
+                            {/*/>*/}
+                            {/*<FormField*/}
+                            {/*  control={form.control}*/}
+                            {/*  name={`endpoints.${index}.path`}*/}
+                            {/*  render={({ field }) => (*/}
+                            {/*    <FormItem className='flex-[3]'>*/}
+                            {/*      <FormControl>*/}
+                            {/*        <Input placeholder='/api/v1/example' {...field} />*/}
+                            {/*      </FormControl>*/}
+                            {/*      <FormMessage />*/}
+                            {/*    </FormItem>*/}
+                            {/*  )}*/}
+                            {/*/>*/}
+                            {/*<Button*/}
+                            {/*  type='button'*/}
+                            {/*  variant='ghost'*/}
+                            {/*  size='icon'*/}
+                            {/*  className='text-red-500 hover:bg-red-50'*/}
+                            {/*  onClick={() => remove(index)}*/}
+                            {/*>*/}
+                            {/*  <Trash className='h-4 w-4' />*/}
+                            {/*</Button>*/}
+                          </div>
+                        ))}
+                      </div>
                     </FormItem>
                   )}
                 />

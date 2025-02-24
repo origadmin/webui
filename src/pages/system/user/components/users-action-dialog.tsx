@@ -215,7 +215,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           <Form {...form}>
             <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-0'>
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>基本信息</h2>
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>Base Info</h2>
                 <FormField
                   control={form.control}
                   name='username'
