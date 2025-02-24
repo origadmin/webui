@@ -88,7 +88,7 @@ export function ResourcesActionDialog({
           keyword: "",
           parent_id: "",
           status: 1,
-          properties: "{\n\n}",
+          properties: {},
           endpoints: [],
           is_edit,
         },
