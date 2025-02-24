@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
+import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
@@ -16,64 +18,31 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PasswordInput } from "@/components/password-input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+
+const types = ["menu", "api", "resource"] as const;
 
 const formSchema = z
   .object({
-    parent_id: z.string().min(1, {
-      message: t("parent_id.required"),
+    parent_id: z.string().optional(),
+    type: z.enum(types).default("menu"),
+    name: z.string().min(1, {
+      message: t("name.required"),
     }),
-    nickname: z.string().min(1, {
-      message: t("nickname.required"),
+    keyword: z.string().min(1, {
+      message: t("keyword.required"),
     }),
-    phoneNumber: z.string().min(1, { message: "Phone number is required." }),
-    email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
-    password: z.string().transform((pwd) => pwd.trim()),
+    path: z.string().optional(),
+    description: z.string().optional(),
+    sequence: z.number().default(1),
+    status: z.boolean().default(true),
     resource: z.string().min(1, { message: "Resource is required." }),
-    confirmPassword: z.string().transform((pwd) => pwd.trim()),
     isEdit: z.boolean(),
   })
-  .superRefine(({ isEdit, password, confirmPassword }, ctx) => {
-    if (!isEdit || (isEdit && password !== "")) {
-      if (password === "") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password is required.",
-          path: ["password"],
-        });
-      }
-
-      if (password.length < 8) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must be at least 8 characters long.",
-          path: ["password"],
-        });
-      }
-
-      if (!password.match(/[a-z]/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must contain at least one lowercase letter.",
-          path: ["password"],
-        });
-      }
-
-      if (!password.match(/\d/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must contain at least one number.",
-          path: ["password"],
-        });
-      }
-
-      if (password !== confirmPassword) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Passwords don't match.",
-          path: ["confirmPassword"],
-        });
-      }
+  .superRefine(({ isEdit }, ctx) => {
+    if (!isEdit) {
+      //todo
     }
   });
 type ResourceForm = z.infer<typeof formSchema>;
@@ -100,20 +69,22 @@ export function ResourcesActionDialog({
     defaultValues: isEdit
       ? {
           ...currentRow,
-          password: "",
-          confirmPassword: "",
           isEdit,
         }
       : {
-          nickname: "",
-          email: "",
+          name: "",
           resource: "",
-          phoneNumber: "",
-          password: "",
-          confirmPassword: "",
+          path: "",
+          description: "",
+          sequence: 1,
+          type: "menu",
+          keyword: "",
+          parent_id: "",
+          status: true,
           isEdit,
         },
   });
+  const [isKeywordTouched, setIsKeywordTouched] = useState(false);
 
   const onSubmit = (values: ResourceForm) => {
     form.reset();
@@ -127,8 +98,30 @@ export function ResourcesActionDialog({
     });
     onOpenChange(false);
   };
+  // 监听 path 字段变化
+  const pathValue = useWatch({ control: form.control, name: "path" });
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
+  // const [sortableItems, setSortableItems] = useState<API.System.Resource[]>([]);
+  // const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const handleSortOpen = async () => {
+    // const parentId = form.getValues("parent_id");
+    // if (parentId) {
+    setSortDialogOpen(true);
+    // }
+  };
 
-  const isPasswordTouched = !!form.formState.dirtyFields.password;
+  useEffect(() => {
+    if (!isKeywordTouched && pathValue) {
+      // 自动生成 keyword 的逻辑
+      const generatedKeyword = pathValue
+        .replace(/^\//, "") // 去除开头的 /
+        .replace(/\//g, ":") // 替换后续的 / 为 :
+        .replace(/:+/g, ":"); // 合并多个冒号
+
+      form.setValue("keyword", generatedKeyword);
+    }
+  }, [form, isKeywordTouched, pathValue]);
+
   const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
   return (
     <Dialog
@@ -155,81 +148,134 @@ export function ResourcesActionDialog({
                   name='parent_id'
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-right'>Parent</FormLabel>
+                      <FormLabel className='col-span-2 text-left'>Parent</FormLabel>
                       <FormControl>
-                        <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='resource'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-right'>Resource</FormLabel>
-                      <FormControl>
-                        <Input placeholder='john_doe' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-right'>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='phoneNumber'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-right'>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder='+123456789' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='password'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-right'>Password</FormLabel>
-                      <FormControl>
-                        <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='confirmPassword'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-right'>Confirm Password</FormLabel>
-                      <FormControl>
-                        <PasswordInput
-                          disabled={!isPasswordTouched}
-                          placeholder='e.g., S3cur3P@ssw0rd'
-                          className='col-span-4'
+                        <Input
                           {...field}
+                          className='col-span-4 disabled:bg-gray-100'
+                          autoComplete='off'
+                          disabled={true}
                         />
                       </FormControl>
                       <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='type'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Type</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className='col-span-4'>
+                            <SelectValue placeholder='Select a type' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value='menu'>Menu</SelectItem>
+                          <SelectItem value='api'>API</SelectItem>
+                          <SelectItem value='resource'>Resource</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Please enter a name' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='path'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Path</FormLabel>
+                      <FormControl>
+                        <Input placeholder='' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='keyword'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Keyword</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Empty if use auto generate'
+                          className='col-span-4'
+                          {...field}
+                          onChange={(e) => {
+                            setIsKeywordTouched(true); // 标记用户已手动修改
+                            field.onChange(e); // 保持默认的字段更新
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder='' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='sequence'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Sequence</FormLabel>
+                      <div className='col-span-4 flex gap-2'>
+                        <FormControl>
+                          <Input placeholder='' {...field} />
+                        </FormControl>
+                        <Button
+                          type='button'
+                          variant='outline'
+                          onClick={handleSortOpen}
+                          // disabled={!form.getValues("parent_id")}
+                        >
+                          Sort
+                        </Button>
+                      </div>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='status'
+                  render={({ field }) => (
+                    <FormItem className='col-span-2 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='w-24 text-left'>状态</FormLabel>
+                      <FormControl>
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
@@ -243,6 +289,7 @@ export function ResourcesActionDialog({
           </Button>
         </DialogFooter>
       </DialogContent>
+      <ResourcesSequenceDialog open={sortDialogOpen} onOpenChange={setSortDialogOpen} currentRow={currentRow} />
     </Dialog>
   );
 }
