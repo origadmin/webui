@@ -36,12 +36,12 @@ const formSchema = z
     path: z.string().optional(),
     description: z.string().optional(),
     sequence: z.number().default(1),
-    status: z.boolean().default(true),
+    status: z.number().default(1),
     resource: z.string().min(1, { message: "Resource is required." }),
-    isEdit: z.boolean(),
+    is_edit: z.boolean(),
   })
-  .superRefine(({ isEdit }, ctx) => {
-    if (!isEdit) {
+  .superRefine(({ is_edit }, ctx) => {
+    if (!is_edit) {
       //todo
     }
   });
@@ -62,14 +62,15 @@ export function ResourcesActionDialog({
   className,
   columns = 2,
 }: Props<API.System.Resource>) {
-  const isEdit = !!currentRow;
+  const is_edit = !!currentRow;
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
-    defaultValues: isEdit
+    defaultValues: is_edit
       ? {
           ...currentRow,
-          isEdit,
+          type: currentRow.type as "menu" | "api" | "resource",
+          is_edit,
         }
       : {
           name: "",
@@ -77,11 +78,11 @@ export function ResourcesActionDialog({
           path: "",
           description: "",
           sequence: 1,
-          type: "menu",
+          type: "menu" as "menu" | "api" | "resource",
           keyword: "",
           parent_id: "",
-          status: true,
-          isEdit,
+          status: 1,
+          is_edit,
         },
   });
   const [isKeywordTouched, setIsKeywordTouched] = useState(false);
@@ -133,9 +134,9 @@ export function ResourcesActionDialog({
     >
       <DialogContent className={cn(`${maxWClass}`, className)}>
         <DialogHeader className='text-left'>
-          <DialogTitle>{isEdit ? "Edit Resource" : "Add New Resource"}</DialogTitle>
+          <DialogTitle>{is_edit ? "Edit Resource" : "Add New Resource"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "Update the resource here. " : "Create new resource here. "}
+            {is_edit ? "Update the resource here. " : "Create new resource here. "}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
@@ -249,15 +250,19 @@ export function ResourcesActionDialog({
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Sequence</FormLabel>
-                      <div className='col-span-4 flex gap-2'>
+                      <div className='col-span-4 flex'>
                         <FormControl>
-                          <Input placeholder='' {...field} />
+                          <Input
+                            className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0'
+                            placeholder=''
+                            {...field}
+                          />
                         </FormControl>
                         <Button
                           type='button'
                           variant='outline'
                           onClick={handleSortOpen}
-                          // disabled={!form.getValues("parent_id")}
+                          className='h-9 w-12 gap-0 px-0 rounded-l-none border-gray-300 text-gray-500 hover:bg-gray-50 hover:text-gray-700'
                         >
                           Sort
                         </Button>
@@ -274,7 +279,10 @@ export function ResourcesActionDialog({
                     <FormItem className='col-span-2 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
                       <FormLabel className='w-24 text-left'>状态</FormLabel>
                       <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        <Switch
+                          checked={field.value === 1}
+                          onCheckedChange={(status) => field.onChange(status ? 1 : 0)}
+                        />
                       </FormControl>
                     </FormItem>
                   )}

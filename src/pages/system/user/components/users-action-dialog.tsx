@@ -42,10 +42,10 @@ const formSchema = z
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
     allow_ip: z.string().min(1, { message: "IP is required." }),
     random_password: z.boolean().default(false),
-    isEdit: z.boolean(),
+    is_edit: z.boolean(),
   })
-  .superRefine(({ isEdit, password, confirmPassword }, ctx) => {
-    if (!isEdit || (isEdit && password !== "")) {
+  .superRefine(({ is_edit, password, confirmPassword }, ctx) => {
+    if (!is_edit || (is_edit && password !== "")) {
       if (password === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -98,16 +98,16 @@ interface Props<T> {
 }
 
 export function UsersActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.User>) {
-  const isEdit = !!currentRow;
+  const is_edit = !!currentRow;
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
-    defaultValues: isEdit
+    defaultValues: is_edit
       ? {
           ...currentRow,
           password: "",
           confirmPassword: "",
-          isEdit,
+          is_edit,
         }
       : {
           nickname: "",
@@ -117,7 +117,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           phone: "",
           password: "",
           confirmPassword: "",
-          isEdit,
+          is_edit,
         },
   });
   const id = currentRow?.id || "";
@@ -130,7 +130,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const onSubmit = (values: UserForm) => {
     form.reset();
 
-    if (!isEdit) {
+    if (!is_edit) {
       createUser({
         ...values,
       });
@@ -205,9 +205,9 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     >
       <DialogContent className={cn(`${maxWClass}`, className)}>
         <DialogHeader className='text-left'>
-          <DialogTitle>{isEdit ? "Edit User" : "Add New User"}</DialogTitle>
+          <DialogTitle>{is_edit ? "Edit User" : "Add New User"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "Update the user here. " : "Create new user here. "}
+            {is_edit ? "Update the user here. " : "Create new user here. "}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>

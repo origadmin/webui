@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createMoveHandlers } from "@/utils/array";
+import { IconChevronsUp, IconChevronUp, IconChevronDown, IconChevronsDown } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -104,17 +105,17 @@ export function ResourcesSequenceDialog({ currentRow, open, onOpenChange }: Prop
         </div>
 
         <div className='flex gap-2 justify-center'>
-          <Button variant='outline' onClick={moveHandlers.ToTop} disabled={!selectedItemId}>
-            ↑ Top
+          <Button variant='ghost' size='icon' onClick={moveHandlers.ToTop} disabled={!selectedItemId}>
+            <IconChevronsUp className='h-4 w-4' />
           </Button>
-          <Button variant='outline' onClick={moveHandlers.Up} disabled={!selectedItemId}>
-            ↑ Up
+          <Button variant='ghost' size='icon' onClick={moveHandlers.Up} disabled={!selectedItemId}>
+            <IconChevronUp className='h-4 w-4' />
           </Button>
-          <Button variant='outline' onClick={moveHandlers.Down} disabled={!selectedItemId}>
-            ↓ Down
+          <Button variant='ghost' size='icon' onClick={moveHandlers.Down} disabled={!selectedItemId}>
+            <IconChevronDown className='h-4 w-4' />
           </Button>
-          <Button variant='outline' onClick={moveHandlers.ToBottom} disabled={!selectedItemId}>
-            ↓ Bottom
+          <Button variant='ghost' size='icon' onClick={moveHandlers.ToBottom} disabled={!selectedItemId}>
+            <IconChevronsDown className='h-4 w-4' />
           </Button>
         </div>
 

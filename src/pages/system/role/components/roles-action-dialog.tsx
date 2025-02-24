@@ -27,10 +27,10 @@ const formSchema = z
     password: z.string().transform((pwd) => pwd.trim()),
     role: z.string().min(1, { message: "Role is required." }),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
-    isEdit: z.boolean(),
+    is_edit: z.boolean(),
   })
-  .superRefine(({ isEdit, password, confirmPassword }, ctx) => {
-    if (!isEdit || (isEdit && password !== "")) {
+  .superRefine(({ is_edit, password, confirmPassword }, ctx) => {
+    if (!is_edit || (is_edit && password !== "")) {
       if (password === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -81,16 +81,16 @@ interface Props<T> {
 }
 
 export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.System.Role>) {
-  const isEdit = !!currentRow;
+  const is_edit = !!currentRow;
   const form = useForm<RoleForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
-    defaultValues: isEdit
+    defaultValues: is_edit
       ? {
           ...currentRow,
           password: "",
           confirmPassword: "",
-          isEdit,
+          is_edit,
         }
       : {
           nickname: "",
@@ -99,7 +99,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
           phoneNumber: "",
           password: "",
           confirmPassword: "",
-          isEdit,
+          is_edit,
         },
   });
 
@@ -128,9 +128,9 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
     >
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader className='text-left'>
-          <DialogTitle>{isEdit ? "Edit Role" : "Add New Role"}</DialogTitle>
+          <DialogTitle>{is_edit ? "Edit Role" : "Add New Role"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "Update the role here. " : "Create new role here. "}
+            {is_edit ? "Update the role here. " : "Create new role here. "}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
