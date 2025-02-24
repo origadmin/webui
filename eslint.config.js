@@ -13,26 +13,26 @@ const reactConfig = {
   files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
   plugins: {
     react: reactPlugin,
-    "react-hooks": reactPluginHooks,
+    "react-hooks": reactPluginHooks
   },
   rules: {
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-vars": "error"
   },
   languageOptions: {
     ...reactPlugin.configs.flat.recommended.languageOptions,
     parserOptions: {
       ecmaFeatures: {
-        jsx: true,
-      },
+        jsx: true
+      }
     },
     globals: {
       ...globals.serviceworker,
-      ...globals.browser,
-    },
-  }, // settings: {
+      ...globals.browser
+    }
+  } // settings: {
   //   react: {
   //     createClass: "createReactClass", // Regex for Component Factory to use,
   //     // default to "createReactClass"
@@ -76,15 +76,15 @@ const reactConfig = {
 };
 
 const eslintConfig = {
-  files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
+  files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"]
 };
 
 const tseslintConfig = {
   plugins: {
-    "@typescript-eslint": tseslint.plugin,
+    "@typescript-eslint": tseslint.plugin
   },
   settings: {
-    react: { version: "detect" },
+    react: { version: "detect" }
   },
   files: ["**/*.{js,jsx,ts,tsx}"],
   languageOptions: {
@@ -95,9 +95,9 @@ const tseslintConfig = {
       ecmaVersion: 2020,
       sourceType: "module",
       ecmaFeatures: {
-        jsx: true,
-      },
-    },
+        jsx: true
+      }
+    }
   },
   rules: {
     "@typescript-eslint/no-unsafe-argument": "warn",
@@ -105,24 +105,24 @@ const tseslintConfig = {
     "@typescript-eslint/no-unsafe-call": "warn",
     "@typescript-eslint/no-unsafe-member-access": "warn",
     "@typescript-eslint/no-unsafe-return": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "warn"
     // "@typescript-eslint/ no-unused-vars": "warn",
     // "@typescript-eslint/no-var-requires": "warn",
-  },
+  }
 };
 
 const tailwindcssConfig = {
   plugins: {
-    tailwindcss,
+    tailwindcss
   },
   files: ["**/*.{css,js,jsx,ts,tsx}"],
   languageOptions: {
     parserOptions: {
       sourceType: "module",
       ecmaFeatures: {
-        jsx: true,
-      },
-    },
+        jsx: true
+      }
+    }
   },
   settings: {
     tailwindcss: {
@@ -135,7 +135,7 @@ const tailwindcssConfig = {
       skipClassAttribute: false,
       whitelist: [],
       tags: [], // can be set to e.g. ['tw'] for use in tw`bg-blue`
-      classRegex: "^class(Name)?$", // can be modified to support custom attributes. E.g. "^tw$" for `twin.macro`
+      classRegex: "^class(Name)?$" // can be modified to support custom attributes. E.g. "^tw$" for `twin.macro`
     },
     rules: {
       "classnames-order": "warn",
@@ -145,7 +145,7 @@ const tailwindcssConfig = {
       "no-arbitrary-value": "off",
       "no-contradicting-classname": "error",
       "no-custom-classname": "warn",
-      "no-unnecessary-arbitrary-value": "warn", //recommended
+      "no-unnecessary-arbitrary-value": "warn" //recommended
       // "stylelint/annotation-no-unknown": "error",
       // "stylelint/at-rule-descriptor-no-unknown": "error",
       // "stylelint/at-rule-descriptor-value-no-unknown": "error",
@@ -192,34 +192,26 @@ const tailwindcssConfig = {
       //   },
       // ],
       // "stylelint/string-no-newline": ["error", { ignore: ["at-rule-preludes", "declaration-values"] }],
-    },
-  },
+    }
+  }
 };
 
 const prettierPluginConfig = {
   ...prettierConfig,
   plugins: {
     ...prettierConfig.plugins,
-    prettier: prettierPlugin,
-  },
-  languageOptions: {
-    parserOptions: {
-      ecmaVersion: 2020,
-      sourceType: "module",
-      ecmaFeatures: {
-        jsx: false,
-      },
-    },
+    prettier: prettierPlugin
   },
   rules: {
     ...prettierConfig.rules,
-    "prettier/prettier": ["error"], // Don't add anything, it will load .prettierrc
-  },
+    "prettier/prettier": ["error"] // Don't add anything, it will load .prettierrc
+    // ...import(".prettierrc")
+  }
 };
 
 export default tseslint.config([
   {
-    ignores: ["dist/", "node_modules/"],
+    ignores: ["dist/", "node_modules/"]
   },
   eslint.configs.recommended,
   eslintConfig,
@@ -229,5 +221,5 @@ export default tseslint.config([
   prettierPluginConfig, // reactPlugin.configs.recommended,
   reactConfig, // ...tailwindcss.configs["flat/recommended"],
   // tailwindcssConfig,
-  ...pluginRouter.configs["flat/recommended"],
+  ...pluginRouter.configs["flat/recommended"]
 ]);

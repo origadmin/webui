@@ -7,14 +7,20 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
-
 
 // const empty = (className?: string) => (
 
@@ -149,7 +155,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
 
   // 计算 sm:max-w-lg 类
   const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
-
   return (
     <Dialog
       open={open}
@@ -294,7 +299,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                   name='role_ids'
                   render={({ field }) => (
                     <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Role Ids</FormLabel>
+                      <FormLabel className='col-span-2 text-left'>Role</FormLabel>
                       <MultiSelect
                         defaultValue={
                           !isRolesLoading && roles.data
