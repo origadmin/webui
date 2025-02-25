@@ -7,6 +7,7 @@ import { useUserTable } from "./users-table-provider";
 export function UsersDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useUserTable();
   const className = "sm:max-w-3xl";
+
   return (
     <Fragment>
       <UsersActionDialog

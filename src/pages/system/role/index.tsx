@@ -57,7 +57,7 @@ export default function RolesPage() {
               <DataTable<API.System.Role>
                 {...tableProps}
                 isLoading={isLoading}
-                sourceData={roles.data}
+                dataSource={roles.data}
                 total={roles.total}
               />
             </div>

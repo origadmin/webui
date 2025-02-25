@@ -113,7 +113,7 @@ export default function ResourcesPage() {
                 <DataTable<API.System.Resource>
                   {...tableProps}
                   isLoading={isLoading}
-                  sourceData={treeData}
+                  dataSource={treeData}
                   total={resources.total}
                 />
               </div>

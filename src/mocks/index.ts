@@ -28,15 +28,6 @@ const sortData = (mockData: unknown, params?: API.SearchParams) => {
   if (!params) {
     return mockData;
   }
-  // const by = (params.sort_by as string) || "";
-  // if (by) {
-  // const sort = by.split(",").map((sort) => {
-  //   const [id, desc] = sort.split(".");
-  //   return { id, desc: desc === "desc" };
-  // });
-  //To do
-  //   return mockData;
-  // }
   return mockData;
 };
 const mocks = <T>(path: string, params?: API.SearchParams) => {

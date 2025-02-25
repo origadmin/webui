@@ -108,15 +108,15 @@ export const mockSidebar: API.SidebarData = {
           icon: IconServerOff,
           children: [
             {
-              title: "Settings",
-              path: "/system/settings",
-              icon: icons["IconSettings"],
-              shortcut: ["s", "s"],
-            },
-            {
               title: "Resource",
               path: "/system/resource",
               icon: icons["IconDatabase"],
+              shortcut: ["r", "r"],
+            },
+            {
+              title: "Roles",
+              path: "/system/role",
+              icon: icons["IconShield"],
               shortcut: ["r", "r"],
             },
             {
@@ -126,10 +126,10 @@ export const mockSidebar: API.SidebarData = {
               shortcut: ["u", "u"],
             },
             {
-              title: "Roles",
-              path: "/system/role",
-              icon: icons["IconShield"],
-              shortcut: ["r", "r"],
+              title: "Settings",
+              path: "/system/settings",
+              icon: icons["IconSettings"],
+              shortcut: ["s", "s"],
             },
           ],
         },

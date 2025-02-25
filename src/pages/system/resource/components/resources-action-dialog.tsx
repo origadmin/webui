@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { icons } from "@tabler/icons-react";
+import { IconArrowsSort, IconPlaylistAdd, icons, IconTrash } from "@tabler/icons-react";
 import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -42,7 +42,14 @@ const formSchema = z
     status: z.number().default(1),
     resource: z.string().min(1, { message: "Resource is required." }),
     properties: z.record(z.string()).optional(),
-    endpoints: z.string().array().optional(),
+    endpoints: z
+      .array(
+        z.object({
+          method: z.string(),
+          path: z.string(),
+        }),
+      )
+      .optional(),
     is_edit: z.boolean(),
   })
   .superRefine(({ is_edit }, ctx) => {
@@ -138,8 +145,7 @@ export function ResourcesActionDialog({
   const iconOptions = useMemo(() => {
     return (
       Object.keys(icons)
-        // .filter(([name]) => name.startsWith("Icon"))
-        .slice(0, 100)
+        // .slice(1, 25)
         .map((key) => ({
           value: key,
           Icon: icons[key as keyof typeof icons],
@@ -194,7 +200,7 @@ export function ResourcesActionDialog({
                       <FormControl>
                         <Input
                           {...field}
-                          className='col-span-4 disabled:bg-gray-100'
+                          className='col-span-4 disabled:bg-gray-100 dark:disabled:bg-gray-700'
                           autoComplete='off'
                           disabled={true}
                         />
@@ -303,9 +309,10 @@ export function ResourcesActionDialog({
                           type='button'
                           variant='outline'
                           onClick={handleSortOpen}
-                          className='h-9 w-12 gap-0 px-0 rounded-l-none border-gray-300 text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                          className='h-9 w-12 gap-0 px-0 rounded-l-none'
+                          size='icon'
                         >
-                          Sort
+                          <IconArrowsSort className='h-5 w-5' />
                         </Button>
                       </div>
                       <FormMessage className='col-span-4 col-start-3' />
@@ -322,7 +329,7 @@ export function ResourcesActionDialog({
                         <FormLabel className='col-span-2 w-24 text-left'>Icon</FormLabel>
                         <FormControl>
                           <Select value={field.value} onValueChange={field.onChange}>
-                            <SelectTrigger className='w-[200px]'>
+                            <SelectTrigger className='col-span-4 h-9 w-full'>
                               <div className='flex items-center gap-2'>
                                 {field.value && field.value !== "" ? (
                                   <>
@@ -335,21 +342,28 @@ export function ResourcesActionDialog({
                               </div>
                             </SelectTrigger>
                             <SelectContent>
-                              <div className='p-2'>
+                              <div className='p-2 flex flex-col h-full'>
                                 <Input
                                   placeholder='Search icon...'
-                                  className='mb-2'
+                                  className='p-2 mb-2'
                                   value={searchQuery}
                                   onChange={(e) => setSearchQuery(e.target.value)}
                                 />
-                                <div className='h-[300px] overflow-x-auto space-y-2'>
-                                  {filteredIcons.map(({ value, Icon }) => (
-                                    <SelectItem key={value} value={value} className='flex items-center gap-3 h-12 px-3'>
-                                      <Icon className='h-5 w-5 shrink-0' />
-                                      <span className='text-sm truncate'>{value}</span>
+                                <div className='min-w-0 w-full space-y-2'>
+                                  {filteredIcons.slice(0, 5).map(({ value, Icon }) => (
+                                    <SelectItem key={value} value={value} className='items-center gap-1 h-10 px-3'>
+                                      <div className='flex flex-nowarp items-center'>
+                                        <Icon className='h-8 w-8 shrink-0' />
+                                        <span className='px-2'>{value}</span>
+                                      </div>
                                     </SelectItem>
                                   ))}
                                 </div>
+                                {filteredIcons.length > 5 && (
+                                  <div className='text-center items-center justify-between gap-1 h-10 py-4 text-gray-300 dark:text-gray-700 no-select'>
+                                    Hide More Icons
+                                  </div>
+                                )}
                               </div>
                             </SelectContent>
                           </Select>
@@ -385,63 +399,70 @@ export function ResourcesActionDialog({
                     <FormItem className='col-span-12 space-y-4'>
                       <div className='flex items-center justify-between'>
                         <FormLabel className='text-lg font-medium'>API Endpoints</FormLabel>
+                      </div>
+                      <div className='space-y-2'>
+                        {fields.map((field, index) => (
+                          <div key={field.id} className='flex gap-x-2 items-start'>
+                            <FormField
+                              control={form.control}
+                              name={`endpoints.${index}.method`}
+                              render={({ field }) => (
+                                <FormItem className='space-y-2 flex-1'>
+                                  <Select onValueChange={field.onChange} value={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger className='h-8'>
+                                        <SelectValue placeholder='Select method' />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => (
+                                        <SelectItem key={method} value={method}>
+                                          {method}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name={`endpoints.${index}.path`}
+                              render={({ field }) => (
+                                <FormItem className='space-y-2 flex-[3]'>
+                                  <FormControl>
+                                    <Input className='h-8' placeholder='/api/v1/example' {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div className='flex h-8 items-center justify-center'>
+                              <Button
+                                type='button'
+                                variant='ghost'
+                                size='icon'
+                                className='text-red-500 hover:bg-red-50 dark:hover:bg-red-600 dark:text-red-300'
+                                onClick={() => remove(index)}
+                              >
+                                <IconTrash className='h-4 w-4 translate-y-[1px]' />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className='flex items-center justify-between'>
                         <Button
                           type='button'
                           variant='outline'
                           size='sm'
+                          className='h-8 border-dashed w-full text-muted-foreground/60 hover:text-primary/80 hover:border-primary/50'
                           onClick={() => append({ method: "GET", path: "" })}
                         >
-                          Add Endpoint
+                          <span className='flex items-center gap-2 mx-auto overflow-x-auto'>
+                            <IconPlaylistAdd className='h-8 w-8' /> Add
+                          </span>
                         </Button>
-                      </div>
-                      <div className='space-y-4'>
-                        {fields.map((field, index) => (
-                          <div key={field.id} className='flex gap-4 items-start'>
-                            {/*<FormField*/}
-                            {/*  control={form.control}*/}
-                            {/*  name={`endpoints.${index}.method`}*/}
-                            {/*  render={({ field }) => (*/}
-                            {/*    <FormItem className='flex-1'>*/}
-                            {/*      <Select onValueChange={field.onChange} value={field.value}>*/}
-                            {/*        <FormControl>*/}
-                            {/*          <SelectTrigger>*/}
-                            {/*            <SelectValue placeholder='Select method' />*/}
-                            {/*          </SelectTrigger>*/}
-                            {/*        </FormControl>*/}
-                            {/*        <SelectContent>*/}
-                            {/*          {["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => (*/}
-                            {/*            <SelectItem key={method} value={method}>*/}
-                            {/*              {method}*/}
-                            {/*            </SelectItem>*/}
-                            {/*          ))}*/}
-                            {/*        </SelectContent>*/}
-                            {/*      </Select>*/}
-                            {/*    </FormItem>*/}
-                            {/*  )}*/}
-                            {/*/>*/}
-                            {/*<FormField*/}
-                            {/*  control={form.control}*/}
-                            {/*  name={`endpoints.${index}.path`}*/}
-                            {/*  render={({ field }) => (*/}
-                            {/*    <FormItem className='flex-[3]'>*/}
-                            {/*      <FormControl>*/}
-                            {/*        <Input placeholder='/api/v1/example' {...field} />*/}
-                            {/*      </FormControl>*/}
-                            {/*      <FormMessage />*/}
-                            {/*    </FormItem>*/}
-                            {/*  )}*/}
-                            {/*/>*/}
-                            {/*<Button*/}
-                            {/*  type='button'*/}
-                            {/*  variant='ghost'*/}
-                            {/*  size='icon'*/}
-                            {/*  className='text-red-500 hover:bg-red-50'*/}
-                            {/*  onClick={() => remove(index)}*/}
-                            {/*>*/}
-                            {/*  <Trash className='h-4 w-4' />*/}
-                            {/*</Button>*/}
-                          </div>
-                        ))}
                       </div>
                     </FormItem>
                   )}
