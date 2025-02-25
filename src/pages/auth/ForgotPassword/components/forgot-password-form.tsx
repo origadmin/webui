@@ -24,7 +24,7 @@ const formSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
-export function ForgotForm({ className, ...props }: ForgotFormProps) {
+export function ForgotPasswordForm({ className, ...props }: ForgotFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
