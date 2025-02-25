@@ -1,4 +1,4 @@
-import { Fragment, JSX } from "react";
+import { Fragment, JSX, ReactNode } from "react";
 import { Table } from "@tanstack/react-table";
 
 type ExternalType = JSX.Element | JSX.Element[] | ((prev?: JSX.Element[]) => JSX.Element[]) | false;
@@ -9,6 +9,9 @@ export type ToolbarProps<TData> = {
   render?: (table: Table<TData>) => JSX.Element;
   externalAlign?: "left" | "right";
   external?: ExternalType;
+  position?: "top" | "bottom";
+  leftActions?: (table: Table<TData>) => ReactNode[];
+  rightActions?: (table: Table<TData>) => ReactNode[];
 };
 
 export function Toolbar<TData>({ table, children, render, externalAlign = "right", external }: ToolbarProps<TData>) {

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ComponentType, ReactNode, useEffect, useState, useMemo } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import {
   ColumnFiltersState,
@@ -33,7 +33,7 @@ import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
 import { Pagination, PaginationProps } from "./pagination";
 import { IconRowActions, RowActions, RowActionsProps } from "./row-actions";
-import { SearchBar, SearchBarProps } from "./search-bar";
+import { Search, SearchProps } from "./search";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
 declare module "@tanstack/react-table" {
@@ -50,6 +50,8 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   renderSearch?: (column: ColumnType<TData, TValue>, index: number, table: ReactTable<TData>) => ReactNode;
   headerTitle?: string;
   hiddenInTable?: boolean;
+  hiddenInSearch?: boolean;
+  searchComponent?: ComponentType<{ column: Column<TData> }>;
   meta: ColumnMeta<TData, TValue>;
 };
 
@@ -79,7 +81,7 @@ interface BehaviorProps {
 }
 
 interface ComponentProps<TData, TValue> {
-  search?: Omit<SearchBarProps<TData, TValue>, "table" | "columns" | "columnFilters">;
+  search?: Omit<SearchProps<TData, TValue>, "table" | "columns" | "columnFilters">;
   pagination?: Omit<PaginationProps<TData>, "table" | "toolbars" | "sizeOptions">;
   title?: Omit<TitleBarProps<TData>, "table" | "toolbars">;
   toolbar?: Omit<ToolbarProps<TData>, "table" | "children" | "render">;
@@ -136,11 +138,7 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
     return rows.map((row) => (
       <TableRow key={row.id} data-state={dataState(row)} className=' group/row'>
         {row.getVisibleCells().map((cell) => (
-          <TableCell
-            key={cell.id}
-            // style={{ paddingLeft: `${row.depth + 1}rem` }}
-            className={cn("px-4", cell.column.columnDef.meta?.className)}
-          >
+          <TableCell key={cell.id} className={cn("px-4", cell.column.columnDef.meta?.className)}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </TableCell>
         ))}
@@ -235,10 +233,15 @@ function DataTable<TData, TValue = unknown>({
         ...toolbar,
         children: toolbars,
       };
+  // 自动处理列显示逻辑
+  // const visibleColumns = useMemo(() => columns.filter((col) => !col.hiddenInTable), [columns]);
+
+  // 自动生成搜索字段
+  const searchFields = useMemo(() => columns.filter((col) => !col.hiddenInSearch && !col.searchComponent), [columns]);
 
   return (
     <div className='space-y-4'>
-      <SearchBar {...search} table={table} columns={columns} columnFilters={columnFiltersState} />
+      <Search {...search} table={table} columns={searchFields} columnFilters={columnFiltersState} />
       <TitleBar
         {...title}
         table={table}
@@ -275,7 +278,7 @@ export type {
   ToolbarProps as DataTableToolbarProps,
   ViewOptionsProps as DataTableViewOptionsProps,
   ColumnHeaderProps as DataTableColumnHeaderProps,
-  SearchBarProps as DataTableSearchBarProps,
+  SearchProps as DataTableSearchBarProps,
 };
 
 export type { DataTableProps, ColumnType, ColumnType as DataTableColumnType };
@@ -286,6 +289,6 @@ export {
   TitleBar as DataTableToolbar,
   ViewOptions as DataTableViewOptions,
   ColumnHeader as DataTableColumnHeader,
-  SearchBar as DataTableSearchBar,
+  Search as DataTableSearchBar,
 };
 export { DataTable };

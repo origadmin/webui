@@ -10,6 +10,9 @@ export interface PaginationProps<T> {
   table: Table<T>;
   toolbar?: ToolbarProps<T>;
   sizeOptions?: string[];
+  showSizeChanger?: boolean;
+  showQuickJumper?: boolean;
+  position?: "top" | "bottom";
   rowSelect?: boolean;
   rowSelectRender?: (table: Table<T>) => JSX.Element;
 }
@@ -106,6 +109,8 @@ const renderRowSelect = <TData,>(table: Table<TData>) => {
 export function Pagination<T>({
   table,
   sizeOptions = [],
+  showSizeChanger = true,
+  // showQuickJumper = true,
   toolbar,
   rowSelect = true,
   rowSelectRender,
@@ -115,7 +120,7 @@ export function Pagination<T>({
   return (
     <div className='flex items-center justify-between overflow-auto px-2'>
       {rowSelect && rowSelectRender(table)}
-      {sizeOptions && renderSizeOptions(table, sizeOptions)}
+      {showSizeChanger && sizeOptions ? renderSizeOptions(table, sizeOptions) : null}
       <Toolbar {...toolbar} table={table} />
     </div>
   );
