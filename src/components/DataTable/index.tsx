@@ -57,7 +57,7 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
 
 interface DataProps<TData, TValue> {
   columns: ColumnType<TData, TValue>[];
-  dataSource: TData[];
+  dataSource?: TData[];
   total?: number;
   isLoading?: boolean;
 }
@@ -87,7 +87,7 @@ interface ComponentProps<TData, TValue> {
   toolbar?: Omit<ToolbarProps<TData>, "table" | "children" | "render">;
 }
 
-interface DataTableProps<TData, TValue> extends DataProps<TData, TValue>, DisplayProps<TData>, BehaviorProps {
+interface DataTableProps<TData, TValue = unknown> extends DataProps<TData, TValue>, DisplayProps<TData>, BehaviorProps {
   toolbarPosition?: "top" | "bottom";
   toolbars?: ToolbarProps<TData>["children"] | ToolbarProps<TData>["render"];
   options?: Partial<Omit<TableOptions<TData>, "data" | "columns">>;
