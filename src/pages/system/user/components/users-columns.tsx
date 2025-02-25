@@ -114,7 +114,11 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: UserIconRowActions,
+    cell: ({ row }) => (
+      <div className='flex gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
+        <UserIconRowActions row={row} />
+      </div>
+    ),
     meta: defaultHeaderMeta.meta,
   },
 ];

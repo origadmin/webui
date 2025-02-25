@@ -109,7 +109,11 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     id: "options",
     header: "Options",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
-    cell: RoleIconRowActions,
+    cell: ({ row }) => (
+      <div className='flex gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
+        <RoleIconRowActions row={row} />
+      </div>
+    ),
     meta: defaultHeaderMeta.meta,
   },
 ];

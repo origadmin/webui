@@ -214,8 +214,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
             <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-0'>
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>Base Info</h2>
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>
+                  Base Info
+                </h2>
                 <FormField
                   control={form.control}
                   name='username'
@@ -269,8 +271,8 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                   )}
                 />
               </div>
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
-                <h2 className='col-span-10 text-lg font-medium text-gray-900 mb-2 px-2'>安全设置</h2>
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+                <h2 className='col-span-10 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>安全设置</h2>
                 <FormField
                   control={form.control}
                   name='random_password'
@@ -298,8 +300,8 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                   )}
                 />
               </div>
-              <div className='grid grid-cols-12 mb-4 border-gray-200 pt-4'>
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2'>角色管理</h2>
+              <div className='grid grid-cols-12 mb-4 border-gray-200 dark:border-gray-700 pt-4'>
+                <h2 className='col-span-12 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>角色管理</h2>
                 <FormField
                   control={form.control}
                   name='role_ids'
