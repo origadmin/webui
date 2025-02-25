@@ -1,4 +1,4 @@
-import { Fragment, JSX } from "react";
+import { Fragment, JSX, useMemo } from "react";
 import { userTypes } from "@/mocks/user/data";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
@@ -11,12 +11,10 @@ import { ViewOptions } from "./view-options";
 export interface TitleBarProps<TData> {
   table: Table<TData>;
   toolbar?: Omit<ToolbarProps<TData>, "table">;
-  showSearch?: boolean;
-  showOption?: boolean;
-  showStatistics?: boolean;
   total?: number;
-  statisticsRender?: (total: number, filtered?: number) => JSX.Element;
-  searchRender?: (table: Table<TData>) => JSX.Element;
+  statistics?: boolean | ((total: number, filtered?: number) => JSX.Element);
+  search?: boolean | ((table: Table<TData>) => JSX.Element);
+  showOption?: boolean;
 }
 
 const renderSearchBar = <TData,>(table: Table<TData>) => {
@@ -68,17 +66,17 @@ const renderStatistics = (total: number) => (
 export function TitleBar<TData>({
   table,
   toolbar,
-  showSearch,
   showOption = true,
-  showStatistics,
-  statisticsRender = renderStatistics,
-  searchRender = renderSearchBar,
+  statistics,
+  search,
   total,
 }: TitleBarProps<TData>) {
   total = total || table.getFilteredRowModel().rows.length;
   const selected = table.getSelectedRowModel().rows.length;
-  const options = showOption ? <ViewOptions table={table} /> : undefined;
-  const toolbarExternal = () => {
+  const statisticsRender = statistics ? (typeof statistics === "function" ? statistics : renderStatistics) : undefined;
+  const searchRender = search ? (typeof search === "function" ? search : renderSearchBar) : undefined;
+  const toolbarExternal = useMemo(() => {
+    const options = showOption ? <ViewOptions table={table} /> : undefined;
     if (options && toolbar && toolbar.external) {
       if (typeof toolbar.external === "function") {
         return toolbar.external([options]);
@@ -90,16 +88,14 @@ export function TitleBar<TData>({
       }
     }
     return options;
-  };
+  }, [showOption, table, toolbar]);
   return (
     <div className='flex items-center justify-between'>
       <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
-        {showStatistics && statisticsRender(total, selected)}
-        {showSearch && searchRender(table)}
+        {statisticsRender && statisticsRender(total, selected)}
+        {searchRender && searchRender(table)}
       </div>
-      {/*<div className="flex gap-2">{renderToolbar(table, toolbars)}</div>*/}
-
-      <Toolbar {...toolbar} table={table} external={toolbarExternal()} />
+      <Toolbar {...toolbar} table={table} external={toolbarExternal} />
     </div>
   );
 }

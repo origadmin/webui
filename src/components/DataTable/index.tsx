@@ -53,15 +53,15 @@ type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   meta: ColumnMeta<TData, TValue>;
 };
 
-interface DataProps<TData> {
-  columns: ColumnType<TData>[];
-  sourceData?: TData[];
+interface DataProps<TData, TValue> {
+  columns: ColumnType<TData, TValue>[];
+  dataSource: TData[];
   total?: number;
   isLoading?: boolean;
 }
 
 interface DisplayProps<TData> {
-  showToolbarStatistics?: boolean;
+  showStatistics?: boolean;
   showPagination?: boolean;
   sizeOptions?: PaginationProps<TData>["sizeOptions"];
 }
@@ -78,18 +78,18 @@ interface BehaviorProps {
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
 }
 
-interface ComponentProps<TData> {
-  search?: Omit<SearchBarProps<TData>, "table" | "columns" | "columnFilters">;
+interface ComponentProps<TData, TValue> {
+  search?: Omit<SearchBarProps<TData, TValue>, "table" | "columns" | "columnFilters">;
   pagination?: Omit<PaginationProps<TData>, "table" | "toolbars" | "sizeOptions">;
   title?: Omit<TitleBarProps<TData>, "table" | "toolbars">;
   toolbar?: Omit<ToolbarProps<TData>, "table" | "children" | "render">;
 }
 
-interface DataTableProps<TData> extends DataProps<TData>, DisplayProps<TData>, BehaviorProps {
+interface DataTableProps<TData, TValue> extends DataProps<TData, TValue>, DisplayProps<TData>, BehaviorProps {
   toolbarPosition?: "top" | "bottom";
   toolbars?: ToolbarProps<TData>["children"] | ToolbarProps<TData>["render"];
   options?: Partial<Omit<TableOptions<TData>, "data" | "columns">>;
-  props: ComponentProps<TData>;
+  props: ComponentProps<TData, TValue>;
 }
 
 const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderContext<TData, TValue>> => {
@@ -156,11 +156,11 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
   );
 };
 
-function DataTable<T>({
+function DataTable<TData, TValue = unknown>({
   columns,
-  sourceData = [],
+  dataSource = [],
   total = 0,
-  showToolbarStatistics = true,
+  showStatistics = true,
   showPagination = true,
   useManual = true,
   sizeOptions = PAGE_SIZE_OPTIONS,
@@ -172,24 +172,21 @@ function DataTable<T>({
   setPagination,
   onRowSelectionChange: onRowSelectionChange,
   onColumnVisibilityChange: onColumnVisibilityChange,
-  // searchBarProps,
-  // paginationProps,
-  // titleProps,
   toolbars,
   toolbarPosition = "top",
   options,
   props,
   isLoading,
-}: DataTableProps<T>) {
+}: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [data, setData] = useState(sourceData || []);
+  const [data, setData] = useState(dataSource || []);
   const [rowCount, setRowCount] = useState(total || 0);
   useEffect(() => {
     if (isLoading) return;
-    setData(sourceData);
+    setData(dataSource);
     setRowCount(total);
-  }, [isLoading, sourceData, total]);
+  }, [isLoading, dataSource, total]);
 
   const manualProps = useManual
     ? {
@@ -229,7 +226,7 @@ function DataTable<T>({
   });
 
   const { search, title, pagination, toolbar } = props;
-  const toolbarProps: Omit<ToolbarProps<T>, "table"> = typeof toolbars === "function"
+  const toolbarProps: Omit<ToolbarProps<TData>, "table"> = typeof toolbars === "function"
     ? {
         ...toolbar,
         render: toolbars,
@@ -246,7 +243,7 @@ function DataTable<T>({
         {...title}
         table={table}
         toolbar={toolbarPosition === "top" ? toolbarProps : undefined}
-        showStatistics={showToolbarStatistics}
+        statistics={showStatistics}
         total={rowCount}
       />
       <div className='rounded-md border'>

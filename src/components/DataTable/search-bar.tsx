@@ -5,10 +5,10 @@ import { X as ResetIcon, Search as SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnType } from "@/components/DataTable";
 
-export interface SearchBarProps<TData> {
+export interface SearchBarProps<TData, TValue> {
   key?: string;
   table: Table<TData>;
-  columns: DataTableColumnType<TData>[];
+  columns: DataTableColumnType<TData, TValue>[];
   col?: number;
   columnFilters?: ColumnFiltersState;
   setColumnFilters?: OnChangeFn<ColumnFiltersState>;
@@ -16,7 +16,12 @@ export interface SearchBarProps<TData> {
   onReset?: () => void;
 }
 
-export function SearchBar<TData>({ table, columns, onSearch = noop, onReset = noop }: SearchBarProps<TData>) {
+export function SearchBar<TData, TValue = unknown>({
+  table,
+  columns,
+  onSearch = noop,
+  onReset = noop,
+}: SearchBarProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const searchColumns = columns.filter((column) => column.searchable === true) as DataTableColumnType<TData>[];
 

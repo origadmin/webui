@@ -47,7 +47,7 @@ function PageContainer({
   };
   const renderContent = () => {
     return (
-      <Content {...props}>
+      <Content {...props} fixed>
         <ContentHeader className='gap-2 justify-between shadow-none ease-linear'>
           <div className='px-8 flex flex-col'>{headerProps.showBreadcrumbs && <Breadcrumbs />}</div>
           <div className='px-8 flex flex-col'>{headerRender && headerRender()}</div>
