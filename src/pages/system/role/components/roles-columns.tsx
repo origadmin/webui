@@ -106,8 +106,8 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   },
 
   {
-    id: "options",
-    header: "Options",
+    id: "actions",
+    header: "Actions",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
     cell: ({ row }) => (
       <div className='flex gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>

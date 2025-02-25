@@ -134,7 +134,7 @@ const dataState = <TData,>(row: Row<TData>) => {
 const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
   if (rows && rows.length > 0) {
     return rows.map((row) => (
-      <TableRow key={row.id} data-state={dataState(row)} className='group/row'>
+      <TableRow key={row.id} data-state={dataState(row)} className=' group/row'>
         {row.getVisibleCells().map((cell) => (
           <TableCell
             key={cell.id}
@@ -250,7 +250,7 @@ function DataTable<T>({
         total={rowCount}
       />
       <div className='rounded-md border'>
-        <Table>
+        <Table className='overflow-y-hidden'>
           <TableHeader>{renderRow(table.getHeaderGroups())}</TableHeader>
           <TableBody>{renderCell(table.getRowModel().rows)}</TableBody>
           <TableFooter></TableFooter>
