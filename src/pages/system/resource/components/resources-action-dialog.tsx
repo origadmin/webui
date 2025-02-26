@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconArrowsSort, IconPlaylistAdd, icons, IconTrash } from "@tabler/icons-react";
+import { IconArrowsSort, IconPlaylistAdd, IconTrash } from "@tabler/icons-react";
 import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { IconPicker } from "@/components/IconPicker/index";
+import IconPicker from "@/components/IconPicker";
 
 const types = ["menu", "api", "resource"] as const;
 const formSchema = z
@@ -118,8 +118,7 @@ export function ResourcesActionDialog({
   // 监听 path 字段变化
   const pathValue = useWatch({ control: form.control, name: "path" });
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
-  // const [sortableItems, setSortableItems] = useState<API.System.Resource[]>([]);
-  // const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
   const handleSortOpen = async () => {
     // const parentId = form.getValues("parent_id");
     // if (parentId) {
@@ -142,18 +141,7 @@ export function ResourcesActionDialog({
       form.setValue("keyword", generatedKeyword);
     }
   }, [form, isKeywordTouched, pathValue]);
-  const [searchQuery, setSearchQuery] = useState(""); // 添加状态管理
-  const iconOptions = useMemo(() => {
-    return (
-      Object.keys(icons)
-        // .slice(1, 25)
-        .map((key) => ({
-          value: key,
-          Icon: icons[key as keyof typeof icons],
-        }))
-    );
-  }, []);
-  const filteredIcons = iconOptions.filter((opt) => opt.value.includes(searchQuery));
+
   const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
   return (
     <Dialog
@@ -331,45 +319,9 @@ export function ResourcesActionDialog({
                       <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
                         <FormLabel className='col-span-2 w-24 text-left'>Icon</FormLabel>
                         <FormControl>
-                          <Select value={field.value} onValueChange={field.onChange}>
-                            <SelectTrigger className='col-span-4 h-9 w-full'>
-                              <div className='flex items-center gap-2'>
-                                {field.value && field.value !== "" ? (
-                                  <>
-                                    {/*<icons[field.value] className='h-5 w-5 shrink-0' />*/}
-                                    <span className='ml-2'>{field.value}</span>
-                                  </>
-                                ) : (
-                                  <span>Select icon</span>
-                                )}
-                              </div>
-                            </SelectTrigger>
-                            <SelectContent>
-                              <div className='p-2 flex flex-col h-full'>
-                                <Input
-                                  placeholder='Search icon...'
-                                  className='p-2 mb-2'
-                                  value={searchQuery}
-                                  onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                                <div className='min-w-0 w-full space-y-2'>
-                                  {filteredIcons.slice(0, 5).map(({ value, Icon }) => (
-                                    <SelectItem key={value} value={value} className='items-center gap-1 h-10 px-3'>
-                                      <div className='flex flex-nowarp items-center'>
-                                        <Icon className='h-8 w-8 shrink-0' />
-                                        <span className='px-2'>{value}</span>
-                                      </div>
-                                    </SelectItem>
-                                  ))}
-                                </div>
-                                {filteredIcons.length > 5 && (
-                                  <div className='text-center items-center justify-between gap-1 h-10 py-4 text-gray-300 dark:text-gray-700 no-select'>
-                                    Hide More Icons
-                                  </div>
-                                )}
-                              </div>
-                            </SelectContent>
-                          </Select>
+                          <div className='col-span-4'>
+                            <IconPicker value={field.value} onValueChange={field.onChange} />
+                          </div>
                         </FormControl>
                       </FormItem>
                     );
@@ -473,7 +425,6 @@ export function ResourcesActionDialog({
                   )}
                 />
               </div>
-              <IconPicker onChange={() => {}} value={"a-b-2"} />
             </form>
           </Form>
         </ScrollArea>
