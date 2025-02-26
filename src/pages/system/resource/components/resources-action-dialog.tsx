@@ -115,7 +115,7 @@ export function ResourcesActionDialog({
     });
     onOpenChange(false);
   };
-  // 监听 path 字段变化
+  // Listen for changes in the path field
   const pathValue = useWatch({ control: form.control, name: "path" });
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
@@ -132,17 +132,17 @@ export function ResourcesActionDialog({
 
   useEffect(() => {
     if (!isKeywordTouched && pathValue) {
-      // 自动生成 keyword 的逻辑
+      // The logic that automatically generates keywords based on the path
       const generatedKeyword = pathValue
-        .replace(/^\//, "") // 去除开头的 /
-        .replace(/\//g, ":") // 替换后续的 / 为 :
-        .replace(/:+/g, ":"); // 合并多个冒号
+        .replace(/^\//, "") // Remove the beginning /
+        .replace(/\//g, ":") // Replace the subsequent / as :
+        .replace(/:+/g, ":"); // Merge multiple colons
 
       form.setValue("keyword", generatedKeyword);
     }
   }, [form, isKeywordTouched, pathValue]);
 
-  const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
+  const maxWClass = `sm:max-w-${columns * 500}px`; // Dynamically sets the maximum width based on the columns parameter
   return (
     <Dialog
       open={open}
