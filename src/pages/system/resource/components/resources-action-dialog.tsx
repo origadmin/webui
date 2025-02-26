@@ -23,6 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { IconPicker } from "@/components/IconPicker/index";
 
 const types = ["menu", "api", "resource"] as const;
 const formSchema = z
@@ -173,8 +174,10 @@ export function ResourcesActionDialog({
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
             <form id='resource-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 pb-4'>
-                <h2 className='col-span-10 text-lg font-medium text-gray-900 mb-2 px-2'>Base Info</h2>
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+                <h2 className='col-span-10 text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
+                  Base Info
+                </h2>
                 <FormField
                   control={form.control}
                   name='status'
@@ -391,15 +394,17 @@ export function ResourcesActionDialog({
                   )}
                 />
                 <Separator className='col-span-12' />
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 mb-2 px-2 py-4'>Resource Properties</h2>
+                <h2 className='col-span-12 text-lg font-medium mb-2 px-2 py-4 text-gray-900 dark:text-gray-100'>
+                  Resource Properties
+                </h2>
                 <FormField
                   control={form.control}
                   name='endpoints'
                   render={() => (
                     <FormItem className='col-span-12 space-y-4'>
-                      <div className='flex items-center justify-between'>
-                        <FormLabel className='text-lg font-medium'>API Endpoints</FormLabel>
-                      </div>
+                      {/*<div className='flex items-center justify-between'>*/}
+                      {/*  <FormLabel className='text-lg font-medium'></FormLabel>*/}
+                      {/*</div>*/}
                       <div className='space-y-2'>
                         {fields.map((field, index) => (
                           <div key={field.id} className='flex gap-x-2 items-start'>
@@ -468,6 +473,7 @@ export function ResourcesActionDialog({
                   )}
                 />
               </div>
+              <IconPicker onChange={() => {}} value={"a-b-2"} />
             </form>
           </Form>
         </ScrollArea>
