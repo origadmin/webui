@@ -53,7 +53,7 @@ const formSchema = z
       .optional(),
     is_edit: z.boolean(),
   })
-  .superRefine(({ is_edit }, ctx) => {
+  .superRefine(({ is_edit }) => {
     if (!is_edit) {
       //todo
     }
