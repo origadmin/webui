@@ -1,5 +1,6 @@
 import { ComponentType, ReactNode, useEffect, useState, useMemo } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
+import { IconMoodSad } from "@tabler/icons-react";
 import {
   ColumnFiltersState,
   PaginationOptions,
@@ -94,6 +95,17 @@ interface DataTableProps<TData, TValue = unknown> extends DataProps<TData, TValu
   props: ComponentProps<TData, TValue>;
 }
 
+const NoResults = ({ colSpan }: { colSpan: number }) => (
+  <TableRow>
+    <TableCell colSpan={colSpan} className='h-24 text-center text-muted-foreground font-medium'>
+      <div className='flex flex-col items-center gap-2'>
+        <IconMoodSad className='h-6 w-6' />
+        <span>No records found</span>
+      </div>
+    </TableCell>
+  </TableRow>
+);
+
 const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderContext<TData, TValue>> => {
   const columnDef = column.columnDef as ColumnType<TData, TValue>;
   if (columnDef.headerTitle) {
@@ -133,10 +145,10 @@ const dataState = <TData,>(row: Row<TData>) => {
   return undefined;
 };
 
-const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
+const renderCell = <TData, TValue>(columns: ColumnType<TData, TValue>[], rows: Row<TData>[]): ReactNode => {
   if (rows && rows.length > 0) {
     return rows.map((row) => (
-      <TableRow key={row.id} data-state={dataState(row)} className=' group/row'>
+      <TableRow key={row.id} data-state={dataState(row)} className='group/row'>
         {row.getVisibleCells().map((cell) => (
           <TableCell key={cell.id} className={cn("px-4", cell.column.columnDef.meta?.className)}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -145,13 +157,7 @@ const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
       </TableRow>
     ));
   }
-  return (
-    <TableRow>
-      <TableCell colSpan={rows.length} className='h-24 text-center items-center'>
-        No results.
-      </TableCell>
-    </TableRow>
-  );
+  return <NoResults colSpan={columns.length} />;
 };
 
 function DataTable<TData, TValue = unknown>({
@@ -252,7 +258,7 @@ function DataTable<TData, TValue = unknown>({
       <div className='rounded-md border'>
         <Table className='overflow-y-hidden'>
           <TableHeader>{renderRow(table.getHeaderGroups())}</TableHeader>
-          <TableBody>{renderCell(table.getRowModel().rows)}</TableBody>
+          <TableBody>{renderCell(columns, table.getRowModel().rows)}</TableBody>
           <TableFooter></TableFooter>
         </Table>
       </div>
