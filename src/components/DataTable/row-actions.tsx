@@ -62,10 +62,10 @@ export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsPro
 
 export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRow }: RowActionsProps<TData>) {
   const onClick = (open: OpenStateType) => {
-    if (setCurrentRow && open === "edit") {
+    if (setCurrentRow) {
       setCurrentRow(row.original);
     }
-    if (setParentRow && open === "add") {
+    if (setParentRow) {
       setParentRow(row.original);
     }
     if (setOpen) {

@@ -4,7 +4,7 @@ import { ResourcesDeleteDialog } from "./resources-delete-dialog";
 import { useResourceTable } from "./resources-table-provider";
 
 export function ResourcesDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useResourceTable();
+  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useResourceTable();
   const className = "sm:max-w-3xl";
   return (
     <Fragment>
@@ -12,7 +12,14 @@ export function ResourcesDialogs() {
         className={className}
         key='resource-add'
         open={open === "add"}
-        onOpenChange={() => setOpen("add")}
+        onOpenChange={() => {
+          setOpen("add");
+          setTimeout(() => {
+            setCurrentRow(null);
+            setParentRow(null);
+          }, 500);
+        }}
+        parentRow={parentRow || undefined}
       />
       {currentRow && (
         <>
