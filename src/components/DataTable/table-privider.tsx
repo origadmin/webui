@@ -9,6 +9,8 @@ interface TableContextType<T> {
   setOpen: (str: TableDialogType | null) => void;
   currentRow: T | null;
   setCurrentRow: React.Dispatch<React.SetStateAction<T | null>>;
+  parentRow: T | null;
+  setParentRow: React.Dispatch<React.SetStateAction<T | null>>;
 }
 
 const createTableContext = <T,>() => {
@@ -17,6 +19,8 @@ const createTableContext = <T,>() => {
   const Provider = ({ children, ...props }: { children: React.ReactNode }) => {
     const [open, setOpen] = useDialogState<OpenStateType>(null);
     const [currentRow, setCurrentRow] = useState<T | null>(null);
+    const [parentRow, setParentRow] = useState<T | null>(null);
+
     return (
       <Context.Provider
         value={{
@@ -24,6 +28,8 @@ const createTableContext = <T,>() => {
           setOpen,
           currentRow,
           setCurrentRow,
+          parentRow,
+          setParentRow,
           ...props,
         }}
       >

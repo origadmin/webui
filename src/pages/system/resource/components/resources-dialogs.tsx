@@ -14,8 +14,6 @@ export function ResourcesDialogs() {
         open={open === "add"}
         onOpenChange={() => setOpen("add")}
       />
-      {/*<ResourcesInviteDialog key='resource-invite' open={open === "invite"} onOpenChange={() => setOpen("invite")} />*/}
-
       {currentRow && (
         <>
           <ResourcesActionDialog

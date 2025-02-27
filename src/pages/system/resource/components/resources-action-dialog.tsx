@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconArrowsSort, IconPlaylistAdd, IconTrash } from "@tabler/icons-react";
-import { useForm, useWatch, useFieldArray } from "react-hook-form";
+import { IconArrowsSort } from "@tabler/icons-react";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
+import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -20,16 +21,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import IconPicker from "@/components/IconPicker";
 
-const types = ["menu", "api", "resource"] as const;
 const formSchema = z
   .object({
     parent_id: z.string().optional(),
-    type: z.enum(types).default("menu"),
+    type: z.string().default("M"),
     name: z.string().min(1, {
       message: t("name.required"),
     }),
@@ -42,7 +41,7 @@ const formSchema = z
     icon: z.string().optional(),
     status: z.number().default(1),
     resource: z.string().min(1, { message: "Resource is required." }),
-    properties: z.record(z.string()).optional(),
+    stringProperties: z.string().optional(),
     endpoints: z
       .array(
         z.object({
@@ -62,6 +61,7 @@ type ResourceForm = z.infer<typeof formSchema>;
 
 interface Props<T> {
   currentRow?: T;
+  parentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
@@ -70,33 +70,34 @@ interface Props<T> {
 
 export function ResourcesActionDialog({
   currentRow,
+  parentRow,
   open,
   onOpenChange,
   className,
   columns = 2,
 }: Props<API.System.Resource>) {
   const is_edit = !!currentRow;
+  // const is_sub = !!parentRow;
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
     defaultValues: is_edit
       ? {
           ...currentRow,
-          type: currentRow.type as "menu" | "api" | "resource",
           endpoints: [],
           is_edit,
         }
       : {
           name: "",
           resource: "",
-          path: "",
           description: "",
           sequence: 1,
-          type: "menu" as "menu" | "api" | "resource",
-          keyword: "",
-          parent_id: "",
+          type: "M",
+          parent_id: parentRow?.id,
+          path: parentRow?.path,
+          keyword: parentRow?.keyword,
           status: 1,
-          properties: {},
+          stringProperties: "{}",
           endpoints: [],
           is_edit,
         },
@@ -125,10 +126,10 @@ export function ResourcesActionDialog({
     setSortDialogOpen(true);
     // }
   };
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "endpoints",
-  });
+  // const { fields, append, remove } = useFieldArray({
+  //   control: form.control,
+  //   name: "endpoints",
+  // });
 
   useEffect(() => {
     if (!isKeywordTouched && pathValue) {
@@ -206,16 +207,18 @@ export function ResourcesActionDialog({
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Type</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
                         <FormControl>
                           <SelectTrigger className='col-span-4'>
                             <SelectValue placeholder='Select a type' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value='menu'>Menu</SelectItem>
-                          <SelectItem value='api'>API</SelectItem>
-                          <SelectItem value='resource'>Resource</SelectItem>
+                          {["M", "A", "-"].map((value, index) => (
+                            <SelectItem key={index} value={value.toString()}>
+                              {resourceTypeValues.get(value.toString()) || "Emtpy"}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormItem>
@@ -329,7 +332,7 @@ export function ResourcesActionDialog({
                 />
                 <FormField
                   control={form.control}
-                  name='properties'
+                  name='stringProperties'
                   render={({ field }) => (
                     <FormItem className='col-span-12 items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-12 w-24 text-left'>Properties</FormLabel>
@@ -338,92 +341,92 @@ export function ResourcesActionDialog({
                           placeholder='Enter properties...'
                           className='w-full'
                           {...field}
-                          value={JSON.stringify(field.value)}
-                          onChange={(e) => field.onChange(JSON.parse(e.target.value))}
+                          value={field.value}
+                          onChange={(e) => field.onChange(e.target.value)}
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
-                <Separator className='col-span-12' />
-                <h2 className='col-span-12 text-lg font-medium mb-2 px-2 py-4 text-gray-900 dark:text-gray-100'>
-                  Resource Properties
-                </h2>
-                <FormField
-                  control={form.control}
-                  name='endpoints'
-                  render={() => (
-                    <FormItem className='col-span-12 space-y-4'>
-                      {/*<div className='flex items-center justify-between'>*/}
-                      {/*  <FormLabel className='text-lg font-medium'></FormLabel>*/}
-                      {/*</div>*/}
-                      <div className='space-y-2'>
-                        {fields.map((field, index) => (
-                          <div key={field.id} className='flex gap-x-2 items-start'>
-                            <FormField
-                              control={form.control}
-                              name={`endpoints.${index}.method`}
-                              render={({ field }) => (
-                                <FormItem className='space-y-2 flex-1'>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger className='h-8'>
-                                        <SelectValue placeholder='Select method' />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      {["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => (
-                                        <SelectItem key={method} value={method}>
-                                          {method}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name={`endpoints.${index}.path`}
-                              render={({ field }) => (
-                                <FormItem className='space-y-2 flex-[3]'>
-                                  <FormControl>
-                                    <Input className='h-8' placeholder='/api/v1/example' {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <div className='flex h-8 items-center justify-center'>
-                              <Button
-                                type='button'
-                                variant='ghost'
-                                size='icon'
-                                className='text-red-500 hover:bg-red-50 dark:hover:bg-red-600 dark:text-red-300'
-                                onClick={() => remove(index)}
-                              >
-                                <IconTrash className='h-4 w-4 translate-y-[1px]' />
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className='flex items-center justify-between'>
-                        <Button
-                          type='button'
-                          variant='outline'
-                          size='sm'
-                          className='h-8 border-dashed w-full text-muted-foreground/60 hover:text-primary/80 hover:border-primary/50'
-                          onClick={() => append({ method: "GET", path: "" })}
-                        >
-                          <span className='flex items-center gap-2 mx-auto overflow-x-auto'>
-                            <IconPlaylistAdd className='h-8 w-8' /> Add
-                          </span>
-                        </Button>
-                      </div>
-                    </FormItem>
-                  )}
-                />
+                {/*<Separator className='col-span-12' />*/}
+                {/*<h2 className='col-span-12 text-lg font-medium mb-2 px-2 py-4 text-gray-900 dark:text-gray-100'>*/}
+                {/*  Resource Properties*/}
+                {/*</h2>*/}
+                {/*<FormField*/}
+                {/*  control={form.control}*/}
+                {/*  name='endpoints'*/}
+                {/*  render={() => (*/}
+                {/*    <FormItem className='col-span-12 space-y-4'>*/}
+                {/*      /!*<div className='flex items-center justify-between'>*!/*/}
+                {/*      /!*  <FormLabel className='text-lg font-medium'></FormLabel>*!/*/}
+                {/*      /!*</div>*!/*/}
+                {/*      <div className='space-y-2'>*/}
+                {/*        {fields.map((field, index) => (*/}
+                {/*          <div key={field.id} className='flex gap-x-2 items-start'>*/}
+                {/*            <FormField*/}
+                {/*              control={form.control}*/}
+                {/*              name={`endpoints.${index}.method`}*/}
+                {/*              render={({ field }) => (*/}
+                {/*                <FormItem className='space-y-2 flex-1'>*/}
+                {/*                  <Select onValueChange={field.onChange} value={field.value}>*/}
+                {/*                    <FormControl>*/}
+                {/*                      <SelectTrigger className='h-8'>*/}
+                {/*                        <SelectValue placeholder='Select method' />*/}
+                {/*                      </SelectTrigger>*/}
+                {/*                    </FormControl>*/}
+                {/*                    <SelectContent>*/}
+                {/*                      {["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => (*/}
+                {/*                        <SelectItem key={method} value={method}>*/}
+                {/*                          {method}*/}
+                {/*                        </SelectItem>*/}
+                {/*                      ))}*/}
+                {/*                    </SelectContent>*/}
+                {/*                  </Select>*/}
+                {/*                </FormItem>*/}
+                {/*              )}*/}
+                {/*            />*/}
+                {/*            <FormField*/}
+                {/*              control={form.control}*/}
+                {/*              name={`endpoints.${index}.path`}*/}
+                {/*              render={({ field }) => (*/}
+                {/*                <FormItem className='space-y-2 flex-[3]'>*/}
+                {/*                  <FormControl>*/}
+                {/*                    <Input className='h-8' placeholder='/api/v1/example' {...field} />*/}
+                {/*                  </FormControl>*/}
+                {/*                  <FormMessage />*/}
+                {/*                </FormItem>*/}
+                {/*              )}*/}
+                {/*            />*/}
+                {/*            <div className='flex h-8 items-center justify-center'>*/}
+                {/*              <Button*/}
+                {/*                type='button'*/}
+                {/*                variant='ghost'*/}
+                {/*                size='icon'*/}
+                {/*                className='text-red-500 hover:bg-red-50 dark:hover:bg-red-600 dark:text-red-300'*/}
+                {/*                onClick={() => remove(index)}*/}
+                {/*              >*/}
+                {/*                <IconTrash className='h-4 w-4 translate-y-[1px]' />*/}
+                {/*              </Button>*/}
+                {/*            </div>*/}
+                {/*          </div>*/}
+                {/*        ))}*/}
+                {/*      </div>*/}
+                {/*      <div className='flex items-center justify-between'>*/}
+                {/*        <Button*/}
+                {/*          type='button'*/}
+                {/*          variant='outline'*/}
+                {/*          size='sm'*/}
+                {/*          className='h-8 border-dashed w-full text-muted-foreground/60 hover:text-primary/80 hover:border-primary/50'*/}
+                {/*          onClick={() => append({ method: "GET", path: "" })}*/}
+                {/*        >*/}
+                {/*          <span className='flex items-center gap-2 mx-auto overflow-x-auto'>*/}
+                {/*            <IconPlaylistAdd className='h-8 w-8' /> Add*/}
+                {/*          </span>*/}
+                {/*        </Button>*/}
+                {/*      </div>*/}
+                {/*    </FormItem>*/}
+                {/*  )}*/}
+                {/*/>*/}
               </div>
             </form>
           </Form>

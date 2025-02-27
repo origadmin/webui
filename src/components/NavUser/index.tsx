@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+import TablerIcon from "@/components/IconPicker/tabler-icon";
 
 type NavUserProps = {
   user?: {
@@ -69,19 +70,19 @@ function NavUserComponent(props: NavUserProps) {
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link to='/settings/account'>
-              <BadgeCheck />
+              <TablerIcon name='rosette-discount-check' />
               Account
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to='/settings'>
-              <CreditCard />
+              <TablerIcon name='credit-card' />
               Billing
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to='/settings/notifications'>
-              <Bell />
+              <TablerIcon name='bell' />
               Notifications
             </Link>
           </DropdownMenuItem>

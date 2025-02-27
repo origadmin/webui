@@ -1,11 +1,9 @@
-"use client";
-
 import type React from "react";
 import { useState, useRef } from "react";
-import { X, Upload, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import TablerIcon from "../IconPicker/tabler-icon";
 
 interface FileUploadProps {
   onFilesChange?: (files: File[]) => void;
@@ -78,7 +76,7 @@ export function FileUpload({ onFilesChange, multiple = true, accept = "*" }: Fil
           accept={accept}
         />
         <Button onClick={handleButtonClick} className='w-full'>
-          <Upload className='mr-2 h-4 w-4' />
+          <TablerIcon name='upload' className='mr-2 h-4 w-4' />
           Select the file
         </Button>
       </div>
@@ -89,7 +87,7 @@ export function FileUpload({ onFilesChange, multiple = true, accept = "*" }: Fil
               <div className='flex items-center justify-between mb-2'>
                 <span className='truncate flex-1'>{file.name}</span>
                 <Button variant='ghost' size='icon' onClick={() => handleRemoveFile(file)} className='ml-2'>
-                  <X className='h-4 w-4' />
+                  <TablerIcon name='x' className='h-4 w-4' />
                   <span className='sr-only'>Remove file</span>
                 </Button>
               </div>
@@ -101,7 +99,7 @@ export function FileUpload({ onFilesChange, multiple = true, accept = "*" }: Fil
               )}
               {!file.preview && file.type.startsWith("image/") && (
                 <div className='mt-2 flex items-center justify-center bg-gray-200 rounded h-32'>
-                  <ImageIcon className='h-8 w-8 text-gray-400' />
+                  <TablerIcon name='photo' className='h-8 w-8 text-gray-400' />
                 </div>
               )}
             </li>

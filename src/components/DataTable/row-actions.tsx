@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconCirclePlus } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,7 @@ export interface RowActionsProps<TData> {
   row: Row<TData>;
   setOpen: (state: OpenStateType) => void;
   setCurrentRow: (row: TData) => void;
+  setParentRow?: (row: TData) => void;
 }
 
 export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsProps<TData>) {
@@ -59,14 +60,24 @@ export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsPro
   );
 }
 
-export function IconRowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsProps<TData>) {
+export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRow }: RowActionsProps<TData>) {
   const onClick = (open: OpenStateType) => {
-    setCurrentRow?.(row.original);
-    setOpen?.(open);
+    if (setCurrentRow && open === "edit") {
+      setCurrentRow(row.original);
+    }
+    if (setParentRow && open === "add") {
+      setParentRow(row.original);
+    }
+    if (setOpen) {
+      setOpen(open);
+    }
   };
 
   return (
     <Fragment>
+      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("add")} title='Add'>
+        <IconCirclePlus size={16} />
+      </Button>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>

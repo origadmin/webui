@@ -7,6 +7,13 @@ export const ResourceRowActions = ({ row }: { row: DataTableRowActionsProps<API.
 };
 
 export const ResourceIconRowActions = ({ row }: { row: DataTableRowActionsProps<API.Resource>["row"] }) => {
-  const { setOpen, setCurrentRow } = useResourceTable();
-  return <DataTableIconRowActions<API.Resource> row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />;
+  const { setOpen, setCurrentRow, setParentRow } = useResourceTable();
+  return (
+    <DataTableIconRowActions<API.Resource>
+      row={row}
+      setOpen={setOpen}
+      setCurrentRow={setCurrentRow}
+      setParentRow={setParentRow}
+    />
+  );
 };

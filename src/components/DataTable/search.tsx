@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { noop } from "@/utils";
 import { ColumnFiltersState, OnChangeFn, Table } from "@tanstack/react-table";
-import { X as ResetIcon, Search as SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnType } from "@/components/DataTable";
+import TablerIcon from "@/components/IconPicker/tabler-icon";
 
 export interface SearchProps<TData, TValue> {
   key?: string;
@@ -54,7 +54,7 @@ export function Search<TData, TValue = unknown>({
               }}
               className='w-18 h-8 px-2 lg:px-3'
             >
-              <ResetIcon className='h-4 w-4' />
+              <TablerIcon name='x' className='h-4 w-4' />
               Reset
             </Button>
           </div>
@@ -68,7 +68,7 @@ export function Search<TData, TValue = unknown>({
               size='sm'
               className='w-18 h-8 px-2 lg:px-3'
             >
-              <SearchIcon className='h-4 w-4' />
+              <TablerIcon name='search' className='h-4 w-4' />
               Search
             </Button>
           </div>
