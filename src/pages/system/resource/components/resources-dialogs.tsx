@@ -6,6 +6,8 @@ import { useResourceTable } from "./resources-table-provider";
 export function ResourcesDialogs() {
   const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useResourceTable();
   const className = "sm:max-w-3xl";
+  console.log("currentRow", currentRow, "parentRow", parentRow);
+
   return (
     <Fragment>
       <ResourcesActionDialog
@@ -19,8 +21,22 @@ export function ResourcesDialogs() {
             setParentRow(null);
           }, 500);
         }}
-        parentRow={parentRow || undefined}
       />
+      {parentRow && (
+        <ResourcesActionDialog
+          className={className}
+          key={`resource-add-${parentRow.id}`}
+          open={open === "add-sub"}
+          onOpenChange={() => {
+            setOpen("add-sub");
+            setTimeout(() => {
+              setCurrentRow(null);
+              setParentRow(null);
+            }, 500);
+          }}
+          parentRow={parentRow}
+        />
+      )}
       {currentRow && (
         <>
           <ResourcesActionDialog
@@ -31,6 +47,7 @@ export function ResourcesDialogs() {
               setOpen("edit");
               setTimeout(() => {
                 setCurrentRow(null);
+                setParentRow(null);
               }, 500);
             }}
             currentRow={currentRow}
@@ -42,6 +59,7 @@ export function ResourcesDialogs() {
               setOpen("delete");
               setTimeout(() => {
                 setCurrentRow(null);
+                setParentRow(null);
               }, 500);
             }}
             currentRow={currentRow}

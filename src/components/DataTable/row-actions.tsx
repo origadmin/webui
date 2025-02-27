@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type OpenStateType = "invite" | "add" | "edit" | "delete";
+export type OpenStateType = "invite" | "add" | "add-sub" | "edit" | "delete";
 
 export interface RowActionsProps<TData> {
   row: Row<TData>;
@@ -62,10 +62,10 @@ export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsPro
 
 export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRow }: RowActionsProps<TData>) {
   const onClick = (open: OpenStateType) => {
-    if (setCurrentRow) {
+    if (setCurrentRow && open !== "add") {
       setCurrentRow(row.original);
     }
-    if (setParentRow) {
+    if (setParentRow && open !== "edit") {
       setParentRow(row.original);
     }
     if (setOpen) {
@@ -75,7 +75,7 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
 
   return (
     <Fragment>
-      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("add")} title='Add'>
+      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("add-sub")} title='Add Sub'>
         <IconCirclePlus size={16} />
       </Button>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>

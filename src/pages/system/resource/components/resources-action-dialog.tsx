@@ -78,6 +78,7 @@ export function ResourcesActionDialog({
 }: Props<API.System.Resource>) {
   const is_edit = !!currentRow;
   // const is_sub = !!parentRow;
+  console.log("action", is_edit, currentRow, parentRow);
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
@@ -263,8 +264,8 @@ export function ResourcesActionDialog({
                           className='col-span-4'
                           {...field}
                           onChange={(e) => {
-                            setIsKeywordTouched(true); // 标记用户已手动修改
-                            field.onChange(e); // 保持默认的字段更新
+                            setIsKeywordTouched(true);
+                            field.onChange(e);
                           }}
                         />
                       </FormControl>

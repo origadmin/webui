@@ -37,7 +37,12 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
           ) : (
             <span className='w-6' />
           )}
-          <LongText className='px-2 max-w-48'>{row.getValue("name")}</LongText>
+          <LongText className='px-2 max-w-48 flex items-center overflow-x-auto no-scrollbar'>
+            {row.original.icon && row.original.icon !== "" ? (
+              <TablerIcon className='mr-2' name={row.original.icon} />
+            ) : null}
+            {row.getValue("name")}
+          </LongText>
         </div>
       );
     },
@@ -49,18 +54,6 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     header: "Keyword",
     searchable: true,
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
-    meta: defaultHeaderMeta.meta,
-  },
-  {
-    accessorKey: "icon",
-    header: "Icon",
-    cell: ({ row }) => {
-      return (
-        <div className='w-fit max-w-36 text-nowrap'>
-          {row.original.icon && row.original.icon !== "" ? <TablerIcon name={row.original.icon} /> : "-"}
-        </div>
-      );
-    },
     meta: defaultHeaderMeta.meta,
   },
   {

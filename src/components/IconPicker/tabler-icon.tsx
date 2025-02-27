@@ -27,9 +27,14 @@ type TablerIconProps = {
   SVGAttributes &
   RefAttributes<Icon>;
 
+type ValidIconName = keyof typeof dynamicImports.default;
+
+const isValidIcon = (name: string): name is ValidIconName => {
+  return Object.keys(dynamicImports.default).includes(name);
+};
+
 type IconCache = Record<string, ComponentType<any>>;
 const iconCache: IconCache = {};
-
 const TablerIcon = ({ name, ...props }: TablerIconProps) => {
   const [IconComponent, setIconComponent] = useState<ComponentType<any> | null>(iconCache[name] || null);
 
@@ -37,9 +42,10 @@ const TablerIcon = ({ name, ...props }: TablerIconProps) => {
     const loadIcon = async () => {
       if (!iconCache[name]) {
         try {
-          const icon = name as keyof typeof dynamicImports.default;
-          // console.log("icons", iconsList);
-          const { default: Icon } = await dynamicImports.default[icon]();
+          if (!isValidIcon(name)) {
+            return undefined;
+          }
+          const { default: Icon } = await dynamicImports.default[name]();
           iconCache[name] = Icon;
           setIconComponent(() => Icon);
         } catch (error) {

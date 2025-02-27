@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import useDialogState from "@/hooks/use-dialog-state";
 import { OpenStateType } from "@/components/DataTable/row-actions";
 
-type TableDialogType = "invite" | "add" | "edit" | "delete";
+type TableDialogType = "invite" | "add" | "add-sub" | "edit" | "delete";
 
 interface TableContextType<T> {
   open: TableDialogType | null;

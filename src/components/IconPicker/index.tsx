@@ -100,24 +100,24 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
     return (
       <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger ref={ref} asChild {...props}>
-          {children || (
-            <Button
-              variant='outline'
-              className='flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
-            >
-              {selectedIcon || selectedIcon ? (
-                <>
-                  <TablerIcon name={(selectedIcon || selectedIcon)!} />
-                  <span>{selectedIcon || selectedIcon}</span>
-                </>
-              ) : (
-                <>
-                  <span>{triggerPlaceholder}</span>
-                  <TablerIcon name='chevron-down' />
-                </>
-              )}
-            </Button>
-          )}
+          {children ||
+            (selectedIcon ? (
+              <Button
+                variant='outline'
+                className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+              >
+                <TablerIcon name={(selectedIcon || selectedIcon)!} />
+                <span>{selectedIcon || selectedIcon}</span>
+              </Button>
+            ) : (
+              <Button
+                variant='outline'
+                className='flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+              >
+                <span>{triggerPlaceholder}</span>
+                <TablerIcon name='chevron-down' />
+              </Button>
+            ))}
         </PopoverTrigger>
         <PopoverContent className='w-full p-2'>
           {searchable && (
