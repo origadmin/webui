@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useResourcesQuery, buildTree } from "@/api/system/resource";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconArrowsSort } from "@tabler/icons-react";
@@ -20,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { PasswordInput } from "@/components/password-input";
+import { RolesResourceSelect } from "./roles-resource-select";
 import { RolesSequenceDialog } from "./roles-sequence-dialogs";
 
 const formSchema = z.object({
@@ -33,18 +34,20 @@ const formSchema = z.object({
   description: z.string().optional(),
   status: z.number().default(1),
   is_edit: z.boolean(),
+  resource_ids: z.array(z.string()).default([]),
 });
+
 type RoleForm = z.infer<typeof formSchema>;
 
-interface Props<T> {
-  currentRow?: T;
+interface Props {
+  currentRow?: API.System.Role;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
   columns?: number;
 }
 
-export function RolesActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.Role>) {
+export function RolesActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props) {
   const is_edit = !!currentRow;
   const form = useForm<RoleForm>({
     resolver: zodResolver(formSchema),
@@ -53,6 +56,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
       ? {
           ...currentRow,
           is_edit,
+          resource_ids: currentRow.resources?.map((resource) => resource.id || "") || [],
         }
       : {
           name: "",
@@ -62,9 +66,14 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           description: "",
           status: 1,
           is_edit,
+          resource_ids: [],
         },
   });
 
+  const { data: resources = {} } = useResourcesQuery({ page_size: 1000 });
+  const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
+
+  console.log("dialog resource", resources);
   const onSubmit = (values: RoleForm) => {
     form.reset();
     toast({
@@ -80,10 +89,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   const handleSortOpen = async () => {
-    // const parentId = form.getValues("parent_id");
-    // if (parentId) {
     setSortDialogOpen(true);
-    // }
   };
   const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
@@ -171,7 +177,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Description</FormLabel>
                       <FormControl>
-                        <Input placeholder='+123456789' className='col-span-4' {...field} />
+                        <Input placeholder='Please enter description' className='col-span-4' {...field} />
                       </FormControl>
                       <FormMessage className='col-span-4 col-start-3' />
                     </FormItem>
@@ -206,9 +212,21 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                   )}
                 />
                 <Separator className='col-span-12' />
-                <h2 className='col-span-12 text-lg font-medium mb-2 px-2 py-4 text-gray-900 dark:text-gray-100'>
+                <h2 className='col-span-12 text-lg font-medium mb-2 px-2 pt-4 text-gray-900 dark:text-gray-100'>
                   Role Permissions
                 </h2>
+                <FormField
+                  control={form.control}
+                  name='resource_ids'
+                  render={({ field }) => (
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border'>
+                      <FormControl>
+                        <RolesResourceSelect value={field.value} onChange={field.onChange} resources={treeData} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </form>
           </Form>

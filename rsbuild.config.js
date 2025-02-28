@@ -1,20 +1,21 @@
 // const { pluginReact } = require('@rsbuild/plugin-react');
 // const { defineConfig } = require('@rsbuild/core');
 // const postcssOptions = require('./postcss.config');
-import { defineConfig } from "@rsbuild/core";
-import { pluginReact } from "@rsbuild/plugin-react";
-import { TanStackRouterRspack } from "@tanstack/router-plugin/rspack";
-import postcssOptions from "./postcss.config.js";
+import {defineConfig} from '@rsbuild/core';
+import {pluginReact} from '@rsbuild/plugin-react';
+import {TanStackRouterRspack} from '@tanstack/router-plugin/rspack';
+import postcssOptions from './postcss.config.js';
 
+const dev = process.env.NODE_ENV === 'development';
 
-/** @type {import("@rsbuild/core").RsbuildConfig} */
+/** @type {import('@rsbuild/core').RsbuildConfig} */
 const config = defineConfig({
   server: {
-    base: "/",
-    htmlFallback: "index",
-    proxy: process.env.NODE_ENV === "development" && {
-      "/api": {
-        target: "http://localhost:25100",
+    base: '/',
+    htmlFallback: 'index',
+    proxy: dev && {
+      '/api': {
+        target: 'http://localhost:25100',
         changeOrigin: true,
         // pathRewrite: {
         //   '^/api': ''
@@ -26,21 +27,21 @@ const config = defineConfig({
     writeToDisk: true,
   },
   html: {
-    template: "index.html",
+    template: 'index.html',
     templateParameters: {
-      APP_TITLE: "OrigAdmin WebUI",
-      INDEX_CSS: process.env.NODE_ENV === "development" ? "index.css" : "index.min.css",
-      LOADING_SCRIPT: process.env.NODE_ENV === "development" ? "static/js/loading.js" : "static/js/loading.min.js",
-      BASE_URL: process.env.BASE_URL || "",
+      APP_TITLE: 'OrigAdmin WebUI',
+      INDEX_CSS: dev ? 'index.css' : 'index.min.css',
+      LOADING_SCRIPT: dev ? 'static/js/loading.js' : 'static/js/loading.min.js',
+      BASE_URL: process.env.BASE_URL || '',
     },
-    favicon: "./public/favicon.ico",
+    favicon: './public/favicon.ico',
     appIcon: {
-      name: "OrigAdmin WebUI",
+      name: 'OrigAdmin WebUI',
       icons: [
-        { src: "./src/assets/icons/icon-128x128.png", size: 128 },
-        { src: "./src/assets/icons/icon-192x192.png", size: 192 },
-        { src: "./src/assets/icons/icon-256x256.png", size: 256 },
-        { src: "./src/assets/icons/icon-512x512.png", size: 512 },
+        {src: './src/assets/icons/icon-128x128.png', size: 128},
+        {src: './src/assets/icons/icon-192x192.png', size: 192},
+        {src: './src/assets/icons/icon-256x256.png', size: 256},
+        {src: './src/assets/icons/icon-512x512.png', size: 512},
       ],
     },
   },
@@ -50,40 +51,33 @@ const config = defineConfig({
         test: /\.css$/,
         use: [
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               postcssOptions: postcssOptions,
             },
           },
         ],
-        type: "css/auto",
+        type: 'css/auto',
       },
     ],
   },
   source: {
     entry: {
-      index: "./src/main.tsx",
+      index: './src/main.tsx',
     },
   },
   output: {
     copy:
-      process.env.NODE_ENV === "development"
-        ? [
-            { from: "./public" },
-            {
-              from: "./resources/docs/",
-              to: "docs/",
-            },
-          ]
-        : [
-            // `./src/assets/image.png` -> `./dist/image.png`
-            { from: "./public" },
-          ],
+        [
+          // `./src/assets/image.png` -> `./dist/image.png`
+          {from: './public'},
+          ...(dev ? [{from: './resources/docs/', to: 'docs/'}] : []),
+        ],
   },
   plugins: [pluginReact()],
   tools: {
     rspack: {
-      plugins: [TanStackRouterRspack(import("./tsr.config.json"))],
+      plugins: [TanStackRouterRspack(import('./tsr.config.json'))],
     },
   },
 });

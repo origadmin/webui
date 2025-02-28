@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { t } from "@/utils/locale";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
@@ -21,7 +21,6 @@ const renderSizeOptions = <TData,>(table: Table<TData>, _sizeOptions?: string[])
   const pageCount = table.getPageCount();
   const { pageSize, pageIndex: _pageIndex = 0 } = table.getState().pagination;
   const pageIndex = pageCount === 0 ? 0 : _pageIndex + 1;
-  console.log("page", pageSize, _pageIndex);
 
   return (
     <div className='flex items-center sm:space-x-6 lg:space-x-8'>
@@ -107,7 +106,7 @@ const renderRowSelect = <TData,>(table: Table<TData>) => {
 };
 
 export function Pagination<T>({
-  table,
+  table: _table,
   sizeOptions = [],
   showSizeChanger = true,
   // showQuickJumper = true,
@@ -115,8 +114,9 @@ export function Pagination<T>({
   rowSelect = true,
   rowSelectRender,
 }: PaginationProps<T>) {
-  console.log("state", table.getState().pagination);
+  const [table] = useState(_table);
   rowSelectRender = rowSelectRender || renderRowSelect;
+
   return (
     <div className='flex items-center justify-between overflow-auto px-2'>
       {rowSelect && rowSelectRender(table)}

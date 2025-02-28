@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode, useEffect, useState, useMemo } from "react";
+import { ComponentType, ReactNode, useState, useMemo, useEffect } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
 import { IconMoodSad } from "@tabler/icons-react";
 import {
@@ -167,7 +167,10 @@ function DataTable<TData, TValue = unknown>({
   showPagination = true,
   useManual = true,
   sizeOptions = PAGE_SIZE_OPTIONS,
-  paginationState = { pageSize: PAGE_SIZE, pageIndex: START_PAGE },
+  paginationState: _paginationState = {
+    pageSize: PAGE_SIZE,
+    pageIndex: START_PAGE,
+  },
   columnFiltersState = [],
   sorting,
   setSorting,
@@ -179,25 +182,25 @@ function DataTable<TData, TValue = unknown>({
   toolbarPosition = "top",
   options,
   props,
-  isLoading,
+  isLoading: _isLoading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [data, setData] = useState(dataSource || []);
-  const [rowCount, setRowCount] = useState(total || 0);
+  const [data, setData] = useState<TData[]>([]);
+  const [rowCount, setRowCount] = useState(0);
+  const [isLoading] = useState(_isLoading);
   useEffect(() => {
     if (isLoading) return;
-    setData(dataSource);
     setRowCount(total);
-  }, [isLoading, dataSource, total]);
+    setData(dataSource);
+  }, [dataSource, isLoading, total]);
 
-  const manualProps = useManual
-    ? {
-        manualFiltering: true,
-        manualSorting: true,
-        manualPagination: true,
-      }
-    : {};
+  const [manualProps] = useState({
+    manualFiltering: true,
+    manualSorting: true,
+    manualPagination: true,
+  });
+  const [paginationState] = useState(_paginationState);
   onRowSelectionChange = onRowSelectionChange || setRowSelection;
   onColumnVisibilityChange = onColumnVisibilityChange || setColumnVisibility;
 

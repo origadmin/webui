@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useMemo, useEffect } from "react";
-import { iconsList, dynamicImports } from "@tabler/icons-react";
+import { iconsList } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import TablerIcon from "./tabler-icon";
 
-type IconName = keyof typeof dynamicImports.default | string;
+type IconName = string;
 type IconsList = { icon: IconName; alias?: string[] }[];
 
 const ICON_BUTTONS: IconsList = iconsList.default.map((icon) => ({

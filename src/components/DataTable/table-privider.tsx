@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react";
-import { OpenStateType } from "@/pages/system/role/components/row-actions";
 import useDialogState from "@/hooks/use-dialog-state";
 
 type TableDialogType = "invite" | "add" | "add-sub" | "edit" | "delete";
@@ -17,7 +16,7 @@ const createTableContext = <T,>() => {
   const Context = createContext<TableContextType<T> | null>(null);
 
   const Provider = ({ children, ...props }: { children: React.ReactNode }) => {
-    const [open, setOpen] = useDialogState<OpenStateType>(null);
+    const [open, setOpen] = useDialogState<TableDialogType>(null);
     const [currentRow, setCurrentRow] = useState<T | null>(null);
     const [parentRow, setParentRow] = useState<T | null>(null);
 

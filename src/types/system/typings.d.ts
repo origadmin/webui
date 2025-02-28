@@ -6,9 +6,13 @@ declare global {
   namespace API {
     namespace System {
       type User = components["schemas"]["api.v1.services.system.User"];
-      type Role = components["schemas"]["api.v1.services.system.Role"];
+      type BaseRole = components["schemas"]["api.v1.services.system.Role"];
+      type Role = BaseRole & {
+        resources?: Resource[];
+      };
       type Menu = components["schemas"]["api.v1.services.system.Menu"];
       type Resource = components["schemas"]["api.v1.services.system.Resource"];
+      type Permission = components["schemas"]["api.v1.services.system.Permission"];
     }
 
     type Captcha = {

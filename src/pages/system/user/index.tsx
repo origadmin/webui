@@ -21,10 +21,10 @@ export default function UserPage() {
     handleSearch,
     handleReset,
   } = useDataTable({
-    useQuery: useUsersQuery,
+    useQuery: (params) => useUsersQuery(params),
   });
 
-  const tableProps: Omit<DataTableProps<API.System.User>, "isLoading" | "dataSource" | "total"> = {
+  const tableProps: Omit<DataTableProps<API.System.User>, "isLoading" | "sourceData" | "total"> = {
     columns,
     useManual: true,
     showPagination: true,

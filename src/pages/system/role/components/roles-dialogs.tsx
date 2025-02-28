@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { RolesActionDialog } from "./roles-action-dialog";
 import { RolesDeleteDialog } from "./roles-delete-dialog";
-import { RolesInviteDialog } from "./roles-invite-dialog";
 import { useRoleTable } from "./roles-table-provider";
 
 export function RolesDialogs() {
@@ -9,8 +8,12 @@ export function RolesDialogs() {
   const className = "sm:max-w-3xl";
   return (
     <Fragment>
-      <RolesActionDialog key='role-add' open={open === "add"} onOpenChange={() => setOpen("add")} />
-      <RolesInviteDialog key='role-invite' open={open === "invite"} onOpenChange={() => setOpen("invite")} />
+      <RolesActionDialog
+        className={className}
+        key='role-add'
+        open={open === "add"}
+        onOpenChange={() => setOpen("add")}
+      />
 
       {currentRow && (
         <>
