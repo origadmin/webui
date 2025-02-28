@@ -6,6 +6,7 @@ import { useRoleTable } from "./roles-table-provider";
 
 export function RolesDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useRoleTable();
+  const className = "sm:max-w-3xl";
   return (
     <Fragment>
       <RolesActionDialog key='role-add' open={open === "add"} onOpenChange={() => setOpen("add")} />
@@ -15,6 +16,7 @@ export function RolesDialogs() {
         <>
           <RolesActionDialog
             key={`role-edit-${currentRow.id}`}
+            className={className}
             open={open === "edit"}
             onOpenChange={() => {
               setOpen("edit");

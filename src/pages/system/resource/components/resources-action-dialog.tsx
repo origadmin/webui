@@ -144,7 +144,7 @@ export function ResourcesActionDialog({
     }
   }, [form, isKeywordTouched, pathValue]);
 
-  const maxWClass = `sm:max-w-${columns * 500}px`; // Dynamically sets the maximum width based on the columns parameter
+  const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
     <Dialog
       open={open}
@@ -217,7 +217,7 @@ export function ResourcesActionDialog({
                         <SelectContent>
                           {["M", "A", "-"].map((value, index) => (
                             <SelectItem key={index} value={value.toString()}>
-                              {resourceTypeValues.get(value.toString()) || "Emtpy"}
+                              {resourceTypeValues.get(value.toString()) || "Empty"}
                             </SelectItem>
                           ))}
                         </SelectContent>

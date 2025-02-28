@@ -33,7 +33,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFoo
 import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
 import { Pagination, PaginationProps } from "./pagination";
-import { IconRowActions, RowActions, RowActionsProps } from "./row-actions";
 import { Search, SearchProps } from "./search";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
 
@@ -279,7 +278,6 @@ function DataTable<TData, TValue = unknown>({
 }
 
 export type {
-  RowActionsProps as DataTableRowActionsProps,
   PaginationOptions as DataTablePaginationOptions,
   ToolbarProps as DataTableToolbarProps,
   ViewOptionsProps as DataTableViewOptionsProps,
@@ -289,8 +287,6 @@ export type {
 
 export type { DataTableProps, ColumnType, ColumnType as DataTableColumnType };
 export {
-  RowActions as DataTableRowActions,
-  IconRowActions as DataTableIconRowActions,
   Pagination as DataTablePagination,
   TitleBar as DataTableToolbar,
   ViewOptions as DataTableViewOptions,

@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconArrowsSort } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,72 +18,33 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { PasswordInput } from "@/components/password-input";
+import { RolesSequenceDialog } from "./roles-sequence-dialogs";
 
-const formSchema = z
-  .object({
-    nickname: z.string().min(1, {
-      message: t("nickname.required"),
-    }),
-    phoneNumber: z.string().min(1, { message: "Phone number is required." }),
-    email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
-    password: z.string().transform((pwd) => pwd.trim()),
-    role: z.string().min(1, { message: "Role is required." }),
-    confirmPassword: z.string().transform((pwd) => pwd.trim()),
-    is_edit: z.boolean(),
-  })
-  .superRefine(({ is_edit, password, confirmPassword }, ctx) => {
-    if (!is_edit || (is_edit && password !== "")) {
-      if (password === "") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password is required.",
-          path: ["password"],
-        });
-      }
-
-      if (password.length < 8) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must be at least 8 characters long.",
-          path: ["password"],
-        });
-      }
-
-      if (!password.match(/[a-z]/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must contain at least one lowercase letter.",
-          path: ["password"],
-        });
-      }
-
-      if (!password.match(/\d/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must contain at least one number.",
-          path: ["password"],
-        });
-      }
-
-      if (password !== confirmPassword) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Passwords don't match.",
-          path: ["confirmPassword"],
-        });
-      }
-    }
-  });
+const formSchema = z.object({
+  name: z.string().min(1, {
+    message: t("Name is required"),
+  }),
+  keyword: z.string().min(1, { message: "Keyword is required." }),
+  type: z.number().min(1, { message: "Type is required." }),
+  sequence: z.number().default(1),
+  description: z.string().optional(),
+  status: z.number().default(1),
+  is_edit: z.boolean(),
+});
 type RoleForm = z.infer<typeof formSchema>;
 
 interface Props<T> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  className?: string;
+  columns?: number;
 }
 
-export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.System.Role>) {
+export function RolesActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.Role>) {
   const is_edit = !!currentRow;
   const form = useForm<RoleForm>({
     resolver: zodResolver(formSchema),
@@ -88,17 +52,15 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
     defaultValues: is_edit
       ? {
           ...currentRow,
-          password: "",
-          confirmPassword: "",
           is_edit,
         }
       : {
-          nickname: "",
-          email: "",
-          role: "",
-          phoneNumber: "",
-          password: "",
-          confirmPassword: "",
+          name: "",
+          keyword: "",
+          type: 0,
+          sequence: 1,
+          description: "",
+          status: 1,
           is_edit,
         },
   });
@@ -115,9 +77,15 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
     });
     onOpenChange(false);
   };
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
-  const isPasswordTouched = !!form.formState.dirtyFields.password;
-
+  const handleSortOpen = async () => {
+    // const parentId = form.getValues("parent_id");
+    // if (parentId) {
+    setSortDialogOpen(true);
+    // }
+  };
+  const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
     <Dialog
       open={open}
@@ -126,7 +94,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
         onOpenChange(state);
       }}
     >
-      <DialogContent className='sm:max-w-lg'>
+      <DialogContent className={cn(`${maxWClass}`, className)}>
         <DialogHeader className='text-left'>
           <DialogTitle>{is_edit ? "Edit Role" : "Add New Role"}</DialogTitle>
           <DialogDescription>
@@ -137,89 +105,111 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
             <form id='role-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
-              <FormField
-                control={form.control}
-                name='nickname'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Nickname</FormLabel>
-                    <FormControl>
-                      <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='role'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Role</FormLabel>
-                    <FormControl>
-                      <Input placeholder='john_doe' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phoneNumber'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Phone Number</FormLabel>
-                    <FormControl>
-                      <Input placeholder='+123456789' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='confirmPassword'
-                render={({ field }) => (
-                  <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
-                    <FormLabel className='col-span-2 text-right'>Confirm Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput
-                        disabled={!isPasswordTouched}
-                        placeholder='e.g., S3cur3P@ssw0rd'
-                        className='col-span-4'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className='col-span-4 col-start-3' />
-                  </FormItem>
-                )}
-              />
+              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+                <h2 className='col-span-10 text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
+                  Base Info
+                </h2>
+                <FormField
+                  control={form.control}
+                  name='status'
+                  render={({ field }) => (
+                    <FormItem className='col-span-2 grid grid-cols-subgrid items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-1 w-24 text-left'>Status</FormLabel>
+                      <FormControl>
+                        <Switch
+                          className='col-span-1'
+                          checked={field.value === 1}
+                          onCheckedChange={(status) => field.onChange(status ? 1 : 0)}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Please enter a name' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='keyword'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Keyword</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Please enter a keyword' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='type'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Type</FormLabel>
+                      <FormControl>
+                        <Input className='col-span-4' {...field} disabled />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder='+123456789' className='col-span-4' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='sequence'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Sequence</FormLabel>
+                      <div className='col-span-4 flex'>
+                        <FormControl>
+                          <Input
+                            className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0'
+                            placeholder=''
+                            {...field}
+                          />
+                        </FormControl>
+                        <Button
+                          type='button'
+                          variant='outline'
+                          onClick={handleSortOpen}
+                          className='h-9 w-12 gap-0 px-0 rounded-l-none'
+                          size='icon'
+                        >
+                          <IconArrowsSort className='h-5 w-5' />
+                        </Button>
+                      </div>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <Separator className='col-span-12' />
+                <h2 className='col-span-12 text-lg font-medium mb-2 px-2 py-4 text-gray-900 dark:text-gray-100'>
+                  Role Permissions
+                </h2>
+              </div>
             </form>
           </Form>
         </ScrollArea>
@@ -229,6 +219,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange }: Props<API.
           </Button>
         </DialogFooter>
       </DialogContent>
+      <RolesSequenceDialog open={sortDialogOpen} onOpenChange={setSortDialogOpen} currentRow={currentRow} />
     </Dialog>
   );
 }

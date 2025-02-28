@@ -12,11 +12,11 @@ interface Props<T> {
   currentRow: T;
 }
 
-export function RolesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.Role>) {
+export function RolesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.System.Role>) {
   const [value, setValue] = useState("");
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.rolename) return;
+    if (value.trim() !== currentRow.name) return;
 
     onOpenChange(false);
     toast({
@@ -34,7 +34,7 @@ export function RolesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.rolename}
+      disabled={value.trim() !== currentRow.name}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle className='mr-1 inline-block stroke-destructive' size={18} /> Delete Role
@@ -43,10 +43,10 @@ export function RolesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
       desc={
         <div className='space-y-4'>
           <p className='mb-2'>
-            Are you sure you want to delete <span className='font-bold'>{currentRow.rolename}</span>?
+            Are you sure you want to delete <span className='font-bold'>{currentRow.name}</span>?
             <br />
             This action will permanently remove the role with the role of{" "}
-            <span className='font-bold'>{currentRow.role.toUpperCase()}</span> from the system. This cannot be undone.
+            <span className='font-bold'>{currentRow.name?.toUpperCase()}</span> from the system. This cannot be undone.
           </p>
 
           <Label className='my-2'>

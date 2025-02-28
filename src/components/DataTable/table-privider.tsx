@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
+import { OpenStateType } from "@/pages/system/role/components/row-actions";
 import useDialogState from "@/hooks/use-dialog-state";
-import { OpenStateType } from "@/components/DataTable/row-actions";
 
 type TableDialogType = "invite" | "add" | "add-sub" | "edit" | "delete";
 
