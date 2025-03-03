@@ -1,18 +1,14 @@
-import { SVGProps as BaseSVGProps } from "react";
+import { ImgHTMLAttributes } from "react";
 
-type SVGProps = {
+type IconProps = {
   name: string;
   size?: number;
-} & BaseSVGProps<SVGSVGElement>;
+} & ImgHTMLAttributes<HTMLImageElement>;
 
-const TablerIcon = ({ name, size = 24, ...props }: SVGProps) => {
-  const filled = name.startsWith("filled-") ? "filled" : "outline";
+const TablerIcon = ({ name, size = 24, ...props }: IconProps) => {
+  const variant = name.startsWith("filled-") ? "filled" : "outline";
   const iconName = name.replace(/^(filled-|outline-)/, "");
-  return (
-    <svg width={size} height={size} {...props}>
-      <use xlinkHref={`/public/static/icons/${filled}/${iconName}.svg#tabler-activity`} />
-    </svg>
-  );
+  return <img src={`/static/icons/${variant}/${iconName}.svg`} alt={iconName} width={size} height={size} {...props} />;
 };
 
 export default TablerIcon;
