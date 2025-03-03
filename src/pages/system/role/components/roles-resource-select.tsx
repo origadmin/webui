@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { resourceTypeValues } from "@/types/system/resource";
 import { Checkbox } from "@/components/ui/checkbox";
+import TablerIcon from "@/components/IconPicker/tabler-icon";
 import { Tree, TreeNode } from "@/components/Tree";
 
 interface Props {
@@ -33,7 +34,8 @@ export function RolesResourceSelect({ value = [], onChange, resources = [] }: Pr
           checked={isSelected}
           onCheckedChange={(checked) => handleResourceSelect(resource.id || "", checked as boolean)}
         />
-        <div className='flex-1'>
+        <div className='flex items-center'>
+          {resource.icon && <TablerIcon name={resource.icon} size={24} className='mr-2 w-4 h-4' />}
           <span className='text-sm font-medium'>{resource.name}</span>
           {resource.type && (
             <span className='ml-2 text-xs text-gray-500'>({resourceTypeValues.get(resource.type)})</span>
