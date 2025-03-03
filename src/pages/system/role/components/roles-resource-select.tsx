@@ -15,7 +15,9 @@ export function RolesResourceSelect({ value = [], onChange, expandAll, resources
   const [selectedResources, setSelectedResources] = useState<string[]>(value);
   const changeCallback = (newValue: string[]) => {
     console.log("newValue", newValue);
-    onChange?.(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
   };
 
   const handleResourceSelect = (resourceId: string, checked: boolean) => {
@@ -58,7 +60,7 @@ export function RolesResourceSelect({ value = [], onChange, expandAll, resources
   const treeData = useMemo(() => resourceTreeData, [resourceTreeData]);
 
   return (
-    <div className='w-full flex col-span-12 flex-col overflow-y-auto'>
+    <div className='w-full flex col-span-12 flex-col overflow-y-hidden'>
       <Tree expandAll={expandAll} data={treeData} />
     </div>
   );

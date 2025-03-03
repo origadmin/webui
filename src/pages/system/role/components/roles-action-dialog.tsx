@@ -71,9 +71,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
   });
 
   const { data: resources = {} } = useResourcesQuery({ page_size: 1000 });
-  const [data] = useState(resources.data || []);
-
-  const treeData = useMemo(() => buildTree(data), [data]);
+  const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
 
   console.log("dialog resource", resources);
   const onSubmit = (values: RoleForm) => {
