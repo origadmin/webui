@@ -172,19 +172,6 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                 />
                 <FormField
                   control={form.control}
-                  name='description'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Description</FormLabel>
-                      <FormControl>
-                        <Input placeholder='Please enter description' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name='sequence'
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
@@ -208,6 +195,19 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                         </Button>
                       </div>
                       <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Please enter description' className='col-span-8 w-full' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-8 col-start-3' />
                     </FormItem>
                   )}
                 />

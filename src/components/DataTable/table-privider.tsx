@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import useDialogState from "@/hooks/use-dialog-state";
 
-type TableDialogType = "invite" | "add" | "add-sub" | "edit" | "delete";
+type TableDialogType = "invite" | "add" | "add-sub" | "edit" | "edit-permission" | "delete";
 
 interface TableContextType<T> {
   open: TableDialogType | null;

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { resourceTypeValues } from "@/types/system/resource";
 import { Checkbox } from "@/components/ui/checkbox";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
@@ -16,6 +16,12 @@ export function RolesResourceSelect({ value = [], onChange, resources = [] }: Pr
   useEffect(() => {
     setSelectedResources(value);
   }, [value]);
+
+  // useEffect(() => {
+  //   if (onChange) {
+  //     onChange(selectedResources);
+  //   }
+  // }, [onChange, selectedResources]);
 
   const handleResourceSelect = (resourceId: string, checked: boolean) => {
     const newSelectedResources = checked
@@ -45,14 +51,17 @@ export function RolesResourceSelect({ value = [], onChange, resources = [] }: Pr
     );
   };
 
-  const transformResourcesToTreeData = (resources: API.System.Resource[]): TreeNode[] => {
-    return resources.map((resource) => ({
-      id: resource.id || "",
-      name: resource.name || "",
-      children: resource.children ? transformResourcesToTreeData(resource.children) : [],
-      content: renderResourceNode(resource),
-    }));
-  };
+  const transformResourcesToTreeData = useCallback(
+    (resources: API.System.Resource[]): TreeNode[] => {
+      return resources.map((resource) => ({
+        id: resource.id!,
+        name: resource.name!,
+        children: resource.children ? transformResourcesToTreeData(resource.children) : [],
+        content: renderResourceNode(resource),
+      }));
+    },
+    [renderResourceNode],
+  );
 
   const treeData = useMemo(() => transformResourcesToTreeData(resources), [resources, transformResourcesToTreeData]);
 

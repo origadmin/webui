@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import { useResourceCreate, useResourceUpdate } from "@/api/system/resource";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
+import { Strings } from "@/utils/index";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconArrowsSort } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { resourceTypeValues } from "@/types/system/resource";
@@ -40,7 +43,7 @@ const formSchema = z
     sequence: z.number().default(1),
     icon: z.string().optional(),
     status: z.number().default(1),
-    resource: z.string().min(1, { message: "Resource is required." }),
+    // resource: z.string().min(1, { message: "Resource is required." }),
     stringProperties: z.string().optional(),
     endpoints: z
       .array(
@@ -52,10 +55,8 @@ const formSchema = z
       .optional(),
     is_edit: z.boolean(),
   })
-  .superRefine(({ is_edit }) => {
-    if (!is_edit) {
-      //todo
-    }
+  .superRefine((v) => {
+    console.log("superRefine", v);
   });
 type ResourceForm = z.infer<typeof formSchema>;
 
@@ -90,7 +91,7 @@ export function ResourcesActionDialog({
         }
       : {
           name: "",
-          resource: "",
+          // resource: "",
           description: "",
           sequence: 1,
           type: "M",
@@ -103,10 +104,20 @@ export function ResourcesActionDialog({
           is_edit,
         },
   });
-  const [isKeywordTouched, setIsKeywordTouched] = useState(false);
+  const [isAutoGenerate, setIsAutoGenerate] = useState(true);
 
+  const id = currentRow?.id || "";
+  const queryClient = useQueryClient();
+  const { mutate: createResource, isPending: isCreatePending } = useResourceCreate(queryClient);
+  const { mutate: updateResource, isPending: isUpdatePending } = useResourceUpdate(queryClient, id);
   const onSubmit = (values: ResourceForm) => {
     form.reset();
+    console.log("values", values);
+    if (!is_edit) {
+      createResource({ ...values });
+    } else {
+      updateResource({ ...values });
+    }
     toast({
       title: "You submitted the following values:",
       description: (
@@ -133,16 +144,14 @@ export function ResourcesActionDialog({
   // });
 
   useEffect(() => {
-    if (!isKeywordTouched && pathValue) {
+    if (!isAutoGenerate) return;
+    const keyword = form.getValues("keyword");
+    if (!keyword && pathValue) {
       // The logic that automatically generates keywords based on the path
-      const generatedKeyword = pathValue
-        .replace(/^\//, "") // Remove the beginning /
-        .replace(/\//g, ":") // Replace the subsequent / as :
-        .replace(/:+/g, ":"); // Merge multiple colons
-
+      const generatedKeyword = Strings.autoGenKeyword(pathValue);
       form.setValue("keyword", generatedKeyword);
     }
-  }, [form, isKeywordTouched, pathValue]);
+  }, [form, isAutoGenerate, pathValue]);
 
   const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
@@ -163,7 +172,11 @@ export function ResourcesActionDialog({
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='resource-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
+            <form
+              id='resource-form'
+              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("验证失败:", errors))}
+              className='space-y-4 p-1'
+            >
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
                 <h2 className='col-span-10 text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                   Base Info
@@ -208,7 +221,7 @@ export function ResourcesActionDialog({
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Type</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className='col-span-4'>
                             <SelectValue placeholder='Select a type' />
@@ -264,7 +277,9 @@ export function ResourcesActionDialog({
                           className='col-span-4'
                           {...field}
                           onChange={(e) => {
-                            setIsKeywordTouched(true);
+                            if (pathValue) {
+                              setIsAutoGenerate(field.value === Strings.autoGenKeyword(pathValue));
+                            }
                             field.onChange(e);
                           }}
                         />
@@ -433,7 +448,7 @@ export function ResourcesActionDialog({
           </Form>
         </ScrollArea>
         <DialogFooter>
-          <Button type='submit' form='resource-form'>
+          <Button type='submit' form='resource-form' disabled={isCreatePending || isUpdatePending}>
             Save changes
           </Button>
         </DialogFooter>

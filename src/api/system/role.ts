@@ -22,6 +22,11 @@ export async function updateRole(id: string, body: Omit<API.System.Role, "id">, 
   return put<never>(`/sys/roles/${id}`, body, options);
 }
 
+/** Update role record by ID PUT /sys/roles/${id} */
+export async function updateRolePermissions(id: string, body: string[] | undefined, options?: API.RequestOptions) {
+  return put<never>(`/sys/roles/${id}/permissions`, body, options);
+}
+
 /** Delete role record by ID DELETE /sys/roles/${id} */
 export async function deleteRole(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/roles/${id}`, options);
@@ -65,3 +70,11 @@ export const useRoleDelete = (queryClient: QueryClient) => {
     onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
   });
 };
+
+export const useUpdateRolePermissions = (_queryClient: QueryClient, id: string) =>
+  useMutation({
+    mutationFn: (params: any) => updateRolePermissions(id, params),
+    // onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+  });
+
+// 新增src/api/system/permission.ts

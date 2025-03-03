@@ -6,8 +6,8 @@ type IconProps = {
 } & ImgHTMLAttributes<HTMLImageElement>;
 
 const TablerIcon = ({ name, size = 24, ...props }: IconProps) => {
-  const variant = name.startsWith("filled-") ? "filled" : "outline";
-  const iconName = name.replace(/^(filled-|outline-)/, "");
+  const variant = name.endsWith("-filled") ? "filled" : "outline";
+  const iconName = name.replace(/(-filled|-outline)$/, "");
   return <img src={`/static/icons/${variant}/${iconName}.svg`} alt={iconName} width={size} height={size} {...props} />;
 };
 

@@ -182,13 +182,13 @@ function DataTable<TData, TValue = unknown>({
   toolbarPosition = "top",
   options,
   props,
-  isLoading: _isLoading,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [data, setData] = useState<TData[]>([]);
   const [rowCount, setRowCount] = useState(0);
-  const [isLoading] = useState(_isLoading);
+  // const [isLoading] = useState(_isLoading);
   useEffect(() => {
     if (isLoading) return;
     setRowCount(total);

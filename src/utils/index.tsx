@@ -6,7 +6,8 @@ import * as Query from "./query";
 import * as Request from "./request";
 import * as Search from "./search";
 import * as Storage from "./storage";
+import * as Strings from "./strings";
 
 const noop = () => {};
 
-export { Storage, Search, Crypto, Auth, Request, Chat, Configuration, Query, noop };
+export { Storage, Search, Crypto, Auth, Request, Chat, Configuration, Query, Strings, noop };
