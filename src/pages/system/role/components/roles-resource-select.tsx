@@ -34,7 +34,7 @@ export function RolesResourceSelect({ value = [], onChange, resources = [] }: Pr
           onCheckedChange={(checked) => handleResourceSelect(resource.id || "", checked as boolean)}
         />
         <div className='flex-1'>
-          <span className='text-sm font-medium'>?{resource.name}?</span>
+          <span className='text-sm font-medium'>{resource.name}</span>
           {resource.type && (
             <span className='ml-2 text-xs text-gray-500'>({resourceTypeValues.get(resource.type)})</span>
           )}
@@ -52,7 +52,7 @@ export function RolesResourceSelect({ value = [], onChange, resources = [] }: Pr
     }));
   };
 
-  const treeData = useMemo(() => transformResourcesToTreeData(resources), [resources]);
+  const treeData = useMemo(() => transformResourcesToTreeData(resources), [resources, transformResourcesToTreeData]);
 
   return (
     <div className='w-full flex col-span-12 flex-col overflow-y-auto'>
