@@ -71,7 +71,9 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
   });
 
   const { data: resources = {} } = useResourcesQuery({ page_size: 1000 });
-  const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
+  const [data] = useState(resources.data || []);
+
+  const treeData = useMemo(() => buildTree(data), [data]);
 
   console.log("dialog resource", resources);
   const onSubmit = (values: RoleForm) => {
@@ -87,7 +89,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
     onOpenChange(false);
   };
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
-
+  const [expanded, setExpanded] = useState(false);
   const handleSortOpen = async () => {
     setSortDialogOpen(true);
   };
@@ -112,7 +114,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           <Form {...form}>
             <form id='role-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
-                <h2 className='col-span-10 text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
+                <h2 className='col-span-10 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                   Base Info
                 </h2>
                 <FormField
@@ -212,16 +214,26 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                   )}
                 />
                 <Separator className='col-span-12' />
-                <h2 className='col-span-12 text-lg font-medium mb-2 px-2 pt-4 text-gray-900 dark:text-gray-100'>
-                  Role Permissions
-                </h2>
+                <div className='col-span-12 items-center grid grid-cols-subgrid flex overflow-x-auto'>
+                  <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 pt-4 text-gray-900 dark:text-gray-100'>
+                    Role Permissions
+                  </h2>
+                  <div className='col-span-1 grid grid-cols-subgrid items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <Switch checked={expanded} onCheckedChange={setExpanded} />
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
                   name='resource_ids'
                   render={({ field }) => (
-                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border'>
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border overflow-y-hidden'>
                       <FormControl>
-                        <RolesResourceSelect value={field.value} onChange={field.onChange} resources={treeData} />
+                        <RolesResourceSelect
+                          expandAll={expanded}
+                          value={field.value}
+                          onChange={field.onChange}
+                          resources={treeData}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

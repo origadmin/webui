@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -14,26 +14,39 @@ interface TreeProps {
   data: TreeNode[];
   level?: number;
   className?: string;
+  expandAll?: boolean;
 }
 
-export function Tree({ data, level = 0, className }: TreeProps) {
-  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+export function Tree({ data, className, level = 0, expandAll = false }: TreeProps) {
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const getAllNodeIds = (nodes: TreeNode[]): string[] => {
+    return nodes.flatMap((node) => [node.id, ...(node.children ? getAllNodeIds(node.children) : [])]);
+  };
+
+  useEffect(() => {
+    if (expandAll) {
+      const allIds = getAllNodeIds(data);
+      setExpandedIds(new Set(allIds));
+    } else {
+      setExpandedIds(new Set());
+    }
+  }, [expandAll]);
 
   const toggleNode = (nodeId: string) => {
-    const newExpandedNodes = new Set(expandedNodes);
-    if (expandedNodes.has(nodeId)) {
+    const newExpandedNodes = new Set(expandedIds);
+    if (expandedIds.has(nodeId)) {
       newExpandedNodes.delete(nodeId);
     } else {
       newExpandedNodes.add(nodeId);
     }
-    setExpandedNodes(newExpandedNodes);
+    setExpandedIds(newExpandedNodes);
   };
 
   return (
     <ul className={cn("list-none", className)}>
       {data.map((node) => {
         const hasChildren = node.children && node.children.length > 0;
-        const isExpanded = expandedNodes.has(node.id);
+        const isExpanded = expandedIds.has(node.id);
 
         return (
           <li key={node.id} className='pl-2'>
@@ -42,6 +55,7 @@ export function Tree({ data, level = 0, className }: TreeProps) {
                 <Button
                   variant='outline'
                   size='icon'
+                  type='button'
                   onClick={() => toggleNode(node.id)}
                   className='h-4 w-4 px-4 border-0 hover:bg-gray-100 dark:hover:bg-gray-800'
                 >
@@ -56,7 +70,7 @@ export function Tree({ data, level = 0, className }: TreeProps) {
               <div className='flex-1'>{node.content || node.name}</div>
             </div>
             {hasChildren && isExpanded && node.children && (
-              <Tree data={node.children} level={level + 1} className='mt-1' />
+              <Tree expandAll={expandAll} data={node.children} level={level + 1} className='mt-1' />
             )}
           </li>
         );

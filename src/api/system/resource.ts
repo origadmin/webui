@@ -96,6 +96,14 @@ export const buildTree = (items?: API.System.Resource[]) => {
     }
     parent.children.push(item);
   });
+
+  map.forEach((node) => {
+    if (node.children && node.children.length > 0) {
+      node.children.sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
+    }
+  });
+
+  roots.sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
   console.log("tree", roots);
   return roots;
 };

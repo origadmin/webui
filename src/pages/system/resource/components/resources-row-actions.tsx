@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { useResourceTable } from "@/pages/system/resource/components/resources-table-provider";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconCirclePlus, IconEdit, IconTrash } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +30,7 @@ export const ResourceIconRowActions = ({ row }: { row: RowActionsProps<API.Resou
   );
 };
 
-export type OpenStateType = "invite" | "add" | "add-sub" | "edit" | "delete";
+export type OpenStateType = "add" | "add-sub" | "edit" | "delete";
 
 export interface RowActionsProps<TData> {
   row: Row<TData>;
@@ -93,6 +93,9 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
 
   return (
     <Fragment>
+      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("add-sub")} title='Add Sub'>
+        <IconCirclePlus size={16} />
+      </Button>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>

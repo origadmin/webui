@@ -4804,6 +4804,10 @@ body {
   grid-column: span 6 / span 6;
 }
 
+.col-span-8 {
+  grid-column: span 8 / span 8;
+}
+
 .col-start-2 {
   grid-column-start: 2;
 }

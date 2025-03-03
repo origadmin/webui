@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
 import { resourceTypeValues } from "@/types/system/resource";
 import { Checkbox } from "@/components/ui/checkbox";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
@@ -8,29 +8,23 @@ interface Props {
   value?: string[];
   onChange?: (value: string[]) => void;
   resources?: API.System.Resource[];
+  expandAll?: boolean;
 }
 
-export function RolesResourceSelect({ value = [], onChange, resources = [] }: Props) {
+export function RolesResourceSelect({ value = [], onChange, expandAll, resources = [] }: Props) {
   const [selectedResources, setSelectedResources] = useState<string[]>(value);
-
-  useEffect(() => {
-    setSelectedResources(value);
-  }, [value]);
-
-  // useEffect(() => {
-  //   if (onChange) {
-  //     onChange(selectedResources);
-  //   }
-  // }, [onChange, selectedResources]);
+  const changeCallback = (newValue: string[]) => {
+    console.log("newValue", newValue);
+    onChange?.(newValue);
+  };
 
   const handleResourceSelect = (resourceId: string, checked: boolean) => {
     const newSelectedResources = checked
       ? [...selectedResources, resourceId]
       : selectedResources.filter((id) => id !== resourceId);
     setSelectedResources(newSelectedResources);
-    onChange?.(newSelectedResources);
+    changeCallback(newSelectedResources);
   };
-
   const renderResourceNode = (resource: API.System.Resource) => {
     const isSelected = (resource && resource.id && selectedResources.includes(resource.id)) || false;
     return (
@@ -51,23 +45,21 @@ export function RolesResourceSelect({ value = [], onChange, resources = [] }: Pr
     );
   };
 
-  const transformResourcesToTreeData = useCallback(
-    (resources: API.System.Resource[]): TreeNode[] => {
-      return resources.map((resource) => ({
-        id: resource.id!,
-        name: resource.name!,
-        children: resource.children ? transformResourcesToTreeData(resource.children) : [],
-        content: renderResourceNode(resource),
-      }));
-    },
-    [renderResourceNode],
-  );
+  const transformResourcesToTreeData = (resources: API.System.Resource[]): TreeNode[] => {
+    return resources.map((resource) => ({
+      id: resource.id!,
+      name: resource.name!,
+      children: resource.children ? transformResourcesToTreeData(resource.children) : [],
+      content: renderResourceNode(resource),
+    }));
+  };
 
-  const treeData = useMemo(() => transformResourcesToTreeData(resources), [resources, transformResourcesToTreeData]);
+  const resourceTreeData = transformResourcesToTreeData(resources);
+  const treeData = useMemo(() => resourceTreeData, [resourceTreeData]);
 
   return (
     <div className='w-full flex col-span-12 flex-col overflow-y-auto'>
-      <Tree data={treeData} />
+      <Tree expandAll={expandAll} data={treeData} />
     </div>
   );
 }

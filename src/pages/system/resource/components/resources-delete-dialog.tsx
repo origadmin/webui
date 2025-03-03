@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useResourceDelete } from "@/api/system/resource";
 import { IconAlertTriangle } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
@@ -14,10 +16,11 @@ interface Props<T> {
 
 export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.Resource>) {
   const [value, setValue] = useState("");
-
+  const queryClient = useQueryClient();
+  const { mutate: deleteResource, isPending: isDeletePending } = useResourceDelete(queryClient);
   const handleDelete = () => {
-    if (value.trim() !== currentRow.keyword) return;
-
+    if (!currentRow.id || value.trim() !== currentRow.keyword) return;
+    deleteResource(currentRow.id);
     onOpenChange(false);
     toast({
       title: "The following resource has been deleted:",
@@ -34,7 +37,7 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.keyword}
+      disabled={value.trim() !== currentRow.keyword || isDeletePending}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle className='mr-1 inline-block stroke-destructive' size={18} /> Delete Resource

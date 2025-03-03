@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useResourceCreate, useResourceUpdate } from "@/api/system/resource";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
-import { Strings } from "@/utils/index";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconArrowsSort } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
@@ -104,7 +103,6 @@ export function ResourcesActionDialog({
           is_edit,
         },
   });
-  const [isAutoGenerate, setIsAutoGenerate] = useState(true);
 
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
@@ -129,7 +127,8 @@ export function ResourcesActionDialog({
     onOpenChange(false);
   };
   // Listen for changes in the path field
-  const pathValue = useWatch({ control: form.control, name: "path" });
+  // const pathValue = useWatch({ control: form.control, name: "path" });
+  // const [isAutoGenerate, setIsAutoGenerate] = useState(true);
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   const handleSortOpen = async () => {
@@ -138,20 +137,19 @@ export function ResourcesActionDialog({
     setSortDialogOpen(true);
     // }
   };
-  // const { fields, append, remove } = useFieldArray({
-  //   control: form.control,
-  //   name: "endpoints",
-  // });
 
-  useEffect(() => {
-    if (!isAutoGenerate) return;
-    const keyword = form.getValues("keyword");
-    if (!keyword && pathValue) {
-      // The logic that automatically generates keywords based on the path
-      const generatedKeyword = Strings.autoGenKeyword(pathValue);
-      form.setValue("keyword", generatedKeyword);
-    }
-  }, [form, isAutoGenerate, pathValue]);
+  // todo(auto generate keyword)
+  // useEffect(() => {
+  //   if (!isAutoGenerate) return;
+  //   const keyword = form.getValues("keyword");
+  //   // The logic that automatically generates keywords based on the path
+  //   const value = Strings.autoGenKeyword(pathValue || "");
+  //   console.log("pathValue", value, keyword, isAutoGenerate);
+  //   if (keyword === value) {
+  //     const generatedKeyword = Strings.autoGenKeyword(value);
+  //     form.setValue("keyword", generatedKeyword);
+  //   }
+  // }, [form, isAutoGenerate, pathValue]);
 
   const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
@@ -277,9 +275,9 @@ export function ResourcesActionDialog({
                           className='col-span-4'
                           {...field}
                           onChange={(e) => {
-                            if (pathValue) {
-                              setIsAutoGenerate(field.value === Strings.autoGenKeyword(pathValue));
-                            }
+                            // if (pathValue) {
+                            //   setIsAutoGenerate(field.value === Strings.autoGenKeyword(pathValue));
+                            // }
                             field.onChange(e);
                           }}
                         />
