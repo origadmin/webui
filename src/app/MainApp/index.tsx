@@ -6,9 +6,9 @@ import { refreshToken } from "@/utils/auth";
 import { getAccessToken } from "@/utils/storage";
 import { RouterProvider } from "@tanstack/react-router";
 import AuthProvider, { AuthProviderProps, useAuth } from "@/hooks/use-auth";
+import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 import { SidebarProps } from "@/components/Sidebar";
-import { Toaster } from "sonner";
 
 type UserResource = {
   user?: API.System.User;
@@ -174,7 +174,7 @@ function MainApp() {
       <AuthProvider<InitialDataConfig> {...initialData}>
         <AuthApp />
       </AuthProvider>
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position='top-right' />
     </Suspense>
   );
 }
