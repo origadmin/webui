@@ -30,18 +30,21 @@ export function RolesResourceSelect({ value = [], onChange, expandAll, resources
   const renderResourceNode = (resource: API.System.Resource) => {
     const isSelected = (resource && resource.id && selectedResources.includes(resource.id)) || false;
     return (
-      <div className='flex col-span-12 items-center space-x-2'>
+      <div className='flex col-span-12 grid-cols-subgrid items-center space-x-2'>
         <Checkbox
           id={resource.id}
           checked={isSelected}
           onCheckedChange={(checked) => handleResourceSelect(resource.id || "", checked as boolean)}
         />
-        <div className='flex items-center'>
+        <div className='flex w-full items-center'>
           {resource.icon && <TablerIcon name={resource.icon} size={24} className='mr-2 w-4 h-4' />}
           <span className='text-sm font-medium'>{resource.name}</span>
           {resource.type && (
             <span className='ml-2 text-xs text-gray-500'>({resourceTypeValues.get(resource.type)})</span>
           )}
+        </div>
+        <div className='flex col-span-1 items-center justify-end'>
+          <span>具体权限</span>
         </div>
       </div>
     );

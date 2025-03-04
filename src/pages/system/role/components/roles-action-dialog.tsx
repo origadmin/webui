@@ -111,7 +111,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
             <form id='role-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 p-1'>
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+              <div className='grid grid-cols-12 mb-4 border-gray-200 dark:border-gray-700 pb-4'>
                 <h2 className='col-span-10 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                   Base Info
                 </h2>
@@ -211,12 +211,14 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                     </FormItem>
                   )}
                 />
-                <Separator className='col-span-12' />
-                <div className='col-span-12 items-center grid grid-cols-subgrid flex overflow-x-auto'>
-                  <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 pt-4 text-gray-900 dark:text-gray-100'>
+                <div className='col-span-12 pt-4'>
+                  <Separator />
+                </div>
+                <div className='col-span-12 items-center grid grid-cols-subgrid pt-4 overflow-x-hidden'>
+                  <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                     Role Permissions
                   </h2>
-                  <div className='col-span-1 grid grid-cols-subgrid items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                  <div className='col-span-1 items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
                     <Switch checked={expanded} onCheckedChange={setExpanded} />
                   </div>
                 </div>

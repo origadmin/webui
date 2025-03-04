@@ -104,7 +104,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
     console.log("refresh captcha");
     refreshCaptcha();
-  }, []);
+  }, [isLoading]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     values.captcha_id = captcha.id || "";

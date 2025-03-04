@@ -271,7 +271,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                   )}
                 />
               </div>
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+              <div className='grid grid-cols-12 mb-4 border-gray-200 dark:border-gray-700 pb-4'>
                 <h2 className='col-span-10 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>安全设置</h2>
                 <FormField
                   control={form.control}

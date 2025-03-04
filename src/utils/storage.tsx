@@ -1,5 +1,14 @@
-import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USER_ID_KEY, USER_KEY, USERNAME_KEY, AUTHORIZATION_KEY, LOCALE_KEY, defaultLocale } from "@/types";
-
+import {
+  ACCESS_TOKEN_KEY,
+  EXPIRATION_TIME_KEY,
+  REFRESH_TOKEN_KEY,
+  USER_ID_KEY,
+  USER_KEY,
+  USERNAME_KEY,
+  AUTHORIZATION_KEY,
+  LOCALE_KEY,
+  defaultLocale,
+} from "@/types";
 
 /**
  * Remove the specified token from local storage
@@ -7,6 +16,12 @@ import { ACCESS_TOKEN_KEY, EXPIRATION_TIME_KEY, REFRESH_TOKEN_KEY, USER_ID_KEY, 
  */
 export const removeToken = (key: string) => {
   localStorage.removeItem(key);
+};
+
+export const removeTokens = () => {
+  removeToken(AUTHORIZATION_KEY);
+  removeToken(ACCESS_TOKEN_KEY);
+  removeToken(REFRESH_TOKEN_KEY);
 };
 
 /**

@@ -175,7 +175,7 @@ export function ResourcesActionDialog({
               onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("验证失败:", errors))}
               className='space-y-4 p-1'
             >
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
+              <div className='grid grid-cols-12 mb-4 border-gray-200 dark:border-gray-700 pb-4'>
                 <h2 className='col-span-10 text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                   Base Info
                 </h2>

@@ -24,9 +24,22 @@ export function uuid() {
   return crypto.randomUUID();
 }
 
-/**
- * The function generates a random key by hashing a unique identifier using the SHA256 algorithm.
- */
-export function randomKey() {
-  return sha256(uuid());
+export function generateRandomString(length: number) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export function generateRandomNumber(length: number) {
+  const characters = "0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }

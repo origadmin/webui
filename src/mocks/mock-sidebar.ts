@@ -1,4 +1,3 @@
-import { randomKey } from "@/utils/crypto";
 import {
   IconBarrierBlock,
   IconBrowserCheck,
@@ -21,6 +20,7 @@ import {
   IconUserOff,
 } from "@tabler/icons-react";
 import { Command, LifeBuoy, Send } from "lucide-react";
+import { uuid } from "@/lib/crypto";
 
 export type Product = {
   photo_path: string;
@@ -297,68 +297,68 @@ export const mockTopNav = [
 
 export const mockFooter = [
   {
-    key: randomKey(),
+    key: uuid(),
     title: "FAQs",
     url: "#",
     links: [
       {
-        key: randomKey(),
+        key: uuid(),
         title: "Terms",
         url: "#",
       },
       {
-        key: randomKey(),
+        key: uuid(),
         title: "Disclaimer",
         url: "#",
       },
     ],
   },
   {
-    key: randomKey(),
+    key: uuid(),
     title: "Privacy Policy",
     url: "#",
     links: [
       {
-        key: randomKey(),
+        key: uuid(),
         title: "General",
         url: "#",
       },
       {
-        key: randomKey(),
+        key: uuid(),
         title: "Privacy",
         url: "#",
       },
     ],
   },
   {
-    key: randomKey(),
+    key: uuid(),
     title: "Terms & Conditions",
     url: "#",
     links: [
       {
-        key: randomKey(),
+        key: uuid(),
         title: "General",
         url: "#",
       },
       {
-        key: randomKey(),
+        key: uuid(),
         title: "Privacy",
         url: "#",
       },
     ],
   },
   {
-    key: randomKey(),
+    key: uuid(),
     title: "Refund Policy",
     url: "#",
     links: [
       {
-        key: randomKey(),
+        key: uuid(),
         title: "General",
         url: "#",
       },
       {
-        key: randomKey(),
+        key: uuid(),
         title: "Privacy",
         url: "#",
       },
@@ -400,19 +400,7 @@ export const mockUser = {
   email: "admin@example.com",
   phone: "13800138000",
   status: 1,
-  // roles: ["super_admin"],
-  // departments: ["root"],
-  // positions: ["技术总监"],
   is_system: true,
-};
-
-export const mockToken = {
-  user_id: "admin",
-  access_token:
-    "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzczOTYwMzQsImlzcyI6ImxvY2FsaG9zdCIsInN1YiI6ImFkbWluIn0.nlRp027z2lnX_RtyqYOaUocUcGODvWgMw-N81Evj68XMsMBIjNXS9O9arjbIZkNXU8MFnNdweOmgMQJFhUii6A",
-  refresh_token:
-    "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg1OTg0MzQsImlzcyI6ImxvY2FsaG9zdCIsInN1YiI6ImFkbWluIn0.EhuqS0I25qLJh2iMgHb-bJpKN6Jn0IOBSqDPjskPYUkNMqMHOnPeTbon_yddaiQ5mQbQie3b4IAjsCoByLmhVQ",
-  expires_at: 1737396034,
 };
 
 export const mockSecondItems = [

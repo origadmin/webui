@@ -3,7 +3,7 @@ import { logout, login } from "@/api/system/login";
 import { mockLogin } from "@/mocks/mock-login";
 import { SIGN_IN_URL } from "@/types";
 import { post } from "@/utils/request";
-import { getRefreshToken, setAuth } from "@/utils/storage";
+import { getRefreshToken, removeTokens, setAuth } from "@/utils/storage";
 import GlobalConfig from "@config";
 
 export async function refreshToken() {
@@ -65,7 +65,7 @@ export const signOut = async <T extends API.Token>({ logout: _logout = logout, o
     }
   } finally {
     // Clear user status to prevent errors from causing state confusion
-    localStorage.removeItem("access_token");
+    removeTokens();
   }
 };
 
