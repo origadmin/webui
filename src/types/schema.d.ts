@@ -1181,6 +1181,10 @@ export interface components {
             data_rules?: {
                 [key: string]: string;
             };
+            /** @description permission.field.resource_ids */
+            resource_ids?: string[];
+            /** @description permission.field.resources */
+            resources?: components["schemas"]["api.v1.services.system.Resource"][];
         };
         "api.v1.services.system.PersonalLogoutResponse": {
             success?: boolean;
@@ -1328,6 +1332,8 @@ export interface components {
             menus?: components["schemas"]["api.v1.services.system.Menu"][];
             /** @description Users holds the value of the users edge. */
             users?: components["schemas"]["api.v1.services.system.User"][];
+            /** @description Resources holds the value of the resources edge. */
+            resources?: components["schemas"]["api.v1.services.system.Resource"][];
         };
         "api.v1.services.system.TokenRefreshRequest_Data": {
             refresh_token?: string;

@@ -34,6 +34,7 @@ import { Route as AuthorizationSystemUserImport } from "./routes/_authorization/
 import { Route as AuthorizationSystemSettingsImport } from "./routes/_authorization/system/settings";
 import { Route as AuthorizationSystemRoleImport } from "./routes/_authorization/system/role";
 import { Route as AuthorizationSystemResourceImport } from "./routes/_authorization/system/resource";
+import { Route as AuthorizationSystemPermissionImport } from "./routes/_authorization/system/permission";
 import { Route as AuthorizationDashboardSettingsImport } from "./routes/_authorization/dashboard/settings";
 import { Route as AuthorizationDashboardProductsImport } from "./routes/_authorization/dashboard/products";
 import { Route as AuthorizationDashboardOverviewImport } from "./routes/_authorization/dashboard/overview";
@@ -188,6 +189,13 @@ const AuthorizationSystemResourceRoute =
   AuthorizationSystemResourceImport.update({
     id: "/system/resource",
     path: "/system/resource",
+    getParentRoute: () => AuthorizationRoute,
+  } as any);
+
+const AuthorizationSystemPermissionRoute =
+  AuthorizationSystemPermissionImport.update({
+    id: "/system/permission",
+    path: "/system/permission",
     getParentRoute: () => AuthorizationRoute,
   } as any);
 
@@ -398,6 +406,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationDashboardSettingsImport;
       parentRoute: typeof AuthorizationImport;
     };
+    "/_authorization/system/permission": {
+      id: "/_authorization/system/permission";
+      path: "/system/permission";
+      fullPath: "/system/permission";
+      preLoaderRoute: typeof AuthorizationSystemPermissionImport;
+      parentRoute: typeof AuthorizationImport;
+    };
     "/_authorization/system/resource": {
       id: "/_authorization/system/resource";
       path: "/system/resource";
@@ -508,6 +523,7 @@ interface AuthorizationRouteChildren {
   AuthorizationDashboardOverviewRoute: typeof AuthorizationDashboardOverviewRoute;
   AuthorizationDashboardProductsRoute: typeof AuthorizationDashboardProductsRoute;
   AuthorizationDashboardSettingsRoute: typeof AuthorizationDashboardSettingsRoute;
+  AuthorizationSystemPermissionRoute: typeof AuthorizationSystemPermissionRoute;
   AuthorizationSystemResourceRoute: typeof AuthorizationSystemResourceRoute;
   AuthorizationSystemRoleRoute: typeof AuthorizationSystemRoleRoute;
   AuthorizationSystemSettingsRoute: typeof AuthorizationSystemSettingsRoute;
@@ -531,6 +547,7 @@ const AuthorizationRouteChildren: AuthorizationRouteChildren = {
   AuthorizationDashboardOverviewRoute: AuthorizationDashboardOverviewRoute,
   AuthorizationDashboardProductsRoute: AuthorizationDashboardProductsRoute,
   AuthorizationDashboardSettingsRoute: AuthorizationDashboardSettingsRoute,
+  AuthorizationSystemPermissionRoute: AuthorizationSystemPermissionRoute,
   AuthorizationSystemResourceRoute: AuthorizationSystemResourceRoute,
   AuthorizationSystemRoleRoute: AuthorizationSystemRoleRoute,
   AuthorizationSystemSettingsRoute: AuthorizationSystemSettingsRoute,
@@ -572,6 +589,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
   "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/system/permission": typeof AuthorizationSystemPermissionRoute;
   "/system/resource": typeof AuthorizationSystemResourceRoute;
   "/system/role": typeof AuthorizationSystemRoleRoute;
   "/system/settings": typeof AuthorizationSystemSettingsRoute;
@@ -607,6 +625,7 @@ export interface FileRoutesByTo {
   "/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
   "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/system/permission": typeof AuthorizationSystemPermissionRoute;
   "/system/resource": typeof AuthorizationSystemResourceRoute;
   "/system/role": typeof AuthorizationSystemRoleRoute;
   "/system/settings": typeof AuthorizationSystemSettingsRoute;
@@ -644,6 +663,7 @@ export interface FileRoutesById {
   "/_authorization/dashboard/overview": typeof AuthorizationDashboardOverviewRoute;
   "/_authorization/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/_authorization/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
+  "/_authorization/system/permission": typeof AuthorizationSystemPermissionRoute;
   "/_authorization/system/resource": typeof AuthorizationSystemResourceRoute;
   "/_authorization/system/role": typeof AuthorizationSystemRoleRoute;
   "/_authorization/system/settings": typeof AuthorizationSystemSettingsRoute;
@@ -682,6 +702,7 @@ export interface FileRouteTypes {
     | "/dashboard/overview"
     | "/dashboard/products"
     | "/dashboard/settings"
+    | "/system/permission"
     | "/system/resource"
     | "/system/role"
     | "/system/settings"
@@ -716,6 +737,7 @@ export interface FileRouteTypes {
     | "/dashboard/overview"
     | "/dashboard/products"
     | "/dashboard/settings"
+    | "/system/permission"
     | "/system/resource"
     | "/system/role"
     | "/system/settings"
@@ -751,6 +773,7 @@ export interface FileRouteTypes {
     | "/_authorization/dashboard/overview"
     | "/_authorization/dashboard/products"
     | "/_authorization/dashboard/settings"
+    | "/_authorization/system/permission"
     | "/_authorization/system/resource"
     | "/_authorization/system/role"
     | "/_authorization/system/settings"
@@ -834,6 +857,7 @@ export const routeTree = rootRoute
         "/_authorization/dashboard/overview",
         "/_authorization/dashboard/products",
         "/_authorization/dashboard/settings",
+        "/_authorization/system/permission",
         "/_authorization/system/resource",
         "/_authorization/system/role",
         "/_authorization/system/settings",
@@ -908,6 +932,10 @@ export const routeTree = rootRoute
     },
     "/_authorization/dashboard/settings": {
       "filePath": "_authorization/dashboard/settings.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/system/permission": {
+      "filePath": "_authorization/system/permission.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/system/resource": {

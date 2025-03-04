@@ -226,9 +226,9 @@ export function ResourcesActionDialog({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {["M", "A", "-"].map((value, index) => (
-                            <SelectItem key={index} value={value.toString()}>
-                              {resourceTypeValues.get(value.toString()) || "Empty"}
+                          {Array.from(resourceTypeValues).map(([key, value]) => (
+                            <SelectItem key={key} value={key}>
+                              {value?.trim() || `Unknown(${key})`}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -451,7 +451,15 @@ export function ResourcesActionDialog({
           </Button>
         </DialogFooter>
       </DialogContent>
-      <ResourcesSequenceDialog open={sortDialogOpen} onOpenChange={setSortDialogOpen} currentRow={currentRow} />
+      <ResourcesSequenceDialog
+        open={sortDialogOpen}
+        onOpenChange={setSortDialogOpen}
+        currentRow={{
+          id: currentRow?.id,
+          sequence: currentRow?.sequence ?? 0,
+          name: currentRow?.name ?? "",
+        }}
+      />
     </Dialog>
   );
 }

@@ -41,6 +41,7 @@ export async function deletePermission(id: string, options?: API.RequestOptions)
 }
 
 export const usePermissionsQuery = (opts?: API.SearchParams) => {
+  console.log("usePermissionsQuery", opts);
   return useQuery(
     queryOptions({
       queryKey: ["/sys/permissions", { ...opts }],
@@ -50,6 +51,7 @@ export const usePermissionsQuery = (opts?: API.SearchParams) => {
 };
 
 export const usePermissionQuery = (id: string) => {
+  console.log("usePermissionQuery", id);
   return useQuery(
     queryOptions({
       queryKey: ["/sys/permissions", id],

@@ -73,9 +73,9 @@ interface BehaviorProps {
   paginationState?: PaginationState;
   columnFiltersState?: ColumnFiltersState;
   sorting?: SortingState;
-  setSorting?: OnChangeFn<SortingState>;
-  setColumnFilters?: OnChangeFn<ColumnFiltersState>;
-  setPagination?: OnChangeFn<PaginationState>;
+  onSortingChange?: OnChangeFn<SortingState>;
+  onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
+  onPaginationChange?: OnChangeFn<PaginationState>;
   onRowSelectionChange?: OnChangeFn<VisibilityState>;
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
 }
@@ -173,11 +173,11 @@ function DataTable<TData, TValue = unknown>({
   },
   columnFiltersState = [],
   sorting,
-  setSorting,
-  setColumnFilters,
-  setPagination,
-  onRowSelectionChange: onRowSelectionChange,
-  onColumnVisibilityChange: onColumnVisibilityChange,
+  onSortingChange,
+  onColumnFiltersChange,
+  onPaginationChange,
+  onRowSelectionChange,
+  onColumnVisibilityChange,
   toolbars,
   toolbarPosition = "top",
   options,
@@ -219,16 +219,16 @@ function DataTable<TData, TValue = unknown>({
     ...manualProps,
     enableRowSelection: true,
     onRowSelectionChange: onRowSelectionChange,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: onSortingChange,
+    onColumnFiltersChange: onColumnFiltersChange,
     onColumnVisibilityChange: onColumnVisibilityChange,
+    onPaginationChange: useManual ? onPaginationChange : undefined,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: !useManual ? getPaginationRowModel() : undefined,
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    onPaginationChange: useManual ? setPagination : undefined,
   });
 
   const { search, title, pagination, toolbar } = props;

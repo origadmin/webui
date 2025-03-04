@@ -1,8 +1,10 @@
 import { useState, useMemo } from "react";
 import { useResourcesQuery, buildTree } from "@/api/system/resource";
+import { useRoleCreate, useRoleUpdate } from "@/api/system/role";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconArrowsSort } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -29,7 +31,7 @@ const formSchema = z.object({
     message: t("Name is required"),
   }),
   keyword: z.string().min(1, { message: "Keyword is required." }),
-  type: z.number().min(1, { message: "Type is required." }),
+  type: z.number().optional(),
   sequence: z.number().default(1),
   description: z.string().optional(),
   status: z.number().default(1),
@@ -61,7 +63,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
       : {
           name: "",
           keyword: "",
-          type: 0,
+          type: 1,
           sequence: 1,
           description: "",
           status: 1,
@@ -74,8 +76,21 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
   const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
 
   console.log("dialog resource", resources);
+  const id = currentRow?.id || "";
+  const queryClient = useQueryClient();
+  const { mutate: createRole, isPending: isCreatePending } = useRoleCreate(queryClient);
+  const { mutate: updateRole, isPending: isUpdatePending } = useRoleUpdate(queryClient, id);
   const onSubmit = (values: RoleForm) => {
     form.reset();
+    if (!is_edit) {
+      createRole({
+        ...values,
+      });
+    } else {
+      updateRole({
+        ...values,
+      });
+    }
     toast({
       title: "You submitted the following values:",
       description: (
@@ -244,12 +259,20 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           </Form>
         </ScrollArea>
         <DialogFooter>
-          <Button type='submit' form='role-form'>
+          <Button type='submit' form='role-form' disabled={isCreatePending || isUpdatePending}>
             Save changes
           </Button>
         </DialogFooter>
       </DialogContent>
-      <RolesSequenceDialog open={sortDialogOpen} onOpenChange={setSortDialogOpen} currentRow={currentRow} />
+      <RolesSequenceDialog
+        open={sortDialogOpen}
+        onOpenChange={setSortDialogOpen}
+        currentRow={{
+          id: currentRow?.id,
+          sequence: currentRow?.sequence ?? 0,
+          name: currentRow?.name ?? "",
+        }}
+      />
     </Dialog>
   );
 }

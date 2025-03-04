@@ -1,42 +1,76 @@
-import { usePermissionsQuery } from "@/api/system/permission";
-import { useUpdateRolePermissions } from "@/api/system/role";
+import { useState } from "react";
+import { usePermissionCreate, usePermissionsQuery, usePermissionDelete } from "@/api/system/permission";
+import { RolePermissionForm } from "@/pages/system/role/components/role-permission-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tree } from "@/components/Tree";
+import { DialogHeader, DialogTitle, DialogContent, DialogFooter, Dialog } from "@/components/ui/dialog";
 
 interface Props {
-  roleId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function RolePermissionsDialog({ roleId, open, onOpenChange }: Props) {
-  const { data: permissions, isLoading } = usePermissionsQuery();
+export function RolePermissionsDialog({ open, onOpenChange }: Props) {
+  const [editingPermission, setEditingPermission] = useState<API.System.Permission | null>(null);
+  const { data: permissions, refetch } = usePermissionsQuery();
   const queryClient = useQueryClient();
-  const { mutate: updatePermissions } = useUpdateRolePermissions(queryClient, roleId);
+  const { mutate: createPermission, isPending: isCreatePending } = usePermissionCreate(queryClient);
+  // const updateMutation = usePermissionUpdate(queryClient, editingPermission?.id || "");
+  const { mutate: deletePermission, isPending: isDeletePending } = usePermissionDelete(queryClient);
 
-  const handleSubmit = (selectedKeys: string[]) => {
-    updatePermissions(selectedKeys);
+  const handleSubmit = async (formData: API.System.Permission) => {
+    if (!editingPermission) {
+      createPermission(formData);
+    } else {
+    }
+    refetch();
+    onOpenChange(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    // await deleteMutation.mutateAsync(id);
+    refetch();
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className='max-w-2xl'>
         <DialogHeader>
-          <DialogTitle>分配权限</DialogTitle>
+          <DialogTitle>{editingPermission ? "编辑权限" : "新建权限"}</DialogTitle>
         </DialogHeader>
 
-        <Tree
-          data={permissions}
-          checkable
-          defaultExpandAll
-          fieldNames={{ key: "id", title: "name", children: "children" }}
+        <RolePermissionForm
+          initialValues={editingPermission}
+          onSubmit={handleSubmit}
+          onDelete={editingPermission ? () => handleDelete("") : undefined}
         />
 
+        <div className='mt-4 border-t pt-4'>
+          <h3 className='text-lg font-semibold'>现有权限列表</h3>
+          <div className='space-y-2 max-h-60 overflow-y-auto'>
+            {permissions?.data?.map((permission) => (
+              <div key={permission.id} className='flex items-center justify-between p-2 border rounded'>
+                <div>
+                  <span className='font-medium'>{permission.name}</span>
+                  <span className='text-sm text-muted-foreground ml-2'>({permission.keyword})</span>
+                </div>
+                <Button variant='ghost' size='sm' onClick={() => setEditingPermission(permission)}>
+                  编辑
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <DialogFooter>
-          <Button loading={isLoading} onClick={() => handleSubmit(/* 获取选中值 */)}>
-            提交
+          <Button
+            variant='outline'
+            onClick={() => {
+              setEditingPermission(null);
+              onOpenChange(false);
+            }}
+          >
+            关闭
           </Button>
         </DialogFooter>
       </DialogContent>
