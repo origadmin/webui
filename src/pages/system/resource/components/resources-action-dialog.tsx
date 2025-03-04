@@ -23,6 +23,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import IconPicker from "@/components/IconPicker";
@@ -288,19 +289,6 @@ export function ResourcesActionDialog({
                 />
                 <FormField
                   control={form.control}
-                  name='description'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Description</FormLabel>
-                      <FormControl>
-                        <Input placeholder='' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4 col-start-3' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
                   name='sequence'
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
@@ -346,6 +334,19 @@ export function ResourcesActionDialog({
                 />
                 <FormField
                   control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder='' className='col-span-10' {...field} />
+                      </FormControl>
+                      <FormMessage className='col-span-10 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name='stringProperties'
                   render={({ field }) => (
                     <FormItem className='col-span-12 items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
@@ -362,85 +363,14 @@ export function ResourcesActionDialog({
                     </FormItem>
                   )}
                 />
-                {/*<Separator className='col-span-12' />*/}
-                {/*<h2 className='col-span-12 text-lg font-medium mb-2 px-2 py-4 text-gray-900 dark:text-gray-100'>*/}
-                {/*  Resource Properties*/}
-                {/*</h2>*/}
-                {/*<FormField*/}
-                {/*  control={form.control}*/}
-                {/*  name='endpoints'*/}
-                {/*  render={() => (*/}
-                {/*    <FormItem className='col-span-12 space-y-4'>*/}
-                {/*      /!*<div className='flex items-center justify-between'>*!/*/}
-                {/*      /!*  <FormLabel className='text-lg font-medium'></FormLabel>*!/*/}
-                {/*      /!*</div>*!/*/}
-                {/*      <div className='space-y-2'>*/}
-                {/*        {fields.map((field, index) => (*/}
-                {/*          <div key={field.id} className='flex gap-x-2 items-start'>*/}
-                {/*            <FormField*/}
-                {/*              control={form.control}*/}
-                {/*              name={`endpoints.${index}.method`}*/}
-                {/*              render={({ field }) => (*/}
-                {/*                <FormItem className='space-y-2 flex-1'>*/}
-                {/*                  <Select onValueChange={field.onChange} value={field.value}>*/}
-                {/*                    <FormControl>*/}
-                {/*                      <SelectTrigger className='h-8'>*/}
-                {/*                        <SelectValue placeholder='Select method' />*/}
-                {/*                      </SelectTrigger>*/}
-                {/*                    </FormControl>*/}
-                {/*                    <SelectContent>*/}
-                {/*                      {["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => (*/}
-                {/*                        <SelectItem key={method} value={method}>*/}
-                {/*                          {method}*/}
-                {/*                        </SelectItem>*/}
-                {/*                      ))}*/}
-                {/*                    </SelectContent>*/}
-                {/*                  </Select>*/}
-                {/*                </FormItem>*/}
-                {/*              )}*/}
-                {/*            />*/}
-                {/*            <FormField*/}
-                {/*              control={form.control}*/}
-                {/*              name={`endpoints.${index}.path`}*/}
-                {/*              render={({ field }) => (*/}
-                {/*                <FormItem className='space-y-2 flex-[3]'>*/}
-                {/*                  <FormControl>*/}
-                {/*                    <Input className='h-8' placeholder='/api/v1/example' {...field} />*/}
-                {/*                  </FormControl>*/}
-                {/*                  <FormMessage />*/}
-                {/*                </FormItem>*/}
-                {/*              )}*/}
-                {/*            />*/}
-                {/*            <div className='flex h-8 items-center justify-center'>*/}
-                {/*              <Button*/}
-                {/*                type='button'*/}
-                {/*                variant='ghost'*/}
-                {/*                size='icon'*/}
-                {/*                className='text-red-500 hover:bg-red-50 dark:hover:bg-red-600 dark:text-red-300'*/}
-                {/*                onClick={() => remove(index)}*/}
-                {/*              >*/}
-                {/*                <IconTrash className='h-4 w-4 translate-y-[1px]' />*/}
-                {/*              </Button>*/}
-                {/*            </div>*/}
-                {/*          </div>*/}
-                {/*        ))}*/}
-                {/*      </div>*/}
-                {/*      <div className='flex items-center justify-between'>*/}
-                {/*        <Button*/}
-                {/*          type='button'*/}
-                {/*          variant='outline'*/}
-                {/*          size='sm'*/}
-                {/*          className='h-8 border-dashed w-full text-muted-foreground/60 hover:text-primary/80 hover:border-primary/50'*/}
-                {/*          onClick={() => append({ method: "GET", path: "" })}*/}
-                {/*        >*/}
-                {/*          <span className='flex items-center gap-2 mx-auto overflow-x-auto'>*/}
-                {/*            <IconPlaylistAdd className='h-8 w-8' /> Add*/}
-                {/*          </span>*/}
-                {/*        </Button>*/}
-                {/*      </div>*/}
-                {/*    </FormItem>*/}
-                {/*  )}*/}
-                {/*/>*/}
+                <div className='col-span-12 pt-4'>
+                  <Separator />
+                </div>
+                <div className='col-span-12 items-center grid grid-cols-subgrid pt-4 overflow-x-hidden'>
+                  <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
+                    Permission Settings
+                  </h2>
+                </div>
               </div>
             </form>
           </Form>

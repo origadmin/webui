@@ -32,6 +32,11 @@ export async function deleteRole(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/roles/${id}`, options);
 }
 
+/** Get role permissions GET /sys/roles/${id}/permissions */
+export async function getRolePermissions(id: string, options?: API.RequestOptions) {
+  return get<API.Result<string[]>>(`/sys/roles/${id}/permissions`, options);
+}
+
 export const useRolesQuery = (opts?: API.SearchParams) => {
   return useQuery(
     queryOptions({
@@ -49,7 +54,17 @@ export const useRoleQuery = (id: string) => {
     }),
   );
 };
-
+export const useRolePermissionsQuery = (id?: string) => {
+  return useQuery({
+    queryKey: ["/sys/roles/permissions", id],
+    queryFn: async () => {
+      if (!id) return { data: [] };
+      const result = getRolePermissions(id);
+      return result;
+    },
+    enabled: !!id,
+  });
+};
 export const useRoleCreate = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (role: Omit<API.System.Role, "id">) => addRole(role),

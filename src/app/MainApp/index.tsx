@@ -6,9 +6,9 @@ import { refreshToken } from "@/utils/auth";
 import { getAccessToken } from "@/utils/storage";
 import { RouterProvider } from "@tanstack/react-router";
 import AuthProvider, { AuthProviderProps, useAuth } from "@/hooks/use-auth";
-import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 import { SidebarProps } from "@/components/Sidebar";
+import { Toaster } from "sonner";
 
 type UserResource = {
   user?: API.System.User;
@@ -126,33 +126,7 @@ function MainApp() {
     };
   };
 
-  const initialData: InitialDataConfig = {
-    sidebar: getMockData(),
-    menus: mockSidebar.menuItems,
-    topNav: {
-      menus: mockTopNav,
-    },
-    footer: {
-      links: mockFooter,
-    },
-    watermark: {
-      content: "OrigAdmin",
-      fontWeight: "bold",
-      fontFamily: "Arial",
-      opacity: 0.3,
-      rotate: 45,
-      width: 100, // Reduce the width of a single watermark
-      height: 100, // Reduce the height of a single watermark
-      x: 0,
-      y: 0,
-      zIndex: 1,
-      position: "absolute",
-      top: 0, // Adjust to the top
-      left: 0, // Adjust to the left
-    },
-  };
-
-  const data: AuthProviderProps<InitialDataConfig> = {
+  const initialData: AuthProviderProps<InitialDataConfig> = {
     refresh: () => {
       return refreshToken();
     },
@@ -161,7 +135,31 @@ function MainApp() {
     },
     token: getAccessToken(),
     access: accesses,
-    initialData: initialData,
+    initialData: {
+      sidebar: getMockData(),
+      menus: mockSidebar.menuItems,
+      topNav: {
+        menus: mockTopNav,
+      },
+      footer: {
+        links: mockFooter,
+      },
+      watermark: {
+        content: "OrigAdmin",
+        fontWeight: "bold",
+        fontFamily: "Arial",
+        opacity: 0.3,
+        rotate: 45,
+        width: 100, // Reduce the width of a single watermark
+        height: 100, // Reduce the height of a single watermark
+        x: 0,
+        y: 0,
+        zIndex: 1,
+        position: "absolute",
+        top: 0, // Adjust to the top
+        left: 0, // Adjust to the left
+      },
+    },
     signInPath: SIGN_IN_URL,
     signUpPath: SIGN_UP_URL,
     signOutPath: SIGN_OUT_URL,
@@ -173,10 +171,10 @@ function MainApp() {
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <AuthProvider<InitialDataConfig> {...data}>
+      <AuthProvider<InitialDataConfig> {...initialData}>
         <AuthApp />
       </AuthProvider>
-      <Toaster />
+      <Toaster richColors position="top-right" />
     </Suspense>
   );
 }
