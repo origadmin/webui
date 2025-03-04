@@ -1,9 +1,8 @@
 import { useRolesQuery } from "@/api/system/role";
-import { useUserCreate, useUserUpdate } from "@/api/system/user";
+import { useUserCreate, useUserUpdate, formSchema, UserForm } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -22,83 +21,17 @@ import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
 
-// const empty = (className?: string) => (
-
-// const empty = (className?: string) => (
-//   <div className={cn("col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0", className)}>
-//     <div className='col-span-6' />
-//   </div>
-// );
-
-const formSchema = z
-  .object({
-    nickname: z.string().min(1, { message: "Nickname is required." }),
-    username: z.string().min(1, { message: "Username is required." }),
-    phone: z.string().min(1, { message: "Phone number is required." }),
-    email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
-    password: z.string().transform((pwd) => pwd.trim()),
-    role: z.string().min(1, { message: "Role is required." }),
-    role_ids: z.string().array(),
-    confirmPassword: z.string().transform((pwd) => pwd.trim()),
-    allow_ip: z.string().min(1, { message: "IP is required." }),
-    random_password: z.boolean().default(false),
-    is_edit: z.boolean(),
-  })
-  .superRefine(({ is_edit, password, confirmPassword }, ctx) => {
-    if (!is_edit || (is_edit && password !== "")) {
-      if (password === "") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password is required.",
-          path: ["password"],
-        });
-      }
-
-      if (password.length < 8) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must be at least 8 characters long.",
-          path: ["password"],
-        });
-      }
-
-      if (!password.match(/[a-z]/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must contain at least one lowercase letter.",
-          path: ["password"],
-        });
-      }
-
-      if (!password.match(/\d/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password must contain at least one number.",
-          path: ["password"],
-        });
-      }
-
-      if (password !== confirmPassword) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Passwords don't match.",
-          path: ["confirmPassword"],
-        });
-      }
-    }
-  });
-type UserForm = z.infer<typeof formSchema>;
-
 interface Props<T> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
-  columns?: number; // 添加 columns 参数
+  columns?: number; // add columns
 }
 
 export function UsersActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.User>) {
   const is_edit = !!currentRow;
+
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { createMoveHandlers } from "@/utils/array";
 import { IconChevronsUp, IconChevronUp, IconChevronDown, IconChevronsDown } from "@tabler/icons-react";
+import { createMoveHandlers, SequenceAble } from "@/lib/array";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,14 +11,18 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-interface Props<T> {
+interface Props<T extends SequenceAble & { name: string }> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function RolesSequenceDialog({ currentRow, open, onOpenChange }: Props<API.System.Role>) {
-  const [sortableItems, setSortableItems] = useState<API.System.Role[]>([]);
+export function RolesSequenceDialog<T extends SequenceAble & { name: string }>({
+  currentRow,
+  open,
+  onOpenChange,
+}: Props<T>) {
+  const [sortableItems, setSortableItems] = useState<T[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const moveHandlers = createMoveHandlers(setSortableItems, () => selectedItemId);
@@ -40,43 +44,6 @@ export function RolesSequenceDialog({ currentRow, open, onOpenChange }: Props<AP
   // };
 
   // // 2. 添加移动操作方法
-  // const moveToTop = () => {
-  //   if (!selectedItemId) return;
-  //   setSortableItems((items) => {
-  //     const index = items.findIndex((i) => i.id === selectedItemId);
-  //     if (index <= 0) return items;
-  //     return [items[index], ...items.filter((_, i) => i !== index)];
-  //   });
-  // };
-  //
-  // const moveUp = () => {
-  //   if (!selectedItemId) return;
-  //   setSortableItems((items) => {
-  //     const index = items.findIndex((i) => i.id === selectedItemId);
-  //     if (index <= 0) return items;
-  //     return arrayMove(items, index, index - 1);
-  //   });
-  // };
-  //
-  // const moveDown = () => {
-  //   if (!selectedItemId) return;
-  //   setSortableItems((items) => {
-  //     const index = items.findIndex((i) => i.id === selectedItemId);
-  //     if (index === -1 || index >= items.length - 1) return items;
-  //     return arrayMove(items, index, index + 1);
-  //   });
-  // };
-  //
-  // const moveToBottom = () => {
-  //   if (!selectedItemId) return;
-  //   setSortableItems((items) => {
-  //     const index = items.findIndex((i) => i.id === selectedItemId);
-  //     if (index === -1 || index >= items.length - 1) return items;
-  //     const newItems = [...items.filter((_, i) => i !== index), items[index]];
-  //     return newItems;
-  //   });
-  // };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>

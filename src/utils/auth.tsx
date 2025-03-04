@@ -1,6 +1,6 @@
 import auth from "@/api/auth";
 import { logout, login } from "@/api/system/login";
-import { mockLogin } from "@/mocks/mock-login";
+import { mockSignIn } from "@/mocks/mock-sign-in";
 import { SIGN_IN_URL } from "@/types";
 import { post } from "@/utils/request";
 import { getRefreshToken, removeTokens, setAuth } from "@/utils/storage";
@@ -73,10 +73,9 @@ export const signIn = async <T extends API.Token>(
   params: API.LoginForm,
   { login: _login = login, options, ...props }: SignProps<T>,
 ) => {
-  console.log("param value:", params);
   if (GlobalConfig.mocks) {
     console.log("mock login:", params);
-    const result = mockLogin(params);
+    const result = mockSignIn(params);
     if (result.success) {
       setAuth(result.data as API.Token);
       return;
