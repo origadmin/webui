@@ -38,10 +38,9 @@ import { Textarea } from "@/components/ui/textarea";
 interface PermissionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  dataScope?: string;
 }
 
-export default function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) {
+export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPermission, setCurrentPermission] = useState<API.System.Permission>({});
   const [isEditMode, setIsEditMode] = useState(false);

@@ -114,13 +114,19 @@ export const mockSidebar: API.SidebarData = {
               shortcut: ["r", "r"],
             },
             {
-              title: "Roles",
+              title: "Permission",
+              path: "/system/permission",
+              icon: icons["IconPalette"],
+              shortcut: ["p", "p"],
+            },
+            {
+              title: "Role",
               path: "/system/role",
               icon: icons["IconShield"],
               shortcut: ["r", "r"],
             },
             {
-              title: "Users",
+              title: "User",
               path: "/system/user",
               icon: icons["IconUsers"],
               shortcut: ["u", "u"],

@@ -1,7 +1,7 @@
-import ResourcesPage from "@/pages/system/resource";
-import { createFileRoute } from "@tanstack/react-router";
+import RolesPage from "@/pages/system/role";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authorization/system/resource")({
+export const Route = createLazyFileRoute("/_authorization/system/role")({
   // loader: async (ctx) => {
   //   const { deps, context } = ctx;
   //   const { queryClient } = context;
@@ -13,5 +13,5 @@ export const Route = createFileRoute("/_authorization/system/resource")({
 });
 
 function RouteComponent() {
-  return <ResourcesPage />;
+  return <RolesPage />;
 }

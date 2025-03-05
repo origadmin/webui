@@ -1,19 +1,19 @@
 import { Fragment } from "react";
 import { PermissionDialog } from "@/pages/system/components/permission-dialog";
-import { ResourcesActionDialog } from "./resources-action-dialog";
-import { ResourcesDeleteDialog } from "./resources-delete-dialog";
-import { useResourceTable } from "./resources-table-provider";
+import { PermissionsActionDialog } from "./permissions-action-dialog";
+import { PermissionsDeleteDialog } from "./permissions-delete-dialog";
+import { usePermissionTable } from "./permissions-table-provider";
 
-export function ResourcesDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useResourceTable();
+export function PermissionsDialogs() {
+  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = usePermissionTable();
   const className = "sm:max-w-3xl";
   console.log("currentRow", currentRow, "parentRow", parentRow);
 
   return (
     <Fragment>
-      <ResourcesActionDialog
+      <PermissionsActionDialog
         className={className}
-        key='resource-add'
+        key='permission-add'
         open={open === "add"}
         onOpenChange={() => {
           setOpen("add");
@@ -25,9 +25,9 @@ export function ResourcesDialogs() {
       />
       <PermissionDialog open={open === "edit-permission"} onOpenChange={() => setOpen("edit-permission")} />
       {parentRow && (
-        <ResourcesActionDialog
+        <PermissionsActionDialog
           className={className}
-          key={`resource-add-${parentRow.id}`}
+          key={`permission-add-${parentRow.id}`}
           open={open === "add-sub"}
           onOpenChange={() => {
             setOpen("add-sub");
@@ -40,9 +40,9 @@ export function ResourcesDialogs() {
         />
       )}
       {currentRow && (
-        <ResourcesActionDialog
+        <PermissionsActionDialog
           className={className}
-          key={`resource-edit-${currentRow.id}`}
+          key={`permission-edit-${currentRow.id}`}
           open={open === "edit"}
           onOpenChange={() => {
             setOpen("edit");
@@ -55,8 +55,8 @@ export function ResourcesDialogs() {
         />
       )}
       {currentRow && (
-        <ResourcesDeleteDialog
-          key={`resource-delete-${currentRow.id}`}
+        <PermissionsDeleteDialog
+          key={`permission-delete-${currentRow.id}`}
           open={open === "delete"}
           onOpenChange={() => {
             setOpen("delete");
