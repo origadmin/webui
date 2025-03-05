@@ -188,7 +188,6 @@ function DataTable<TData, TValue = unknown>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [data, setData] = useState<TData[]>([]);
   const [rowCount, setRowCount] = useState(0);
-  // const [isLoading] = useState(_isLoading);
   useEffect(() => {
     if (isLoading) return;
     setRowCount(total);

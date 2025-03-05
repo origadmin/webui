@@ -1,24 +1,12 @@
 import { PermissionIconRowActions } from "@/pages/system/permission/components/permissions-row-actions";
 import { defaultHeaderMeta } from "@/types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
+import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 export const columns: DataTableColumnType<API.System.Permission>[] = [
   {
     accessorKey: "name",
-    header: ({ column, table }) => (
-      <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
-        {table.getRowModel().rows.length > 0 && (
-          <Checkbox
-            checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
-            onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
-            aria-label='Select all'
-          />
-        )}
-        <DataTableColumnHeader className='px-2' column={column} title='Name' />
-      </div>
-    ),
+    header: "Name",
     searchable: true,
     meta: defaultHeaderMeta.meta,
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("name")}</LongText>,
@@ -33,15 +21,15 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
-    accessorKey: "sequence",
-    header: "Sequence",
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("sequence")}</div>,
+    accessorKey: "data_scope",
+    header: "Data Scope",
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("data_scope")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {
-    accessorKey: "visible",
-    header: "Visible",
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("visible") ? "Yes" : "No"}</div>,
+    accessorKey: "data_rules",
+    header: "Data Rules",
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("data_rules")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {

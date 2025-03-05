@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useResourcesQuery } from "@/api/system/resource";
 import { t } from "@/utils/locale";
@@ -114,6 +115,10 @@ export function PermissionsActionDialog({
         };
       }) || [];
 
+  const handleKeywordChange = (value: ChangeEvent<HTMLInputElement>) => {
+    console.log("value", value);
+  };
+
   // todo(auto generate keyword)
   // useEffect(() => {
   //   if (!isAutoGenerate) return;
@@ -175,14 +180,7 @@ export function PermissionsActionDialog({
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Keyword</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder='Empty if use auto generate'
-                          className='col-span-4'
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e);
-                          }}
-                        />
+                        <Input placeholder='Empty if use auto generate' className='col-span-4' {...field} />
                       </FormControl>
                       <FormMessage className='col-span-4 col-start-3' />
                     </FormItem>

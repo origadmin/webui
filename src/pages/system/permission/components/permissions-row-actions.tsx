@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { usePermissionTable } from "@/pages/system/permission/components/permissions-table-provider";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { IconCirclePlus, IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,15 +13,15 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-export const PermissionRowActions = ({ row }: { row: RowActionsProps<API.Permission>["row"] }) => {
+export const PermissionRowActions = ({ row }: { row: RowActionsProps<API.System.Permission>["row"] }) => {
   const { setOpen, setCurrentRow } = usePermissionTable();
-  return <RowActions<API.Permission> row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />;
+  return <RowActions<API.System.Permission> row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />;
 };
 
-export const PermissionIconRowActions = ({ row }: { row: RowActionsProps<API.Permission>["row"] }) => {
+export const PermissionIconRowActions = ({ row }: { row: RowActionsProps<API.System.Permission>["row"] }) => {
   const { setOpen, setCurrentRow, setParentRow } = usePermissionTable();
   return (
-    <IconRowActions<API.Permission>
+    <IconRowActions<API.System.Permission>
       row={row}
       setOpen={setOpen}
       setCurrentRow={setCurrentRow}
@@ -30,7 +30,7 @@ export const PermissionIconRowActions = ({ row }: { row: RowActionsProps<API.Per
   );
 };
 
-export type OpenStateType = "add" | "add-sub" | "edit" | "delete";
+export type OpenStateType = "add" | "edit" | "delete";
 
 export interface RowActionsProps<TData> {
   row: Row<TData>;
@@ -93,9 +93,6 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
 
   return (
     <Fragment>
-      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("add-sub")} title='Add Sub'>
-        <IconCirclePlus size={16} />
-      </Button>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>
