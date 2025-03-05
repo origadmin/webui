@@ -157,13 +157,13 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        {open || (
-          <Button variant='outline'>
-            <Shield className='mr-2 h-4 w-4' /> Manage Permissions
-          </Button>
-        )}
-      </DialogTrigger>
+      {/*<DialogTrigger asChild>*/}
+      {/*  {open || (*/}
+      {/*    <Button variant='outline'>*/}
+      {/*      <Shield className='mr-2 h-4 w-4' /> Manage Permissions*/}
+      {/*    </Button>*/}
+      {/*  )}*/}
+      {/*</DialogTrigger>*/}
       <DialogContent className='max-w-5xl max-h-[90vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Permission Management</DialogTitle>

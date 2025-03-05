@@ -347,8 +347,8 @@ export function ResourcesActionDialog({
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Sequence</FormLabel>
-                      <div className='col-span-4 flex'>
-                        <FormControl>
+                      <FormControl>
+                        <div className='col-span-4 flex'>
                           <Input
                             className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0'
                             placeholder=''
@@ -358,13 +358,13 @@ export function ResourcesActionDialog({
                             type='button'
                             variant='outline'
                             onClick={handleSortOpen}
-                            className='h-9 w-12 gap-0 px-0 rounded-l-none'
+                            className='rounded-l-none h-9 w-12 gap-0 px-0'
                             size='icon'
                           >
                             <IconArrowsSort className='h-5 w-5' />
                           </Button>
-                        </FormControl>
-                      </div>
+                        </div>
+                      </FormControl>
                       <FormMessage className='col-span-4 col-start-3' />
                     </FormItem>
                   )}
