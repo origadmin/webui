@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { resourceTypeValues } from "@/types/system/resource";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -107,8 +108,8 @@ export function PermissionsActionDialog({
       ?.filter((r) => r && r.id != undefined)
       .map((r) => {
         const value = r.id || "";
-        const type = r.type || "U";
-        const label = `${t(type)}-${r.name || ""}`;
+        const type = resourceTypeValues.get(r.type || "U") || "U";
+        const label = `${r.name || ""}(${type})`;
         return {
           value: value,
           label: label,

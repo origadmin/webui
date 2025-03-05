@@ -1,9 +1,12 @@
-import { ImgHTMLAttributes } from "react";
+import { ForwardRefExoticComponent, ImgHTMLAttributes, RefAttributes } from "react";
+import { Icon } from "@tabler/icons-react";
 
 type IconProps = {
   name: string;
   size?: number;
 } & ImgHTMLAttributes<HTMLImageElement>;
+
+type IconType = ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
 
 const TablerIcon = ({ name, size = 24, ...props }: IconProps) => {
   const variant = name.endsWith("-filled") ? "filled" : "outline";
@@ -12,3 +15,4 @@ const TablerIcon = ({ name, size = 24, ...props }: IconProps) => {
 };
 
 export default TablerIcon;
+export type { IconProps, IconType };

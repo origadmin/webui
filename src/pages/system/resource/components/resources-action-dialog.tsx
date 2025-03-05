@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePermissionCreate } from "@/api/system/permission";
 import { useResourceCreate, useResourceUpdate } from "@/api/system/resource";
 import { ResourcesSequenceDialog } from "@/pages/system/resource/components/resources-sequence-dialogs";
 import { t } from "@/utils/locale";
@@ -43,7 +44,13 @@ const formSchema = z
     sequence: z.number().default(1),
     icon: z.string().optional(),
     status: z.number().default(1),
-    // resource: z.string().min(1, { message: "Resource is required." }),
+    permissions: z
+      .array(
+        z.object({
+          id: z.string().optional(),
+        }),
+      )
+      .optional(),
     stringProperties: z.string().optional(),
     endpoints: z
       .array(
@@ -78,7 +85,6 @@ export function ResourcesActionDialog({
   columns = 2,
 }: Props<API.System.Resource>) {
   const is_edit = !!currentRow;
-  // const is_sub = !!parentRow;
   console.log("action", is_edit, currentRow, parentRow);
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
@@ -87,11 +93,11 @@ export function ResourcesActionDialog({
       ? {
           ...currentRow,
           endpoints: [],
+          permissions: currentRow?.permissions || [],
           is_edit,
         }
       : {
           name: "",
-          // resource: "",
           description: "",
           sequence: 1,
           type: "M",
@@ -101,6 +107,7 @@ export function ResourcesActionDialog({
           status: 1,
           stringProperties: "{}",
           endpoints: [],
+          permissions: [],
           is_edit,
         },
   });
@@ -109,29 +116,79 @@ export function ResourcesActionDialog({
   const queryClient = useQueryClient();
   const { mutate: createResource, isPending: isCreatePending } = useResourceCreate(queryClient);
   const { mutate: updateResource, isPending: isUpdatePending } = useResourceUpdate(queryClient, id);
-  const onSubmit = (values: ResourceForm) => {
-    form.reset();
-    console.log("values", values);
-    if (!is_edit) {
-      createResource({ ...values });
-    } else {
-      updateResource({ ...values });
+  const { mutateAsync: createPermissionAsync } = usePermissionCreate(queryClient);
+
+  const handleAddPermission = async (values: ResourceForm) => {
+    try {
+      // await createPermissionAsync({
+      //   name: values.name,
+      //   keyword: values.keyword,
+      //   description: values.description,
+      //   data_scope: "self",
+      //   data_rules: {},
+      // });
+      const response = await createPermissionAsync({
+        name: values.name,
+        keyword: values.keyword,
+        description: values.description,
+        data_scope: "self",
+        data_rules: {},
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error adding todo:", error);
+      throw error;
     }
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
-    onOpenChange(false);
+  };
+  const onSubmit = async (values: ResourceForm) => {
+    try {
+      form.reset();
+
+      if (!is_edit) {
+        const permission = await handleAddPermission(values);
+        if (!permission || !permission.id) {
+          toast({
+            title: "权限创建失败",
+            description: "无法创建关联权限，请检查权限数据",
+            variant: "destructive",
+          });
+          return;
+        }
+        console.log("values", values, "data", permission);
+        if (values.permissions && values.permissions.length > 0) {
+          values.permissions.push(permission);
+        } else {
+          values.permissions = [permission];
+        }
+        createResource({ ...values });
+      } else {
+        console.log("update values", values);
+        updateResource({ ...values });
+      }
+      toast({
+        title: "You submitted the following values:",
+        description: (
+          <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+            <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
+          </pre>
+        ),
+      });
+    } catch (error) {
+      console.error("提交失败:", error);
+      toast({
+        title: "操作失败",
+        description: error instanceof Error ? error.message : "未知错误",
+        variant: "destructive",
+      });
+    } finally {
+      onOpenChange(false);
+    }
   };
   // Listen for changes in the path field
   // const pathValue = useWatch({ control: form.control, name: "path" });
   // const [isAutoGenerate, setIsAutoGenerate] = useState(true);
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
-
+  const [expanded, setExpanded] = useState(false);
   const handleSortOpen = async () => {
     setSortDialogOpen(true);
   };
@@ -297,16 +354,16 @@ export function ResourcesActionDialog({
                             placeholder=''
                             {...field}
                           />
+                          <Button
+                            type='button'
+                            variant='outline'
+                            onClick={handleSortOpen}
+                            className='h-9 w-12 gap-0 px-0 rounded-l-none'
+                            size='icon'
+                          >
+                            <IconArrowsSort className='h-5 w-5' />
+                          </Button>
                         </FormControl>
-                        <Button
-                          type='button'
-                          variant='outline'
-                          onClick={handleSortOpen}
-                          className='h-9 w-12 gap-0 px-0 rounded-l-none'
-                          size='icon'
-                        >
-                          <IconArrowsSort className='h-5 w-5' />
-                        </Button>
                       </div>
                       <FormMessage className='col-span-4 col-start-3' />
                     </FormItem>
@@ -367,6 +424,9 @@ export function ResourcesActionDialog({
                   <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                     Permission Settings
                   </h2>
+                  <div className='col-span-1 items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <Switch checked={expanded} onCheckedChange={setExpanded} />
+                  </div>
                 </div>
               </div>
             </form>

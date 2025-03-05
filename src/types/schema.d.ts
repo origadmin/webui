@@ -1289,6 +1289,8 @@ export interface components {
             children?: components["schemas"]["api.v1.services.system.Resource"][];
             /** @description Parent holds the value of the parent edge. */
             parent?: components["schemas"]["api.v1.services.system.Resource"];
+            /** @description Permissions holds the value of the permissions edge. */
+            permissions?: components["schemas"]["api.v1.services.system.Permission"][];
         };
         /** @description Role is the model entity for the Role schema. */
         "api.v1.services.system.Role": {

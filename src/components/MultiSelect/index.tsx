@@ -1,3 +1,4 @@
+import { forwardRef, useState, KeyboardEvent } from "react";
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
@@ -103,7 +104,7 @@ interface MultiSelectProps
   className?: string;
 }
 
-export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
+export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
   (
     {
       options,
@@ -114,17 +115,17 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       animation = 0,
       maxCount = 3,
       modalPopover = false,
-      asChild = false,
+      asChild = true,
       className,
       ...props
     },
     ref,
   ) => {
-    const [selectedValues, setSelectedValues] = React.useState<string[]>(defaultValue);
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const [isAnimating, setIsAnimating] = React.useState(false);
+    const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
 
-    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         setIsPopoverOpen(true);
       } else if (event.key === "Backspace" && !event.currentTarget.value) {
@@ -168,9 +169,21 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       }
     };
 
+    // const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    //   const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    //   if (scrollHeight - scrollTop - clientHeight < count) {
+    //     setDisplayCount((prev) => Math.min(prev + count, filteredIcons.length));
+    //   }
+    // };
+
+    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+      e.currentTarget.scrollTop += e.deltaY;
+      e.stopPropagation();
+    };
+
     return (
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={modalPopover}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild={asChild}>
           <Button
             ref={ref}
             {...props}
@@ -196,7 +209,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                         {option?.label}
                         <TablerIcon
                           name='circle-x'
-                          className='ml-2 h-4 w-4 cursor-pointer'
+                          className='ml-2 h-4 w-4'
                           onClick={(event) => {
                             event.stopPropagation();
                             toggleOption(value);
@@ -217,7 +230,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                       {`+ ${selectedValues.length - maxCount} more`}
                       <TablerIcon
                         name='circle-x'
-                        className='ml-2 h-4 w-4 cursor-pointer'
+                        className='ml-2 h-4 w-4'
                         onClick={(event) => {
                           event.stopPropagation();
                           clearExtraOptions();
@@ -229,31 +242,31 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                 <div className='flex items-center justify-between'>
                   <TablerIcon
                     name='circle-x'
-                    className='h-4 mx-2 cursor-pointer text-muted-foreground'
+                    className='h-4 mx-2 text-muted-foreground'
                     onClick={(event) => {
                       event.stopPropagation();
                       handleClear();
                     }}
                   />
                   <Separator orientation='vertical' className='flex min-h-6 h-full' />
-                  <TablerIcon name='chevron-down' className='h-4 mx-2 cursor-pointer text-muted-foreground' />
+                  <TablerIcon name='chevron-down' className='h-4 mx-2 text-muted-foreground' />
                 </div>
               </div>
             ) : (
               <div className='flex items-center justify-between w-full mx-auto'>
                 <span className='text-sm text-muted-foreground mx-3'>{placeholder}</span>
-                <TablerIcon name='chevron-down' className='h-4 cursor-pointer text-muted-foreground mx-2' />
+                <TablerIcon name='chevron-down' className='h-4 text-muted-foreground mx-2' />
               </div>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start' onEscapeKeyDown={() => setIsPopoverOpen(false)}>
-          <Command>
+          <Command className='h-full'>
             <CommandInput placeholder='Search...' onKeyDown={handleInputKeyDown} />
-            <CommandList>
+            <CommandList onWheel={handleWheel} onScroll={(e) => console.log(e)}>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                <CommandItem key='all' onSelect={toggleAll} className='cursor-pointer'>
+                <CommandItem key='all' onSelect={toggleAll}>
                   <div
                     className={cn(
                       "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
@@ -269,11 +282,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option.value);
                   return (
-                    <CommandItem
-                      key={option.value}
-                      onSelect={() => toggleOption(option.value)}
-                      className='cursor-pointer'
-                    >
+                    <CommandItem key={option.value} onSelect={() => toggleOption(option.value)}>
                       <div
                         className={cn(
                           "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
@@ -293,16 +302,13 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                 <div className='flex items-center justify-between'>
                   {selectedValues.length > 0 && (
                     <>
-                      <CommandItem onSelect={handleClear} className='flex-1 justify-center cursor-pointer'>
+                      <CommandItem onSelect={handleClear} className='flex-1 justify-center'>
                         Clear
                       </CommandItem>
                       <Separator orientation='vertical' className='flex min-h-6 h-full' />
                     </>
                   )}
-                  <CommandItem
-                    onSelect={() => setIsPopoverOpen(false)}
-                    className='flex-1 justify-center cursor-pointer max-w-full'
-                  >
+                  <CommandItem onSelect={() => setIsPopoverOpen(false)} className='flex-1 justify-center max-w-full'>
                     Close
                   </CommandItem>
                 </div>
@@ -313,10 +319,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
         {animation > 0 && selectedValues.length > 0 && (
           <TablerIcon
             name='wand'
-            className={cn(
-              "cursor-pointer my-2 text-foreground bg-background w-3 h-3",
-              isAnimating ? "" : "text-muted-foreground",
-            )}
+            className={cn("my-2 text-foreground bg-background w-3 h-3", isAnimating ? "" : "text-muted-foreground")}
             onClick={() => setIsAnimating(!isAnimating)}
           />
         )}
