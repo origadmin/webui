@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useMemo, useEffect } from "react";
-import { iconsList } from "@tabler/icons-react";
+import { iconsList as baseIconList } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,7 @@ import TablerIcon from "./tabler-icon";
 type IconName = string;
 type IconsList = { icon: IconName; alias?: string[] }[];
 
-const ICON_BUTTONS: IconsList = iconsList.default.map((icon) => ({
+const ICON_BUTTONS: IconsList = baseIconList.default.map((icon) => ({
   icon: icon as IconName,
   alias: [] as string[],
 }));
@@ -22,7 +22,6 @@ interface IconPickerProps
   defaultValue?: IconName;
   onValueChange?: (value: IconName) => void;
   open?: boolean;
-  defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   count?: number;
   searchable?: boolean;
@@ -40,7 +39,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
       onOpenChange,
       children,
       searchable = true,
-      count = 15,
+      count = 24,
       searchPlaceholder = "Search for an icon...",
       triggerPlaceholder = "Select an icon",
       iconsList = ICON_BUTTONS,
@@ -48,24 +47,25 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
     },
     ref,
   ) => {
-    // const [selectedIcon, setSelectedIcon] = useState<IconName | undefined>(defaultValue);
+    const [search, setSearch] = useState("");
     const [isOpen, setIsOpen] = useState(open || false);
+    const [displayCount, setDisplayCount] = useState(count);
     const handleValueChange = (icon: IconName) => {
-      // if (value === undefined) {
-      //   setSelectedIcon(icon);
-      // }
-      onValueChange?.(icon);
+      if (!onValueChange) {
+        return;
+      }
+      onValueChange(icon);
     };
 
     const handleOpenChange = (newOpen: boolean) => {
       if (open === undefined) {
         setIsOpen(newOpen);
       }
-      onOpenChange?.(newOpen);
+      if (!onOpenChange) {
+        return;
+      }
+      onOpenChange(newOpen);
     };
-
-    const [search, setSearch] = useState("");
-    const [displayCount, setDisplayCount] = useState(count);
 
     const filteredIcons = useMemo(
       () =>
@@ -129,7 +129,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
             />
           )}
           <div
-            className='grid grid-cols-3 gap-2 max-h-60 overflow-y-auto'
+            className='grid grid-cols-4 gap-2 max-h-60 overflow-y-auto'
             onWheel={handleWheel}
             onScroll={handleScroll}
           >
@@ -167,5 +167,6 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
 );
 IconPicker.displayName = "IconPicker";
 
-export type { IconPickerProps, TablerIcon };
+export type { IconName, IconPickerProps, TablerIcon };
 export default IconPicker;
+export { ICON_BUTTONS };

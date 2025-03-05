@@ -162,7 +162,7 @@ export function PermissionsActionDialog({
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder='Please enter a name' className='col-span-4' {...field} />
+                        <Input placeholder='Please enter a name' className='col-span-4 cursor-pointer' {...field} />
                       </FormControl>
                       <FormMessage className='col-span-4 col-start-3' />
                     </FormItem>
@@ -177,7 +177,7 @@ export function PermissionsActionDialog({
                       <FormControl>
                         <Input
                           placeholder='Empty if use auto generate'
-                          className='col-span-4'
+                          className='col-span-4 cursor-pointer'
                           {...field}
                           onChange={(e) => {
                             // if (pathValue) {
@@ -198,7 +198,7 @@ export function PermissionsActionDialog({
                     <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Description</FormLabel>
                       <FormControl>
-                        <Input placeholder='' className='col-span-10' {...field} />
+                        <Input placeholder='' className='col-span-10 cursor-pointer' {...field} />
                       </FormControl>
                       <FormMessage className='col-span-10 col-start-3' />
                     </FormItem>
