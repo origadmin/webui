@@ -12,8 +12,7 @@ export function RolesPrimaryButtons() {
         className='ml-auto hidden h-8 lg:flex'
         onClick={() => setOpen("edit-permission")}
       >
-        <span>Edit Permission</span>
-        <IconUsers size={18} />
+        <span>Edit Permission</span> <IconUsers size={18} />
       </Button>
       <Button variant='secondary' size='sm' className='ml-auto hidden h-8 lg:flex' onClick={() => setOpen("add")}>
         <span>Add Role</span> <IconUserPlus size={18} />

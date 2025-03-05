@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePermissionCreate, usePermissionsQuery, usePermissionDelete } from "@/api/system/permission";
-import { RolePermissionForm } from "@/pages/system/role/components/role-permission-form";
+import { RolePermissionForm } from "@/pages/system/components/role-permission-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { DialogHeader, DialogTitle, DialogContent, DialogFooter, Dialog } from "@/components/ui/dialog";

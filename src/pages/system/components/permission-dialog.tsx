@@ -38,6 +38,7 @@ import { Textarea } from "@/components/ui/textarea";
 interface PermissionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  dataScope?: string;
 }
 
 export default function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) {

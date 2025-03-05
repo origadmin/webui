@@ -63,12 +63,6 @@ export default function ResourcesPage() {
             <CardHeader>
               <CardTitle>Resources</CardTitle>
               <CardDescription>
-                {/*<TabsList>*/}
-                {/*  <TabsTrigger value='all'>All</TabsTrigger>*/}
-                {/*  <TabsTrigger value='menu'>Menu</TabsTrigger>*/}
-                {/*  <TabsTrigger value='api'>API</TabsTrigger>*/}
-                {/*  <TabsTrigger value='static'>Static</TabsTrigger>*/}
-                {/*</TabsList>*/}
                 <CardDescription>Manage your resources here.</CardDescription>
               </CardDescription>
             </CardHeader>

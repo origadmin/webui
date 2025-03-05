@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import PermissionDialog from "@/pages/system/components/permission-dialog";
 import { ResourcesActionDialog } from "./resources-action-dialog";
 import { ResourcesDeleteDialog } from "./resources-delete-dialog";
 import { useResourceTable } from "./resources-table-provider";
@@ -22,6 +23,7 @@ export function ResourcesDialogs() {
           }, 500);
         }}
       />
+      <PermissionDialog open={open === "edit-permission"} onOpenChange={() => setOpen("edit-permission")} />
       {parentRow && (
         <ResourcesActionDialog
           className={className}
@@ -38,33 +40,33 @@ export function ResourcesDialogs() {
         />
       )}
       {currentRow && (
-        <>
-          <ResourcesActionDialog
-            className={className}
-            key={`resource-edit-${currentRow.id}`}
-            open={open === "edit"}
-            onOpenChange={() => {
-              setOpen("edit");
-              setTimeout(() => {
-                setCurrentRow(null);
-                setParentRow(null);
-              }, 500);
-            }}
-            currentRow={currentRow}
-          />
-          <ResourcesDeleteDialog
-            key={`resource-delete-${currentRow.id}`}
-            open={open === "delete"}
-            onOpenChange={() => {
-              setOpen("delete");
-              setTimeout(() => {
-                setCurrentRow(null);
-                setParentRow(null);
-              }, 500);
-            }}
-            currentRow={currentRow}
-          />
-        </>
+        <ResourcesActionDialog
+          className={className}
+          key={`resource-edit-${currentRow.id}`}
+          open={open === "edit"}
+          onOpenChange={() => {
+            setOpen("edit");
+            setTimeout(() => {
+              setCurrentRow(null);
+              setParentRow(null);
+            }, 500);
+          }}
+          currentRow={currentRow}
+        />
+      )}
+      {currentRow && (
+        <ResourcesDeleteDialog
+          key={`resource-delete-${currentRow.id}`}
+          open={open === "delete"}
+          onOpenChange={() => {
+            setOpen("delete");
+            setTimeout(() => {
+              setCurrentRow(null);
+              setParentRow(null);
+            }, 500);
+          }}
+          currentRow={currentRow}
+        />
       )}
     </Fragment>
   );
