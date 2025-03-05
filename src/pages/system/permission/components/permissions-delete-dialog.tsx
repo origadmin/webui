@@ -14,7 +14,7 @@ interface Props<T> {
   currentRow: T;
 }
 
-export function PermissionsDeleteDialog({ open, onOpenChange, currentRow }: Props<API.Permission>) {
+export function PermissionsDeleteDialog({ open, onOpenChange, currentRow }: Props<API.System.Permission>) {
   const [value, setValue] = useState("");
   const queryClient = useQueryClient();
   const { mutate: deletePermission, isPending: isDeletePending } = usePermissionDelete(queryClient);

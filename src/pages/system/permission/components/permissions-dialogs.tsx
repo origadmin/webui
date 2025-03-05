@@ -24,21 +24,6 @@ export function PermissionsDialogs() {
         }}
       />
       <PermissionDialog open={open === "edit-permission"} onOpenChange={() => setOpen("edit-permission")} />
-      {parentRow && (
-        <PermissionsActionDialog
-          className={className}
-          key={`permission-add-${parentRow.id}`}
-          open={open === "add-sub"}
-          onOpenChange={() => {
-            setOpen("add-sub");
-            setTimeout(() => {
-              setCurrentRow(null);
-              setParentRow(null);
-            }, 500);
-          }}
-          parentRow={parentRow}
-        />
-      )}
       {currentRow && (
         <PermissionsActionDialog
           className={className}

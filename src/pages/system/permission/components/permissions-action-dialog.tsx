@@ -102,7 +102,7 @@ export function PermissionsActionDialog({
     });
     onOpenChange(false);
   };
-  const { data: resources, isLoading } = useResourcesQuery();
+  const { data: resources, isLoading } = useResourcesQuery({ page_size: 1000 });
   const resourcesOptions =
     resources?.data
       ?.filter((r) => r && r.id != undefined)

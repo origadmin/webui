@@ -1,4 +1,4 @@
-import { JSX, useState } from "react";
+import { JSX } from "react";
 import { t } from "@/utils/locale";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
@@ -38,8 +38,8 @@ const renderSizeOptions = <TData,>(table: Table<TData>, _sizeOptions?: string[])
           <SelectContent side='top'>
             {_sizeOptions &&
               _sizeOptions.map((pageSize) => (
-                <SelectItem key={Number(pageSize)} value={`${pageSize}`}>
-                  {Number(pageSize)}
+                <SelectItem key={pageSize} value={pageSize}>
+                  {pageSize}
                 </SelectItem>
               ))}
           </SelectContent>
@@ -106,7 +106,7 @@ const renderRowSelect = <TData,>(table: Table<TData>) => {
 };
 
 export function Pagination<T>({
-  table: _table,
+  table,
   sizeOptions = [],
   showSizeChanger = true,
   // showQuickJumper = true,
@@ -114,7 +114,6 @@ export function Pagination<T>({
   rowSelect = true,
   rowSelectRender,
 }: PaginationProps<T>) {
-  const [table] = useState(_table);
   rowSelectRender = rowSelectRender || renderRowSelect;
 
   return (

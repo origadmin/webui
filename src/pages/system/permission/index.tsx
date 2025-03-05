@@ -30,8 +30,8 @@ export default function PermissionsPage() {
 
   const tableProps: Omit<DataTableProps<API.System.Permission>, "isLoading" | "sourceData" | "total"> = {
     columns,
-    useManual: false,
-    showPagination: false,
+    useManual: true,
+    showPagination: true,
     sorting,
     onSortingChange: setSorting,
     paginationState: pagination,

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { usePermissionsQuery, usePermissionCreate, usePermissionDelete } from "@/api/system/permission";
 import { useResourcesQuery } from "@/api/system/resource";
 import { useQueryClient } from "@tanstack/react-query";
-import { Search, Plus, Edit, Trash2, Shield } from "lucide-react";
+import { Search, Plus, Edit, Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,14 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
