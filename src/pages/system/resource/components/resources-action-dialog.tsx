@@ -133,10 +133,7 @@ export function ResourcesActionDialog({
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   const handleSortOpen = async () => {
-    // const parentId = form.getValues("parent_id");
-    // if (parentId) {
     setSortDialogOpen(true);
-    // }
   };
 
   // todo(auto generate keyword)

@@ -55,9 +55,7 @@ export function ResourcesSequenceDialog<T extends SequenceAble & { name: string 
           {sortableItems.map((item) => (
             <div
               key={item.id}
-              className={`border p-3 rounded-md cursor-pointer ${
-                selectedItemId === item.id ? "bg-blue-50 border-blue-500" : ""
-              }`}
+              className={`border p-3 rounded-md ${selectedItemId === item.id ? "bg-blue-50 border-blue-500" : ""}`}
               onClick={() => setSelectedItemId(item.id || null)}
             >
               <div className='flex justify-between items-center'>
