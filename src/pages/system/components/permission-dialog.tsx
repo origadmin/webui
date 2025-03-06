@@ -42,7 +42,7 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
 
   // React Query hooks
   const { data: permissions = {}, isLoading: isLoadingPermissions } = usePermissionsQuery();
-  const { data: resources = {}, isLoading: isLoadingResources } = useResourcesQuery();
+  const { data: resources = {}, isLoading: isLoadingResources } = useResourcesQuery({ page_size: 1000 });
   const queryClient = useQueryClient();
   const { mutate: savePermission, isPending: isSaving } = usePermissionCreate(queryClient);
   const { mutate: deletePermission, isPending: isDeleting } = usePermissionDelete(queryClient);
@@ -89,7 +89,7 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
     setCurrentPermission({ ...permission });
     setSelectedResources(permission.resources?.map((r) => r.id || "").filter((v) => v !== "") || []);
     setIsEditMode(true);
-    // setIsDialogOpen(true);
+    setIsFormDialogOpen(true);
   };
 
   // Handle deleting a permission
@@ -150,13 +150,6 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/*<DialogTrigger asChild>*/}
-      {/*  {open || (*/}
-      {/*    <Button variant='outline'>*/}
-      {/*      <Shield className='mr-2 h-4 w-4' /> Manage Permissions*/}
-      {/*    </Button>*/}
-      {/*  )}*/}
-      {/*</DialogTrigger>*/}
       <DialogContent className='max-w-5xl max-h-[90vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Permission Management</DialogTitle>

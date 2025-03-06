@@ -5316,6 +5316,10 @@ body {
   width: 4rem;
 }
 
+.w-2 {
+  width: 0.5rem;
+}
+
 .w-2\.5 {
   width: 0.625rem;
 }
@@ -5358,6 +5362,10 @@ body {
 
 .w-6 {
   width: 1.5rem;
+}
+
+.w-64 {
+  width: 16rem;
 }
 
 .w-7 {
@@ -5470,6 +5478,10 @@ body {
 
 .min-w-\[100px\] {
   min-width: 100px;
+}
+
+.min-w-\[8rem\] {
+  min-width: 8rem;
 }
 
 .min-w-\[var\(--radix-select-trigger-width\)\] {
@@ -7218,6 +7230,10 @@ body {
   --tw-enter-opacity: 0;
 }
 
+.fade-in-80 {
+  --tw-enter-opacity: 0.8;
+}
+
 .zoom-in-95 {
   --tw-enter-scale: .95;
 }
@@ -7984,6 +8000,10 @@ body {
 
 .data-\[state\=checked\]\:text-primary-foreground[data-state="checked"] {
   color: hsl(var(--primary-foreground));
+}
+
+.data-\[state\=open\]\:text-accent-foreground[data-state="open"] {
+  color: hsl(var(--accent-foreground));
 }
 
 .data-\[state\=open\]\:text-muted-foreground[data-state="open"] {

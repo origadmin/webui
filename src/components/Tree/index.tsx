@@ -19,18 +19,19 @@ interface TreeProps {
 
 export function Tree({ data, className, level = 0, expandAll = false }: TreeProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-  const getAllNodeIds = (nodes: TreeNode[]): string[] => {
-    return nodes.flatMap((node) => [node.id, ...(node.children ? getAllNodeIds(node.children) : [])]);
-  };
 
   useEffect(() => {
+    const getAllNodeIds = (nodes: TreeNode[]): string[] => {
+      return nodes.flatMap((node) => [node.id, ...(node.children ? getAllNodeIds(node.children) : [])]);
+    };
+
     if (expandAll) {
       const allIds = getAllNodeIds(data);
       setExpandedIds(new Set(allIds));
     } else {
       setExpandedIds(new Set());
     }
-  }, [expandAll]);
+  }, [data, expandAll]);
 
   const toggleNode = (nodeId: string) => {
     const newExpandedNodes = new Set(expandedIds);
@@ -50,7 +51,7 @@ export function Tree({ data, className, level = 0, expandAll = false }: TreeProp
 
         return (
           <li key={node.id} className='pl-2'>
-            <div className='flex items-center'>
+            <div className='flex items-center mt-0.5'>
               {hasChildren && (
                 <Button
                   variant='outline'
@@ -70,7 +71,7 @@ export function Tree({ data, className, level = 0, expandAll = false }: TreeProp
               <div className='flex-1'>{node.content || node.name}</div>
             </div>
             {hasChildren && isExpanded && node.children && (
-              <Tree expandAll={expandAll} data={node.children} level={level + 1} className='mt-1' />
+              <Tree expandAll={expandAll} data={node.children} level={level + 1} />
             )}
           </li>
         );

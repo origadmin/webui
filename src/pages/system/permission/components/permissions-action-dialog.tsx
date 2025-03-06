@@ -1,6 +1,7 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState, useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
-import { useResourcesQuery } from "@/api/system/resource";
+import { useResourcesQuery, buildTree } from "@/api/system/resource";
+import { RolesResourceSelect } from "@/pages/system/role/components/roles-resource-select";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -21,6 +22,8 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/MultiSelect";
 
 const formSchema = z
@@ -79,11 +82,26 @@ export function PermissionsActionDialog({
           is_edit,
         },
   });
-
+  const [expanded, setExpanded] = useState(true);
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
   const { mutate: createPermission, isPending: isCreatePending } = usePermissionCreate(queryClient);
   const { mutate: updatePermission, isPending: isUpdatePending } = usePermissionUpdate(queryClient, id);
+  const { data: resources = {}, isLoading } = useResourcesQuery({ page_size: 1000 });
+  const resourcesOptions =
+    resources?.data
+      ?.filter((r) => r && r.id != undefined)
+      .map((r) => {
+        const value = r.id || "";
+        const type = resourceTypeValues.get(r.type || "U") || "U";
+        const label = `${r.name || ""}(${type})`;
+        return {
+          value: value,
+          label: label,
+        };
+      }) || [];
+  const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
+
   const onSubmit = (values: PermissionForm) => {
     form.reset();
     console.log("values", values);
@@ -102,19 +120,6 @@ export function PermissionsActionDialog({
     });
     onOpenChange(false);
   };
-  const { data: resources, isLoading } = useResourcesQuery({ page_size: 1000 });
-  const resourcesOptions =
-    resources?.data
-      ?.filter((r) => r && r.id != undefined)
-      .map((r) => {
-        const value = r.id || "";
-        const type = resourceTypeValues.get(r.type || "U") || "U";
-        const label = `${r.name || ""}(${type})`;
-        return {
-          value: value,
-          label: label,
-        };
-      }) || [];
 
   const handleKeywordChange = (value: ChangeEvent<HTMLInputElement>) => {
     console.log("value", value);
@@ -229,6 +234,34 @@ export function PermissionsActionDialog({
                     )}
                   />
                 </div>
+                <div className='col-span-12 pt-4'>
+                  <Separator />
+                </div>
+                <div className='col-span-12 items-center grid grid-cols-subgrid pt-4 overflow-x-hidden'>
+                  <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
+                    Permission Resources
+                  </h2>
+                  <div className='col-span-1 items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
+                    <Switch checked={expanded} onCheckedChange={setExpanded} />
+                  </div>
+                </div>
+                <FormField
+                  control={form.control}
+                  name='resource_ids'
+                  render={({ field }) => (
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border overflow-y-hidden'>
+                      <FormControl>
+                        <RolesResourceSelect
+                          expandAll={expanded}
+                          value={field.value}
+                          onChange={field.onChange}
+                          resources={treeData}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </form>
           </Form>
