@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useMemo } from "react";
+import React, { ChangeEvent, useState, useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useResourcesQuery, buildTree } from "@/api/system/resource";
 import { RolesResourceSelect } from "@/pages/system/role/components/roles-resource-select";
@@ -22,9 +22,9 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { MultiSelect } from "@/components/MultiSelect";
 
 const formSchema = z
   .object({
@@ -36,7 +36,7 @@ const formSchema = z
     }),
     description: z.string().optional(),
     resource_ids: z.array(z.string()).optional(),
-    resources: z.array(z.object({})).optional(),
+    // resources: z.array(z.object({})).optional(),
     data_scope: z.string().optional(),
     data_rules: z.object({}).optional(),
     is_edit: z.boolean(),
@@ -70,7 +70,7 @@ export function PermissionsActionDialog({
     defaultValues: is_edit
       ? {
           ...currentRow,
-          data_rules: currentRow?.data_rules || [],
+          data_rules: currentRow?.data_rules || {},
           is_edit,
         }
       : {
@@ -78,7 +78,7 @@ export function PermissionsActionDialog({
           keyword: "",
           description: "",
           resource_ids: [],
-          data_rules: [],
+          data_rules: {},
           is_edit,
         },
   });
@@ -105,6 +105,7 @@ export function PermissionsActionDialog({
   const onSubmit = (values: PermissionForm) => {
     form.reset();
     console.log("values", values);
+    // values.resources = [];
     if (!is_edit) {
       createPermission({ ...values });
     } else {
@@ -194,6 +195,28 @@ export function PermissionsActionDialog({
                 />
                 <FormField
                   control={form.control}
+                  name='data_scope'
+                  render={({ field }) => (
+                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
+                      <FormLabel className='col-span-2 text-left'>Data Scope</FormLabel>
+                      <FormControl>
+                        <Select value={field.value || "self"} onValueChange={(value) => field.onChange(value)}>
+                          <SelectTrigger id='data_scope' className='col-span-3'>
+                            <SelectValue placeholder='Select data scope' />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value='self'>Self</SelectItem>
+                            <SelectItem value='role'>Role</SelectItem>
+                            <SelectItem value='dept'>Department</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage className='col-span-4 col-start-3' />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name='description'
                   render={({ field }) => (
                     <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
@@ -205,35 +228,6 @@ export function PermissionsActionDialog({
                     </FormItem>
                   )}
                 />
-                <div className='col-span-12 items-center grid grid-cols-subgrid pt-4 overflow-x-hidden'>
-                  <h2 className='col-span-12 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
-                    API Resources
-                  </h2>
-                  <FormField
-                    control={form.control}
-                    name='resource_ids'
-                    render={({ field }) => (
-                      <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                        <FormLabel className='col-span-2 text-left'>Resources</FormLabel>
-                        <FormControl>
-                          {!isLoading && (
-                            <MultiSelect
-                              options={resourcesOptions}
-                              value={field.value || []}
-                              onChange={field.onChange}
-                              onValueChange={(value) => {
-                                console.log("value", value);
-                              }}
-                              placeholder='Select API resources'
-                              className='col-span-10'
-                            />
-                          )}
-                        </FormControl>
-                        <FormMessage className='col-span-10 col-start-3' />
-                      </FormItem>
-                    )}
-                  />
-                </div>
                 <div className='col-span-12 pt-4'>
                   <Separator />
                 </div>
