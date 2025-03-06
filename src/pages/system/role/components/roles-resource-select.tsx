@@ -94,6 +94,7 @@ export function RolesResourceSelect({ value = [], onChange, expandAll, resources
       name: resource.name!,
       children: resource.children ? transformResourcesToTreeData(resource.children) : [],
       content: renderResourceNode(resource),
+      checked: selectedResources.includes(resource.id!),
     }));
   };
 
