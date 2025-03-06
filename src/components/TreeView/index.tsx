@@ -254,7 +254,7 @@ function TreeItem({
     if (onAccessChange) {
       const currentState = getCheckState(item, itemMap);
       // Toggle between checked and unchecked, treating indeterminate as unchecked
-      const newChecked = currentState === "checked" ? false : true;
+      const newChecked = currentState !== "checked";
       onAccessChange(item, newChecked);
     }
   };

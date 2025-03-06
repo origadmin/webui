@@ -8,6 +8,7 @@ export interface TreeNode {
   name: string;
   children?: TreeNode[];
   content?: ReactNode;
+  checked?: boolean | "indeterminate";
 }
 
 interface TreeProps {
@@ -31,7 +32,7 @@ export function Tree({ data, className, level = 0, expandAll = false }: TreeProp
     } else {
       setExpandedIds(new Set());
     }
-  }, [data, expandAll]);
+  }, [expandAll]);
 
   const toggleNode = (nodeId: string) => {
     const newExpandedNodes = new Set(expandedIds);
