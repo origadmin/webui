@@ -46,10 +46,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           nickname: "",
           username: "",
           email: "",
-          role: "",
           phone: "",
           password: "",
           confirmPassword: "",
+          allow_ip: "0.0.0.0",
           is_edit,
         },
   });
@@ -146,7 +146,11 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         </DialogHeader>
         <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
           <Form {...form}>
-            <form id='user-form' onSubmit={form.handleSubmit(onSubmit)} className='space-y-0'>
+            <form
+              id='user-form'
+              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("验证失败:", errors))}
+              className='space-y-0'
+            >
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
                 <h2 className='col-span-12 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>
                   Base Info

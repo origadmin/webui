@@ -1,10 +1,9 @@
 import { Search } from "@/utils";
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 
 export function useFilters() {
-  const router = useRouter();
-  const navigate = useNavigate();
-  const search = router.routeTree.useSearch();
+  const { routeTree, navigate } = useRouter();
+  const search = routeTree.useSearch();
   const setFilters = (partialFilters: API.SearchParams) =>
     navigate({
       search: (old) => Search.clean({ ...old, ...partialFilters }) as never,

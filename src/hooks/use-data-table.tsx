@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "@/utils/index";
 import { PaginationState, SortingState, Updater, ColumnFiltersState, OnChangeFn } from "@tanstack/react-table";
 import { useFilters } from "@/hooks/use-filters";
@@ -31,12 +31,13 @@ export interface UseDataTableReturn<T> {
   handleReset: () => void;
 }
 
-export function useDataTable<T extends object>(props: UseDataTableProps<T>): UseDataTableReturn<T> {
+export function useDataTable<T extends object>({ useQuery }: UseDataTableProps<T>): UseDataTableReturn<T> {
   const { search, setFilters, resetFilters } = useFilters();
-  const sorting = Search.getSorting(search);
-  const pagination = Search.getPagination(search);
-  const columnFilters = Search.getColumnFilters(search);
-  const [updating, setUpdating] = useState(false);
+  const oldFilters = Search.getColumnFilters(search);
+  const [sorting, _setSorting] = useState(Search.getSorting(search));
+  const [pagination, _setPagination] = useState(Search.getPagination(search));
+  const [columnFilters, _setColumnFilters] = useState(oldFilters);
+  const [searching, setSearching] = useState(false);
   const [params, setParams] = useState<API.SearchParams>(
     Search.parse({
       pagination,
@@ -45,49 +46,57 @@ export function useDataTable<T extends object>(props: UseDataTableProps<T>): Use
     }),
   );
 
+  useEffect(() => {
+    if (!searching) return;
+    setSearching(false);
+    setParams(
+      Search.parse({
+        pagination,
+        sorting,
+        columnFilters,
+      }),
+    );
+  }, [searching, pagination, sorting, columnFilters]);
   const setSorting = (updaterOrValue: Updater<SortingState>) => {
     const state = typeof updaterOrValue === "function" ? updaterOrValue(sorting) : updaterOrValue;
-    setParams({
+    _setSorting(state);
+    setFilters({
       ...params,
       ...Search.parseSorting(state),
     });
-    setUpdating(true);
+    setSearching(true);
   };
 
   const setPagination = (updaterOrValue: Updater<PaginationState>) => {
     const state = typeof updaterOrValue === "function" ? updaterOrValue(pagination) : updaterOrValue;
-    setParams({
+    _setPagination(state);
+    setFilters({
       ...params,
       ...Search.parsePagination(state),
     });
-    setUpdating(true);
+    setSearching(true);
   };
 
   const setColumnFilters = (updaterOrValue: Updater<ColumnFiltersState>) => {
     const state = typeof updaterOrValue === "function" ? updaterOrValue(columnFilters) : updaterOrValue;
-    setParams({
-      ...params,
-      ...Search.parseColumnFilters(state),
-    });
+    _setColumnFilters(state);
   };
 
-  const { data = {}, isLoading } = props.useQuery(params);
+  console.log("query", params);
+  const { data = {}, isLoading } = useQuery(params);
 
-  useEffect(() => {
-    if (updating) {
-      setFilters(params);
-      setUpdating(false);
-    }
-  }, [params, setFilters, updating]);
+  const handleReset = async () => {
+    setSearching(true);
+    resetFilters();
+  };
 
-  const handleSearch = (filters: ColumnFiltersState) => {
-    setColumnFilters(filters);
-    setParams({
+  const handleSearch = async (filters: ColumnFiltersState) => {
+    setSearching(true);
+    setFilters({
       ...params,
       ...Search.parseColumnFilters(filters),
       current: 1,
     });
-    setUpdating(true);
   };
 
   return {
@@ -101,6 +110,6 @@ export function useDataTable<T extends object>(props: UseDataTableProps<T>): Use
     setPagination,
     setColumnFilters,
     handleSearch,
-    handleReset: resetFilters,
+    handleReset,
   };
 }

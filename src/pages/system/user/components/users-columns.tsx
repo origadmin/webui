@@ -32,12 +32,16 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     cell: ({ row }) => <LongText className='max-w-36'>{row.original.nickname}</LongText>,
     meta: defaultHeaderMeta.meta,
     searchable: true,
+    enableColumnFilter: true,
     renderSearch: (column, index, table) => (
       <Input
         key={index}
         placeholder={`Filter ${typeof column.header === "string" ? column.header : "nickname"}...`}
         value={(table.getColumn("nickname")?.getFilterValue() as string) ?? ""}
-        onChange={(event) => table.getColumn("nickname")?.setFilterValue(event.target.value)}
+        onChange={(event) => {
+          console.log("event", event.target.value);
+          table.getColumn("nickname")?.setFilterValue(event.target.value);
+        }}
         className='h-8 w-[120px] lg:w-[250px]'
       />
     ),

@@ -125,15 +125,7 @@ const renderRow = <TData,>(groups: HeaderGroup<TData>[]) => {
     </TableRow>
   ));
 };
-// {table.getRowModel().rows.map((row) => (
-//   <TableRow key={row.id} data-state={row.getIsExpanded() ? "expanded" : "collapsed"}>
-//     {row.getVisibleCells().map((cell) => (
-//       <TableCell key={cell.id} style={{ paddingLeft: `${row.depth * 2 + 1}rem` }}>
-//         {flexRender(cell.column.columnDef.cell, cell.getContext())}
-//       </TableCell>
-//     ))}
-//   </TableRow>
-// ))}
+
 const dataState = <TData,>(row: Row<TData>) => {
   if (row.getCanExpand()) {
     return row.getIsExpanded() ? "expanded" : "collapsed";
@@ -167,7 +159,7 @@ function DataTable<TData, TValue = unknown>({
   showPagination = true,
   useManual = true,
   sizeOptions = PAGE_SIZE_OPTIONS,
-  paginationState: _paginationState = {
+  paginationState: paginationState = {
     pageSize: PAGE_SIZE,
     pageIndex: START_PAGE,
   },
@@ -199,7 +191,6 @@ function DataTable<TData, TValue = unknown>({
     manualSorting: true,
     manualPagination: true,
   });
-  const [paginationState] = useState(_paginationState);
   onRowSelectionChange = onRowSelectionChange || setRowSelection;
   onColumnVisibilityChange = onColumnVisibilityChange || setColumnVisibility;
 
@@ -223,7 +214,7 @@ function DataTable<TData, TValue = unknown>({
     onColumnVisibilityChange: onColumnVisibilityChange,
     onPaginationChange: useManual ? onPaginationChange : undefined,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    getFilteredRowModel: !useManual ? getFilteredRowModel() : undefined,
     getPaginationRowModel: !useManual ? getPaginationRowModel() : undefined,
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
