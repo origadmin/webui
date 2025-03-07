@@ -411,13 +411,18 @@ export const mockUser = {
 
 export const mockSecondItems = [
   {
+    title: "Open API",
+    path: "/openapi",
+    icon: Command,
+  },
+  {
     title: "Support",
-    url: "#",
+    path: "#",
     icon: LifeBuoy,
   },
   {
     title: "Feedback",
-    url: "#",
+    path: "#",
     icon: Send,
   },
 ];

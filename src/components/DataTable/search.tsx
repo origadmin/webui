@@ -55,7 +55,7 @@ export function Search<TData, TValue = unknown>({
               className='w-18 h-8 px-2 lg:px-3'
             >
               <TablerIcon name='x' className='h-4 w-4' />
-              Reset
+              <span className='pr-1'>Reset</span>
             </Button>
           </div>
           <div className='flex-1'>
@@ -69,7 +69,7 @@ export function Search<TData, TValue = unknown>({
               className='w-18 h-8 px-2 lg:px-3'
             >
               <TablerIcon name='search' className='h-4 w-4' />
-              Search
+              <span className='pr-1'>Search</span>
             </Button>
           </div>
         </div>
