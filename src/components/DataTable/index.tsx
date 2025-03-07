@@ -211,6 +211,7 @@ function DataTable<TData, TValue = unknown>({
     onRowSelectionChange: onRowSelectionChange,
     onSortingChange: onSortingChange,
     onColumnFiltersChange: onColumnFiltersChange,
+    onGlobalFilterChange: () => {},
     onColumnVisibilityChange: onColumnVisibilityChange,
     onPaginationChange: useManual ? onPaginationChange : undefined,
     getCoreRowModel: getCoreRowModel(),

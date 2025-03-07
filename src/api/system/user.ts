@@ -44,7 +44,7 @@ export const formSchema = z
     // roles: z.array(z.object({})).optional(),
     role_ids: z.string().array().optional(),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
-    allow_ip: z.string().min(1, { message: "IP is required." }),
+    allowed_ip: z.string().min(1, { message: "IP is required." }),
     random_password: z.boolean().default(false),
     is_edit: z.boolean(),
   })

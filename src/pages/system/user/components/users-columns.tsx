@@ -17,6 +17,27 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
+    searchable: true,
+    renderSearch: (_column, index, table) => (
+      <Input
+        key={`title-${index}`}
+        placeholder={"Filter title..."}
+        value={(table.getState().columnFilters.find((filter) => filter.id === "title")?.value as string) ?? ""}
+        onChange={(event) => {
+          console.log("event", event.target.value);
+          table.setColumnFilters((old) => {
+            return [
+              ...old.filter((filter) => filter.id !== "title"),
+              {
+                id: "title",
+                value: event.target.value,
+              },
+            ];
+          });
+        }}
+        className='h-8 w-[120px] lg:w-[250px]'
+      />
+    ),
   },
   {
     accessorKey: "username",
@@ -31,20 +52,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     header: "Nickname",
     cell: ({ row }) => <LongText className='max-w-36'>{row.original.nickname}</LongText>,
     meta: defaultHeaderMeta.meta,
-    searchable: true,
     enableColumnFilter: true,
-    renderSearch: (column, index, table) => (
-      <Input
-        key={index}
-        placeholder={`Filter ${typeof column.header === "string" ? column.header : "nickname"}...`}
-        value={(table.getColumn("nickname")?.getFilterValue() as string) ?? ""}
-        onChange={(event) => {
-          console.log("event", event.target.value);
-          table.getColumn("nickname")?.setFilterValue(event.target.value);
-        }}
-        className='h-8 w-[120px] lg:w-[250px]'
-      />
-    ),
   },
   {
     accessorKey: "email",

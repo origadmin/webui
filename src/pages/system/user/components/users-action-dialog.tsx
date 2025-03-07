@@ -49,7 +49,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           phone: "",
           password: "",
           confirmPassword: "",
-          allow_ip: "0.0.0.0",
+          allowed_ip: "0.0.0.0",
           is_edit,
         },
   });
@@ -225,10 +225,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                 {useRandomPassword()}
                 <FormField
                   control={form.control}
-                  name='allow_ip'
+                  name='allowed_ip'
                   render={({ field }) => (
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Allow IP</FormLabel>
+                      <FormLabel className='col-span-2 text-left'>Allowed IP</FormLabel>
                       <FormControl>
                         <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
                       </FormControl>

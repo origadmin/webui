@@ -36,7 +36,7 @@ export function decodeFromBinary(str: string): API.SearchParams {
   return JSON.parse(str) as API.SearchParams;
 }
 
-export function encodeToBinary(value: any): string {
+export function encodeToBinary(value: unknown): string {
   if (value === null || value === undefined) {
     return "";
   }
@@ -156,8 +156,12 @@ export function fillSearchParams(searchParams: URLSearchParams, params?: API.Sea
 
 export function getColumnFilters(searchParams: API.SearchParams, filters?: string[]): ColumnFiltersState {
   if (!filters || filters.length === 0) {
-    return [];
+    return Object.entries(searchParams).map(([key, value]) => ({
+      id: key,
+      value: Array.isArray(value) ? value : [value].flat(),
+    }));
   }
+
   return filters
     .filter((key) => searchParams[key] !== undefined)
     .map((key) => ({
