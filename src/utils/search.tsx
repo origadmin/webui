@@ -21,13 +21,6 @@ export function clean(search: API.SearchParams): API.SearchParams {
   };
 }
 
-export function parseSearch(params: API.SearchParams): API.SearchParams {
-  if (params instanceof URLSearchParams) {
-    params = Object.fromEntries(params.entries());
-  }
-  return params;
-}
-
 export function decodeFromBinary(str: string): API.SearchParams {
   const { codec = "array" } = GlobalConfig.api?.searchOptions || {};
   if (codec === "json") {
@@ -180,4 +173,44 @@ export function parseColumnFilters(columnFilters?: ColumnFiltersState): API.Sear
     params[id] = value;
   });
   return params;
+}
+
+export function stringifySearch(searchParams: API.SearchParams) {
+  const params = new URLSearchParams();
+  for (const key in searchParams) {
+    const value = searchParams[key];
+    if (Array.isArray(value)) {
+      params.set(key, `[${value.join(",")}]`);
+    } else {
+      if (typeof value === "string") {
+        params.set(key, value);
+      } else if (typeof value === "number") {
+        params.set(key, value.toString());
+      } else {
+        params.set(key, JSON.stringify(value));
+      }
+    }
+  }
+  return params.toString();
+}
+
+// Custom function to parse arrays from strings
+export function parseSearch(searchString: string) {
+  const params = new URLSearchParams(searchString);
+  const searchParams = {} as API.SearchParams;
+  for (const [key, value] of params.entries()) {
+    if (value.startsWith("[") && value.endsWith("]")) {
+      searchParams[key] = value.slice(1, -1).split(",");
+    } else if (value.match(/^[0-9]+$/)) {
+      searchParams[key] = Number(value);
+    } else {
+      try {
+        searchParams[key] = JSON.parse(value);
+      } catch (error) {
+        console.error(`Error parsing value for key "${key}":`, error);
+        searchParams[key] = value;
+      }
+    }
+  }
+  return searchParams;
 }

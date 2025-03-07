@@ -18,8 +18,8 @@ export const queryClient = new QueryClient({
 export const router = createRouter({
   routeTree,
   context: { queryClient, auth: undefined! },
-  // parseSearch: parseSearchWith((value) => decodeFromBinary(value)),
-  // stringifySearch: stringifySearchWith((value) => encodeToBinary(value)),
+  // stringifySearch: stringifySearchWith(Search.stringifySearch),
+  // parseSearch: parseSearchWith(Search.parseSearch),
   defaultPreload: "intent",
   defaultPreloadStaleTime: 0,
   defaultErrorComponent: InternalServerError,
