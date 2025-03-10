@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 const drawerContentVariants = cva("fixed z-50 flex h-auto flex-col border bg-background", {
   variants: {
     direction: {
-      right: "ml-24 right-0 rounded-l-[10px] inset-y-0",
-      top: "mb-24 top-0 rounded-b-[10px] inset-x-0",
-      bottom: "mt-24 rounded-t-[10px] bottom-0 inset-x-0",
-      left: "mr-24 left-0 rounded-r-[10px] inset-y-0",
+      right: "w-[calc(400px)] right-0 rounded-l-[10px] inset-y-0",
+      top: "w-[calc(240px)] top-0 rounded-b-[10px] inset-x-0",
+      bottom: "w-[calc(240px)] bottom-0 rounded-t-[10px] inset-x-0",
+      left: "w-[calc(400px)] left-0 rounded-r-[10px] inset-y-0",
     },
   },
   defaultVariants: {
@@ -27,7 +27,7 @@ const Drawer = ({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerContext.Provider value={{ direction }}>
-    <DrawerPrimitive.Root shouldScaleBackground={shouldScaleBackground} {...props} />
+    <DrawerPrimitive.Root direction={direction} shouldScaleBackground={shouldScaleBackground} {...props} />
   </DrawerContext.Provider>
 );
 Drawer.displayName = "Drawer";
@@ -54,8 +54,13 @@ const DrawerContent = React.forwardRef<
   return (
     <DrawerPortal>
       <DrawerOverlay />
-      <DrawerPrimitive.Content ref={ref} className={cn(drawerContentVariants({ direction, className }))} {...props}>
-        <div className='mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted' />
+      <DrawerPrimitive.Content
+        ref={ref}
+        className={cn(drawerContentVariants({ direction, className }))}
+        // style={{ "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties}
+        {...props}
+      >
+        {/*<div className='mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted' />*/}
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>

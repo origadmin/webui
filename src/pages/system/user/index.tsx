@@ -1,5 +1,4 @@
 import { useUsersQuery } from "@/api/system/user";
-import { PermissionDrawer } from "@/pages/system/components/permission-drawer";
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable, DataTableProps } from "@/components/DataTable";
@@ -66,7 +65,6 @@ export default function UserPage() {
         </Card>
       </PageContainer>
       <UsersDialogs />
-      <PermissionDrawer />
     </UserTableProvider>
   );
 }
