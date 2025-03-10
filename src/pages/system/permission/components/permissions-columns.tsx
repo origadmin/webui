@@ -1,5 +1,6 @@
 import { PermissionIconRowActions } from "@/pages/system/permission/components/permissions-row-actions";
 import { defaultHeaderMeta } from "@/types";
+import { permissionTypeBadgeColor } from "@/types/system/permissions";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
@@ -24,7 +25,13 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
   {
     accessorKey: "data_scope",
     header: "Data Scope",
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("data_scope")}</div>,
+    cell: ({ row }) =>
+      row.original.data_scope && (
+        <Badge variant='outline' className={permissionTypeBadgeColor(row.original.data_scope)}>
+          {row.original.data_scope}
+        </Badge>
+      ),
+    // <div className='w-fit max-w-36 text-nowrap'>{row.getValue("data_scope")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   // {

@@ -13,7 +13,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "id",
     header: t("pages.system.users.columns.id"),
-    cell: ({ row }) => <LongText className='max-w-42'>{row.original.id}</LongText>,
+    cell: ({ row }) => <LongText className='min-w-12 max-w-42'>{row.original.id}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
@@ -40,19 +40,19 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     ),
   },
   {
+    accessorKey: "nickname",
+    header: "Nickname",
+    cell: ({ row }) => <LongText className='max-w-36'>{row.original.nickname}</LongText>,
+    meta: defaultHeaderMeta.meta,
+    enableColumnFilter: true,
+  },
+  {
     accessorKey: "username",
     header: t("pages.system.users.columns.username"),
     cell: ({ row }) => <LongText className='max-w-36'>{row.original.username}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
-  },
-  {
-    accessorKey: "nickname",
-    header: "Nickname",
-    cell: ({ row }) => <LongText className='max-w-36'>{row.original.nickname}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    enableColumnFilter: true,
   },
   {
     accessorKey: "email",

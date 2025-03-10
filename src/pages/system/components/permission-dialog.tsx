@@ -6,6 +6,7 @@ import { usePermissionsQuery, usePermissionCreate, usePermissionDelete } from "@
 import { useResourcesQuery } from "@/api/system/resource";
 import { useQueryClient } from "@tanstack/react-query";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
+import { permissionTypeBadgeColor } from "@/types/system/permissions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,20 +61,6 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "-";
     return new Date(dateString).toLocaleString();
-  };
-
-  // Get type badge color
-  const getTypeBadgeColor = (type?: string) => {
-    switch (type) {
-      case "self":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300";
-      case "role":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "dept":
-        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
-    }
   };
 
   // Handle adding a new permission
@@ -175,12 +162,12 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Keyword</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Resources</TableHead>
-                <TableHead>Data Scope</TableHead>
-                <TableHead>Updated</TableHead>
+                <TableHead className='text-nowrap'>Name</TableHead>
+                <TableHead className='text-nowrap'>Keyword</TableHead>
+                <TableHead className='text-nowrap'>Description</TableHead>
+                <TableHead className='text-nowrap'>Resources</TableHead>
+                <TableHead className='min-w-36 text-nowrap'>Data Scope</TableHead>
+                <TableHead className='text-nowrap'>Updated</TableHead>
                 <TableHead className='text-right'>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -194,10 +181,10 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
               ) : (
                 filteredPermissions.map((permission) => (
                   <TableRow key={permission.id}>
-                    <TableCell className='font-medium'>{permission.name || "-"}</TableCell>
-                    <TableCell>{permission.keyword || "-"}</TableCell>
-                    <TableCell className='max-w-xs truncate'>{permission.description || "-"}</TableCell>
-                    <TableCell>
+                    <TableCell className='font-medium text-nowrap'>{permission.name || "-"}</TableCell>
+                    <TableCell className='text-nowrap'>{permission.keyword || "-"}</TableCell>
+                    <TableCell className='max-w-xs truncate text-nowrap'>{permission.description || "-"}</TableCell>
+                    <TableCell className='text-nowrap'>
                       <div className='flex flex-wrap gap-1'>
                         {permission.resources && permission.resources.length > 0 ? (
                           permission.resources.slice(0, 2).map((resource) => (
@@ -206,7 +193,12 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
                             </Badge>
                           ))
                         ) : (
-                          <span className='text-muted-foreground'>None</span>
+                          <Badge
+                            variant='outline'
+                            className='text-amber-800 bg-amber-100 hover:bg-amber-100 dark:bg-amber-900/20 dark:text-amber-300 text-xs'
+                          >
+                            None
+                          </Badge>
                         )}
                         {permission.resources && permission.resources.length > 2 && (
                           <Badge variant='secondary' className='text-xs'>
@@ -215,15 +207,15 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className='min-w-36 text-nowrap'>
                       {permission.data_scope && (
-                        <Badge variant='outline' className={getTypeBadgeColor(permission.data_scope)}>
+                        <Badge variant='outline' className={permissionTypeBadgeColor(permission.data_scope)}>
                           {permission.data_scope}
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell>{formatDate(permission.update_time)}</TableCell>
-                    <TableCell className='text-right'>
+                    <TableCell className='text-nowrap'>{formatDate(permission.update_time)}</TableCell>
+                    <TableCell className='text-right text-nowrap'>
                       <div className='flex justify-end gap-2'>
                         <Button variant='ghost' size='icon' onClick={() => handleEditPermission(permission)}>
                           <Edit className='h-4 w-4' />

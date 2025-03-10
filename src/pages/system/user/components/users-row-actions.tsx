@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { useUserTable } from "@/pages/system/user/components/users-table-provider";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +23,7 @@ export const UserIconRowActions = ({ row }: { row: RowActionsProps<API.System.Us
   return <IconRowActions<API.System.User> row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />;
 };
 
-export type OpenStateType = "invite" | "add" | "add-sub" | "edit" | "delete";
+export type OpenStateType = "preview" | "invite" | "add" | "add-sub" | "edit" | "delete";
 
 export interface RowActionsProps<TData> {
   row: Row<TData>;
@@ -86,6 +86,9 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
 
   return (
     <Fragment>
+      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("preview")} title='Preview'>
+        <IconEye size={16} />
+      </Button>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>
