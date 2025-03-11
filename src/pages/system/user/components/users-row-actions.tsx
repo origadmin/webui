@@ -86,9 +86,9 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
 
   return (
     <Fragment>
-      {/*<Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("preview")} title='Preview'>*/}
-      {/*  <IconEye size={16} />*/}
-      {/*</Button>*/}
+      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("preview")} title='Preview'>
+        <IconEye size={16} />
+      </Button>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>

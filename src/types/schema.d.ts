@@ -1081,7 +1081,8 @@ export interface components {
             extra?: components["schemas"]["google.protobuf.Any"];
         };
         "api.v1.services.system.ListUserResourcesResponse": {
-            total_size?: string;
+            /** Format: int32 */
+            total_size?: number;
             resources?: components["schemas"]["api.v1.services.system.Resource"][];
         };
         "api.v1.services.system.ListUsersResponse": {
@@ -1360,6 +1361,10 @@ export interface components {
             resources?: components["schemas"]["api.v1.services.system.Resource"][];
             /** @description Resource Ids holds the value of the resource_ids edge. */
             resource_ids?: string[];
+            /** @description Permissions holds the value of the permissions edge. */
+            permissions?: components["schemas"]["api.v1.services.system.Permission"][];
+            /** @description Permission Ids holds the value of the permission_ids edge. */
+            permission_ids?: string[];
         };
         "api.v1.services.system.TokenRefreshRequest_Data": {
             refresh_token?: string;

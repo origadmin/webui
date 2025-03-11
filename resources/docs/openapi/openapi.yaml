@@ -2664,7 +2664,8 @@ components:
             type: object
             properties:
                 total_size:
-                    type: string
+                    type: integer
+                    format: int32
                 resources:
                     type: array
                     items:
@@ -3050,6 +3051,16 @@ components:
                     items:
                         type: string
                     description: Resource Ids holds the value of the resource_ids edge.
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.system.Permission'
+                    description: Permissions holds the value of the permissions edge.
+                permission_ids:
+                    type: array
+                    items:
+                        type: string
+                    description: Permission Ids holds the value of the permission_ids edge.
             description: Role is the model entity for the Role schema.
         api.v1.services.system.TokenRefreshRequest_Data:
             type: object

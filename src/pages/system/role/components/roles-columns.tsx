@@ -69,10 +69,24 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   },
 
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "permission_ids",
+    header: "Permissions",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("description")}</div>,
+    cell: ({ row }) => (
+      <div className='w-fit max-w-36 text-nowrap'>
+        {row.original.permissions &&
+          row.original.permissions.slice(0, 1).map((item) => (
+            <Badge variant='outline' key={item.id}>
+              {item.name}
+            </Badge>
+          ))}
+        {row.original.permissions && row.original.permissions.length > 1 ? (
+          <Badge variant='outline' className='capitalize'>
+            {`+ ${row.original.permissions?.length - 1} more`}
+          </Badge>
+        ) : null}
+      </div>
+    ),
     meta: defaultHeaderMeta.meta,
   },
   {

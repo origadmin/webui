@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState, useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useResourcesQuery, buildTree } from "@/api/system/resource";
-import { RolesResourceSelect } from "@/pages/system/role/components/roles-resource-select";
+import { RolesPermissionSelect } from "@/pages/system/role/components/roles-permission-select";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -245,7 +245,7 @@ export function PermissionsActionDialog({
                   render={({ field }) => (
                     <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border overflow-y-hidden'>
                       <FormControl>
-                        <RolesResourceSelect
+                        <RolesPermissionSelect
                           expandAll={expanded}
                           value={field.value}
                           onChange={field.onChange}

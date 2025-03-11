@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { UserResourceDialog } from "./user-resource-dialog";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
@@ -10,14 +11,14 @@ export function UsersDialogs() {
 
   return (
     <Fragment>
-      {/*{currentRow && (*/}
-      {/*  <UserResourceDialog*/}
-      {/*    key={`user-resource-${currentRow.id}`}*/}
-      {/*    currentRow={currentRow}*/}
-      {/*    open={open === "preview"}*/}
-      {/*    onOpenChange={() => setOpen("preview")}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {currentRow && (
+        <UserResourceDialog
+          key={`user-resource-${currentRow.id}`}
+          currentRow={currentRow}
+          open={open === "preview"}
+          onOpenChange={() => setOpen("preview")}
+        />
+      )}
       <UsersActionDialog
         className={className}
         key='user-add'

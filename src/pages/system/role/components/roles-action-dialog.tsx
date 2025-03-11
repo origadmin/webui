@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { usePermissionsQuery } from "@/api/system/permission";
-import { buildTree } from "@/api/system/resource";
 import { useRoleCreate, useRoleUpdate } from "@/api/system/role";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { RolesResourceSelect } from "./roles-resource-select";
+import { RolesPermissionSelect } from "./roles-permission-select";
 import { RolesSequenceDialog } from "./roles-sequence-dialogs";
 
 const formSchema = z.object({
@@ -37,7 +36,7 @@ const formSchema = z.object({
   description: z.string().optional(),
   status: z.number().default(1),
   is_edit: z.boolean(),
-  permission_ids: z.array(z.string()).default([]),
+  permission_ids: z.array(z.string()).optional(),
 });
 
 type RoleForm = z.infer<typeof formSchema>;
@@ -59,7 +58,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
       ? {
           ...currentRow,
           is_edit,
-          permission_ids: currentRow.permissions?.map((permission) => permission.id || "") || [],
+          // permission_ids: currentRow.permission_ids || [],
         }
       : {
           name: "",
@@ -69,12 +68,12 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           description: "",
           status: 1,
           is_edit,
-          resource_ids: [],
+          permission_ids: [],
         },
   });
 
   const { data: permissions = {} } = usePermissionsQuery({ page_size: 1000 });
-  const treeData = useMemo(() => buildTree(permissions.data), [permissions.data]);
+  const treeData = useMemo(() => permissions.data, [permissions.data]);
 
   console.log("dialog permissions", permissions);
   const id = currentRow?.id || "";
@@ -103,7 +102,8 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
     onOpenChange(false);
   };
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  // const [expanded, setExpanded] = useState(false);
+  // const [selected, setSelected] = useState(false);
   const handleSortOpen = async () => {
     setSortDialogOpen(true);
   };
@@ -238,22 +238,17 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                   <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                     Role Permissions
                   </h2>
-                  <div className='col-span-1 items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <Switch checked={expanded} onCheckedChange={setExpanded} />
-                  </div>
+                  {/*<div className='col-span-1 items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>*/}
+                  {/*  <Switch checked={expanded} onCheckedChange={setExpanded} />*/}
+                  {/*</div>*/}
                 </div>
                 <FormField
                   control={form.control}
                   name='permission_ids'
                   render={({ field }) => (
-                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border overflow-y-hidden'>
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start w-full overflow-x-hidden'>
                       <FormControl>
-                        <RolesResourceSelect
-                          expandAll={expanded}
-                          value={field.value}
-                          onChange={field.onChange}
-                          resources={treeData}
-                        />
+                        <RolesPermissionSelect value={field.value} onChange={field.onChange} permissions={treeData} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
