@@ -25,14 +25,17 @@ paths:
             parameters:
                 - name: id
                   in: query
+                  description: The id of the captcha
                   schema:
                     type: string
                 - name: type
                   in: query
+                  description: The type of the captcha
                   schema:
                     type: string
                 - name: reload
                   in: query
+                  description: The reload is used to reload the captcha
                   schema:
                     type: boolean
                 - name: ts
@@ -544,6 +547,11 @@ paths:
                   required: true
                   schema:
                     type: string
+                - name: id
+                  in: query
+                  description: The department id to use for this department.
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -822,6 +830,13 @@ paths:
                   description: The only_count is the query parameter for set only to query the total number
                   schema:
                     type: boolean
+                - name: data_scopes
+                  in: query
+                  description: The data_scopes is used to query the permission by data scopes.
+                  schema:
+                    type: array
+                    items:
+                        type: string
             responses:
                 "200":
                     description: OK
@@ -931,6 +946,11 @@ paths:
                 - name: permission.id
                   in: path
                   required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: query
+                  description: The resource name of the permission to update.
                   schema:
                     type: string
             requestBody:
@@ -1322,6 +1342,11 @@ paths:
                   required: true
                   schema:
                     type: string
+                - name: id
+                  in: query
+                  description: The id of the position resource to update.
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -1495,6 +1520,11 @@ paths:
                   required: true
                   schema:
                     type: string
+                - name: id
+                  in: query
+                  description: The id of the resource object to update.
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -1663,6 +1693,11 @@ paths:
                   required: true
                   schema:
                     type: string
+                - name: id
+                  in: query
+                  description: The id of the role resource to update.
+                  schema:
+                    type: string
             requestBody:
                 content:
                     application/json:
@@ -1720,6 +1755,11 @@ paths:
                   description: The only_count is the query parameter for set only to query the total number
                   schema:
                     type: boolean
+                - name: title
+                  in: query
+                  description: The title query parameter for set only to query the title
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -1748,9 +1788,9 @@ paths:
                   description: The user id to use for this user.
                   schema:
                     type: string
-                - name: is_admin
+                - name: is_system
                   in: query
-                  description: The user is_admin to use for this user.
+                  description: The user is_system to use for this user.
                   schema:
                     type: boolean
                 - name: random_password
@@ -1771,31 +1811,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.v1.services.system.CreateUserResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/users/password/reset:
-        post:
-            tags:
-                - UserService
-            description: ResetUserPassword reset the user s password
-            operationId: UserService_ResetUserPassword
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ResetUserPasswordResponse'
                 default:
                     description: Default error response
                     content:
@@ -1829,6 +1844,61 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+    /sys/users/{id}/password/reset:
+        post:
+            tags:
+                - UserService
+            description: ResetUserPassword reset the user s password
+            operationId: UserService_ResetUserPassword
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.ResetUserPasswordResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/users/{id}/resources:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_ListUserResources
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.ListUserResourcesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
     /sys/users/{user.id}:
         put:
             tags:
@@ -1840,6 +1910,21 @@ paths:
                   required: true
                   schema:
                     type: string
+                - name: user_id
+                  in: query
+                  description: The user id to use for this user.
+                  schema:
+                    type: string
+                - name: is_system
+                  in: query
+                  description: The user is_system to use for this user.
+                  schema:
+                    type: boolean
+                - name: random_password
+                  in: query
+                  description: The random_password is the query parameter for set only to generate a random password
+                  schema:
+                    type: boolean
             requestBody:
                 content:
                     application/json:
@@ -2000,6 +2085,13 @@ paths:
                   description: user.field.manager
                   schema:
                     type: string
+                - name: user.role_ids
+                  in: query
+                  description: Role Ids holds the value of the role_ids
+                  schema:
+                    type: array
+                    items:
+                        type: string
             responses:
                 "200":
                     description: OK
@@ -2025,146 +2117,21 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: user.id
+                - name: id
                   in: query
-                  description: |-
-                    ID of the ent.
-                     field.primary_key.comment
                   schema:
                     type: string
-                - name: user.create_author
-                  in: query
-                  description: create_author.field.comment
-                  schema:
-                    type: string
-                - name: user.update_author
-                  in: query
-                  description: update_author.field.comment
-                  schema:
-                    type: string
-                - name: user.create_time
-                  in: query
-                  description: create_time.field.comment
-                  schema:
-                    type: string
-                    format: date-time
-                - name: user.update_time
-                  in: query
-                  description: update_time.field.comment
-                  schema:
-                    type: string
-                    format: date-time
-                - name: user.uuid
-                  in: query
-                  description: user.field.uuid
-                  schema:
-                    type: string
-                - name: user.allowed_ip
-                  in: query
-                  description: user.field.allowed_ip
-                  schema:
-                    type: string
-                - name: user.username
-                  in: query
-                  description: user.field.username
-                  schema:
-                    type: string
-                - name: user.nickname
-                  in: query
-                  description: user.field.nickname
-                  schema:
-                    type: string
-                - name: user.avatar
-                  in: query
-                  description: user.field.avatar
-                  schema:
-                    type: string
-                - name: user.name
-                  in: query
-                  description: user.field.nickname
-                  schema:
-                    type: string
-                - name: user.gender
-                  in: query
-                  description: user.field.gender
-                  schema:
-                    type: string
-                - name: user.password
-                  in: query
-                  description: |-
-                    user.field.password
-                     @Decrypted don't show this field in response
-                  schema:
-                    type: string
-                - name: user.salt
-                  in: query
-                  description: |-
-                    user.field.salt
-                     @Decrypted don't show this field in response
-                  schema:
-                    type: string
-                - name: user.phone
-                  in: query
-                  description: user.field.phone
-                  schema:
-                    type: string
-                - name: user.email
-                  in: query
-                  description: user.field.email
-                  schema:
-                    type: string
-                - name: user.remark
-                  in: query
-                  description: user.field.remark
-                  schema:
-                    type: string
-                - name: user.token
-                  in: query
-                  description: user.field.token
-                  schema:
-                    type: string
-                - name: user.status
-                  in: query
-                  description: user.field.status
-                  schema:
-                    type: integer
-                    format: int32
-                - name: user.last_login_ip
-                  in: query
-                  description: user.field.last_login_ip
-                  schema:
-                    type: string
-                - name: user.last_login_time
-                  in: query
-                  description: user.field.last_login_time
-                  schema:
-                    type: string
-                    format: date-time
-                - name: user.sanction_date
-                  in: query
-                  description: user.field.sanction_date
-                  schema:
-                    type: string
-                    format: date-time
-                - name: user.manager_id
-                  in: query
-                  description: user.field.manager_id
-                  schema:
-                    type: string
-                - name: user.manager
-                  in: query
-                  description: user.field.manager
-                  schema:
-                    type: string
-                - name: is_add
+                - name: role_ids
                   in: query
                   schema:
-                    type: boolean
+                    type: array
+                    items:
+                        type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.UpdateUserRolesRequest_Data'
+                            $ref: '#/components/schemas/api.v1.services.system.User'
                 required: true
             responses:
                 "200":
@@ -2693,6 +2660,15 @@ components:
                     description: |-
                         Additional information about this response.
                          content to be added without destroying the current data format
+        api.v1.services.system.ListUserResourcesResponse:
+            type: object
+            properties:
+                total_size:
+                    type: string
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.system.Resource'
         api.v1.services.system.ListUsersResponse:
             type: object
             properties:
@@ -3003,6 +2979,11 @@ components:
                     allOf:
                         - $ref: '#/components/schemas/api.v1.services.system.Resource'
                     description: Parent holds the value of the parent edge.
+                permission_ids:
+                    type: array
+                    items:
+                        type: string
+                    description: Permission Ids holds the value of the permission_ids edge.
                 permissions:
                     type: array
                     items:
@@ -3064,6 +3045,11 @@ components:
                     items:
                         $ref: '#/components/schemas/api.v1.services.system.Resource'
                     description: Resources holds the value of the resources edge.
+                resource_ids:
+                    type: array
+                    items:
+                        type: string
+                    description: Resource Ids holds the value of the resource_ids edge.
             description: Role is the model entity for the Role schema.
         api.v1.services.system.TokenRefreshRequest_Data:
             type: object
@@ -3121,13 +3107,6 @@ components:
             properties:
                 user:
                     $ref: '#/components/schemas/api.v1.services.system.User'
-        api.v1.services.system.UpdateUserRolesRequest_Data:
-            type: object
-            properties:
-                role_ids:
-                    type: array
-                    items:
-                        type: string
         api.v1.services.system.UpdateUserRolesResponse:
             type: object
             properties:
@@ -3227,6 +3206,11 @@ components:
                     items:
                         $ref: '#/components/schemas/api.v1.services.system.Role'
                     description: Roles holds the value of the roles edge.
+                role_ids:
+                    type: array
+                    items:
+                        type: string
+                    description: Role Ids holds the value of the role_ids
             description: User is the model entity for the User schema.
         api.v1.services.system.ValidateTokenResponse:
             type: object

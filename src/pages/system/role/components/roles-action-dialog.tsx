@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { useResourcesQuery, buildTree } from "@/api/system/resource";
+import { usePermissionsQuery } from "@/api/system/permission";
+import { buildTree } from "@/api/system/resource";
 import { useRoleCreate, useRoleUpdate } from "@/api/system/role";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,7 +37,7 @@ const formSchema = z.object({
   description: z.string().optional(),
   status: z.number().default(1),
   is_edit: z.boolean(),
-  resource_ids: z.array(z.string()).default([]),
+  permission_ids: z.array(z.string()).default([]),
 });
 
 type RoleForm = z.infer<typeof formSchema>;
@@ -58,7 +59,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
       ? {
           ...currentRow,
           is_edit,
-          resource_ids: currentRow.resources?.map((resource) => resource.id || "") || [],
+          permission_ids: currentRow.permissions?.map((permission) => permission.id || "") || [],
         }
       : {
           name: "",
@@ -72,10 +73,10 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
         },
   });
 
-  const { data: resources = {} } = useResourcesQuery({ page_size: 1000 });
-  const treeData = useMemo(() => buildTree(resources.data), [resources.data]);
+  const { data: permissions = {} } = usePermissionsQuery({ page_size: 1000 });
+  const treeData = useMemo(() => buildTree(permissions.data), [permissions.data]);
 
-  console.log("dialog resource", resources);
+  console.log("dialog permissions", permissions);
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
   const { mutate: createRole, isPending: isCreatePending } = useRoleCreate(queryClient);
@@ -243,7 +244,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                 </div>
                 <FormField
                   control={form.control}
-                  name='resource_ids'
+                  name='permission_ids'
                   render={({ field }) => (
                     <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border overflow-y-hidden'>
                       <FormControl>

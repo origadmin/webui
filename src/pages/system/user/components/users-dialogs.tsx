@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { PermissionDrawer } from "@/pages/system/components/permission-drawer";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
@@ -11,7 +10,14 @@ export function UsersDialogs() {
 
   return (
     <Fragment>
-      <PermissionDrawer key='permission-drawer' open={open === "preview"} onOpenChange={() => setOpen("preview")} />
+      {/*{currentRow && (*/}
+      {/*  <UserResourceDialog*/}
+      {/*    key={`user-resource-${currentRow.id}`}*/}
+      {/*    currentRow={currentRow}*/}
+      {/*    open={open === "preview"}*/}
+      {/*    onOpenChange={() => setOpen("preview")}*/}
+      {/*  />*/}
+      {/*)}*/}
       <UsersActionDialog
         className={className}
         key='user-add'

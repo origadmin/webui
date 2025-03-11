@@ -19,6 +19,11 @@ export async function getUser(id: string, options?: API.RequestOptions) {
   return get<API.System.User>(`/sys/users/${id}`, options);
 }
 
+/** Get user record by ID GET /sys/users/${id} */
+export async function getUserResources(id: string, options?: API.RequestOptions) {
+  return get<API.System.Resource[]>(`/sys/users/${id}/resources`, options);
+}
+
 /** Update user record by ID PUT /sys/users/${id} */
 export async function updateUser(id: string, body: Omit<API.System.User, "id">, options?: API.RequestOptions) {
   return put<never>(`/sys/users/${id}`, body, options);
@@ -107,6 +112,15 @@ export const useUserQuery = (id: string) => {
     queryOptions({
       queryKey: ["/sys/users", id],
       queryFn: ({ queryKey: [, id] }) => getUser(id),
+    }),
+  );
+};
+
+export const useUserResourceQuery = (id: string) => {
+  return useQuery(
+    queryOptions({
+      queryKey: ["/sys/users/{id}/resources", id],
+      queryFn: ({ queryKey: [, id] }) => getUserResources(id),
     }),
   );
 };

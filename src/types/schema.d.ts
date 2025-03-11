@@ -639,7 +639,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/sys/users/password/reset": {
+    "/sys/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserService_GetUser"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sys/users/{id}/password/reset": {
         parameters: {
             query?: never;
             header?: never;
@@ -656,14 +672,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/sys/users/{id}": {
+    "/sys/users/{id}/resources": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["UserService_GetUser"];
+        get: operations["UserService_ListUserResources"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1064,6 +1080,10 @@ export interface components {
              *      content to be added without destroying the current data format */
             extra?: components["schemas"]["google.protobuf.Any"];
         };
+        "api.v1.services.system.ListUserResourcesResponse": {
+            total_size?: string;
+            resources?: components["schemas"]["api.v1.services.system.Resource"][];
+        };
         "api.v1.services.system.ListUsersResponse": {
             /**
              * Format: int32
@@ -1289,6 +1309,8 @@ export interface components {
             children?: components["schemas"]["api.v1.services.system.Resource"][];
             /** @description Parent holds the value of the parent edge. */
             parent?: components["schemas"]["api.v1.services.system.Resource"];
+            /** @description Permission Ids holds the value of the permission_ids edge. */
+            permission_ids?: string[];
             /** @description Permissions holds the value of the permissions edge. */
             permissions?: components["schemas"]["api.v1.services.system.Permission"][];
         };
@@ -1336,6 +1358,8 @@ export interface components {
             users?: components["schemas"]["api.v1.services.system.User"][];
             /** @description Resources holds the value of the resources edge. */
             resources?: components["schemas"]["api.v1.services.system.Resource"][];
+            /** @description Resource Ids holds the value of the resource_ids edge. */
+            resource_ids?: string[];
         };
         "api.v1.services.system.TokenRefreshRequest_Data": {
             refresh_token?: string;
@@ -1368,9 +1392,6 @@ export interface components {
         };
         "api.v1.services.system.UpdateUserResponse": {
             user?: components["schemas"]["api.v1.services.system.User"];
-        };
-        "api.v1.services.system.UpdateUserRolesRequest_Data": {
-            role_ids?: string[];
         };
         "api.v1.services.system.UpdateUserRolesResponse": {
             user?: components["schemas"]["api.v1.services.system.User"];
@@ -1446,6 +1467,8 @@ export interface components {
             manager?: string;
             /** @description Roles holds the value of the roles edge. */
             roles?: components["schemas"]["api.v1.services.system.Role"][];
+            /** @description Role Ids holds the value of the role_ids */
+            role_ids?: string[];
         };
         /** @description VerifyTokenResponse contains the result of the verification. */
         "api.v1.services.system.ValidateTokenResponse": {
@@ -1498,8 +1521,11 @@ export interface operations {
     LoginService_Captcha: {
         parameters: {
             query?: {
+                /** @description The id of the captcha */
                 id?: string;
+                /** @description The type of the captcha */
                 type?: string;
+                /** @description The reload is used to reload the captcha */
                 reload?: boolean;
                 /** @description The timestamp of the request prevent caching of the same result */
                 ts?: string;
@@ -2071,7 +2097,10 @@ export interface operations {
     };
     DepartmentService_UpdateDepartment: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description The department id to use for this department. */
+                id?: string;
+            };
             header?: never;
             path: {
                 "department.id": string;
@@ -2366,6 +2395,8 @@ export interface operations {
                 no_paging?: boolean;
                 /** @description The only_count is the query parameter for set only to query the total number */
                 only_count?: boolean;
+                /** @description The data_scopes is used to query the permission by data scopes. */
+                data_scopes?: string[];
             };
             header?: never;
             path?: never;
@@ -2499,7 +2530,10 @@ export interface operations {
     };
     PermissionService_UpdatePermission: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description The resource name of the permission to update. */
+                id?: string;
+            };
             header?: never;
             path: {
                 "permission.id": string;
@@ -2964,7 +2998,10 @@ export interface operations {
     };
     PositionService_UpdatePosition: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description The id of the position resource to update. */
+                id?: string;
+            };
             header?: never;
             path: {
                 "position.id": string;
@@ -3147,7 +3184,10 @@ export interface operations {
     };
     ResourceService_UpdateResource: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description The id of the resource object to update. */
+                id?: string;
+            };
             header?: never;
             path: {
                 "resource.id": string;
@@ -3328,7 +3368,10 @@ export interface operations {
     };
     RoleService_UpdateRole: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description The id of the role resource to update. */
+                id?: string;
+            };
             header?: never;
             path: {
                 "role.id": string;
@@ -3376,6 +3419,8 @@ export interface operations {
                 no_paging?: boolean;
                 /** @description The only_count is the query parameter for set only to query the total number */
                 only_count?: boolean;
+                /** @description The title query parameter for set only to query the title */
+                title?: string;
             };
             header?: never;
             path?: never;
@@ -3410,8 +3455,8 @@ export interface operations {
                 parent?: string;
                 /** @description The user id to use for this user. */
                 user_id?: string;
-                /** @description The user is_admin to use for this user. */
-                is_admin?: boolean;
+                /** @description The user is_system to use for this user. */
+                is_system?: boolean;
                 /** @description The random_password is the query parameter for set only to generate a random password */
                 random_password?: boolean;
             };
@@ -3432,39 +3477,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["api.v1.services.system.CreateUserResponse"];
-                };
-            };
-            /** @description Default error response */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["google.rpc.Status"];
-                };
-            };
-        };
-    };
-    UserService_ResetUserPassword: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["google.protobuf.Any"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["api.v1.services.system.ResetUserPasswordResponse"];
                 };
             };
             /** @description Default error response */
@@ -3511,9 +3523,82 @@ export interface operations {
             };
         };
     };
-    UserService_UpdateUser: {
+    UserService_ResetUserPassword: {
         parameters: {
             query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["google.protobuf.Any"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ResetUserPasswordResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_ListUserResources: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.system.ListUserResourcesResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    UserService_UpdateUser: {
+        parameters: {
+            query?: {
+                /** @description The user id to use for this user. */
+                user_id?: string;
+                /** @description The user is_system to use for this user. */
+                is_system?: boolean;
+                /** @description The random_password is the query parameter for set only to generate a random password */
+                random_password?: boolean;
+            };
             header?: never;
             path: {
                 "user.id": string;
@@ -3600,6 +3685,8 @@ export interface operations {
                 "user.manager_id"?: string;
                 /** @description user.field.manager */
                 "user.manager"?: string;
+                /** @description Role Ids holds the value of the role_ids */
+                "user.role_ids"?: string[];
             };
             header?: never;
             path: {
@@ -3632,58 +3719,8 @@ export interface operations {
     UserService_UpdateUserRoles: {
         parameters: {
             query?: {
-                /** @description ID of the ent.
-                 *      field.primary_key.comment */
-                "user.id"?: string;
-                /** @description create_author.field.comment */
-                "user.create_author"?: string;
-                /** @description update_author.field.comment */
-                "user.update_author"?: string;
-                /** @description create_time.field.comment */
-                "user.create_time"?: string;
-                /** @description update_time.field.comment */
-                "user.update_time"?: string;
-                /** @description user.field.uuid */
-                "user.uuid"?: string;
-                /** @description user.field.allowed_ip */
-                "user.allowed_ip"?: string;
-                /** @description user.field.username */
-                "user.username"?: string;
-                /** @description user.field.nickname */
-                "user.nickname"?: string;
-                /** @description user.field.avatar */
-                "user.avatar"?: string;
-                /** @description user.field.nickname */
-                "user.name"?: string;
-                /** @description user.field.gender */
-                "user.gender"?: string;
-                /** @description user.field.password
-                 *      @Decrypted don't show this field in response */
-                "user.password"?: string;
-                /** @description user.field.salt
-                 *      @Decrypted don't show this field in response */
-                "user.salt"?: string;
-                /** @description user.field.phone */
-                "user.phone"?: string;
-                /** @description user.field.email */
-                "user.email"?: string;
-                /** @description user.field.remark */
-                "user.remark"?: string;
-                /** @description user.field.token */
-                "user.token"?: string;
-                /** @description user.field.status */
-                "user.status"?: number;
-                /** @description user.field.last_login_ip */
-                "user.last_login_ip"?: string;
-                /** @description user.field.last_login_time */
-                "user.last_login_time"?: string;
-                /** @description user.field.sanction_date */
-                "user.sanction_date"?: string;
-                /** @description user.field.manager_id */
-                "user.manager_id"?: string;
-                /** @description user.field.manager */
-                "user.manager"?: string;
-                is_add?: boolean;
+                id?: string;
+                role_ids?: string[];
             };
             header?: never;
             path: {
@@ -3693,7 +3730,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["api.v1.services.system.UpdateUserRolesRequest_Data"];
+                "application/json": components["schemas"]["api.v1.services.system.User"];
             };
         };
         responses: {

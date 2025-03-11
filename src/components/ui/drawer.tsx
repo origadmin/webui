@@ -27,7 +27,12 @@ const Drawer = ({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerContext.Provider value={{ direction }}>
-    <DrawerPrimitive.Root direction={direction} shouldScaleBackground={shouldScaleBackground} {...props} />
+    <DrawerPrimitive.Root
+      autoFocus={true}
+      direction={direction}
+      shouldScaleBackground={shouldScaleBackground}
+      {...props}
+    />
   </DrawerContext.Provider>
 );
 Drawer.displayName = "Drawer";
