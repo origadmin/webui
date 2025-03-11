@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useMemo } from "react";
+import { ChangeEvent, useState, useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useResourcesQuery, buildTree } from "@/api/system/resource";
 import { RolesPermissionSelect } from "@/pages/system/role/components/roles-permission-select";
