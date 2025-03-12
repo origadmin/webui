@@ -12,6 +12,7 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 import { GroupContentProps, MenuItem } from "@/components/Sidebar/group-content";
+import { TablerIcon } from "../IconPicker";
 
 export type MainContentProps = Omit<GroupContentProps, "seconds">;
 
@@ -19,7 +20,7 @@ export function MainContent({ title, items }: MainContentProps) {
   function renderIcon(item: MenuItem) {
     return (
       <a href={item.path}>
-        {item.icon && <item.icon />}
+        {item.icon && <TablerIcon name={item.icon} />}
         <span>{item.title}</span>
       </a>
     );

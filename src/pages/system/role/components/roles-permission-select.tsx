@@ -35,7 +35,7 @@ export function RolesPermissionSelect({ value = [], onChange, permissions = [] }
         defaultValue={treeData
           .map((option) => option.value)
           .filter((value) => Array.isArray(selectedPermissions) && selectedPermissions.includes(value))}
-        onValueChange={handlePermissionChange}
+        onChange={handlePermissionChange}
       />
     </div>
   );

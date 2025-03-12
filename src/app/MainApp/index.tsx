@@ -1,9 +1,11 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useMemo } from "react";
+import { useResourcesQuery } from "@/api/system/resource";
 import { mockSidebar, mockTopNav, mockFooter, mockSecondItems } from "@/mocks/mock-sidebar";
 import { router } from "@/router";
 import { SIGN_IN_URL, SIGN_OUT_URL, SIGN_UP_URL } from "@/types";
 import { refreshToken } from "@/utils/auth";
-import { getAccessToken } from "@/utils/storage";
+import { buildMenuTree } from "@/utils/menu";
+import { getAccessToken, getUserID } from "@/utils/storage";
 import { RouterProvider } from "@tanstack/react-router";
 import AuthProvider, { AuthProviderProps, useAuth } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/toaster";
@@ -108,14 +110,20 @@ function MainApp() {
 
   const accesses = new Map<string, boolean>();
   accesses.set("*", true);
-
+  // const id = getUserID() || "";
+  const { data: resources, isLoading } = useResourcesQuery({ page_size: 1000 });
+  if (isLoading) {
+    return <LoadingSpinner />; // 全屏加载状态
+  }
+  const menusItems = buildMenuTree(resources?.data);
+  console.log("menu tree", menusItems);
   const getMockData = (): SidebarProps => {
     return {
       header: {
         teams: mockSidebar.teams,
       },
       content: {
-        items: mockSidebar.menuItems,
+        items: menusItems,
         seconds: {
           items: mockSecondItems,
         },
@@ -127,8 +135,12 @@ function MainApp() {
   };
 
   const initialData: AuthProviderProps<InitialDataConfig> = {
+    // const [initialData, setInitialData] = useState<AuthProviderProps<InitialDataConfig>>({
     refresh: () => {
       return refreshToken();
+    },
+    getUserId: () => {
+      return getUserID() || "";
     },
     isAuthenticated: () => {
       return !!getAccessToken();
@@ -137,7 +149,7 @@ function MainApp() {
     access: accesses,
     initialData: {
       sidebar: getMockData(),
-      menus: mockSidebar.menuItems,
+      menus: menusItems,
       topNav: {
         menus: mockTopNav,
       },
@@ -164,17 +176,27 @@ function MainApp() {
     signUpPath: SIGN_UP_URL,
     signOutPath: SIGN_OUT_URL,
   };
+  // });
 
-  useEffect(() => {
-    // setInitRoutes(initRouter(routes));
-  }, []);
+  // useEffect(() => {
+  //   setInitialData((prev) => {
+  //     return {
+  //       ...prev,
+  //       initialData: {
+  //         ...prev.initialData,
+  //         sidebar: getMockData(),
+  //         menus: menusItems,
+  //       },
+  //     };
+  //   });
+  // }, [getMockData, menusItems]);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <AuthProvider<InitialDataConfig> {...initialData}>
         <AuthApp />
       </AuthProvider>
-      <Toaster richColors position='top-right' />
+      <Toaster />
     </Suspense>
   );
 }

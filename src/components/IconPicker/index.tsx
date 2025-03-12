@@ -167,6 +167,6 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
 );
 IconPicker.displayName = "IconPicker";
 
-export type { IconName, IconPickerProps, TablerIcon };
+export type { IconName, IconPickerProps };
 export default IconPicker;
-export { ICON_BUTTONS };
+export { ICON_BUTTONS, TablerIcon };

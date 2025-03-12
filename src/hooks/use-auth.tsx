@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { Storage, noop } from "@/utils";
 
 type ContextType<T = unknown> = {
+  getUserId?: () => string;
   isAuthenticated: () => boolean;
   token: string | null;
   refresh?: () => Promise<string | undefined>;
@@ -25,6 +26,7 @@ const Context = createContext<ContextType>({
 });
 
 export type AuthProviderProps<T = unknown> = {
+  getUserId?: () => string;
   isAuthenticated?: () => boolean;
   token: string | null;
   access?: Map<string, boolean>;

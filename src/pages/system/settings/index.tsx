@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TablerIcon from "@/components/IconPicker";
 import PageContainer from "@/components/PageContainer";
 
 function SettingsPage() {
@@ -185,7 +186,7 @@ function SettingsPage() {
                         <CardDescription>{menu.path}</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <p>Icon: {menu.icon && <menu.icon />}</p>
+                        <p>Icon: {menu.icon && <TablerIcon name={menu.icon} />}</p>
                         <p>Parent: {menu.parent_id ? menus.find((m) => m.id === menu.parent_id)?.name : "None"}</p>
                       </CardContent>
                       <CardFooter>

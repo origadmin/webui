@@ -369,7 +369,6 @@ export function ResourcesActionDialog({
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name='icon'

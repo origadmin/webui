@@ -1,4 +1,4 @@
-import { forwardRef, useState, KeyboardEvent } from "react";
+import { forwardRef, useState, KeyboardEvent, useEffect, useMemo } from "react";
 import { IconCheck, IconChevronDown, IconCircleX, IconWand } from "@tabler/icons-react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
@@ -104,6 +104,7 @@ export interface MultiSelectProps
    */
   className?: string;
   badgeClassName?: string;
+  count?: number;
 }
 
 export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
@@ -115,9 +116,9 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       defaultValue = [],
       placeholder = "Select options",
       animation = 0,
-      maxCount = 3,
+      maxCount = 2,
       modalPopover = false,
-      // asChild = true,
+      count = 1000,
       className,
       badgeClassName,
       ...props
@@ -127,6 +128,13 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [displayCount, setDisplayCount] = useState(count);
+
+    useEffect(() => {
+      setDisplayCount(count);
+    }, [count]);
+
+    const displayedOptions = useMemo(() => options.slice(0, displayCount), [options, displayCount]);
 
     const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       console.log("event", event);
@@ -179,12 +187,12 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       }
     };
 
-    // const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    //   const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    //   if (scrollHeight - scrollTop - clientHeight < count) {
-    //     setDisplayCount((prev) => Math.min(prev + count, filteredIcons.length));
-    //   }
-    // };
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+      if (scrollHeight - scrollTop - clientHeight < count) {
+        setDisplayCount((prev) => Math.min(prev + count, displayedOptions.length));
+      }
+    };
 
     const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
       console.log("handleWheel");
@@ -214,7 +222,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
             )}
             {selectedValues.length > 0 && (
               <div className='flex justify-between items-center w-full'>
-                <div className='flex flex-wrap items-center'>
+                <div className='flex items-center'>
                   {selectedValues.slice(0, maxCount).map((value) => {
                     const option = options.find((o) => o.value === value);
                     const IconComponent = option?.icon;
@@ -285,7 +293,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         >
           <Command className='h-full'>
             <CommandInput placeholder='Search...' onKeyDown={handleInputKeyDown} />
-            <CommandList onWheel={handleWheel} onScroll={(e) => console.log(e)}>
+            <CommandList onWheel={handleWheel} onScroll={(e) => handleScroll(e)}>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 <CommandItem key='all' onSelect={toggleAll}>
@@ -301,7 +309,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                   </div>
                   <span>(Select All)</span>
                 </CommandItem>
-                {options.map((option) => {
+                {displayedOptions.map((option) => {
                   const isSelected = selectedValues.includes(option.value);
                   return (
                     <CommandItem key={option.value} onSelect={() => toggleOption(option.value)}>

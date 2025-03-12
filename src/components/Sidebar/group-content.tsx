@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { MainContent } from "@/components/Sidebar/main-content";
 import { SecondaryContent } from "@/components/Sidebar/secondary-content";
+import { TablerIcon } from "../IconPicker";
 
 export type MenuItem = API.MenuItem & {};
 
@@ -34,7 +35,7 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
   function renderIcon(item: MenuItem) {
     return (
       <Fragment>
-        {item.icon && <item.icon />}
+        {item.icon && <TablerIcon name={item.icon} />}
         <span>{item.title}</span>
       </Fragment>
     );
@@ -108,7 +109,7 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
       <SidebarMenuItem key={itemKey(item, index)}>
         <SidebarMenuButton asChild>
           <Link to={item.path || "#"}>
-            {item.icon && <item.icon />}
+            {item.icon && <TablerIcon name={item.icon} />}
             <span>{item.title}</span>
           </Link>
         </SidebarMenuButton>
@@ -122,12 +123,13 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
       {items && (
         <SidebarGroup {...props}>
           <SidebarMenu>
-            {items.map((item, index) => (
-              <Fragment key={index}>
-                {renderTitleItem(item, index)}
-                {hasSub(item) && renderSubItem(item.children)}
-              </Fragment>
-            ))}
+            {items.length > 0 && renderSubItem(items)}
+            {/*{items.map((item, index) => (*/}
+            {/*  <Fragment key={index}>*/}
+            {/*    {renderTitleItem(item, index)}*/}
+            {/*    {hasSub(item) && renderSubItem(item.children)}*/}
+            {/*  </Fragment>*/}
+            {/*))}*/}
           </SidebarMenu>
         </SidebarGroup>
       )}

@@ -63,17 +63,6 @@ declare global {
       expiration_time?: string;
     };
 
-    type ItemTree = Record<string, any> & {
-      id: string;
-      key: string;
-      value: string;
-      title: string;
-      parent_id?: string;
-      disabled?: boolean;
-      children?: ItemTree[];
-      [key: string]: unknown;
-    };
-
     type Route = Omit<RouteObject, "children", "element"> & {
       keyword?: string;
       component?: string;
@@ -86,11 +75,13 @@ declare global {
       name?: string;
       keyword?: string;
       title: string;
+      sequence?: number;
       path?: string;
+      type?: string;
       disabled?: boolean;
       external?: boolean;
       shortcut?: [string, string];
-      icon?: TablerIcon | LucideIcon;
+      icon?: string;
       label?: string;
       description?: string;
       isActive?: boolean;

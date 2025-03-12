@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRolesQuery } from "@/api/system/role";
 import { useUserCreate, useUserUpdate, formSchema, UserForm } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,8 +59,11 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const queryClient = useQueryClient();
   const { mutate: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
   const { mutate: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
-
-  const { data: roles = {}, isLoading: isRolesLoading } = useRolesQuery();
+  const [rolePages, setRolePages] = useState({
+    current: 1,
+    page_size: 1000,
+  });
+  const { data: roles = {}, isLoading: isRolesLoading } = useRolesQuery(rolePages);
 
   const onSubmit = (values: UserForm) => {
     form.reset();
@@ -261,16 +265,9 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                       <FormLabel className='col-span-2 text-left'>Role</FormLabel>
                       <FormControl>
                         <MultiSelect
-                          // defaultValue={
-                          //   !isRolesLoading && roles.data
-                          //     ? roles.data
-                          //       .map(({ id }) => id)
-                          //       .filter((id): id is string => !!id)
-                          //       .filter((id) => Array.isArray(field.value) && field.value.includes(id))
-                          //     : []
-                          // }
+                          defaultValue={field.value}
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onChange={field.onChange}
                           placeholder='Select a role'
                           className='col-span-10'
                           options={

@@ -5,6 +5,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import { TablerIcon } from "@/components/IconPicker";
 import { GroupContentProps } from "@/components/Sidebar/group-content";
 
 type MenuItem = API.MenuItem & {};
@@ -15,7 +16,7 @@ export function SecondaryContent({ items, props }: SecondaryContentProps) {
   function renderIcon(item: MenuItem) {
     return (
       <a href={item.path}>
-        {item.icon && <item.icon />}
+        {item.icon && <TablerIcon name={item.icon} />}
         <span>{item.title}</span>
       </a>
     );
