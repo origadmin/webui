@@ -21,7 +21,8 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     renderSearch: (_column, index, table) => (
       <Input
         key={`title-${index}`}
-        placeholder={"Filter title..."}
+        aria-label={"Filter by title"}
+        placeholder={"Filter by title..."}
         value={(table.getState().columnFilters.find((filter) => filter.id === "title")?.value as string) ?? ""}
         onChange={(event) => {
           console.log("event", event.target.value);

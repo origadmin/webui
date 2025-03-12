@@ -1,7 +1,6 @@
-import { ChangeEvent, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useResourcesQuery, buildTree } from "@/api/system/resource";
-import { RolesPermissionSelect } from "@/pages/system/role/components/roles-permission-select";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -24,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
+import { MultiSelect } from "@/components/MultiSelect";
 
 const formSchema = z
   .object({
@@ -82,7 +81,6 @@ export function PermissionsActionDialog({
           is_edit,
         },
   });
-  const [expanded, setExpanded] = useState(true);
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
   const { mutate: createPermission, isPending: isCreatePending } = usePermissionCreate(queryClient);
@@ -121,23 +119,6 @@ export function PermissionsActionDialog({
     });
     onOpenChange(false);
   };
-
-  const handleKeywordChange = (value: ChangeEvent<HTMLInputElement>) => {
-    console.log("value", value);
-  };
-
-  // todo(auto generate keyword)
-  // useEffect(() => {
-  //   if (!isAutoGenerate) return;
-  //   const keyword = form.getValues("keyword");
-  //   // The logic that automatically generates keywords based on the path
-  //   const value = Strings.autoGenKeyword(pathValue || "");
-  //   console.log("pathValue", value, keyword, isAutoGenerate);
-  //   if (keyword === value) {
-  //     const generatedKeyword = Strings.autoGenKeyword(value);
-  //     form.setValue("keyword", generatedKeyword);
-  //   }
-  // }, [form, isAutoGenerate, pathValue]);
 
   const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
@@ -232,24 +213,22 @@ export function PermissionsActionDialog({
                   <Separator />
                 </div>
                 <div className='col-span-12 items-center grid grid-cols-subgrid pt-4 overflow-x-hidden'>
-                  <h2 className='col-span-11 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
+                  <h2 className='col-span-12 items-center text-lg font-medium mb-2 px-2 text-gray-900 dark:text-gray-100'>
                     Permission Resources
                   </h2>
-                  <div className='col-span-1 items-center justify-end md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                    <Switch checked={expanded} onCheckedChange={setExpanded} />
-                  </div>
                 </div>
                 <FormField
                   control={form.control}
                   name='resource_ids'
                   render={({ field }) => (
-                    <FormItem className='col-span-12 grid grid-cols-subgrid items-start md:p-2 gap-4 gap-y-1 space-y-0 rounded-md border overflow-y-hidden'>
+                    <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0 overflow-y-hidden'>
+                      <FormLabel className='col-span-2 text-left'>Resources</FormLabel>
                       <FormControl>
-                        <RolesPermissionSelect
-                          expandAll={expanded}
+                        <MultiSelect
+                          className='col-span-10'
                           value={field.value}
-                          onChange={field.onChange}
-                          resources={treeData}
+                          onValueChange={field.onChange}
+                          options={resourcesOptions}
                         />
                       </FormControl>
                       <FormMessage />

@@ -35,6 +35,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
+    shouldFocusError: false,
     defaultValues: is_edit
       ? {
           ...currentRow,
@@ -136,7 +137,20 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         onOpenChange(state);
       }}
     >
-      <DialogContent className={cn(`${maxWClass}`, className)}>
+      <DialogContent
+        className={cn(`${maxWClass}`, className)}
+        // tabIndex={undefined}
+        // onFocus={(e) => console.log("当前焦点元素:", e.target)}
+        // onFocusCapture={(e) => {
+        //   console.log("onFocusCapture:", e.target, e.currentTarget);
+        //   if (e.target === e.currentTarget) {
+        //     e.stopPropagation();
+        //     const firstFocusable = document.querySelector("[data-autofocus]");
+        //     (firstFocusable as HTMLElement)?.focus();
+        //   }
+        // }}
+        // onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader className='text-left'>
           <DialogTitle>{is_edit ? "Edit User" : "Add New User"}</DialogTitle>
           <DialogDescription>

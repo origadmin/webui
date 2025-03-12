@@ -21,6 +21,7 @@ export default function ThemeSwitch() {
       size='icon'
       variant='ghost'
       className='rounded-full'
+      aria-label={theme === "light" ? "switch to dark mode" : "switch to light mode"}
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
       {theme === "light" ? <IconMoon size={20} /> : <IconSun size={20} />}

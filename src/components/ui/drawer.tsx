@@ -59,13 +59,7 @@ const DrawerContent = React.forwardRef<
   return (
     <DrawerPortal>
       <DrawerOverlay />
-      <DrawerPrimitive.Content
-        ref={ref}
-        className={cn(drawerContentVariants({ direction, className }))}
-        // style={{ "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties}
-        {...props}
-      >
-        {/*<div className='mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted' />*/}
+      <DrawerPrimitive.Content ref={ref} className={cn(drawerContentVariants({ direction, className }))} {...props}>
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>

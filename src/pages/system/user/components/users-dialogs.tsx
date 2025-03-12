@@ -1,8 +1,8 @@
 import { Fragment } from "react";
-import { UserResourceDialog } from "./user-resource-dialog";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
+import { UsersResourceDialog } from "./users-resource-dialog";
 import { useUserTable } from "./users-table-provider";
 
 export function UsersDialogs() {
@@ -12,7 +12,7 @@ export function UsersDialogs() {
   return (
     <Fragment>
       {currentRow && (
-        <UserResourceDialog
+        <UsersResourceDialog
           key={`user-resource-${currentRow.id}`}
           currentRow={currentRow}
           open={open === "preview"}

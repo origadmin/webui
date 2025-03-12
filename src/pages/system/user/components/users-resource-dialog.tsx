@@ -9,11 +9,11 @@ export type UserResourceProps<T> = {
   onOpenChange: (open: boolean) => void;
 };
 
-export const UserResourceDialog = ({ open, onOpenChange, currentRow }: UserResourceProps<API.System.Resource>) => {
+export const UsersResourceDialog = ({ open, onOpenChange, currentRow }: UserResourceProps<API.System.Resource>) => {
   console.log("currentRow", currentRow);
   const id = currentRow?.id ?? "";
-  // if (!open || !id) return null;
   const { data: resources = {}, isLoading } = useUserResourceQuery(id);
+  console.log("resources", resources);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

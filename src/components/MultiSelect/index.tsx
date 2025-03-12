@@ -154,8 +154,9 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       onValueChange([]);
     };
 
-    const handleTogglePopover = () => {
+    const handleTogglePopover = (e: React.MouseEvent) => {
       console.log("handleTogglePopover");
+      e.stopPropagation();
       setIsPopoverOpen((prev) => !prev);
     };
 
@@ -192,7 +193,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
 
     return (
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={modalPopover}>
-        <PopoverTrigger asChild={asChild}>
+        <PopoverTrigger asChild>
           <Button
             ref={ref}
             {...props}
