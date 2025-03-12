@@ -261,14 +261,15 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                       <FormLabel className='col-span-2 text-left'>Role</FormLabel>
                       <FormControl>
                         <MultiSelect
-                          defaultValue={
-                            !isRolesLoading && roles.data
-                              ? roles.data
-                                  .map(({ id }) => id)
-                                  .filter((id): id is string => !!id)
-                                  .filter((id) => Array.isArray(field.value) && field.value.includes(id))
-                              : []
-                          }
+                          // defaultValue={
+                          //   !isRolesLoading && roles.data
+                          //     ? roles.data
+                          //       .map(({ id }) => id)
+                          //       .filter((id): id is string => !!id)
+                          //       .filter((id) => Array.isArray(field.value) && field.value.includes(id))
+                          //     : []
+                          // }
+                          value={field.value}
                           onValueChange={field.onChange}
                           placeholder='Select a role'
                           className='col-span-10'
