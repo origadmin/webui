@@ -8,12 +8,13 @@ export const buildMenuTree = (items?: API.System.Resource[]) => {
 
   // create a map of id to item
   items.forEach((item) => {
-    if (!item.id || !item.visible) {
+    if (!item.id || !item.visible || item.status !== 1) {
       return;
     }
     const menu: API.MenuItem = {
       id: item.id,
       icon: item.icon || undefined,
+      keyword: item.keyword || "",
       title: item.name || "",
       type: item.type || "M",
       sequence: item.sequence || 1,

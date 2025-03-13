@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -5,32 +6,21 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { TablerIcon } from "@/components/IconPicker";
 import { GroupContentProps } from "@/components/Sidebar/group-content";
-
-type MenuItem = API.MenuItem & {};
+import { itemKey, renderGroupItem } from "./content-render";
 
 export type SecondaryContentProps = Omit<GroupContentProps, "main">;
 
 export function SecondaryContent({ items, props }: SecondaryContentProps) {
-  function renderIcon(item: MenuItem) {
-    return (
-      <a href={item.path}>
-        {item.icon && <TablerIcon name={item.icon} />}
-        <span>{item.title}</span>
-      </a>
-    );
-  }
-
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items &&
-            items.map((item) => (
+            items.map((item, index) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild size='sm'>
-                  {renderIcon(item)}
+                  <Fragment key={itemKey(item, index)}>{renderGroupItem(item, index)}</Fragment>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

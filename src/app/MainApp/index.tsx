@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { usePersonalResourcesQuery } from "@/api/system/personal";
-import { mockSidebar, mockTopNav, mockFooter, mockSecondItems } from "@/mocks/mock-sidebar";
+import { mockSidebar, mockTopNav, mockFooter } from "@/mocks/mock-sidebar";
 import { router } from "@/router";
 import { SIGN_IN_URL, SIGN_OUT_URL, SIGN_UP_URL } from "@/types";
 import { refreshToken } from "@/utils/auth";
@@ -116,16 +116,17 @@ function MainApp() {
     return <LoadingSpinner />;
   }
   const menusItems = buildMenuTree(resources?.data);
-  console.log("menu tree", menusItems);
+  const mainMenus = menusItems.filter((item) => item.keyword !== "submenu");
+  const subMenus = menusItems.filter((item) => item.keyword === "submenu");
   const getMockData = (): SidebarProps => {
     return {
       header: {
         teams: mockSidebar.teams,
       },
       content: {
-        items: menusItems,
+        items: mainMenus,
         seconds: {
-          items: mockSecondItems,
+          items: subMenus,
         },
       },
       footer: {
@@ -149,7 +150,7 @@ function MainApp() {
     access: accesses,
     initialData: {
       sidebar: getMockData(),
-      menus: menusItems,
+      menus: mainMenus,
       topNav: {
         menus: mockTopNav,
       },
