@@ -191,8 +191,8 @@ async function fetchRequest<T, TData = unknown>(
   method: Method = "GET",
   options: API.RequestOptions<TData> = {},
 ): Promise<API.Result<T>> {
-  console.log("fetchRequest:", url, method, "options:", options);
-  console.log("request url", request.defaults.baseURL);
+  // console.log("fetchRequest:", url, method, "options:", options);
+  // console.log("request url", request.defaults.baseURL);
 
   if (GlobalConfig.mocks) {
     console.log("mock request:", url, method, options);

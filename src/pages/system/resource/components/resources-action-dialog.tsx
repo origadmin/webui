@@ -244,7 +244,7 @@ export function ResourcesActionDialog({
                         <Switch
                           className='col-span-1'
                           checked={field.value === 1}
-                          onCheckedChange={(status) => field.onChange(status ? 1 : 0)}
+                          onCheckedChange={(status) => field.onChange(status ? 1 : 2)}
                         />
                       </FormControl>
                     </FormItem>
@@ -350,9 +350,18 @@ export function ResourcesActionDialog({
                       <FormControl>
                         <div className='col-span-4 flex'>
                           <Input
-                            className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0'
-                            placeholder=''
                             {...field}
+                            className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0'
+                            placeholder='Please enter a sequence'
+                            type='number'
+                            value={field.value}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const parsedValue = Number(value);
+                              if (!isNaN(parsedValue)) {
+                                field.onChange(parsedValue);
+                              }
+                            }}
                           />
                           <Button
                             type='button'

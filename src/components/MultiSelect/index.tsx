@@ -103,7 +103,15 @@ export interface MultiSelectProps
    * Optional, can be used to add custom styles.
    */
   className?: string;
+  /**
+   * Additional class names to apply custom styles to the badge component.
+   * Optional, can be used to add custom styles.
+   */
   badgeClassName?: string;
+  /**
+   * The number of options to display in the multi-select component.
+   * Optional, defaults to 1000.
+   */
   count?: number;
 }
 
@@ -138,6 +146,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
 
     const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       console.log("event", event);
+      event.stopPropagation();
       if (event.key === "Enter") {
         setIsPopoverOpen(true);
       } else if (event.key === "Backspace" && !event.currentTarget.value) {
@@ -290,9 +299,24 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           className='w-[--radix-popover-trigger-width] p-0'
           align='start'
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
+          onOpenAutoFocus={(e) => {
+            console.log("onOpenAutoFocus", e.target, e.currentTarget);
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <Command className='h-full'>
-            <CommandInput placeholder='Search...' onKeyDown={handleInputKeyDown} />
+            <CommandInput
+              placeholder='Search...'
+              onClick={(e) => {
+                console.log("handleMouseClick", e.target, e.currentTarget);
+              }}
+              onFocus={(e) => {
+                console.log("handleFocus", e.target);
+                e.target.select();
+              }}
+              onKeyDown={handleInputKeyDown}
+            />
             <CommandList onWheel={handleWheel} onScroll={(e) => handleScroll(e)}>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>

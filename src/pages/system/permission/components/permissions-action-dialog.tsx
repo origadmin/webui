@@ -226,8 +226,9 @@ export function PermissionsActionDialog({
                       <FormControl>
                         <MultiSelect
                           className='col-span-10'
+                          defaultValue={field.value}
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onChange={field.onChange}
                           options={resourcesOptions}
                         />
                       </FormControl>

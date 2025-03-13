@@ -5408,6 +5408,10 @@ body {
   width: var(--radix-dropdown-menu-trigger-width);
 }
 
+.w-\[--radix-popover-trigger-width\] {
+  width: var(--radix-popover-trigger-width);
+}
+
 .w-\[--sidebar-width\] {
   width: var(--sidebar-width);
 }
@@ -7907,6 +7911,10 @@ body {
 
 .data-\[disabled\]\:pointer-events-none[data-disabled] {
   pointer-events: none;
+}
+
+.data-\[state\=open\]\:pointer-events-auto[data-state="open"] {
+  pointer-events: auto;
 }
 
 .data-\[side\=bottom\]\:translate-y-1[data-side="bottom"] {

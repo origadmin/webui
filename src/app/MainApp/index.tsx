@@ -1,5 +1,5 @@
-import { Suspense, useMemo } from "react";
-import { useResourcesQuery } from "@/api/system/resource";
+import { Suspense } from "react";
+import { usePersonalResourcesQuery } from "@/api/system/personal";
 import { mockSidebar, mockTopNav, mockFooter, mockSecondItems } from "@/mocks/mock-sidebar";
 import { router } from "@/router";
 import { SIGN_IN_URL, SIGN_OUT_URL, SIGN_UP_URL } from "@/types";
@@ -111,9 +111,9 @@ function MainApp() {
   const accesses = new Map<string, boolean>();
   accesses.set("*", true);
   // const id = getUserID() || "";
-  const { data: resources, isLoading } = useResourcesQuery({ page_size: 1000 });
+  const { data: resources, isLoading } = usePersonalResourcesQuery({ page_size: 1000 });
   if (isLoading) {
-    return <LoadingSpinner />; // 全屏加载状态
+    return <LoadingSpinner />;
   }
   const menusItems = buildMenuTree(resources?.data);
   console.log("menu tree", menusItems);
