@@ -5,6 +5,7 @@ import {defineConfig} from '@rsbuild/core';
 import {pluginReact} from '@rsbuild/plugin-react';
 import {TanStackRouterRspack} from '@tanstack/router-plugin/rspack';
 import postcssOptions from './postcss.config.js';
+import tsrConfig from './tsr.config.json' with { type: 'json' };
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -77,7 +78,7 @@ const config = defineConfig({
   plugins: [pluginReact()],
   tools: {
     rspack: {
-      plugins: [TanStackRouterRspack(import('./tsr.config.json'))],
+      plugins: [TanStackRouterRspack(tsrConfig)],
     },
   },
 });
