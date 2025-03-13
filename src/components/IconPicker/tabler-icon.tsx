@@ -9,7 +9,7 @@ type IconProps = {
 type IconType = ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>;
 
 const TablerIcon = ({ name, size = 24, ...props }: IconProps) => {
-  if (typeof name !== "string") return null;
+  if (typeof name !== "string") return name;
   const variant = name.endsWith("-filled") ? "filled" : "outline";
   const iconName = name.replace(/(-filled|-outline)$/, "");
   return <img src={`/static/icons/${variant}/${iconName}.svg`} alt={iconName} width={size} height={size} {...props} />;
