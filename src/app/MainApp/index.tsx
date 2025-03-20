@@ -12,6 +12,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { LoadingSpinner } from "@/components/Loading";
 import { SidebarProps } from "@/components/Sidebar";
 
+const LoadingSpinnerPage: React.FC = () => {
+  return <script src='/static/js/loading.js' />;
+};
+
 type UserResource = {
   user?: API.System.User;
   // menus?: Record<string, API.MenuItem>;
@@ -113,7 +117,7 @@ function MainApp() {
   // const id = getUserID() || "";
   const { data: resources, isLoading } = usePersonalResourcesQuery({ page_size: 1000 });
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <Suspense fallback={<LoadingSpinnerPage />} />;
   }
   const menusItems = buildMenuTree(resources?.data);
   const mainMenus = menusItems.filter((item) => item.keyword !== "submenu");

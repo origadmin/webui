@@ -182,6 +182,7 @@ function DataTable<TData, TValue = unknown>({
   const [rowCount, setRowCount] = useState(0);
   useEffect(() => {
     if (isLoading) return;
+    if (!dataSource || !total) return;
     setRowCount(total);
     setData(dataSource);
   }, [dataSource, isLoading, total]);

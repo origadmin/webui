@@ -23,7 +23,6 @@ export interface UseDataTableReturn<T> {
   params: API.SearchParams;
   isLoading: boolean;
   data: API.Result<T>;
-  // total: number;
   setSorting: (updaterOrValue: Updater<SortingState>) => void;
   setPagination: (updaterOrValue: Updater<PaginationState>) => void;
   setColumnFilters: OnChangeFn<ColumnFiltersState>;

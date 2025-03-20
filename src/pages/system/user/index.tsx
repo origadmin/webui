@@ -57,8 +57,8 @@ export default function UserPage() {
               <DataTable<API.System.User>
                 {...tableProps}
                 isLoading={isLoading}
-                dataSource={users.data}
-                total={users.total}
+                dataSource={users.data} // 提供默认值
+                total={users.total} // 提供默认值
               />
             </div>
           </CardContent>
