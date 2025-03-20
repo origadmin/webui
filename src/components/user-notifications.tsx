@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,15 +10,15 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TablerIcon } from "./IconPicker";
 
-export function UserNav() {
+export function UserNotifications() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='size-8 bg-muted relative rounded-full'>
+        <Button size='icon' variant='ghost' className='size-8 bg-muted relative rounded-full'>
           <Avatar className='-size-10'>
-            <AvatarImage src='/avatars/01.png' alt='@shadcn' />
-            <AvatarFallback>SC</AvatarFallback>
+            <TablerIcon name='bell-ringing' />
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

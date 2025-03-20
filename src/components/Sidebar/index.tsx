@@ -13,7 +13,7 @@ type SidebarProps = {
   footer?: FooterProps;
 };
 
-const SidebarComponent: React.FC<SidebarProps> = ({ props, header, content, footer }: SidebarProps) => {
+const SidebarComponent: React.FC = ({ props, header, content, footer }: SidebarProps) => {
   return (
     <Sidebar className='border-r-2' collapsible='icon' {...props}>
       {header && <HeaderContent {...header} />}

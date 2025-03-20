@@ -7,6 +7,7 @@ import { Footer, FooterProps } from "@/components/footer";
 import SearchInput from "@/components/search-input";
 import { TopNav, TopNavProps } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
+import { UserNotifications } from "@/components/user-notifications";
 
 export type LayoutProps = {
   key?: string;
@@ -21,7 +22,7 @@ export type LayoutProps = {
 export function Layout({
   showSidebarTrigger = true,
   children,
-  navToolbars = [<SearchInput />, <ThemeSwitch />, <UserNav />],
+  navToolbars = [<SearchInput />, <ThemeSwitch />, <UserNotifications />, <UserNav />],
   topNavProps,
   ...props
 }: LayoutProps) {

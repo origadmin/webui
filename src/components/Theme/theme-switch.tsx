@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { IconMoon, IconSun } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { TablerIcon } from "@/components/IconPicker/index";
 import { useTheme } from "./theme-provider";
 
 export default function ThemeSwitch() {
@@ -20,11 +20,13 @@ export default function ThemeSwitch() {
     <Button
       size='icon'
       variant='ghost'
-      className='rounded-full'
+      className='size-8 bg-muted relative rounded-full'
       aria-label={theme === "light" ? "switch to dark mode" : "switch to light mode"}
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
-      {theme === "light" ? <IconMoon size={20} /> : <IconSun size={20} />}
+      <span className='relative flex shrink-0 overflow-hidden rounded-full'>
+        {theme === "light" ? <TablerIcon name='moon' /> : <TablerIcon name='sun' />}
+      </span>
     </Button>
   );
 }
