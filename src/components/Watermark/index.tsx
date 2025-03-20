@@ -82,7 +82,7 @@ const Watermark: React.FC<WatermarkProps> = ({
             backgroundSize: `${gapX + width}px ${gapY + height}px`,
           }}
         />
-        {[...Array(antiTamperLayers)].map((_, index) => (
+        {Array.from({ length: antiTamperLayers }, (_, index) => (
           <div
             key={index}
             className='absolute inset-0'
