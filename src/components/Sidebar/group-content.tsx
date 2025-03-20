@@ -1,8 +1,8 @@
-import { ComponentPropsWithoutRef, Fragment } from "react";
-import { SidebarContent, SidebarGroup, SidebarMenu } from "@/components/ui/sidebar";
+import { ComponentPropsWithoutRef } from "react";
+import { SidebarContent, SidebarGroup } from "@/components/ui/sidebar";
 import { MainContent } from "@/components/Sidebar/main-content";
+import { ProjectContent } from "@/components/Sidebar/project-content";
 import { SecondaryContent } from "@/components/Sidebar/secondary-content";
-import { itemKey, renderGroupItem } from "./content-render";
 
 export type MenuItem = API.MenuItem & {};
 
@@ -18,15 +18,7 @@ function GroupContent({ main, seconds, items = [], props }: GroupContentProps) {
   return (
     <SidebarContent>
       {main && <MainContent {...main} />}
-      {items && (
-        <SidebarGroup {...props}>
-          <SidebarMenu>
-            {items.map((item, index) => (
-              <Fragment key={itemKey(item, index)}>{renderGroupItem(item, index)}</Fragment>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-      )}
+      {items && <ProjectContent items={items} {...props} />}
       {seconds && <SecondaryContent props={{ className: "mt-auto" }} {...seconds} />}
     </SidebarContent>
   );

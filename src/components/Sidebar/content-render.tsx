@@ -42,15 +42,16 @@ const itemKey = (item: MenuItem, index: number, parentIndex?: string) => {
 };
 
 const renderGroupItem = (item: MenuItem, index: number, parentIndex?: string) => {
-  return (
-    <Fragment>
-      {isGroupTitle(item) && renderTitle(item, index)}
-      {isGroupTitle(item) &&
-        hasSub(item) &&
-        item.children?.map((subItem, subIndex) => renderItem(subItem, subIndex, parentIndex))}
-      {!isGroupTitle(item) && renderItem(item, index, parentIndex)}
-    </Fragment>
-  );
+  if (!isGroupTitle(item)) {
+    return renderItem(item, index, parentIndex);
+  } else {
+    return (
+      <Fragment>
+        {renderTitle(item, index)}
+        {hasSub(item) && item.children?.map((subItem, subIndex) => renderGroupItem(subItem, subIndex, parentIndex))}
+      </Fragment>
+    );
+  }
 };
 
 const renderTitle = (item: MenuItem, index: number) => {

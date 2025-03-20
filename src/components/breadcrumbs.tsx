@@ -25,7 +25,7 @@ export function Breadcrumbs({ separator = <Slash />, ...props }: BreadcrumbProps
     <Breadcrumb className={cn(className)}>
       <BreadcrumbList>
         {items.map((item, index) => (
-          <Fragment key={item.title}>
+          <Fragment key={index}>
             {index !== items.length - 1 && (
               <BreadcrumbItem className='hidden md:block'>
                 <BreadcrumbLink href={item.link}>{item.title}</BreadcrumbLink>
