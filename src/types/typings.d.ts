@@ -15,7 +15,6 @@ declare global {
       only_count: boolean;
       no_paging: boolean;
       sort: string;
-      // update_mask?: string; // update mask used for partial update
     };
 
     type SearchParams = Record<string, unknown> & Partial<Search>;
@@ -87,28 +86,6 @@ declare global {
       isActive?: boolean;
       children?: MenuItem[];
       parent_id?: string;
-    };
-
-    type Resource = {
-      id?: string;
-      name?: string;
-      keyword?: string;
-      i18n_key?: string;
-      type?: string;
-      status?: number;
-      uri?: string;
-      operation?: string;
-      method?: string;
-      component?: string;
-      icon?: string;
-      sequence?: number;
-      visible?: boolean;
-      tree_path?: string;
-      properties?: Record<string, string>;
-      description?: string;
-      parent_id?: string;
-      children?: Resource[];
-      parent?: Resource;
     };
 
     type FooterItem = {
