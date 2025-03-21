@@ -152,7 +152,7 @@ export default function AvatarStatusDemo() {
             <div className='flex items-center'>
               <button
                 className='p-2 border rounded-l-md hover:bg-gray-100'
-                onClick={() => handleOffsetChange(setStatusOffsetX, -0.1)}
+                onClick={() => handleOffsetChange(setStatusOffsetX, -0.5)}
               >
                 -
               </button>
@@ -165,7 +165,7 @@ export default function AvatarStatusDemo() {
               />
               <button
                 className='p-2 border rounded-r-md hover:bg-gray-100'
-                onClick={() => handleOffsetChange(setStatusOffsetX, 0.1)}
+                onClick={() => handleOffsetChange(setStatusOffsetX, 0.5)}
               >
                 +
               </button>
@@ -175,7 +175,7 @@ export default function AvatarStatusDemo() {
             <div className='flex items-center'>
               <button
                 className='p-2 border rounded-l-md hover:bg-gray-100'
-                onClick={() => handleOffsetChange(setStatusOffsetY, -0.1)}
+                onClick={() => handleOffsetChange(setStatusOffsetY, -0.5)}
               >
                 -
               </button>
@@ -188,7 +188,7 @@ export default function AvatarStatusDemo() {
               />
               <button
                 className='p-2 border rounded-r-md hover:bg-gray-100'
-                onClick={() => handleOffsetChange(setStatusOffsetY, 0.1)}
+                onClick={() => handleOffsetChange(setStatusOffsetY, 0.5)}
               >
                 +
               </button>
