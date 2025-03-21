@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
-type StatusType = "online" | "notification" | "new" | "verified" | "alert" | "none" | "custom";
-type StatusPosition = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "custom";
-type RingWidth = "none" | "thin" | "medium" | "thick";
+export type StatusType = "online" | "notification" | "new" | "verified" | "alert" | "none" | "custom";
+export type StatusPosition = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "custom";
+export type RingWidth = "none" | "thin" | "medium" | "thick";
 export type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface StatusAvatarProps {

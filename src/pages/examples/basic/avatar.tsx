@@ -1,13 +1,10 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { Crown, Heart, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import StatusAvatar from "./avatar-status";
-
-type RingWidth = "none" | "thin" | "medium" | "thick";
-type StatusPosition = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "custom";
+import StatusAvatar, { RingWidth, StatusPosition } from "@/components/StatusAvatar";
 
 export default function AvatarStatusDemo() {
   const [ringWidth, setRingWidth] = useState<RingWidth>("medium");
