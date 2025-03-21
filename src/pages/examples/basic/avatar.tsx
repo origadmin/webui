@@ -10,8 +10,8 @@ export default function AvatarStatusDemo() {
   const [ringWidth, setRingWidth] = useState<RingWidth>("medium");
   const [position, setPosition] = useState<StatusPosition>("top-right");
   const [customStatus, setCustomStatus] = useState<JSX.Element | null>(null);
-  const [statusOffsetX, setStatusOffsetX] = useState<number>(0.1);
-  const [statusOffsetY, setStatusOffsetY] = useState<number>(0.1);
+  const [statusOffsetX, setStatusOffsetX] = useState<number>(0.5);
+  const [statusOffsetY, setStatusOffsetY] = useState<number>(0.5);
 
   const handleOffsetChange = (setState: (value: (prevValue: number) => number) => void, increment: number) => {
     setState((prevValue: number) => parseFloat((prevValue + increment).toFixed(1)));
