@@ -1,5 +1,3 @@
-"use client";
-
 import type { ReactNode } from "react";
 import { Check, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,13 +7,14 @@ import { Badge } from "@/components/ui/badge";
 type StatusType = "online" | "notification" | "new" | "verified" | "alert" | "none" | "custom";
 type StatusPosition = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "custom";
 type RingWidth = "none" | "thin" | "medium" | "thick";
+export type Size = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface StatusAvatarProps {
   src: string;
   alt: string;
   status?: StatusType;
   statusContent?: string | number | ReactNode;
-  size?: "sm" | "md" | "lg";
+  size?: Size;
   shape?: "circle" | "square";
   fallback?: string;
   statusRingWidth?: RingWidth;
@@ -28,46 +27,84 @@ interface StatusAvatarProps {
   statusClassName?: string;
 }
 
+const positions: Record<StatusPosition, Record<Size, string> | undefined> = {
+  "top-left": {
+    xs: "-top-0.5 -left-0.5",
+    sm: "-top-1 -left-1",
+    md: "-top-1.5 -left-1.5",
+    lg: "-top-2 -left-2",
+    xl: "-top-2.5 -left-2.5",
+  },
+  "top-right": {
+    xs: "-top-0.5 -right-0.5",
+    sm: "-top-1 -right-1",
+    md: "-top-1.5 -right-1.5",
+    lg: "-top-2 -right-2",
+    xl: "-top-2.5 -right-2.5",
+  },
+  "bottom-left": {
+    xs: "-bottom-0.5 -left-0.5",
+    sm: "-bottom-1 -left-1",
+    md: "-bottom-1.5 -left-1.5",
+    lg: "-bottom-2 -left-2",
+    xl: "-bottom-2.5 -left-2.5",
+  },
+  "bottom-right": {
+    xs: "-bottom-0.5 -right-0.5",
+    sm: "-bottom-1 -right-1",
+    md: "-bottom-1.5 -right-1.5",
+    lg: "-bottom-2 -right-2",
+    xl: "-bottom-2.5 -right-2.5",
+  },
+  custom: undefined,
+};
+
 export function getPositionClasses(
   statusPosition: StatusPosition,
-  size: "sm" | "md" | "lg",
+  size: Size,
   statusOffsetX?: string,
   statusOffsetY?: string,
 ): string {
-  if (statusPosition === "custom" && statusOffsetX && statusOffsetY) {
-    return `top-[${statusOffsetY}] left-[${statusOffsetX}]`;
+  const position = positions[statusPosition];
+  if (!position) {
+    return `${statusOffsetY} ${statusOffsetX}`;
   }
-
-  const positions: Record<Exclude<StatusPosition, "custom">, { sm: string; md: string; lg: string }> = {
-    "top-left": {
-      sm: "-top-1 -left-1",
-      md: "-top-1.5 -left-1.5",
-      lg: "-top-2 -left-2",
-    },
-    "top-right": {
-      sm: "-top-1 -right-1",
-      md: "-top-1.5 -right-1.5",
-      lg: "-top-2 -right-2",
-    },
-    "bottom-left": {
-      sm: "-bottom-1 -left-1",
-      md: "-bottom-1.5 -left-1.5",
-      lg: "-bottom-2 -left-2",
-    },
-    "bottom-right": {
-      sm: "-bottom-1 -right-1",
-      md: "-bottom-1.5 -right-1.5",
-      lg: "-bottom-2 -right-2",
-    },
-  };
-
-  // 确保 statusPosition 不为 "custom"
-  if (!positions[statusPosition as Exclude<StatusPosition, "custom">]) {
-    return ""; // 返回空字符串以避免错误
-  }
-
-  return positions[statusPosition as Exclude<StatusPosition, "custom">][size];
+  return position[size];
 }
+
+// Set the size according to size
+const sizeClasses = {
+  xs: "h-6 w-6",
+  sm: "h-8 w-8",
+  md: "h-12 w-12",
+  lg: "h-16 w-16",
+  xl: "h-20 w-20",
+};
+
+// Set the shape according to the shape
+const shapeClasses = {
+  circle: "rounded-full",
+  square: "rounded-lg",
+};
+
+// The size of the status indicator
+const statusSizeClasses = {
+  xs: "h-3 w-3 text-[8px]",
+  sm: "h-4 w-4 text-[10px]",
+  md: "h-5 w-5 text-xs",
+  lg: "h-6 w-6 text-sm",
+  xl: "h-8 w-8 text-base",
+};
+
+// Border width
+const ringWidthClasses = {
+  none: "",
+  "extra-thin": "ring-[1px]",
+  thin: "ring-[2px]",
+  medium: "ring-[3px]",
+  thick: "ring-[4px]",
+  "extra-thick": "ring-[5px]",
+};
 
 export default function StatusAvatar({
   src,
@@ -84,34 +121,6 @@ export default function StatusAvatar({
   statusOffsetY,
   statusClassName,
 }: StatusAvatarProps) {
-  // Set the size according to size
-  const sizeClasses = {
-    sm: "h-8 w-8",
-    md: "h-12 w-12",
-    lg: "h-16 w-16",
-  };
-
-  // Set the shape according to the shape
-  const shapeClasses = {
-    circle: "rounded-full",
-    square: "rounded-lg",
-  };
-
-  // The size of the status indicator
-  const statusSizeClasses = {
-    sm: "h-4 w-4 text-[10px]",
-    md: "h-5 w-5 text-xs",
-    lg: "h-6 w-6 text-sm",
-  };
-
-  // Border width
-  const ringWidthClasses = {
-    none: "",
-    thin: "ring-[1px]",
-    medium: "ring-[2px]",
-    thick: "ring-[3px]", // Fixed the issue of thick borders and used exact pixel values
-  };
-
   // Render status indicator
   const renderStatus = () => {
     if (status === "none") return null;
@@ -120,10 +129,7 @@ export default function StatusAvatar({
     const ringClass = statusRingWidth !== "none" ? `${ringWidthClasses[statusRingWidth]} ring-${statusRingColor}` : "";
 
     // Location class
-    const positionClass =
-      statusPosition === "custom"
-        ? `top-[${statusOffsetY}] left-[${statusOffsetX}]`
-        : getPositionClasses(statusPosition, size, statusOffsetX, statusOffsetY);
+    const positionClass = getPositionClasses(statusPosition, size, statusOffsetX, statusOffsetY);
 
     switch (status) {
       case "online":
