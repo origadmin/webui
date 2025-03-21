@@ -10,6 +10,12 @@ export default function AvatarStatusDemo() {
   const [ringWidth, setRingWidth] = useState<RingWidth>("medium");
   const [position, setPosition] = useState<StatusPosition>("top-right");
   const [customStatus, setCustomStatus] = useState<JSX.Element | null>(null);
+  const [statusOffsetX, setStatusOffsetX] = useState<number>(0.1);
+  const [statusOffsetY, setStatusOffsetY] = useState<number>(0.1);
+
+  const handleOffsetChange = (setState: (value: (prevValue: number) => number) => void, increment: number) => {
+    setState((prevValue: number) => parseFloat((prevValue + increment).toFixed(1)));
+  };
 
   // 自定义状态示例
   const customStatusOptions = [
@@ -43,56 +49,68 @@ export default function AvatarStatusDemo() {
     <div className='space-y-8 p-6'>
       <div className='flex flex-wrap items-end gap-6'>
         <StatusAvatar
-          src='/placeholder.svg?height=200&width=200'
+          src='/static/logo.svg?height=200&width=200'
           alt='User 1'
           status='notification'
           statusContent={5}
           statusRingWidth={ringWidth}
           statusPosition={position}
+          statusOffsetX={statusOffsetX.toString()}
+          statusOffsetY={statusOffsetY.toString()}
         />
 
         <StatusAvatar
-          src='/placeholder.svg?height=200&width=200'
+          src='/static/logo.svg?height=200&width=200'
           alt='User 2'
           status='online'
           statusRingWidth={ringWidth}
           statusPosition={position}
+          statusOffsetX={statusOffsetX.toString()}
+          statusOffsetY={statusOffsetY.toString()}
         />
 
         <StatusAvatar
-          src='/placeholder.svg?height=200&width=200'
+          src='/static/logo.svg?height=200&width=200'
           alt='User 3'
           status='new'
           shape='square'
           statusRingWidth={ringWidth}
           statusPosition={position}
+          statusOffsetX={statusOffsetX.toString()}
+          statusOffsetY={statusOffsetY.toString()}
         />
 
         <StatusAvatar
-          src='/placeholder.svg?height=200&width=200'
+          src='/static/logo.svg?height=200&width=200'
           alt='User 4'
           status='verified'
           shape='square'
           statusRingWidth={ringWidth}
           statusPosition={position}
+          statusOffsetX={statusOffsetX.toString()}
+          statusOffsetY={statusOffsetY.toString()}
         />
 
         <StatusAvatar
-          src='/placeholder.svg?height=200&width=200'
+          src='/static/logo.svg?height=200&width=200'
           alt='User 5'
           status='alert'
           statusRingWidth={ringWidth}
           statusPosition={position}
+          statusOffsetX={statusOffsetX.toString()}
+          statusOffsetY={statusOffsetY.toString()}
         />
 
         {customStatus && (
           <StatusAvatar
-            src='/placeholder.svg?height=200&width=200'
+            src='/static/logo.svg?height=200&width=200'
             alt='Custom'
             status='custom'
             statusContent={customStatus}
             statusRingWidth={ringWidth}
             statusPosition={position}
+            statusOffsetX={statusOffsetX.toString()}
+            statusOffsetY={statusOffsetY.toString()}
             statusClassName='rounded-full'
           />
         )}
@@ -102,11 +120,13 @@ export default function AvatarStatusDemo() {
         <div className='space-y-2'>
           <Label>边框粗细</Label>
           <Tabs value={ringWidth} onValueChange={(value) => setRingWidth(value as RingWidth)} className='w-full'>
-            <TabsList className='grid w-full grid-cols-4'>
+            <TabsList className='grid w-full grid-cols-6'>
               <TabsTrigger value='none'>无</TabsTrigger>
+              <TabsTrigger value='extra-thin'>超细</TabsTrigger>
               <TabsTrigger value='thin'>细</TabsTrigger>
               <TabsTrigger value='medium'>中</TabsTrigger>
               <TabsTrigger value='thick'>粗</TabsTrigger>
+              <TabsTrigger value='extra-thick'>超粗</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -122,10 +142,59 @@ export default function AvatarStatusDemo() {
               <SelectItem value='top-right'>右上</SelectItem>
               <SelectItem value='bottom-left'>左下</SelectItem>
               <SelectItem value='bottom-right'>右下</SelectItem>
+              <SelectItem value='custom'>自定义</SelectItem>
             </SelectContent>
           </Select>
         </div>
+        {position === "custom" && (
+          <div className='space-y-2'>
+            <Label>X 偏移量</Label>
+            <div className='flex items-center'>
+              <button
+                className='p-2 border rounded-l-md hover:bg-gray-100'
+                onClick={() => handleOffsetChange(setStatusOffsetX, -0.1)}
+              >
+                -
+              </button>
+              <input
+                type='text'
+                value={statusOffsetX}
+                onChange={(e) => setStatusOffsetX(parseFloat(e.target.value))}
+                className='border-t border-b border-r p-2 w-full text-center'
+                placeholder='例如: 10px'
+              />
+              <button
+                className='p-2 border rounded-r-md hover:bg-gray-100'
+                onClick={() => handleOffsetChange(setStatusOffsetX, 0.1)}
+              >
+                +
+              </button>
+            </div>
 
+            <Label>Y 偏移量</Label>
+            <div className='flex items-center'>
+              <button
+                className='p-2 border rounded-l-md hover:bg-gray-100'
+                onClick={() => handleOffsetChange(setStatusOffsetY, -0.1)}
+              >
+                -
+              </button>
+              <input
+                type='text'
+                value={statusOffsetY}
+                onChange={(e) => setStatusOffsetY(parseFloat(e.target.value))}
+                className='border-t border-b border-r p-2 w-full text-center'
+                placeholder='例如: 10px'
+              />
+              <button
+                className='p-2 border rounded-r-md hover:bg-gray-100'
+                onClick={() => handleOffsetChange(setStatusOffsetY, 0.1)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        )}
         <div className='space-y-2'>
           <Label>自定义状态</Label>
           <div className='flex gap-2'>

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Check, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -67,7 +67,26 @@ export function getPositionClasses(
 ): string {
   const position = positions[statusPosition];
   if (!position) {
-    return `${statusOffsetY} ${statusOffsetX}`;
+    // Handle custom position based on offsets
+    const offsetX = statusOffsetX ? parseFloat(statusOffsetX) : 0;
+    const offsetY = statusOffsetY ? parseFloat(statusOffsetY) : 0;
+
+    let topBottom = "";
+    let leftRight = "";
+
+    if (offsetY < 0) {
+      topBottom = `-bottom-${Math.abs(offsetY)}`;
+    } else if (offsetY > 0) {
+      topBottom = `-top-${offsetY}`;
+    }
+
+    if (offsetX < 0) {
+      leftRight = `-right-${Math.abs(offsetX)}`;
+    } else if (offsetX > 0) {
+      leftRight = `-left-${offsetX}`;
+    }
+
+    return `${topBottom} ${leftRight}`;
   }
   return position[size];
 }
@@ -121,15 +140,17 @@ export default function StatusAvatar({
   statusOffsetY,
   statusClassName,
 }: StatusAvatarProps) {
+  // Location class
+  const [positionClass, setPositionClass] = useState(
+    getPositionClasses(statusPosition, size, statusOffsetX, statusOffsetY),
+  );
+
   // Render status indicator
   const renderStatus = () => {
     if (status === "none") return null;
 
     // Whether to display a border
     const ringClass = statusRingWidth !== "none" ? `${ringWidthClasses[statusRingWidth]} ring-${statusRingColor}` : "";
-
-    // Location class
-    const positionClass = getPositionClasses(statusPosition, size, statusOffsetX, statusOffsetY);
 
     switch (status) {
       case "online":
@@ -151,6 +172,7 @@ export default function StatusAvatar({
               "absolute flex items-center justify-center rounded-full p-0 font-medium",
               ringClass,
               positionClass,
+              "hover:bg-destructive",
               statusSizeClasses[size],
             )}
           >
@@ -163,6 +185,7 @@ export default function StatusAvatar({
             className={cn(
               "absolute bg-pink-500 text-white rounded-full px-1 py-0.5 text-[10px] font-medium",
               ringClass,
+              "hover:bg-pink-500",
               positionClass,
             )}
           >
@@ -176,6 +199,7 @@ export default function StatusAvatar({
               "absolute flex items-center justify-center rounded-full bg-green-500 text-white",
               ringClass,
               statusPosition === "bottom-right" ? "bottom-0 right-0 translate-y-1/3 translate-x-1/3" : positionClass,
+              "hover:bg-green-500",
               statusSizeClasses[size],
             )}
           >
@@ -190,6 +214,7 @@ export default function StatusAvatar({
               "absolute flex items-center justify-center rounded-full p-0",
               ringClass,
               positionClass,
+              "hover:bg-destructive",
               statusSizeClasses[size],
             )}
           >
@@ -197,11 +222,21 @@ export default function StatusAvatar({
           </Badge>
         );
       case "custom":
-        return <div className={cn("absolute", ringClass, positionClass, statusClassName)}>{statusContent}</div>;
+        return (
+          <div className={cn("absolute", ringClass, positionClass, "hover:bg-gray-500", statusClassName)}>
+            {statusContent}
+          </div>
+        );
       default:
         return null;
     }
   };
+
+  // Debugging: Log changes to positionClass
+  useEffect(() => {
+    console.log("positionClass:", getPositionClasses(statusPosition, size, statusOffsetX, statusOffsetY));
+    setPositionClass(getPositionClasses(statusPosition, size, statusOffsetX, statusOffsetY));
+  }, [statusPosition, size, statusOffsetX, statusOffsetY]);
 
   return (
     <div className='relative inline-block'>

@@ -39,6 +39,7 @@ import { Route as AuthorizationDashboardMonitorImport } from "./routes/_authoriz
 import { Route as AuthorizationDashboardCustomersImport } from "./routes/_authorization/dashboard/customers";
 import { Route as AuthorizationExamplesListIndexImport } from "./routes/_authorization/examples/list/index";
 import { Route as AuthorizationExamplesFormIndexImport } from "./routes/_authorization/examples/form/index";
+import { Route as AuthorizationExamplesBasicIndexImport } from "./routes/_authorization/examples/basic/index";
 import { Route as AuthorizationExamplesFormSimpleImport } from "./routes/_authorization/examples/form/simple";
 import { Route as AuthorizationExamplesFormBasicImport } from "./routes/_authorization/examples/form/basic";
 import { Route as AuthorizationExamplesFormAdvancedImport } from "./routes/_authorization/examples/form/advanced";
@@ -272,6 +273,13 @@ const AuthorizationExamplesFormIndexRoute =
   AuthorizationExamplesFormIndexImport.update({
     id: "/examples/form/",
     path: "/examples/form/",
+    getParentRoute: () => AuthorizationRoute,
+  } as any);
+
+const AuthorizationExamplesBasicIndexRoute =
+  AuthorizationExamplesBasicIndexImport.update({
+    id: "/examples/basic/",
+    path: "/examples/basic/",
     getParentRoute: () => AuthorizationRoute,
   } as any);
 
@@ -524,6 +532,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationExamplesFormSimpleImport;
       parentRoute: typeof AuthorizationImport;
     };
+    "/_authorization/examples/basic/": {
+      id: "/_authorization/examples/basic/";
+      path: "/examples/basic";
+      fullPath: "/examples/basic";
+      preLoaderRoute: typeof AuthorizationExamplesBasicIndexImport;
+      parentRoute: typeof AuthorizationImport;
+    };
     "/_authorization/examples/form/": {
       id: "/_authorization/examples/form/";
       path: "/examples/form";
@@ -563,6 +578,7 @@ interface AuthorizationRouteChildren {
   AuthorizationExamplesFormAdvancedRoute: typeof AuthorizationExamplesFormAdvancedRoute;
   AuthorizationExamplesFormBasicRoute: typeof AuthorizationExamplesFormBasicRoute;
   AuthorizationExamplesFormSimpleRoute: typeof AuthorizationExamplesFormSimpleRoute;
+  AuthorizationExamplesBasicIndexRoute: typeof AuthorizationExamplesBasicIndexRoute;
   AuthorizationExamplesFormIndexRoute: typeof AuthorizationExamplesFormIndexRoute;
   AuthorizationExamplesListIndexRoute: typeof AuthorizationExamplesListIndexRoute;
 }
@@ -589,6 +605,7 @@ const AuthorizationRouteChildren: AuthorizationRouteChildren = {
     AuthorizationExamplesFormAdvancedRoute,
   AuthorizationExamplesFormBasicRoute: AuthorizationExamplesFormBasicRoute,
   AuthorizationExamplesFormSimpleRoute: AuthorizationExamplesFormSimpleRoute,
+  AuthorizationExamplesBasicIndexRoute: AuthorizationExamplesBasicIndexRoute,
   AuthorizationExamplesFormIndexRoute: AuthorizationExamplesFormIndexRoute,
   AuthorizationExamplesListIndexRoute: AuthorizationExamplesListIndexRoute,
 };
@@ -630,6 +647,7 @@ export interface FileRoutesByFullPath {
   "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedRoute;
   "/examples/form/basic": typeof AuthorizationExamplesFormBasicRoute;
   "/examples/form/simple": typeof AuthorizationExamplesFormSimpleRoute;
+  "/examples/basic": typeof AuthorizationExamplesBasicIndexRoute;
   "/examples/form": typeof AuthorizationExamplesFormIndexRoute;
   "/examples/list": typeof AuthorizationExamplesListIndexRoute;
 }
@@ -666,6 +684,7 @@ export interface FileRoutesByTo {
   "/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedRoute;
   "/examples/form/basic": typeof AuthorizationExamplesFormBasicRoute;
   "/examples/form/simple": typeof AuthorizationExamplesFormSimpleRoute;
+  "/examples/basic": typeof AuthorizationExamplesBasicIndexRoute;
   "/examples/form": typeof AuthorizationExamplesFormIndexRoute;
   "/examples/list": typeof AuthorizationExamplesListIndexRoute;
 }
@@ -704,6 +723,7 @@ export interface FileRoutesById {
   "/_authorization/examples/form/advanced": typeof AuthorizationExamplesFormAdvancedRoute;
   "/_authorization/examples/form/basic": typeof AuthorizationExamplesFormBasicRoute;
   "/_authorization/examples/form/simple": typeof AuthorizationExamplesFormSimpleRoute;
+  "/_authorization/examples/basic/": typeof AuthorizationExamplesBasicIndexRoute;
   "/_authorization/examples/form/": typeof AuthorizationExamplesFormIndexRoute;
   "/_authorization/examples/list/": typeof AuthorizationExamplesListIndexRoute;
 }
@@ -743,6 +763,7 @@ export interface FileRouteTypes {
     | "/examples/form/advanced"
     | "/examples/form/basic"
     | "/examples/form/simple"
+    | "/examples/basic"
     | "/examples/form"
     | "/examples/list";
   fileRoutesByTo: FileRoutesByTo;
@@ -778,6 +799,7 @@ export interface FileRouteTypes {
     | "/examples/form/advanced"
     | "/examples/form/basic"
     | "/examples/form/simple"
+    | "/examples/basic"
     | "/examples/form"
     | "/examples/list";
   id:
@@ -814,6 +836,7 @@ export interface FileRouteTypes {
     | "/_authorization/examples/form/advanced"
     | "/_authorization/examples/form/basic"
     | "/_authorization/examples/form/simple"
+    | "/_authorization/examples/basic/"
     | "/_authorization/examples/form/"
     | "/_authorization/examples/list/";
   fileRoutesById: FileRoutesById;
@@ -898,6 +921,7 @@ export const routeTree = rootRoute
         "/_authorization/examples/form/advanced",
         "/_authorization/examples/form/basic",
         "/_authorization/examples/form/simple",
+        "/_authorization/examples/basic/",
         "/_authorization/examples/form/",
         "/_authorization/examples/list/"
       ]
@@ -1012,6 +1036,10 @@ export const routeTree = rootRoute
     },
     "/_authorization/examples/form/simple": {
       "filePath": "_authorization/examples/form/simple.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/examples/basic/": {
+      "filePath": "_authorization/examples/basic/index.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/examples/form/": {
