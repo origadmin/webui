@@ -1,109 +1,102 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { Storage, noop } from "@/utils";
+import { clearStorage } from "@/utils/storage";
+import { getProfile } from "@/api/system/personal";
 
-type ContextType<T = unknown> = {
-  getUserId?: () => string;
-  isAuthenticated: () => boolean;
+type AuthState = {
+  user: API.System.User | null;
+  permissions: API.System.Resource[] | null;
   token: string | null;
-  refresh?: () => Promise<string | undefined>;
-  setToken: (token: string) => void;
-  access?: Map<string, boolean>;
-  setAccess: (access: Map<string, boolean>) => void;
-  initialData: T;
-  setInitialData?: (data: T) => void;
-  signInPath?: string;
-  signUpPath?: string;
-  signOutPath?: string;
+  loading: boolean;
 };
 
-const Context = createContext<ContextType>({
-  isAuthenticated: () => false,
+type AuthActions = {
+  login: (token: string) => Promise<void>;
+  logout: () => void;
+};
+
+type AuthContextType = AuthState & AuthActions;
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  permissions: null,
   token: null,
-  setToken: noop,
-  setAccess: noop,
-  initialData: {} as unknown,
-  setInitialData: noop,
+  loading: true,
+  login: async () => {},
+  logout: noop,
 });
 
-export type AuthProviderProps<T = unknown> = {
-  getUserId?: () => string;
-  isAuthenticated?: () => boolean;
-  token: string | null;
-  access?: Map<string, boolean>;
-  initialData?: T;
-  signInPath?: string;
-  signUpPath?: string;
-  signOutPath?: string;
-  refresh?: () => Promise<string | undefined>;
-  children?: React.ReactNode;
-};
+export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
+  const [authState, setAuthState] = useState<AuthState>({
+    user: null,
+    permissions: null,
+    token: Storage.getAccessToken(),
+    loading: true,
+  });
 
-const AuthProvider = <T = unknown,>({
-  token: userToken,
-  access: userAccess,
-  children,
-  isAuthenticated: _isAuthenticated,
-  initialData: userInitialData,
-  ...props
-}: AuthProviderProps<T>) => {
-  const [token, _setToken] = useState(userToken);
-  const [access, _setAccess] = useState(userAccess);
-  const [initialData, _setInitialData] = useState(userInitialData as T);
+  const initialize = useCallback(async () => {
+    const token = Storage.getAccessToken();
+    if (!token) {
+      setAuthState((s) => ({ ...s, loading: false, user: null, token: null, permissions: null }));
+      return;
+    }
+
+    try {
+      const profileRes = await getProfile();
+      const { user, resources } = profileRes.data;
+
+      setAuthState((s) => ({
+        ...s,
+        user,
+        permissions: resources,
+        loading: false,
+        token,
+      }));
+    } catch (error) {
+      console.error("Initialization failed:", error);
+      clearStorage();
+      setAuthState({ user: null, token: null, permissions: null, loading: false });
+    }
+  }, []); // <-- The dependency array MUST be empty to run only once.
 
   useEffect(() => {
-    if (token) {
-      Storage.setAccessToken(token);
-    }
-  }, [token]);
+    initialize();
+  }, [initialize]);
 
-  const contextValue = useMemo(() => {
-    const isAuthenticated = _isAuthenticated ? _isAuthenticated : () => !!token;
-    const setToken = (newToken: string) => {
-      _setToken(newToken);
-    };
+  const login = async (token: string) => {
+    Storage.setAccessToken(token);
+    // Set loading to true and token, then let the effect re-run initialize
+    setAuthState((s) => ({ ...s, token, loading: true, user: null, permissions: null }));
+    await initialize();
+  };
 
-    const setAccess = (newAccess: Map<string, boolean>) => {
-      _setAccess(newAccess);
-    };
+  const logout = () => {
+    clearStorage();
+    setAuthState({
+      user: null,
+      permissions: null,
+      token: null,
+      loading: false,
+    });
+    // After logout, we might need to redirect. The router guard will handle this.
+  };
 
-    const setInitialData = (newData: T) => {
-      _setInitialData(newData);
-    };
-    return {
-      isAuthenticated,
-      token,
-      setToken,
-      access,
-      setAccess,
-      initialData,
-      setInitialData,
-      ...props,
-    } as ContextType;
-  }, [_isAuthenticated, token, access, initialData, props]);
+  const contextValue = useMemo(
+    () => ({
+      ...authState,
+      login,
+      logout,
+    }),
+    [authState, login, logout] // Add login and logout to dependency array
+  );
 
-  return <Context.Provider value={contextValue}>{children}</Context.Provider>;
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
-  const context = useContext(Context);
+  const context = useContext(AuthContext);
   if (context === undefined) throw new Error("useAuth must be used within a AuthProvider");
   return context;
 };
 
-export const useAccess = () => {
-  const { access, setAccess } = useContext(Context);
-  return { access, setAccess };
-};
-
-export const useToken = () => {
-  const { token, setToken } = useContext(Context);
-  return { token, setToken };
-};
-
-export const useInitialData = <T = InitialDataConfig,>() => {
-  const { initialData, setInitialData } = useContext(Context) as ContextType<T>;
-  return { initialData, setInitialData };
-};
-
-export type { ContextType as AuthContextType };
 export default AuthProvider;

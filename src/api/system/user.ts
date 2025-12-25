@@ -46,6 +46,7 @@ export const formSchema = z
     phone: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
     password: z.string().transform((pwd) => pwd.trim()),
+    status: z.number().optional(),
     // roles: z.array(z.object({})).optional(),
     role_ids: z.string().array().optional(),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),

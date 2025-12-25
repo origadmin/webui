@@ -1,33 +1,27 @@
-import { useEffect } from "react";
 import { Outlet } from "@tanstack/react-router";
-import { useAuth, useInitialData } from "@/hooks/use-auth";
-import { SidebarProps } from "@/components/Sidebar";
-import { FooterProps } from "@/components/footer";
-import { Layout, LayoutProps } from "@/components/layout";
-import { TopNavProps } from "@/components/top-nav";
+import { AppSidebar } from "./sidebar"; // We will create this
+import { AppHeader } from "./header";   // We will create this
+import { AppFooter } from "./footer";   // We will create this
+import { Toaster } from "@/components/ui/toaster";
 
+/**
+ * This is the root layout component.
+ * It defines the main structure of the application (sidebar, header, content, footer).
+ * It does not manage any data, it only provides the layout "scaffolding".
+ * Child components like AppSidebar are responsible for their own data.
+ */
 export default function MainLayout() {
-  const { token } = useAuth();
-  const { initialData } = useInitialData<InitialDataConfig>();
-
-  useEffect(() => {
-    console.log("layout: initialData is ", initialData);
-  }, [initialData]);
-
-  useEffect(() => {
-    if (token) {
-      console.log("layout: token is ", token);
-    }
-  }, [token]);
-  const props: LayoutProps = {
-    sidebarProps: initialData.sidebar ? (initialData.sidebar as SidebarProps) : {},
-    topNavProps: initialData.topNav ? (initialData.topNav as TopNavProps) : {},
-    footerProps: initialData.footer ? (initialData.footer as FooterProps) : {},
-  };
-
   return (
-    <Layout key={"main-layout"} {...props}>
-      <Outlet />
-    </Layout>
+    <div className='flex h-screen bg-background'>
+      <AppSidebar />
+      <div className='flex flex-1 flex-col'>
+        <AppHeader />
+        <main className='flex-1 overflow-y-auto p-4 sm:p-6'>
+          <Outlet />
+        </main>
+        <AppFooter />
+      </div>
+      <Toaster />
+    </div>
   );
 }

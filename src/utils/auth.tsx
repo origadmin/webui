@@ -1,5 +1,5 @@
 import auth from "@/api/auth";
-import { logout, login } from "@/api/system/login";
+import { login, logout } from "@/api/system/login";
 import { mockSignIn } from "@/mocks/mock-sign-in";
 import { SIGN_IN_URL } from "@/types";
 import { post } from "@/utils/request";
@@ -24,9 +24,6 @@ export async function refreshToken() {
       const { access_token } = response.data;
       // Update localStorage with the new tokens
       setAuth(response.data);
-      // if (access_token) {
-      //   localStorage.setItem("access_token", access_token);
-      // }
       return access_token || "";
     }
   } catch (err) {
@@ -51,9 +48,7 @@ export const signOut = async <T extends API.Token>({ logout: _logout = logout, o
   try {
     await _logout(options);
     const urlParams = new URL(window.location.href).searchParams;
-    /** 此方法会跳转到 redirect 参数所在的位置 */
     const redirect = urlParams.get("redirect");
-    // Note: There may be security issues, please note
     if (redirect !== null || pathname !== SIGN_IN_URL) {
       window.location.replace(redirect || SIGN_IN_URL);
       return;
@@ -64,7 +59,6 @@ export const signOut = async <T extends API.Token>({ logout: _logout = logout, o
       window.location.replace(SIGN_IN_URL);
     }
   } finally {
-    // Clear user status to prevent errors from causing state confusion
     removeTokens();
   }
 };
@@ -77,14 +71,19 @@ export const signIn = async <T extends API.Token>(
     console.log("mock login:", params);
     const result = mockSignIn(params);
     if (result.success) {
-      setAuth(result.data as API.Token);
-      return;
+      const token = result.data as T;
+      setAuth(token);
+      if (props.onSuccess) {
+        props.onSuccess(token); // THE CRITICAL FIX: Call onSuccess for mock login
+      }
+      return; // Stop execution after mock success
     }
 
     const message = result.error?.message || "unknown error";
     if (props.onError) {
       props.onError(new Error(message));
     }
+    return; // Stop execution after mock failure
   }
 
   try {
@@ -100,6 +99,12 @@ export const signIn = async <T extends API.Token>(
         if (props.onError) {
           props.onError(new Error("Invalid username or password"));
         }
+      }
+    } else {
+      // Handle API call failure (e.g., resp.success is false)
+      const message = resp?.message || "Login failed";
+      if (props.onError) {
+        props.onError(new Error(message));
       }
     }
   } catch (error) {
@@ -117,11 +122,11 @@ export const failureRetry = (failureCount: number, error: Error) => {
     try {
       const resp = refreshToken();
       console.log("Token refreshed successfully");
-      return resp !== undefined; // Retry the query
+      return resp !== undefined;
     } catch (refreshError) {
       console.error("Refresh token failed", refreshError);
-      return false; // Don't retry if refresh failed
+      return false;
     }
   }
-  return false; // Don't retry for other errors
+  return false;
 };

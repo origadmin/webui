@@ -1,6 +1,6 @@
 import React, { JSX, ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { useInitialData } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth"; // Import the main useAuth hook
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Watermark, { WatermarkProps } from "@/components/Watermark";
 import { Breadcrumbs, BreadcrumbProps } from "@/components/breadcrumbs";
@@ -25,12 +25,14 @@ function PageContainer({
     showBreadcrumbs: true,
   },
   headerRender,
-  watermarkProps,
-  scrollable = false, // using the global scroll
+  watermarkProps: initialWatermarkProps, // Rename to avoid conflict
+  scrollable = false,
 }: PageContainerProps) {
   const { className } = props || {};
-  const { initialData } = useInitialData();
-  watermarkProps = initialData.watermark ? (initialData.watermark as WatermarkProps) : undefined;
+  const { initialData } = useAuth(); // Use the main auth hook
+
+  // Combine watermark props from initialData and component props
+  const watermarkProps = initialWatermarkProps ?? initialData?.watermark;
 
   const renderScrollArea = () => {
     return scrollable ? (
@@ -45,6 +47,7 @@ function PageContainer({
   const renderWatermark = (children: ReactNode) => {
     return watermarkProps ? <Watermark {...watermarkProps}>{children}</Watermark> : children;
   };
+
   const renderContent = () => {
     return (
       <Content {...props} fixed>

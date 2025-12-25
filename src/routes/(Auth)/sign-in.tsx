@@ -1,20 +1,11 @@
 import SignInPage from "@/pages/auth/SignIn";
-import { SIGN_IN_URL } from "@/types";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
+// The route path is automatically inferred from the file path: /sign-in
 export const Route = createFileRoute("/(Auth)/sign-in")({
   component: RouteComponent,
-  beforeLoad: ({ context, location }) => {
-    const { pathname } = location;
-    const urlParams = new URLSearchParams(location.search);
-    // This method jumps to the location of the redirect parameter
-    const redirectUrl = urlParams.get("redirect");
-    if (context.auth.isAuthenticated()) {
-      if (redirectUrl !== null || pathname !== SIGN_IN_URL) {
-        throw redirect({ to: redirectUrl || SIGN_IN_URL });
-      }
-    }
-  },
+  // All authentication logic is now handled by the global guard in `__root.tsx`.
+  // This component no longer needs its own `beforeLoad` guard.
 });
 
 function RouteComponent() {

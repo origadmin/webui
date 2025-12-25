@@ -1,18 +1,29 @@
 import { StrictMode } from "react";
-import { queryClient } from "@/router";
+import { queryClient, router } from "@/router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
-import MainApp from "@/app/MainApp";
+import AuthProvider, { useAuth } from "@/hooks/use-auth";
+import { RouterProvider } from "@tanstack/react-router";
 import "./main.css";
 
 const rootElement = document.getElementById("root");
+
+function App() {
+  // Grab the auth context
+  const auth = useAuth();
+
+  // Pass the auth context to the router
+  return <RouterProvider router={router} context={{ auth }} />;
+}
 
 ReactDOM.createRoot(rootElement!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <MainApp />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>,
