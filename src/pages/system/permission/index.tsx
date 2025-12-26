@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { usePermissionsQuery } from "@/api/system/permission";
-import { PermissionsPrimaryButtons } from "@/pages/system/permission/components/permissions-primary-buttons";
 import { useDataTable } from "@/hooks/use-data-table";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { PermissionsPrimaryButtons } from "@/pages/system/permission/components/permissions-primary-buttons";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Tabs } from "@/components/ui/tabs";
-import { DataTable, DataTableProps } from "@/components/DataTable";
+import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/permissions-columns";
 import { PermissionsDialogs } from "./components/permissions-dialogs";
@@ -12,11 +18,11 @@ import { PermissionTableProvider } from "./components/permissions-table-provider
 
 export default function PermissionsPage() {
   const {
+    data: permissions,
+    isLoading,
     sorting,
     pagination,
     columnFilters,
-    isLoading,
-    data: permissions = {},
     setSorting,
     setPagination,
     setColumnFilters,
@@ -28,45 +34,45 @@ export default function PermissionsPage() {
 
   const [tabsValue, setTabsValue] = useState("all");
 
-  const tableProps: Omit<DataTableProps<API.System.Permission>, "isLoading" | "dataSource" | "total"> = {
-    columns,
-    useManual: true,
-    showPagination: true,
-    sorting,
-    onSortingChange: setSorting,
-    paginationState: pagination,
-    onPaginationChange: setPagination,
-    columnFiltersState: columnFilters,
-    onColumnFiltersChange: setColumnFilters,
-    toolbarPosition: "top",
-    toolbars: isLoading ? undefined : () => <PermissionsPrimaryButtons />,
-    props: {
-      search: {
-        onSearch: handleSearch,
-        onReset: handleReset,
-      },
-    },
-  };
-
-  // const treeData = useMemo(() => buildTree(permissions.data), [permissions.data]);
-
   return (
     <PermissionTableProvider>
       <PageContainer>
-        <Card className='h-full flex flex-col'>
-          <Tabs value={tabsValue} onValueChange={(value) => setTabsValue(value)} className='h-full flex flex-col'>
+        <Card className="h-full flex flex-col">
+          <Tabs
+            value={tabsValue}
+            onValueChange={(value) => setTabsValue(value)}
+            className="h-full flex flex-col"
+          >
             <CardHeader>
               <CardTitle>Permissions</CardTitle>
-              <CardDescription>
-                <CardDescription>Manage your permissions here.</CardDescription>
-              </CardDescription>
+              <CardDescription>Manage your permissions here.</CardDescription>
             </CardHeader>
-            <CardContent className='flex-grow'>
+            <CardContent className="flex-grow">
               <DataTable<API.System.Permission>
-                {...tableProps}
+                columns={columns}
+                dataSource={permissions?.data}
+                total={permissions?.total}
                 isLoading={isLoading}
-                dataSource={permissions.data}
-                total={permissions.total}
+                // Core table state and handlers
+                useManual
+                showPagination
+                paginationState={pagination}
+                onPaginationChange={setPagination}
+                sorting={sorting}
+                onSortingChange={setSorting}
+                columnFiltersState={columnFilters}
+                onColumnFiltersChange={setColumnFilters}
+                // Toolbar and sub-component props
+                toolbarPosition="top"
+                toolbars={
+                  isLoading ? undefined : () => <PermissionsPrimaryButtons />
+                }
+                props={{
+                  search: {
+                    onSearch: handleSearch,
+                    onReset: handleReset,
+                  },
+                }}
               />
             </CardContent>
           </Tabs>

@@ -1,8 +1,14 @@
 import { useRolesQuery } from "@/api/system/role";
-import { RolesPrimaryButtons } from "@/pages/system/role/components/roles-primary-buttons";
 import { useDataTable } from "@/hooks/use-data-table";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DataTable, DataTableProps } from "@/components/DataTable";
+import { RolesPrimaryButtons } from "@/pages/system/role/components/roles-primary-buttons";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/roles-columns";
 import { RolesDialogs } from "./components/roles-dialogs";
@@ -10,11 +16,11 @@ import { RoleTableProvider } from "./components/roles-table-provider";
 
 export default function RolesPage() {
   const {
+    data: roles,
+    isLoading,
     sorting,
     pagination,
     columnFilters,
-    isLoading,
-    data: roles = {},
     setSorting,
     setPagination,
     setColumnFilters,
@@ -24,40 +30,38 @@ export default function RolesPage() {
     useQuery: (params) => useRolesQuery(params),
   });
 
-  const tableProps: Omit<DataTableProps<API.System.Role>, "isLoading" | "dataSource" | "total"> = {
-    columns,
-    useManual: true,
-    showPagination: true,
-    sorting,
-    onSortingChange: setSorting,
-    paginationState: pagination,
-    onPaginationChange: setPagination,
-    columnFiltersState: columnFilters,
-    onColumnFiltersChange: setColumnFilters,
-    toolbarPosition: "top",
-    toolbars: isLoading ? undefined : () => <RolesPrimaryButtons />,
-    props: {
-      search: {
-        onSearch: handleSearch,
-        onReset: handleReset,
-      },
-    },
-  };
-
   return (
     <RoleTableProvider>
       <PageContainer>
-        <Card className='h-full flex flex-col'>
+        <Card className="h-full flex flex-col">
           <CardHeader>
             <CardTitle>Role List</CardTitle>
             <CardDescription>Manage your roles here.</CardDescription>
           </CardHeader>
-          <CardContent className='flex-grow'>
+          <CardContent className="flex-grow">
             <DataTable<API.System.Role>
-              {...tableProps}
+              columns={columns}
+              dataSource={roles?.data}
+              total={roles?.total}
               isLoading={isLoading}
-              dataSource={roles.data}
-              total={roles.total}
+              // Core table state and handlers
+              useManual
+              showPagination
+              paginationState={pagination}
+              onPaginationChange={setPagination}
+              sorting={sorting}
+              onSortingChange={setSorting}
+              columnFiltersState={columnFilters}
+              onColumnFiltersChange={setColumnFilters}
+              // Toolbar and sub-component props
+              toolbarPosition="top"
+              toolbars={isLoading ? undefined : () => <RolesPrimaryButtons />}
+              props={{
+                search: {
+                  onSearch: handleSearch,
+                  onReset: handleReset,
+                },
+              }}
             />
           </CardContent>
         </Card>
