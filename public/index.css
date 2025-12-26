@@ -1897,7 +1897,7 @@ html {
   --sidebar-accent: 240 3.7% 15.9%;
   --sidebar-accent-foreground: 240 4.8% 95.9%;
   --sidebar-border: 240 3.7% 15.9%;
-  --sidebar-ring: 240 4.9% 83.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
 * {
@@ -5003,11 +5003,6 @@ body {
   height: 1.5rem;
 }
 
-.size-7 {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
 .size-8 {
   width: 2rem;
   height: 2rem;
@@ -5114,6 +5109,10 @@ body {
 
 .h-\[120px\] {
   height: 120px;
+}
+
+.h-\[1px\] {
+  height: 1px;
 }
 
 .h-\[26\.25rem\] {
@@ -5330,6 +5329,10 @@ body {
   width: 160px;
 }
 
+.w-\[1px\] {
+  width: 1px;
+}
+
 .w-\[200px\] {
   width: 200px;
 }
@@ -5525,6 +5528,11 @@ body {
 
 .border-collapse {
   border-collapse: collapse;
+}
+
+.origin-\[--radix-tooltip-content-transform-origin\] {
+  -webkit-transform-origin: var(--radix-tooltip-content-transform-origin);
+          transform-origin: var(--radix-tooltip-content-transform-origin);
 }
 
 .\!-translate-y-12 {
@@ -6425,6 +6433,10 @@ body {
   background-color: hsl(var(--primary-foreground));
 }
 
+.bg-primary\/10 {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
 .bg-primary\/85 {
   background-color: hsl(var(--primary) / 0.85);
 }
@@ -7230,9 +7242,9 @@ body {
           transition-duration: 150ms;
 }
 
-.transition-\[margin\2c opa\] {
-  -webkit-transition-property: margin,opa;
-  transition-property: margin,opa;
+.transition-\[margin\2c opacity\] {
+  -webkit-transition-property: margin,opacity;
+  transition-property: margin,opacity;
   -webkit-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
           transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-transition-duration: 150ms;
@@ -7443,6 +7455,14 @@ body {
 
 .file\:font-medium::file-selector-button {
   font-weight: 500;
+}
+
+.file\:text-foreground::-webkit-file-upload-button {
+  color: hsl(var(--foreground));
+}
+
+.file\:text-foreground::file-selector-button {
+  color: hsl(var(--foreground));
 }
 
 .placeholder\:text-muted-foreground::-webkit-input-placeholder {
@@ -8460,10 +8480,6 @@ body {
 
 .peer\/menu-button[data-size="sm"] ~ .peer-data-\[size\=sm\]\/menu-button\:top-1 {
   top: 0.25rem;
-}
-
-.peer[data-variant="inset"] ~ .peer-data-\[variant\=inset\]\:min-h-\[calc\(100svh-theme\(spacing\.4\)\)\] {
-  min-height: calc(100svh - 1rem);
 }
 
 .peer\/menu-button[data-active="true"] ~ .peer-data-\[active\=true\]\/menu-button\:text-sidebar-accent-foreground {
