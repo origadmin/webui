@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { TopNav, TopNavProps } from "@/components/top-nav"; // Assuming this is the pure UI component
-import { mockTopNav } from "@/mocks/mock-sidebar"; // Still using mock for now
+import { TopNav, TopNavProps } from "@/components/top-nav";
+import { UserNav } from "@/components/user-nav";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { mockTopNav } from "@/mocks/mock-sidebar";
 
 export function AppHeader() {
   const { user } = useAuth();
@@ -10,11 +12,18 @@ export function AppHeader() {
     if (!user) {
       return {};
     }
-    // In the future, top navigation menus can also be derived from user permissions
     return {
       menus: mockTopNav,
     };
   }, [user]);
 
-  return <TopNav {...topNavProps} />;
+  return (
+    <header className="flex h-14 items-center gap-4 border-b bg-background px-4">
+      <SidebarTrigger />
+      <TopNav {...topNavProps} />
+      <div className="ml-auto flex items-center gap-4">
+        <UserNav />
+      </div>
+    </header>
+  );
 }
