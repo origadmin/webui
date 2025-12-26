@@ -18,8 +18,8 @@ const mockData: Record<string, any> = {
       zIndex: 1000,
       width: 120,
       height: 64,
-      gap: [60, 60], // Further adjusted gap
-      fontSize: 20, // Further adjusted font size
+      gap: [30, 30], // Final adjustment for denser spacing
+      fontSize: 20,
     },
   },
 };

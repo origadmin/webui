@@ -49,28 +49,37 @@ const Watermark: React.FC<WatermarkProps> = (props) => {
 
     const ratio = window.devicePixelRatio || 1;
     const [gapX, gapY] = gap;
-    const canvasWidth = (gapX + width) * ratio;
-    const canvasHeight = (gapY + height) * ratio;
-    const offsetLeft = (offset?.[0] ?? gapX / 2) * ratio;
-    const offsetTop = (offset?.[1] ?? gapY / 2) * ratio;
 
-    canvas.setAttribute("width", `${canvasWidth}px`);
-    canvas.setAttribute("height", `${canvasHeight}px`);
+    // Create a 2x2 pattern for staggering
+    const patternWidth = (gapX + width) * 2;
+    const patternHeight = (gapY + height) * 2;
+    canvas.setAttribute("width", `${patternWidth * ratio}px`);
+    canvas.setAttribute("height", `${patternHeight * ratio}px`);
 
-    ctx.translate(offsetLeft, offsetTop);
-    ctx.rotate((Math.PI / 180) * rotate);
-    const markWidth = width * ratio;
-    const markHeight = height * ratio;
-
-    ctx.fillStyle = color;
+    // Common styles
     ctx.font = `${fontWeight} ${fontSize * ratio}px ${fontFamily}`;
+    ctx.fillStyle = color;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    const contents = Array.isArray(content) ? content : content ? [content] : [];
-    contents.forEach((item, index) => {
-      ctx.fillText(item, markWidth / 2, markHeight / 2 + index * (fontSize * ratio + 4));
-    });
+    // Function to draw a single rotated watermark at a specific center point
+    const drawRotatedText = (x: number, y: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((Math.PI / 180) * rotate);
+      const contents = Array.isArray(content) ? content : content ? [content] : [];
+      contents.forEach((item, index) => {
+        const textY = (index - (contents.length - 1) / 2) * (fontSize * ratio + 4);
+        ctx.fillText(item, 0, textY);
+      });
+      ctx.restore();
+    };
+
+    // Draw two watermarks in a staggered (diagonal) pattern
+    const singleWidth = (gapX + width) * ratio;
+    const singleHeight = (gapY + height) * ratio;
+    drawRotatedText(singleWidth * 0.5, singleHeight * 1.5);
+    drawRotatedText(singleWidth * 1.5, singleHeight * 0.5);
 
     setBase64Url(canvas.toDataURL());
   }, [width, height, rotate, color, fontSize, fontWeight, fontFamily, gap, offset, content]);
@@ -86,7 +95,7 @@ const Watermark: React.FC<WatermarkProps> = (props) => {
         position: "fixed",
         inset: 0,
         zIndex,
-        backgroundSize: `${gap[0] + width}px`,
+        backgroundSize: `${(gap[0] + width) * 2}px`, // Use the 2x pattern width
         backgroundImage: `url('${base64Url}')`,
         backgroundRepeat: "repeat",
         ...style,
