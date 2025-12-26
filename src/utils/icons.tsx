@@ -1,183 +1,42 @@
-import {
-  IconDashboard,
-  IconSettings,
-  IconUsers,
-  IconLock,
-  IconKey,
-  IconEye,
-  IconMenu2,
-  IconHome,
-  IconUser,
-  IconShieldLock,
-  IconLayoutDashboard,
-  IconTool,
-  IconList,
-  IconFileText,
-  IconAlertCircle,
-  IconCheck,
-  IconX,
-  IconSearch,
-  IconFilter,
-  IconSortAscending,
-  IconSortDescending,
-  IconChevronDown,
-  IconChevronRight,
-  IconChevronLeft,
-  IconChevronUp,
-  IconPlus,
-  IconTrash,
-  IconEdit,
-  IconCopy,
-  IconDownload,
-  IconUpload,
-  IconRefresh,
-  IconLogout,
-  IconLogin,
-  IconBell,
-  IconMail,
-  IconMessage,
-  IconCalendar,
-  IconClock,
-  IconMapPin,
-  IconPhone,
-  IconCamera,
-  IconVideo,
-  IconMusic,
-  IconMicrophone,
-  IconPhoto,
-  IconFolder,
-  IconFile,
-  IconFolderPlus,
-  IconFilePlus,
-  IconFolderMinus,
-  IconFileMinus,
-  IconStar,
-  IconHeart,
-  IconShare,
-  IconLink,
-  IconExternalLink,
-  IconCode,
-  IconTerminal,
-  IconDatabase,
-  IconServer,
-  IconCloud,
-  IconWifi,
-  IconBluetooth,
-  IconBattery,
-  IconSun,
-  IconMoon,
-  IconVolume,
-  IconVolume2,
-  IconVolume3,
-  IconVolumeOff,
-  IconMaximize,
-  IconMinimize,
-  IconLayoutGrid,
-  IconListCheck,
-  IconChecklist,
-  IconClipboard,
-  IconClipboardCheck,
-  IconClipboardList,
-  IconClipboardX,
-  IconClipboardTypography,
-  IconClipboardHeart,
-  IconClipboardData,
-  IconClipboardCopy,
-  IconClipboardText,
-  IconClipboardPlus,
-  IconClipboardOff,
-} from "@tabler/icons-react";
+import * as icons from "@tabler/icons-react";
 
-export const iconMap: Record<string, any> = {
-  dashboard: IconDashboard,
-  settings: IconSettings,
-  users: IconUsers,
-  lock: IconLock,
-  key: IconKey,
-  eye: IconEye,
-  menu2: IconMenu2,
-  home: IconHome,
-  user: IconUser,
-  "shield-lock": IconShieldLock,
-  "layout-dashboard": IconLayoutDashboard,
-  tool: IconTool,
-  list: IconList,
-  "file-text": IconFileText,
-  "alert-circle": IconAlertCircle,
-  check: IconCheck,
-  x: IconX,
-  search: IconSearch,
-  filter: IconFilter,
-  "sort-ascending": IconSortAscending,
-  "sort-descending": IconSortDescending,
-  "chevron-down": IconChevronDown,
-  "chevron-right": IconChevronRight,
-  "chevron-left": IconChevronLeft,
-  "chevron-up": IconChevronUp,
-  plus: IconPlus,
-  trash: IconTrash,
-  edit: IconEdit,
-  copy: IconCopy,
-  download: IconDownload,
-  upload: IconUpload,
-  refresh: IconRefresh,
-  logout: IconLogout,
-  login: IconLogin,
-  bell: IconBell,
-  mail: IconMail,
-  message: IconMessage,
-  calendar: IconCalendar,
-  clock: IconClock,
-  "map-pin": IconMapPin,
-  phone: IconPhone,
-  camera: IconCamera,
-  video: IconVideo,
-  music: IconMusic,
-  microphone: IconMicrophone,
-  image: IconPhoto,
-  folder: IconFolder,
-  file: IconFile,
-  "folder-plus": IconFolderPlus,
-  "file-plus": IconFilePlus,
-  "folder-minus": IconFolderMinus,
-  "file-minus": IconFileMinus,
-  star: IconStar,
-  heart: IconHeart,
-  share: IconShare,
-  link: IconLink,
-  "external-link": IconExternalLink,
-  code: IconCode,
-  terminal: IconTerminal,
-  database: IconDatabase,
-  server: IconServer,
-  cloud: IconCloud,
-  wifi: IconWifi,
-  bluetooth: IconBluetooth,
-  battery: IconBattery,
-  sun: IconSun,
-  moon: IconMoon,
-  volume: IconVolume,
-  "volume-2": IconVolume2,
-  "volume-3": IconVolume3,
-  mute: IconVolumeOff,
-  maximize: IconMaximize,
-  minimize: IconMinimize,
-  grid: IconLayoutGrid,
-  "list-check": IconListCheck,
-  checklist: IconChecklist,
-  clipboard: IconClipboard,
-  "clipboard-check": IconClipboardCheck,
-  "clipboard-list": IconClipboardList,
-  "clipboard-x": IconClipboardX,
-  "clipboard-typography": IconClipboardTypography,
-  "clipboard-heart": IconClipboardHeart,
-  "clipboard-data": IconClipboardData,
-  "clipboard-copy": IconClipboardCopy,
-  "clipboard-text": IconClipboardText,
-  "clipboard-plus": IconClipboardPlus,
-  "clipboard-off": IconClipboardOff,
-};
+/**
+ * A robust function to get an icon component from its name,
+ * handling multiple possible name formats by using the library's own export.
+ *
+ * It can handle:
+ * - `database` -> `IconDatabase`
+ * - `shield-lock` -> `IconShieldLock`
+ * - `IconHome` -> `IconHome`
+ *
+ * @param {string} iconName The name of the icon from the data source.
+ * @returns {React.ComponentType<any>} The icon component or a default icon if not found.
+ */
+export const getIcon = (iconName: string): React.ComponentType<any> => {
+  const defaultIcon = icons.IconMenu2;
+  if (!iconName) {
+    return defaultIcon;
+  }
 
-export const getIcon = (iconName: string) => {
-  return iconMap[iconName] || IconMenu2; // Default icon if not found
+  // Strategy 1: Direct lookup (for names that are already in "IconPascalCase" format)
+  if (iconName in icons) {
+    return (icons as any)[iconName];
+  }
+
+  // Strategy 2: Convert from kebab-case or lowercase to "IconPascalCase"
+  // "shield-lock" -> "IconShieldLock"
+  // "database" -> "IconDatabase"
+  const pascalCaseName = iconName
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
+
+  const componentName = `Icon${pascalCaseName}`;
+
+  if (componentName in icons) {
+    return (icons as any)[componentName];
+  }
+
+  // Fallback to the default icon if no strategy works
+  return defaultIcon;
 };

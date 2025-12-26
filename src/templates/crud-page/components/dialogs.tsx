@@ -1,63 +1,65 @@
 import { Fragment } from "react";
-import { ActionDialog } from "./action-dialog";
-import { renderUserFields } from "./fields"; // Import the field renderer
+import { z } from "zod";
 import { useCrudTable } from "../hooks/use-crud-table";
-// You would also import other specific dialogs like DeleteDialog here
+import { ActionDialog } from "./action-dialog";
+import { DeleteDialog } from "./delete-dialog";
+import { PageConfig, ApiHooks } from "../types";
 
-export function Dialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useCrudTable();
-  const className = "sm:max-w-3xl";
+interface DialogsProps<T, TForm extends z.ZodType<any, any>> {
+  pageConfig: PageConfig;
+  formSchema: TForm;
+  apiHooks: ApiHooks<T, TForm>;
+  renderFields: (form: any) => React.ReactNode;
+}
+
+export function Dialogs<T extends { id?: string }, TForm extends z.ZodType<any, any>>({
+  pageConfig,
+  formSchema,
+  apiHooks,
+  renderFields,
+}: DialogsProps<T, TForm>) {
+  const { open, setOpen, currentRow, setCurrentRow } = useCrudTable<T>();
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setOpen(null);
+      setCurrentRow(null);
+    }
+  };
 
   return (
     <Fragment>
-      {/* Example of a specific dialog, can be added later */}
-      {/* {currentRow && (
-        <UsersResourceDialog
-          key={`user-resource-${currentRow.id}`}
-          currentRow={currentRow}
-          open={open === "preview"}
-          onOpenChange={() => setOpen("preview")}
-        />
-      )} */}
-
       <ActionDialog
-        key='add-item'
+        key={`${pageConfig.title}-add`}
         open={open === "add"}
-        onOpenChange={() => setOpen("add")}
-        renderFields={renderUserFields}
-        className={className}
+        onOpenChange={handleOpenChange}
+        pageConfig={pageConfig}
+        formSchema={formSchema}
+        apiHooks={apiHooks}
+        renderFields={renderFields}
       />
-
       {currentRow && (
         <ActionDialog
-          key={`edit-item-${currentRow.id}`}
+          key={`${pageConfig.title}-edit-${currentRow.id}`}
           open={open === "edit"}
-          onOpenChange={() => {
-            setOpen("edit");
-            setTimeout(() => {
-              setCurrentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
-          renderFields={renderUserFields}
-          className={className}
+          pageConfig={pageConfig}
+          formSchema={formSchema}
+          apiHooks={apiHooks}
+          renderFields={renderFields}
         />
       )}
-
-      {/* Example of a delete dialog */}
-      {/* {currentRow && (
-        <UsersDeleteDialog
-          key={`delete-item-${currentRow.id}`}
+      {currentRow && (
+        <DeleteDialog
+          key={`${pageConfig.title}-delete-${currentRow.id}`}
           open={open === "delete"}
-          onOpenChange={() => {
-            setOpen("delete");
-            setTimeout(() => {
-              setCurrentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
+          pageConfig={pageConfig}
+          apiHooks={apiHooks}
         />
-      )} */}
+      )}
     </Fragment>
   );
 }

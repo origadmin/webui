@@ -71,6 +71,17 @@ export const resources: API.System.Resource[] = [
   },
   {
     id: "14",
+    keyword: "resource",
+    name: "Resource Management",
+    type: "MENU",
+    path: "/system/resource",
+    component: "@/pages/system/resource/index.tsx",
+    parent_id: "10",
+    visible: true,
+    sequence: 4,
+  },
+  {
+    id: "15",
     keyword: "view",
     name: "View Management",
     type: "MENU",
@@ -78,7 +89,7 @@ export const resources: API.System.Resource[] = [
     component: "@/pages/system/view/index.tsx",
     parent_id: "10",
     visible: true,
-    sequence: 4,
+    sequence: 5,
   },
   // Button-level permission
   {

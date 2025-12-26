@@ -1,24 +1,27 @@
 import { roles } from "@/mocks/role/roles";
 import { users } from "@/mocks/user/users";
-import { permissions } from "@/mocks/permission/permissions"; // Import permissions
-import { mockSignInUser } from "./mock-sign-in"; // Correctly import mockSignInUser
+import { permissions } from "@/mocks/permission/permissions";
+import { views } from "@/mocks/view/views"; // Import views mock data
+import { mockSignInUser } from "./mock-sign-in";
 import { resources } from "./resources";
 
 const mockData: Record<string, any> = {
   "/sys/users": users,
   "/sys/roles": roles,
-  "/sys/permissions": permissions, // Add permissions to mockData
+  "/sys/permissions": permissions,
+  "/sys/views": views, // Add views to mockData
+  "/sys/resources": resources, // Also ensure resources are mocked for consistency
   // Add mock data for the profile endpoint
   "/sys/personal/profile": {
     user: mockSignInUser,
     resources: resources,
     watermark: {
-      content: [`${mockSignInUser.username}`], // Dynamic content from user data
+      content: [`${mockSignInUser.username}`],
       fullscreen: true,
       zIndex: 1000,
       width: 120,
       height: 64,
-      gap: [30, 30], // Final adjustment for denser spacing
+      gap: [30, 30],
       fontSize: 20,
     },
   },
@@ -36,8 +39,6 @@ const getPaginationData = (data: unknown, params?: API.SearchParams) => {
       data: paginatedData,
     };
   }
-  // If data is not an array, it might be a single object (like our profile)
-  // or pagination is not applicable.
   return null;
 };
 
@@ -49,11 +50,10 @@ const sortData = (mockData: unknown, params?: API.SearchParams) => {
 };
 
 const mocks = <T>(path: string, params?: API.SearchParams) => {
-  console.log(`[Mock] Requesting path: ${path}`, { mockData }); // Log the request path and the whole mockData object
+  console.log(`[Mock] Requesting path: ${path}`, { mockData });
   const data = sortData(mockData[path], params);
-  console.log(`[Mock] Data for path ${path}:`, data); // Log the data retrieved for the path
+  console.log(`[Mock] Data for path ${path}:`, data);
 
-  // Handle non-paginated data like the profile endpoint
   if (path === "/sys/personal/profile") {
     if (data) {
       return {
@@ -66,7 +66,6 @@ const mocks = <T>(path: string, params?: API.SearchParams) => {
   const pageData = getPaginationData(data, params);
 
   if (pageData) {
-    console.log("mock data pagination:", params);
     return {
       success: true,
       data: pageData.data as T,
@@ -74,7 +73,6 @@ const mocks = <T>(path: string, params?: API.SearchParams) => {
     };
   }
 
-  // Fallback for data that is not paginated and not the profile
   if (data) {
     return {
       success: true,

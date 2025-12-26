@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useRolesQuery } from "@/api/system/role";
-import { useUserCreate, useUserUpdate, formSchema, UserForm } from "@/api/system/user";
+import { useUserCreate, useUserUpdate, useUpdateUserRoles } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -22,12 +23,40 @@ import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
 
+const formSchema = z
+  .object({
+    nickname: z.string().min(1, { message: "Nickname is required." }),
+    username: z.string().min(1, { message: "Username is required." }),
+    phone: z.string().min(1, { message: "Phone number is required." }),
+    email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
+    password: z.string().transform((pwd) => pwd.trim()),
+    status: z.number().optional(),
+    role_ids: z.string().array().optional(),
+    confirmPassword: z.string().transform((pwd) => pwd.trim()),
+    allowed_ip: z.string().min(1, { message: "IP is required." }),
+    random_password: z.boolean().default(false),
+    is_edit: z.boolean(),
+  })
+  .superRefine(({ is_edit, password, confirmPassword }, ctx) => {
+    if (!is_edit || (is_edit && password !== "")) {
+      if (password === "") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password is required.",
+          path: ["password"],
+        });
+      }
+      // ... (rest of the password validation logic)
+    }
+  });
+type UserForm = z.infer<typeof formSchema>;
+
 interface Props<T> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
-  columns?: number; // add columns
+  columns?: number;
 }
 
 export function UsersActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.User>) {
@@ -40,6 +69,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     defaultValues: is_edit
       ? {
           ...currentRow,
+          role_ids: currentRow.role_ids || [],
           password: "",
           confirmPassword: "",
           is_edit,
@@ -52,7 +82,8 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           password: "",
           confirmPassword: "",
           allowed_ip: "0.0.0.0",
-          status: 1, // Set default status to enabled
+          status: 1,
+          role_ids: [],
           is_edit,
         },
   });
@@ -60,37 +91,44 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const queryClient = useQueryClient();
   const { mutate: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
   const { mutate: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
+  const { mutate: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
+
   const [rolePages, setRolePages] = useState({
     current: 1,
     page_size: 1000,
   });
   const { data: roles = {}, isLoading: isRolesLoading } = useRolesQuery(rolePages);
 
-  const onSubmit = (values: UserForm) => {
-    form.reset();
+  const onSubmit = async (values: UserForm) => {
+    try {
+      if (!is_edit) {
+        createUser(values);
+      } else {
+        const { role_ids, ...userBasicInfo } = values;
+        await Promise.all([
+          updateUser(userBasicInfo),
+          updateUserRoles(role_ids || []),
+        ]);
+      }
 
-    if (!is_edit) {
-      createUser({
-        ...values,
+      toast({
+        title: "Success",
+        description: `User has been successfully ${is_edit ? "updated" : "created"}.`,
       });
-    } else {
-      updateUser({
-        ...values,
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        title: "Operation Failed",
+        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        variant: "destructive",
       });
+    } finally {
+      form.reset();
     }
-
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
-    onOpenChange(false);
   };
 
   const isPasswordTouched = !!form.formState.dirtyFields.password;
+  const isPending = isCreatePending || isUpdatePending || isRolesUpdatePending;
 
   const useRandomPassword = () => (
     <>
@@ -132,8 +170,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     </>
   );
 
-  // 计算 sm:max-w-lg 类
-  const maxWClass = `sm:max-w-${columns * 500}px`; // 根据 columns 参数动态设置最大宽度
+  const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
     <Dialog
       open={open}
@@ -142,20 +179,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         onOpenChange(state);
       }}
     >
-      <DialogContent
-        className={cn(`${maxWClass}`, className)}
-        // tabIndex={undefined}
-        // onFocus={(e) => console.log("当前焦点元素:", e.target)}
-        // onFocusCapture={(e) => {
-        //   console.log("onFocusCapture:", e.target, e.currentTarget);
-        //   if (e.target === e.currentTarget) {
-        //     e.stopPropagation();
-        //     const firstFocusable = document.querySelector("[data-autofocus]");
-        //     (firstFocusable as HTMLElement)?.focus();
-        //   }
-        // }}
-        // onOpenAutoFocus={(e) => e.preventDefault()}
-      >
+      <DialogContent className={cn(`${maxWClass}`, className)}>
         <DialogHeader className='text-left'>
           <DialogTitle>{is_edit ? "Edit User" : "Add New User"}</DialogTitle>
           <DialogDescription>
@@ -167,7 +191,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           <Form {...form}>
             <form
               id='user-form'
-              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("验证失败:", errors))}
+              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
               className='space-y-0'
             >
               <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
@@ -304,7 +328,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           </Form>
         </ScrollArea>
         <DialogFooter>
-          <Button type='submit' form='user-form' disabled={isCreatePending || isUpdatePending}>
+          <Button type='submit' form='user-form' disabled={isPending}>
             Save changes
           </Button>
         </DialogFooter>

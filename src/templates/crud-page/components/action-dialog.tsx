@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -14,24 +15,29 @@ import {
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { pageConfig, formSchema, FormType, apiHooks } from "../config"; // Import from config
+import { PageConfig, ApiHooks } from "../types";
 
-interface Props<T> {
+interface Props<T, TForm extends z.ZodType<any, any>> {
   currentRow?: T;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
-  // A function that renders the form fields, receiving the form control.
-  renderFields: (form: ReturnType<typeof useForm<FormType>>) => React.ReactNode;
+  pageConfig: PageConfig;
+  formSchema: TForm;
+  apiHooks: ApiHooks<T, TForm>;
+  renderFields: (form: ReturnType<typeof useForm<z.infer<TForm>>>) => React.ReactNode;
 }
 
-export function ActionDialog<T extends { id?: string }>({
+export function ActionDialog<T extends { id?: string }, TForm extends z.ZodType<any, any>>({
   currentRow,
   open,
   onOpenChange,
   className,
+  pageConfig,
+  formSchema,
+  apiHooks,
   renderFields,
-}: Props<T>) {
+}: Props<T, TForm>) {
   const is_edit = !!currentRow;
   const title = is_edit ? `Edit ${pageConfig.title}` : `Add New ${pageConfig.title}`;
   const description = is_edit
@@ -39,24 +45,27 @@ export function ActionDialog<T extends { id?: string }>({
     : `Create new ${pageConfig.title.toLowerCase()} here.`;
   const formId = `${pageConfig.title.toLowerCase()}-form`;
 
-  const form = useForm<FormType>({
+  // Dynamically generate default values from the Zod schema
+  const defaultValues = formSchema.safeParse({}).success
+    ? Object.fromEntries(
+        Object.keys(formSchema.shape).map((key) => [key, undefined])
+      )
+    : {};
+
+  const form = useForm<z.infer<TForm>>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
     shouldFocusError: false,
     defaultValues: is_edit
       ? { ...currentRow, is_edit }
-      : {
-          // This needs to be generic. We can pass defaultValues from outside.
-          // For now, let's assume the schema handles defaults.
-          is_edit,
-        },
+      : { ...defaultValues, is_edit: false },
   });
 
   const queryClient = useQueryClient();
   const { mutate: createItem, isPending: isCreatePending } = apiHooks.useCreate(queryClient);
   const { mutate: updateItem, isPending: isUpdatePending } = apiHooks.useUpdate(queryClient, currentRow?.id || "");
 
-  const onSubmit = (values: FormType) => {
+  const onSubmit = (values: z.infer<TForm>) => {
     if (!is_edit) {
       createItem(values);
     } else {

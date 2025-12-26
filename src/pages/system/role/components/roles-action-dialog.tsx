@@ -58,7 +58,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
       ? {
           ...currentRow,
           is_edit,
-          // permission_ids: currentRow.permission_ids || [],
+          permission_ids: currentRow.permission_ids || [],
         }
       : {
           name: "",

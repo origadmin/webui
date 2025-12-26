@@ -1,9 +1,23 @@
 import { z } from "zod";
-import { formSchema as viewFormSchema, useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
+import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
 import { columns as viewColumns } from "./components/columns";
 import { DataTableProps } from "@/components/DataTable";
 
-export const formSchema = viewFormSchema;
+// Zod Schema for form validation, aligned with openapi.yaml
+export const formSchema = z.object({
+  name: z.string().min(1, "Name is required."),
+  keyword: z.string().min(1, "Keyword is required."),
+  scope: z.string().optional(),
+  type: z.string().default("MENU"),
+  path: z.string().optional(),
+  icon: z.string().optional(),
+  sequence: z.number().default(0),
+  visible: z.boolean().default(true),
+  status: z.number().default(1),
+  description: z.string().optional(),
+  parent_id: z.string().optional(),
+  // 'component' is not in the openapi spec for View, so it's removed.
+});
 export type FormType = z.infer<typeof formSchema>;
 
 export const apiHooks = {

@@ -11,7 +11,8 @@ import PageContainer from "@/components/PageContainer";
 import { CrudTableProvider } from "@/templates/crud-page/hooks/use-crud-table";
 import { Dialogs } from "@/templates/crud-page/components/dialogs";
 import { PrimaryButtons } from "@/templates/crud-page/components/primary-buttons";
-import { columns, apiHooks, pageConfig } from "./config";
+import { columns, apiHooks, pageConfig, formSchema } from "./config";
+import { renderFields } from "./components/fields";
 
 export default function ViewPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
@@ -40,7 +41,7 @@ export default function ViewPage() {
               showPagination
               // Toolbar and sub-component props
               toolbarPosition="top"
-              toolbars={() => <PrimaryButtons />}
+              toolbars={() => <PrimaryButtons pageConfig={pageConfig} />}
               props={{
                 search: searchProps,
               }}
@@ -48,7 +49,12 @@ export default function ViewPage() {
           </CardContent>
         </Card>
       </PageContainer>
-      <Dialogs />
+      <Dialogs
+        pageConfig={pageConfig}
+        formSchema={formSchema}
+        apiHooks={apiHooks}
+        renderFields={renderFields}
+      />
     </CrudTableProvider>
   );
 }

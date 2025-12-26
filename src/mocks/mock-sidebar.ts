@@ -114,6 +114,12 @@ export const mockSidebar: API.SidebarData = {
               shortcut: ["r", "r"],
             },
             {
+              title: "View",
+              path: "/system/view",
+              icon: icons["IconBox"],
+              shortcut: ["v", "v"],
+            },
+            {
               title: "Permission",
               path: "/system/permission",
               icon: icons["IconPalette"],

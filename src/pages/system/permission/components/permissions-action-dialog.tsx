@@ -69,6 +69,7 @@ export function PermissionsActionDialog({
     defaultValues: is_edit
       ? {
           ...currentRow,
+          resource_ids: currentRow.resource_ids || [],
           data_rules: currentRow?.data_rules || {},
           is_edit,
         }

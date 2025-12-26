@@ -119,7 +119,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
               </Button>
             ))}
         </PopoverTrigger>
-        <PopoverContent className='w-full p-2'>
+        <PopoverContent className='w-full p-2' style={{ width: "var(--radix-popover-trigger-width)" }}>
           {searchable && (
             <Input
               placeholder={searchPlaceholder}

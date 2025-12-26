@@ -1,17 +1,6 @@
-import ResourcesPage from "@/pages/system/resource";
 import { createLazyFileRoute } from "@tanstack/react-router";
+import ResourcesPage from "@/pages/system/resource";
 
 export const Route = createLazyFileRoute("/_authorization/system/resource")({
-  // loader: async (ctx) => {
-  //   const { deps, context } = ctx;
-  //   const { queryClient } = context;
-  //   console.log("ctx", ctx, "deps: ", deps);
-  //   return queryClient.ensureQueryData(rolesQueryOptions(deps));
-  // },
-  // loaderDeps: ({ search }) => Search.parseParams(search),
-  component: RouteComponent,
+  component: ResourcesPage,
 });
-
-function RouteComponent() {
-  return <ResourcesPage />;
-}

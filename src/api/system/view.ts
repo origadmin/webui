@@ -1,7 +1,6 @@
 import { Query } from "@/utils";
 import { post, get, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
-import { z } from "zod";
 
 // API calls
 export async function listView(params: API.SearchParams) {
@@ -13,27 +12,12 @@ export async function addView(body: API.System.View) {
 export async function getView(id: string) {
   return get<API.System.View>(`/sys/views/${id}`);
 }
-export async function updateView(id: string, body: Partial<API.System.View>) {
+export async function updateView(id: string, body: Omit<API.System.View, "id">) {
   return put<never>(`/sys/views/${id}`, body);
 }
 export async function deleteView(id: string) {
   return del<never>(`/sys/views/${id}`);
 }
-
-// Zod Schema for form validation
-export const formSchema = z.object({
-  keyword: z.string().min(1, "Keyword is required."),
-  name: z.string().min(1, "Name is required."),
-  path: z.string().optional(),
-  component: z.string().optional(),
-  icon: z.string().optional(),
-  sequence: z.number().default(0),
-  status: z.number().default(1),
-  visible: z.boolean().default(true),
-  parent_id: z.string().optional(),
-  type: z.string().default("MENU"),
-});
-export type ViewForm = z.infer<typeof formSchema>;
 
 // React Query Hooks
 export const useViewsQuery = (opts?: API.SearchParams) => {
@@ -52,7 +36,7 @@ export const useViewCreate = (queryClient: QueryClient) => {
 
 export const useViewUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (view: Partial<API.System.View>) => updateView(id, view),
+    mutationFn: (view: Omit<API.System.View, "id">) => updateView(id, view),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/views"]),
   });
 };
