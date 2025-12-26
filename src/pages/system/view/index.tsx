@@ -14,20 +14,10 @@ import { PrimaryButtons } from "@/templates/crud-page/components/primary-buttons
 import { columns, apiHooks, pageConfig } from "./config";
 
 export default function ViewPage() {
-  const {
-    data,
-    isLoading,
-    sorting,
-    pagination,
-    columnFilters,
-    setSorting,
-    setPagination,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
-  } = useDataTable({
-    useQuery: (params) => apiHooks.useQuery(params),
-  });
+  const { dataSource, total, isLoading, tableProps, searchProps } =
+    useDataTable({
+      useQuery: (params) => apiHooks.useQuery(params),
+    });
 
   return (
     <CrudTableProvider>
@@ -40,26 +30,19 @@ export default function ViewPage() {
           <CardContent>
             <DataTable
               columns={columns}
-              dataSource={data?.data}
-              total={data?.total}
+              dataSource={dataSource}
+              total={total}
               isLoading={isLoading}
-              // Core table state and handlers
+              // Spread all table state and handlers
+              {...tableProps}
+              // Static props
               useManual
               showPagination
-              paginationState={pagination}
-              onPaginationChange={setPagination}
-              sorting={sorting}
-              onSortingChange={setSorting}
-              columnFiltersState={columnFilters}
-              onColumnFiltersChange={setColumnFilters}
               // Toolbar and sub-component props
               toolbarPosition="top"
               toolbars={() => <PrimaryButtons />}
               props={{
-                search: {
-                  onSearch: handleSearch,
-                  onReset: handleReset,
-                },
+                search: searchProps,
               }}
             />
           </CardContent>

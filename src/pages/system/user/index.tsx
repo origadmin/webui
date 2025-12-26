@@ -15,20 +15,10 @@ import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
 export default function UserPage() {
-  const {
-    data: users,
-    isLoading,
-    sorting,
-    pagination,
-    columnFilters,
-    setSorting,
-    setPagination,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
-  } = useDataTable({
-    useQuery: (params) => useUsersQuery(params),
-  });
+  const { dataSource, total, isLoading, tableProps, searchProps } =
+    useDataTable({
+      useQuery: (params) => useUsersQuery(params),
+    });
 
   return (
     <UserTableProvider>
@@ -42,26 +32,19 @@ export default function UserPage() {
             <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
               <DataTable<API.System.User>
                 columns={columns}
-                dataSource={users?.data}
-                total={users?.total}
+                dataSource={dataSource}
+                total={total}
                 isLoading={isLoading}
-                // Core table state and handlers
+                // Spread all table state and handlers
+                {...tableProps}
+                // Static props
                 useManual
                 showPagination
-                paginationState={pagination}
-                onPaginationChange={setPagination}
-                sorting={sorting}
-                onSortingChange={setSorting}
-                columnFiltersState={columnFilters}
-                onColumnFiltersChange={setColumnFilters}
                 // Toolbar and sub-component props
                 toolbarPosition="bottom"
                 toolbars={() => <UsersPrimaryButtons />}
                 props={{
-                  search: {
-                    onSearch: handleSearch,
-                    onReset: handleReset,
-                  },
+                  search: searchProps,
                 }}
               />
             </div>

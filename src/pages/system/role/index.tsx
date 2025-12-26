@@ -15,20 +15,10 @@ import { RolesDialogs } from "./components/roles-dialogs";
 import { RoleTableProvider } from "./components/roles-table-provider";
 
 export default function RolesPage() {
-  const {
-    data: roles,
-    isLoading,
-    sorting,
-    pagination,
-    columnFilters,
-    setSorting,
-    setPagination,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
-  } = useDataTable({
-    useQuery: (params) => useRolesQuery(params),
-  });
+  const { dataSource, total, isLoading, tableProps, searchProps } =
+    useDataTable({
+      useQuery: (params) => useRolesQuery(params),
+    });
 
   return (
     <RoleTableProvider>
@@ -41,26 +31,19 @@ export default function RolesPage() {
           <CardContent className="flex-grow">
             <DataTable<API.System.Role>
               columns={columns}
-              dataSource={roles?.data}
-              total={roles?.total}
+              dataSource={dataSource}
+              total={total}
               isLoading={isLoading}
-              // Core table state and handlers
+              // Spread all table state and handlers
+              {...tableProps}
+              // Static props
               useManual
               showPagination
-              paginationState={pagination}
-              onPaginationChange={setPagination}
-              sorting={sorting}
-              onSortingChange={setSorting}
-              columnFiltersState={columnFilters}
-              onColumnFiltersChange={setColumnFilters}
               // Toolbar and sub-component props
               toolbarPosition="top"
               toolbars={isLoading ? undefined : () => <RolesPrimaryButtons />}
               props={{
-                search: {
-                  onSearch: handleSearch,
-                  onReset: handleReset,
-                },
+                search: searchProps,
               }}
             />
           </CardContent>

@@ -18,23 +18,15 @@ import { ResourcesDialogs } from "./components/resources-dialogs";
 import { ResourceTableProvider } from "./components/resources-table-provider";
 
 export default function ResourcesPage() {
-  const {
-    data: resources,
-    isLoading,
-    sorting,
-    columnFilters,
-    setSorting,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
-  } = useDataTable({
-    useQuery: (params) => useResourcesQuery({ ...params, pageSize: 1000 }),
-  });
+  const { dataSource, total, isLoading, tableProps, searchProps } =
+    useDataTable({
+      useQuery: (params) => useResourcesQuery({ ...params, pageSize: 1000 }),
+    });
 
   const [tabsValue, setTabsValue] = useState("all");
 
   // Memoized tree structure for the table
-  const treeData = useMemo(() => buildTree(resources?.data), [resources?.data]);
+  const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
 
   return (
     <ResourceTableProvider>
@@ -50,15 +42,13 @@ export default function ResourcesPage() {
                 <DataTable<API.System.Resource>
                   columns={columns}
                   dataSource={treeData}
-                  total={resources?.total}
+                  total={total}
                   isLoading={isLoading}
-                  // Core table state and handlers
+                  // Spread all table state and handlers
+                  {...tableProps}
+                  // Static props
                   useManual={false}
                   showPagination={false}
-                  sorting={sorting}
-                  onSortingChange={setSorting}
-                  columnFiltersState={columnFilters}
-                  onColumnFiltersChange={setColumnFilters}
                   // Toolbar and sub-component props
                   toolbarPosition="bottom"
                   toolbars={() => <ResourcesPrimaryButtons />}
@@ -67,10 +57,7 @@ export default function ResourcesPage() {
                     getSubRows: (row: API.System.Resource) => row.children,
                   }}
                   props={{
-                    search: {
-                      onSearch: handleSearch,
-                      onReset: handleReset,
-                    },
+                    search: searchProps,
                   }}
                 />
               </div>
