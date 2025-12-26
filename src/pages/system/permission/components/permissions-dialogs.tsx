@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { PermissionDialog } from "@/pages/system/components/permission-dialog";
 import { PermissionsActionDialog } from "./permissions-action-dialog";
 import { PermissionsDeleteDialog } from "./permissions-delete-dialog";
 import { usePermissionTable } from "./permissions-table-provider";
@@ -23,7 +22,6 @@ export function PermissionsDialogs() {
           }, 500);
         }}
       />
-      <PermissionDialog open={open === "edit-permission"} onOpenChange={() => setOpen("edit-permission")} />
       {currentRow && (
         <PermissionsActionDialog
           className={className}

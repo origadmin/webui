@@ -1,11 +1,13 @@
 import { roles } from "@/mocks/role/roles";
 import { users } from "@/mocks/user/users";
+import { permissions } from "@/mocks/permission/permissions"; // Import permissions
 import { mockSignInUser } from "./mock-sign-in"; // Correctly import mockSignInUser
 import { resources } from "./resources";
 
 const mockData: Record<string, any> = {
   "/sys/users": users,
   "/sys/roles": roles,
+  "/sys/permissions": permissions, // Add permissions to mockData
   // Add mock data for the profile endpoint
   "/sys/personal/profile": {
     user: mockSignInUser, // Use the correct variable name
@@ -30,7 +32,7 @@ const getPaginationData = (data: unknown, params?: API.SearchParams) => {
   return null;
 };
 
-const sortData = (mockData: unknown, params?: API.SearchParams) => {
+const sortData = (mockData: unknown, params?: API.SPearchParams) => {
   if (!params) {
     return mockData;
   }
@@ -38,7 +40,9 @@ const sortData = (mockData: unknown, params?: API.SearchParams) => {
 };
 
 const mocks = <T>(path: string, params?: API.SearchParams) => {
+  console.log(`[Mock] Requesting path: ${path}`, { mockData }); // Log the request path and the whole mockData object
   const data = sortData(mockData[path], params);
+  console.log(`[Mock] Data for path ${path}:`, data); // Log the data retrieved for the path
 
   // Handle non-paginated data like the profile endpoint
   if (path === "/sys/personal/profile") {

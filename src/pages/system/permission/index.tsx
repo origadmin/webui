@@ -27,17 +27,16 @@ export default function PermissionsPage() {
   return (
     <PermissionTableProvider>
       <PageContainer>
-        <Card className="h-full flex flex-col">
+        <Card>
           <Tabs
             value={tabsValue}
             onValueChange={(value) => setTabsValue(value)}
-            className="h-full flex flex-col"
           >
             <CardHeader>
               <CardTitle>Permissions</CardTitle>
               <CardDescription>Manage your permissions here.</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent>
               <DataTable<API.System.Permission>
                 columns={columns}
                 dataSource={dataSource}
@@ -50,9 +49,7 @@ export default function PermissionsPage() {
                 showPagination
                 // Toolbar and sub-component props
                 toolbarPosition="top"
-                toolbars={
-                  isLoading ? undefined : () => <PermissionsPrimaryButtons />
-                }
+                toolbars={() => <PermissionsPrimaryButtons />}
                 props={{
                   search: searchProps,
                 }}

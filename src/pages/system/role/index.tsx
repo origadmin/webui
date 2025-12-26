@@ -23,12 +23,12 @@ export default function RolesPage() {
   return (
     <RoleTableProvider>
       <PageContainer>
-        <Card className="h-full flex flex-col">
+        <Card>
           <CardHeader>
             <CardTitle>Role List</CardTitle>
             <CardDescription>Manage your roles here.</CardDescription>
           </CardHeader>
-          <CardContent className="flex-grow">
+          <CardContent>
             <DataTable<API.System.Role>
               columns={columns}
               dataSource={dataSource}
@@ -41,7 +41,7 @@ export default function RolesPage() {
               showPagination
               // Toolbar and sub-component props
               toolbarPosition="top"
-              toolbars={isLoading ? undefined : () => <RolesPrimaryButtons />}
+              toolbars={() => <RolesPrimaryButtons />}
               props={{
                 search: searchProps,
               }}
