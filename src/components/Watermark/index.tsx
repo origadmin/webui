@@ -1,101 +1,97 @@
-import React, { useMemo } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useTheme } from "@/components/Theme";
 import { cn } from "@/lib/utils";
-import { useTheme } from "../Theme";
 
 export interface WatermarkProps {
-  content: string | string[];
+  className?: string;
+  style?: React.CSSProperties;
+  content?: string | string[];
+  rotate?: number;
+  zIndex?: number;
   width?: number;
   height?: number;
-  gapX?: number;
-  gapY?: number;
-  rotate?: number;
+  gap?: [number, number];
+  offset?: [number, number];
   fontSize?: number;
-  fontColor?: string;
+  fontWeight?: "normal" | "light" | "weight" | number;
   fontFamily?: string;
-  opacity?: number;
-  antiTamperLayers?: number;
-  fontWeight?: number | string;
-  zIndex?: number;
-  fullscreen?: boolean;
-  className?: string;
-  children: React.ReactNode;
+  fontColor?: string;
 }
 
-const Watermark: React.FC<WatermarkProps> = ({
-  content = "Watermark",
-  width = 120,
-  height = 64,
-  gapX = 100,
-  gapY = 100,
-  rotate = -22,
-  fontSize = 8,
-  fontFamily = "sans-serif",
-  opacity = 1,
-  antiTamperLayers = 2,
-  fontWeight = 400,
-  zIndex = 9,
-  fullscreen = false,
-  className,
-  children,
-}) => {
+const Watermark: React.FC<WatermarkProps> = (props) => {
+  const {
+    className,
+    style,
+    content,
+    rotate = -22,
+    zIndex = 1000,
+    width = 120,
+    height = 64,
+    gap = [100, 100],
+    offset,
+    fontSize = 16,
+    fontWeight = "normal",
+    fontFamily = "sans-serif",
+    fontColor,
+  } = props;
+
   const { theme } = useTheme();
+  const color = fontColor || (theme === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)");
 
-  const svgContent = useMemo(() => {
-    const contents = Array.isArray(content) ? content : [content];
-    const color = theme === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)";
-    const texts = contents
-      .map((text, index) => {
-        const y = height / 2 + (index - (contents.length - 1) / 2) * fontSize * 1.5;
-        return `<text 
-                x="50%"
-                y="${y}"
-                dy=".5em"
-                text-anchor="middle"
-                fill="${color}"
-                style="font-size: ${fontSize}px; font-family: ${fontFamily}, Arial, sans-serif; font-weight: ${fontWeight}"
-              >${text}</text>`;
-      })
-      .join("");
+  const [base64Url, setBase64Url] = useState("");
 
-    return `
-      <svg  viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
-        <g transform="rotate(${rotate}, ${width / 2}, ${height / 2})">
-          ${texts}
-        </g>
-      </svg>
-    `;
-  }, [theme, content, width, height, rotate, fontSize, fontFamily, fontWeight]);
+  useEffect(() => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const ratio = window.devicePixelRatio || 1;
+    const [gapX, gapY] = gap;
+    const canvasWidth = (gapX + width) * ratio;
+    const canvasHeight = (gapY + height) * ratio;
+    const offsetLeft = (offset?.[0] ?? gapX / 2) * ratio;
+    const offsetTop = (offset?.[1] ?? gapY / 2) * ratio;
+
+    canvas.setAttribute("width", `${canvasWidth}px`);
+    canvas.setAttribute("height", `${canvasHeight}px`);
+
+    ctx.translate(offsetLeft, offsetTop);
+    ctx.rotate((Math.PI / 180) * rotate);
+    const markWidth = width * ratio;
+    const markHeight = height * ratio;
+
+    ctx.fillStyle = color;
+    ctx.font = `${fontWeight} ${fontSize * ratio}px ${fontFamily}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    const contents = Array.isArray(content) ? content : content ? [content] : [];
+    contents.forEach((item, index) => {
+      ctx.fillText(item, markWidth / 2, markHeight / 2 + index * (fontSize * ratio + 4));
+    });
+
+    setBase64Url(canvas.toDataURL());
+  }, [width, height, rotate, color, fontSize, fontWeight, fontFamily, gap, offset, content]);
+
+  if (!base64Url) {
+    return null;
+  }
 
   return (
-    <div className={cn("relative w-full h-full", className)}>
-      <div className='relative'>{children}</div>
-      <div
-        className={`pointer-events-none select-none ${fullscreen ? "fixed" : "absolute"} inset-0`}
-        style={{ opacity, zIndex: zIndex - 1 }}
-        aria-hidden={true}
-      >
-        <div
-          className='absolute inset-0'
-          style={{
-            backgroundImage: `url('data:image/svg+xml,${encodeURIComponent(svgContent)}')`,
-            backgroundRepeat: "repeat",
-            backgroundSize: `${gapX + width}px ${gapY + height}px`,
-          }}
-        />
-        {Array.from({ length: antiTamperLayers }, (_, index) => (
-          <div
-            key={index}
-            className='absolute inset-0'
-            style={{
-              backgroundImage: `url('data:image/svg+xml,${encodeURIComponent(svgContent)}')`,
-              backgroundRepeat: "repeat",
-              backgroundSize: `${gapX + width}px ${gapY + height}px`,
-              transform: `translate(${index * 0.1}px, ${index * 0.1}px)`,
-            }}
-          />
-        ))}
-      </div>
-    </div>
+    <div
+      className={cn("pointer-events-none", className)}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex,
+        backgroundSize: `${gap[0] + width}px`,
+        backgroundImage: `url('${base64Url}')`,
+        backgroundRepeat: "repeat",
+        ...style,
+      }}
+    />
   );
 };
 

@@ -8,12 +8,13 @@ type AuthState = {
   permissions: API.System.Resource[] | null;
   token: string | null;
   loading: boolean;
+  initialData: Record<string, any> | null; // Add initialData to store the whole profile
 };
 
 type AuthActions = {
   login: (token: API.Token) => Promise<void>;
   logout: () => void;
-  isAuthenticated: () => boolean; // Add this back
+  isAuthenticated: () => boolean;
 };
 
 type AuthContextType = AuthState & AuthActions;
@@ -23,9 +24,10 @@ const AuthContext = createContext<AuthContextType>({
   permissions: null,
   token: null,
   loading: true,
+  initialData: null, // Default value for initialData
   login: async () => {},
   logout: noop,
-  isAuthenticated: () => false, // Add default value
+  isAuthenticated: () => false,
 });
 
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
@@ -34,30 +36,32 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     permissions: null,
     token: Storage.getAccessToken(),
     loading: true,
+    initialData: null, // Initialize initialData
   });
 
   const initialize = useCallback(async () => {
     const token = Storage.getAccessToken();
     if (!token) {
-      setAuthState((s) => ({ ...s, loading: false, user: null, token: null, permissions: null }));
+      setAuthState((s) => ({ ...s, loading: false, user: null, token: null, permissions: null, initialData: null }));
       return;
     }
 
     try {
       const profileRes = await getProfile();
-      const { user, resources } = profileRes.data;
+      const { user, resources, ...rest } = profileRes.data; // Destructure user, resources, and the rest
 
       setAuthState((s) => ({
         ...s,
         user,
         permissions: resources,
+        initialData: { user, resources, ...rest }, // Store the whole data object
         loading: false,
         token,
       }));
     } catch (error) {
       console.error("Initialization failed:", error);
       clearStorage();
-      setAuthState({ user: null, token: null, permissions: null, loading: false });
+      setAuthState({ user: null, token: null, permissions: null, loading: false, initialData: null });
     }
   }, []);
 
@@ -82,6 +86,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       permissions: null,
       token: null,
       loading: false,
+      initialData: null,
     });
   };
 
@@ -92,7 +97,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       ...authState,
       login,
       logout,
-      isAuthenticated, // Provide it in the context
+      isAuthenticated,
     }),
     [authState]
   );

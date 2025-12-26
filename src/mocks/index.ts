@@ -10,8 +10,17 @@ const mockData: Record<string, any> = {
   "/sys/permissions": permissions, // Add permissions to mockData
   // Add mock data for the profile endpoint
   "/sys/personal/profile": {
-    user: mockSignInUser, // Use the correct variable name
+    user: mockSignInUser,
     resources: resources,
+    watermark: {
+      content: [`${mockSignInUser.username}`], // Dynamic content from user data
+      fullscreen: true,
+      zIndex: 1000,
+      width: 120,
+      height: 64,
+      gap: [60, 60], // Further adjusted gap
+      fontSize: 20, // Further adjusted font size
+    },
   },
 };
 
@@ -32,7 +41,7 @@ const getPaginationData = (data: unknown, params?: API.SearchParams) => {
   return null;
 };
 
-const sortData = (mockData: unknown, params?: API.SPearchParams) => {
+const sortData = (mockData: unknown, params?: API.SearchParams) => {
   if (!params) {
     return mockData;
   }
