@@ -29,25 +29,24 @@ export default function UserPage() {
             <CardDescription>Manage your users here.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-              <DataTable<API.System.User>
-                columns={columns}
-                dataSource={dataSource}
-                total={total}
-                isLoading={isLoading}
-                // Spread all table state and handlers
-                {...tableProps}
-                // Static props
-                useManual
-                showPagination
-                // Toolbar and sub-component props
-                toolbarPosition="bottom"
-                toolbars={() => <UsersPrimaryButtons />}
-                props={{
-                  search: searchProps,
-                }}
-              />
-            </div>
+            {/* The conflicting layout div has been removed from here. */}
+            <DataTable<API.System.User>
+              columns={columns}
+              dataSource={dataSource}
+              total={total}
+              isLoading={isLoading}
+              // Spread all table state and handlers
+              {...tableProps}
+              // Static props
+              useManual
+              showPagination
+              // Toolbar and sub-component props
+              toolbarPosition="bottom"
+              toolbars={() => <UsersPrimaryButtons />}
+              props={{
+                search: searchProps,
+              }}
+            />
           </CardContent>
         </Card>
       </PageContainer>
