@@ -1,0 +1,25 @@
+File: .\src\hooks\use-auth.tsx:1:1
+  × ESModulesLinkingError: export 'clearStorage' (imported as 'clearStorage') was not found in '@/utils' (possible exports: Auth, Chat, Configuration, Query, Request, Search, Storage, noop)
+    ╭─[84:20]
+ 82 │                     error = _state.sent();
+ 83 │                     console.error("Initialization failed:", error);
+ 84 │                     clearStorage(); // Use the correct function
+    ·                     ────────────
+ 85 │                     setAuthState({
+ 86 │                         user: null,
+    ╰────
+
+ @ ./src/main.tsx
+
+File: .\src\hooks\use-auth.tsx:1:1
+  × ESModulesLinkingError: export 'clearStorage' (imported as 'clearStorage') was not found in '@/utils' (possible exports: Auth, Chat, Configuration, Query, Request, Search, Storage, noop)
+     ╭─[136:8]
+ 134 │     }();
+ 135 │     var logout = function() {
+ 136 │         clearStorage(); // Use the correct function
+     ·         ────────────
+ 137 │         setAuthState({
+ 138 │             user: null,
+     ╰────
+
+ @ ./src/main.tsx

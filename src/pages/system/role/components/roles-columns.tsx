@@ -40,7 +40,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Name",
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Rolename' />,
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("name")}</LongText>,
+    cell: ({ row }) => <LongText>{row.getValue("name")}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
@@ -50,21 +50,21 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Keyword",
     searchable: true,
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
-    cell: ({ row }) => <LongText className='max-w-36'>{row.getValue("keyword")}</LongText>,
+    cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "type",
     header: "Type",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("type")}</div>,
+    cell: ({ row }) => <div>{row.getValue("type")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "sequence",
     header: "Sequence",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("sequence")}</div>,
+    cell: ({ row }) => <div>{row.getValue("sequence")}</div>,
     meta: defaultHeaderMeta.meta,
   },
 
@@ -73,7 +73,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Permissions",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => (
-      <div className='w-fit max-w-36 text-nowrap'>
+      <div>
         {row.original.permissions &&
           row.original.permissions.slice(0, 1).map((item) => (
             <Badge variant='outline' key={item.id}>
@@ -115,7 +115,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     accessorKey: "is_system",
     header: "Is System",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("is_system") ? "Yes" : "No"}</div>,
+    cell: ({ row }) => <div>{row.getValue("is_system") ? "Yes" : "No"}</div>,
     meta: defaultHeaderMeta.meta,
   },
 
@@ -124,7 +124,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Actions",
     // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
     cell: ({ row }) => (
-      <div className='flex gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
+      <div className='flex gap-1.5'>
         <RoleIconRowActions row={row} />
       </div>
     ),

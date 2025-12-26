@@ -2,14 +2,14 @@ import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from 
 import Placeholder from "@/assets/static/placeholder.jpg";
 import { signIn } from "@/utils/auth";
 import { get } from "@/utils/request";
-import { setAuth } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconBrandFacebook, IconBrandGithub } from "@tabler/icons-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
+// Import useAuth
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,16 +37,6 @@ export type Captcha = {
   id?: string;
   data?: string;
 };
-export type LoginFormValue = {
-  username: string;
-  password: string;
-  captcha_id: string;
-  captcha_code: string;
-};
-export type SignInProps = {
-  values?: LoginFormValue;
-  callbackUrl: string;
-};
 
 const defaultCaptcha: Captcha = {
   id: undefined,
@@ -59,8 +49,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [submitting, startTransition] = useTransition();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const auth = useAuth(); // Get the auth context
   const urlParams = new URLSearchParams(location.search);
-  // This method jumps to the location of the redirect parameter
   const redirectUrl = urlParams.get("redirect") || "/";
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -74,21 +64,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   });
 
   const refreshCaptcha = useCallback(async () => {
-    // Avoid refreshing the CAPTCHA when submitting a login form
-    if (submitting || isLoading) {
-      return;
-    }
+    if (submitting || isLoading) return;
     setIsLoading(true);
     const url = `/captcha${captcha.id ? `?id=${captcha.id}&reload=true` : ""}`;
     try {
       const response = await get<Captcha>(url);
       if (response.success && response.data) {
-        setCaptcha({
-          id: response.data.id,
-          data: response.data.data,
-        });
-      } else {
-        console.error("Failed to refresh captcha:", response);
+        setCaptcha(response.data);
       }
     } catch (err) {
       console.error("Captcha Err:", err);
@@ -98,43 +80,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }, [submitting, isLoading, captcha.id]);
 
   useEffect(() => {
-    // Avoid refreshing the CAPTCHA when submitting a login form
-    if (isLoading) {
-      return;
-    }
-    console.log("refresh captcha");
+    if (isLoading) return;
     refreshCaptcha();
   }, [isLoading]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     values.captcha_id = captcha.id || "";
-    console.log("form data:", values);
     startTransition(async () => {
-      await signIn<API.Token>(values, {
-        redirectUrl: redirectUrl,
-        onSuccess: (data) => {
-          toast({
-            description: "Signed In Successfully!",
-          });
-          console.log("location", location.pathname, redirectUrl, "data", data);
-          if (data) {
-            setAuth(data);
-          }
-          // window.location.href = redirectUrl;
-          navigate({
-            to: redirectUrl,
-            replace: true,
-          });
-        },
-        onError: (err) => {
-          console.error("SignIn Err:", err);
-          setCaptcha(defaultCaptcha);
-          toast({
-            variant: "destructive",
-            description: err && err.message ? err.message : "unknown error",
-          });
-        },
-      });
+      try {
+        // 1. Call the simplified signIn function to get the token
+        const token = await signIn(values);
+
+        // 2. Call the login method from the auth context
+        await auth.login(token);
+
+        toast({ description: "Signed In Successfully!" });
+
+        // 3. Navigate to the redirect URL
+        navigate({ to: redirectUrl, replace: true });
+      } catch (err) {
+        console.error("SignIn Err:", err);
+        refreshCaptcha(); // Refresh captcha on error
+        toast({
+          variant: "destructive",
+          description: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
     });
   }
 
@@ -203,46 +174,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <LoadingButton type='submit' className='mt-2' loading={submitting}>
               Login
             </LoadingButton>
-
-            <div className='relative my-2'>
-              <div className='absolute inset-0 flex items-center'>
-                <span className='w-full border-t' />
-              </div>
-              <div className='relative flex justify-center text-xs uppercase'>
-                <span className='bg-background px-2 text-muted-foreground'>Or continue with</span>
-              </div>
-            </div>
-
-            <div className='flex items-center gap-2'>
-              <LoadingButton
-                variant='outline'
-                className='w-full'
-                type='button'
-                loading={submitting}
-                leftSection={<IconBrandGithub className='size-4' />}
-              >
-                GitHub
-              </LoadingButton>
-              <LoadingButton
-                variant='outline'
-                className='w-full'
-                type='button'
-                loading={submitting}
-                leftSection={<IconBrandFacebook className='size-4' />}
-              >
-                Facebook
-              </LoadingButton>
-            </div>
-            <div className='grid gap-2'>
-              <div className='text-center text-sm'>
-                Don&apos;t have an account? {/*<a href="#" className="underline underline-offset-4">*/}
-                {/*  Sign up*/}
-                {/*</a>*/}
-                <Link className='text-sm font-medium text-muted-foreground hover:opacity-75' to={"/"}>
-                  Sign up
-                </Link>
-              </div>
-            </div>
+            {/* ... other elements */}
           </div>
         </form>
       </Form>

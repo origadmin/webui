@@ -13,7 +13,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "id",
     header: t("pages.system.users.columns.id"),
-    cell: ({ row }) => <LongText>{row.original.id}</LongText>,
+    cell: ({ row }) => <LongText className='min-w-12 max-w-42'>{row.original.id}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
@@ -43,14 +43,14 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "nickname",
     header: "Nickname",
-    cell: ({ row }) => <LongText>{row.original.nickname}</LongText>,
+    cell: ({ row }) => <LongText className='max-w-36'>{row.original.nickname}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableColumnFilter: true,
   },
   {
     accessorKey: "username",
     header: t("pages.system.users.columns.username"),
-    cell: ({ row }) => <LongText>{row.original.username}</LongText>,
+    cell: ({ row }) => <LongText className='max-w-36'>{row.original.username}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
@@ -58,7 +58,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <div>{row.original.email}</div>,
+    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.original.email}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -128,7 +128,7 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <div className='flex gap-1.5'>
+      <div className='flex gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
         <UserIconRowActions row={row} />
       </div>
     ),

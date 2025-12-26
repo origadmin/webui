@@ -11,7 +11,7 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
     header: "Name",
     searchable: true,
     meta: defaultHeaderMeta.meta,
-    cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("name")}</LongText>,
+    cell: ({ row }) => <LongText>{row.getValue("name")}</LongText>,
     enableSorting: false,
     enableHiding: false,
   },
@@ -19,7 +19,7 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
     accessorKey: "keyword",
     header: "Keyword",
     searchable: true,
-    cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
+    cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -31,19 +31,19 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
           {row.original.data_scope}
         </Badge>
       ),
-    // <div className='w-fit max-w-36 text-nowrap'>{row.getValue("data_scope")}</div>,
+    // <div>{row.getValue("data_scope")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   // {
   //   accessorKey: "data_rules",
   //   header: "Data Rules",
-  //   cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.getValue("data_rules")}</div>,
+  //   cell: ({ row }) => <div>{row.getValue("data_rules")}</div>,
   //   meta: defaultHeaderMeta.meta,
   // },
   // {
   //   accessorKey: "create_time",
   //   header: "Create Time",
-  //   cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.original.create_time}</div>,
+  //   cell: ({ row }) => <div>{row.original.create_time}</div>,
   //   meta: defaultHeaderMeta.meta,
   //   enableSorting: false,
   // },
@@ -74,7 +74,7 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
   {
     accessorKey: "update_time",
     header: "Update Time",
-    cell: ({ row }) => <div className='w-fit max-w-36 text-nowrap'>{row.original.update_time}</div>,
+    cell: ({ row }) => <div>{row.original.update_time}</div>,
     meta: defaultHeaderMeta.meta,
     enableSorting: false,
     hiddenInTable: true,
@@ -83,7 +83,7 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <div className='flex min-w-[100px] overflow-x-auto no-scrollbar'>
+      <div className='flex'>
         <PermissionIconRowActions row={row} />
       </div>
     ),

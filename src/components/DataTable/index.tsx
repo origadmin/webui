@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode, useState, useMemo, useEffect } from "react";
 import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS } from "@/types";
-import { IconMoodSad } from "@tabler/icons-react";
+import { IconMoodSad, IconLoader } from "@tabler/icons-react";
 import {
   ColumnFiltersState,
   PaginationOptions,
@@ -29,7 +29,7 @@ import {
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { cn } from "@/lib/utils";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
 import { Pagination, PaginationProps } from "./pagination";
@@ -105,6 +105,16 @@ const NoResults = ({ colSpan }: { colSpan: number }) => (
   </TableRow>
 );
 
+const LoadingRow = ({ colSpan }: { colSpan: number }) => (
+  <TableRow>
+    <TableCell colSpan={colSpan} className='h-24 text-center'>
+      <div className='flex justify-center items-center'>
+        <IconLoader className='h-6 w-6 animate-spin text-muted-foreground' />
+      </div>
+    </TableCell>
+  </TableRow>
+);
+
 const renderHeader = <TData, TValue>(column: Column<TData>): Renderable<HeaderContext<TData, TValue>> => {
   const columnDef = column.columnDef as ColumnType<TData, TValue>;
   if (columnDef.headerTitle) {
@@ -136,19 +146,16 @@ const dataState = <TData,>(row: Row<TData>) => {
   return undefined;
 };
 
-const renderCell = <TData, TValue>(columns: ColumnType<TData, TValue>[], rows: Row<TData>[]): ReactNode => {
-  if (rows && rows.length > 0) {
-    return rows.map((row) => (
-      <TableRow key={row.id} data-state={dataState(row)} className='group/row'>
-        {row.getVisibleCells().map((cell) => (
-          <TableCell key={cell.id} className={cn("px-4", cell.column.columnDef.meta?.className)}>
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          </TableCell>
-        ))}
-      </TableRow>
-    ));
-  }
-  return <NoResults colSpan={columns.length} />;
+const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
+  return rows.map((row) => (
+    <TableRow key={row.id} data-state={dataState(row)} className='group/row'>
+      {row.getVisibleCells().map((cell) => (
+        <TableCell key={cell.id} className={cn("px-4", cell.column.columnDef.meta?.className)}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </TableCell>
+      ))}
+    </TableRow>
+  ));
 };
 
 function DataTable<TData, TValue = unknown>({
@@ -250,10 +257,17 @@ function DataTable<TData, TValue = unknown>({
         total={rowCount}
       />
       <div className='rounded-md border'>
-        <Table className='overflow-y-hidden'>
+        <Table className='w-full'>
           <TableHeader>{renderRow(table.getHeaderGroups())}</TableHeader>
-          <TableBody>{renderCell(columns, table.getRowModel().rows)}</TableBody>
-          <TableFooter></TableFooter>
+          <TableBody>
+            {isLoading ? (
+              <LoadingRow colSpan={columns.length} />
+            ) : table.getRowModel().rows?.length ? (
+              renderCell(table.getRowModel().rows)
+            ) : (
+              <NoResults colSpan={columns.length} />
+            )}
+          </TableBody>
         </Table>
       </div>
       {showPagination ? (
@@ -264,7 +278,7 @@ function DataTable<TData, TValue = unknown>({
           toolbar={toolbarPosition === "bottom" ? toolbarProps : undefined}
         />
       ) : toolbarPosition === "bottom" ? (
-        <div className='flex items-center justify-end overflow-auto px-2'>
+        <div className='flex items-center justify-between overflow-auto px-2 gap-4'>
           <Toolbar {...toolbarProps} table={table} />
         </div>
       ) : null}

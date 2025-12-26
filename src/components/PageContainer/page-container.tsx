@@ -10,7 +10,7 @@ interface PageContainerProps {
   children?: React.ReactNode;
   props?: ContentProps;
   headerProps?: Partial<HeaderProps> & {
-    children?: React.ReactNode;
+    children?: React.Node;
   };
   headerRender?: () => JSX.Element;
   watermarkProps?: Omit<WatermarkProps, "children">;
@@ -36,11 +36,11 @@ function PageContainer({
 
   const renderScrollArea = () => {
     return scrollable ? (
-      <ScrollArea className='h-[calc(100dvh-52px)]'>
-        <div className='h-full md:px-6'>{renderWatermark(children)}</div>
+      <ScrollArea>
+        <div className='md:px-6'>{renderWatermark(children)}</div>
       </ScrollArea>
     ) : (
-      <div className='h-full md:px-6'>{renderWatermark(children)}</div>
+      <div className='md:px-6'>{renderWatermark(children)}</div>
     );
   };
 
@@ -56,7 +56,7 @@ function PageContainer({
           <div className='px-8 flex flex-col'>{headerRender && headerRender()}</div>
         </ContentHeader>
         <ContentBody>
-          {<div className={cn("p-2 flex flex-col mx-auto", className)}>{renderScrollArea()}</div>}
+          {<div className={cn("p-2", className)}>{renderScrollArea()}</div>}
         </ContentBody>
       </Content>
     );

@@ -1,6 +1,3 @@
-// const { pluginReact } = require('@rsbuild/plugin-react');
-// const { defineConfig } = require('@rsbuild/core');
-// const postcssOptions = require('./postcss.config');
 import {defineConfig} from '@rsbuild/core';
 import {pluginReact} from '@rsbuild/plugin-react';
 import {TanStackRouterRspack} from '@tanstack/router-plugin/rspack';
@@ -18,9 +15,6 @@ const config = defineConfig({
       '/api': {
         target: 'http://localhost:25100',
         changeOrigin: true,
-        // pathRewrite: {
-        //   '^/api': ''
-        // }
       },
     },
   },
@@ -66,11 +60,14 @@ const config = defineConfig({
     entry: {
       index: './src/main.tsx',
     },
+    // THE CRITICAL FIX: Define environment variables to be replaced at build time.
+    define: {
+      'process.env.MOCK': process.env.MOCK === 'true',
+    },
   },
   output: {
     copy:
         [
-          // `./src/assets/image.png` -> `./dist/image.png`
           {from: './public'},
           ...(dev ? [{from: './resources/docs/', to: 'docs/'}] : []),
         ],

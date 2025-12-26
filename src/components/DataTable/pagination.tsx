@@ -119,8 +119,10 @@ export function Pagination<T>({
   return (
     <div className='flex items-center justify-between overflow-auto px-2'>
       {rowSelect && rowSelectRender(table)}
-      {showSizeChanger && sizeOptions ? renderSizeOptions(table, sizeOptions) : null}
-      <Toolbar {...toolbar} table={table} />
+      <div className='flex items-center gap-4'>
+        {showSizeChanger && sizeOptions ? renderSizeOptions(table, sizeOptions) : null}
+        {toolbar && <Toolbar {...toolbar} table={table} />}
+      </div>
     </div>
   );
 }

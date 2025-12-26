@@ -28,7 +28,7 @@ export default function PermissionsPage() {
 
   const [tabsValue, setTabsValue] = useState("all");
 
-  const tableProps: Omit<DataTableProps<API.System.Permission>, "isLoading" | "sourceData" | "total"> = {
+  const tableProps: Omit<DataTableProps<API.System.Permission>, "isLoading" | "dataSource" | "total"> = {
     columns,
     useManual: true,
     showPagination: true,
@@ -38,8 +38,8 @@ export default function PermissionsPage() {
     onPaginationChange: setPagination,
     columnFiltersState: columnFilters,
     onColumnFiltersChange: setColumnFilters,
-    toolbarPosition: "bottom",
-    toolbars: () => <PermissionsPrimaryButtons />,
+    toolbarPosition: "top",
+    toolbars: isLoading ? undefined : () => <PermissionsPrimaryButtons />,
     props: {
       search: {
         onSearch: handleSearch,
@@ -53,23 +53,21 @@ export default function PermissionsPage() {
   return (
     <PermissionTableProvider>
       <PageContainer>
-        <Card>
-          <Tabs value={tabsValue} onValueChange={(value) => setTabsValue(value)}>
+        <Card className='h-full flex flex-col'>
+          <Tabs value={tabsValue} onValueChange={(value) => setTabsValue(value)} className='h-full flex flex-col'>
             <CardHeader>
               <CardTitle>Permissions</CardTitle>
               <CardDescription>
                 <CardDescription>Manage your permissions here.</CardDescription>
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-                <DataTable<API.System.Permission>
-                  {...tableProps}
-                  isLoading={isLoading}
-                  dataSource={permissions.data}
-                  total={permissions.total}
-                />
-              </div>
+            <CardContent className='flex-grow'>
+              <DataTable<API.System.Permission>
+                {...tableProps}
+                isLoading={isLoading}
+                dataSource={permissions.data}
+                total={permissions.total}
+              />
             </CardContent>
           </Tabs>
         </Card>

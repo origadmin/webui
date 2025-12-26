@@ -1,30 +1,29 @@
-import { useRolesQuery } from "@/api/system/role";
-import { RolesPrimaryButtons } from "@/pages/system/role/components/roles-primary-buttons";
 import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable, DataTableProps } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
-import { columns } from "./components/roles-columns";
-import { RolesDialogs } from "./components/roles-dialogs";
-import { RoleTableProvider } from "./components/roles-table-provider";
+import { CrudTableProvider } from "@/templates/crud-page/hooks/use-crud-table";
+import { Dialogs } from "@/templates/crud-page/components/dialogs";
+import { PrimaryButtons } from "@/templates/crud-page/components/primary-buttons";
+import { columns, apiHooks, pageConfig } from "./config";
 
-export default function RolesPage() {
+export default function ViewPage() {
   const {
     sorting,
     pagination,
     columnFilters,
     isLoading,
-    data: roles = {},
+    data,
     setSorting,
     setPagination,
     setColumnFilters,
     handleSearch,
     handleReset,
   } = useDataTable({
-    useQuery: (params) => useRolesQuery(params),
+    useQuery: (params) => apiHooks.useQuery(params),
   });
 
-  const tableProps: Omit<DataTableProps<API.System.Role>, "isLoading" | "dataSource" | "total"> = {
+  const tableProps: Omit<DataTableProps<any>, "isLoading" | "dataSource" | "total"> = {
     columns,
     useManual: true,
     showPagination: true,
@@ -35,7 +34,7 @@ export default function RolesPage() {
     columnFiltersState: columnFilters,
     onColumnFiltersChange: setColumnFilters,
     toolbarPosition: "top",
-    toolbars: isLoading ? undefined : () => <RolesPrimaryButtons />,
+    toolbars: () => <PrimaryButtons />,
     props: {
       search: {
         onSearch: handleSearch,
@@ -45,24 +44,24 @@ export default function RolesPage() {
   };
 
   return (
-    <RoleTableProvider>
+    <CrudTableProvider>
       <PageContainer>
-        <Card className='h-full flex flex-col'>
+        <Card>
           <CardHeader>
-            <CardTitle>Role List</CardTitle>
-            <CardDescription>Manage your roles here.</CardDescription>
+            <CardTitle>{pageConfig.title} List</CardTitle>
+            <CardDescription>{pageConfig.description}</CardDescription>
           </CardHeader>
-          <CardContent className='flex-grow'>
-            <DataTable<API.System.Role>
+          <CardContent>
+            <DataTable
               {...tableProps}
               isLoading={isLoading}
-              dataSource={roles.data}
-              total={roles.total}
+              dataSource={data?.data}
+              total={data?.total}
             />
           </CardContent>
         </Card>
       </PageContainer>
-      <RolesDialogs />
-    </RoleTableProvider>
+      <Dialogs />
+    </CrudTableProvider>
   );
 }

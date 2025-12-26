@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { Storage, noop } from "@/utils";
-import { clearStorage } from "@/utils/storage";
+import { clearStorage, setAuth } from "@/utils/storage";
 import { getProfile } from "@/api/system/personal";
 
 type AuthState = {
@@ -11,8 +11,9 @@ type AuthState = {
 };
 
 type AuthActions = {
-  login: (token: string) => Promise<void>;
+  login: (token: API.Token) => Promise<void>;
   logout: () => void;
+  isAuthenticated: () => boolean; // Add this back
 };
 
 type AuthContextType = AuthState & AuthActions;
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   login: async () => {},
   logout: noop,
+  isAuthenticated: () => false, // Add default value
 });
 
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
@@ -57,16 +59,19 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       clearStorage();
       setAuthState({ user: null, token: null, permissions: null, loading: false });
     }
-  }, []); // <-- The dependency array MUST be empty to run only once.
+  }, []);
 
   useEffect(() => {
     initialize();
   }, [initialize]);
 
-  const login = async (token: string) => {
-    Storage.setAccessToken(token);
-    // Set loading to true and token, then let the effect re-run initialize
-    setAuthState((s) => ({ ...s, token, loading: true, user: null, permissions: null }));
+  const login = async (token: API.Token) => {
+    setAuth(token);
+    setAuthState((s) => ({
+      ...s,
+      token: token.access_token,
+      loading: true,
+    }));
     await initialize();
   };
 
@@ -78,16 +83,18 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       token: null,
       loading: false,
     });
-    // After logout, we might need to redirect. The router guard will handle this.
   };
+
+  const isAuthenticated = () => !!authState.token;
 
   const contextValue = useMemo(
     () => ({
       ...authState,
       login,
       logout,
+      isAuthenticated, // Provide it in the context
     }),
-    [authState, login, logout] // Add login and logout to dependency array
+    [authState]
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

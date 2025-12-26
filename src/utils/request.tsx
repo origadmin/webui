@@ -10,13 +10,10 @@ const request = axios.create({
   timeout: GlobalConfig.request.timeout ? GlobalConfig.request.timeout : HOST_REQUEST_TIMEOUT, // The request timeout period
 });
 
-// type AxiosRequestInterceptorUse<T> = (onFulfilled?: ((value: T) => T | Promise<T>) | null, onRejected?: ((error: any) => any) | null, options?: AxiosInterceptorOptions) => number;
-// type AxiosResponseInterceptorUse<T> = (onFulfilled?: ((value: T) => T | Promise<T>) | null, onRejected?: ((error: any) => any) | null) => number;
-
 // Request an interceptor
 request.interceptors.request.use(
   (config) => {
-    console.log("type config:", config);
+    // console.log("type config:", config);
     return config;
   },
   (error) => {
@@ -28,7 +25,7 @@ request.interceptors.request.use(
 // Respond to the interceptor
 request.interceptors.response.use(
   (response) => {
-    console.log("type response:", response);
+    // console.log("type response:", response);
     // Do something about the response data
     return response;
   },
@@ -99,7 +96,9 @@ const fetchBearerToken = (auth: API.AxiosAuthConfig | null) => {
 };
 
 const fetchBasicToken = (auth: API.AxiosAuthConfig | null) => {
-  if (typeof auth === "object") {
+  // THE CRITICAL FIX: Add a null check before accessing properties.
+  // The `typeof auth === "object"` check is true for `null`, which caused the error.
+  if (auth && typeof auth === "object") {
     const basicToken = auth as AxiosBasicCredentials;
     return headerAuth({
       headerKey: "Authorization",

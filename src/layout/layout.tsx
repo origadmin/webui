@@ -1,27 +1,30 @@
 import { Outlet } from "@tanstack/react-router";
-import { AppSidebar } from "./sidebar"; // We will create this
-import { AppHeader } from "./header";   // We will create this
-import { AppFooter } from "./footer";   // We will create this
+import { AppSidebar } from "./sidebar";
+import { AppHeader } from "./header";
+import { AppFooter } from "./footer";
 import { Toaster } from "@/components/ui/toaster";
+import { SidebarProvider } from "@/components/Sidebar";
 
 /**
  * This is the root layout component.
- * It defines the main structure of the application (sidebar, header, content, footer).
- * It does not manage any data, it only provides the layout "scaffolding".
- * Child components like AppSidebar are responsible for their own data.
+ * It defines the main structure and wraps the entire layout with the necessary SidebarProvider
+ * to make the sidebar context available to all its children.
  */
 export default function MainLayout() {
   return (
-    <div className='flex h-screen bg-background'>
-      <AppSidebar />
-      <div className='flex flex-1 flex-col'>
-        <AppHeader />
-        <main className='flex-1 overflow-y-auto p-4 sm:p-6'>
-          <Outlet />
-        </main>
-        <AppFooter />
+    <SidebarProvider>
+      <div className='flex bg-background overflow-x-hidden'>
+        <AppSidebar />
+        <div className='flex flex-1 flex-col min-w-0 min-h-screen'>
+          <AppHeader />
+          <main className='p-4 sm:p-6'>
+            <Outlet />
+          </main>
+          <div className='flex-1' />
+          <AppFooter />
+        </div>
+        <Toaster />
       </div>
-      <Toaster />
-    </div>
+    </SidebarProvider>
   );
 }

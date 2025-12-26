@@ -1,9 +1,16 @@
 import { roles } from "@/mocks/role/roles";
 import { users } from "@/mocks/user/users";
+import { mockSignInUser } from "./mock-sign-in"; // Correctly import mockSignInUser
+import { resources } from "./resources";
 
-const mockData: Record<string, unknown> = {
+const mockData: Record<string, any> = {
   "/sys/users": users,
   "/sys/roles": roles,
+  // Add mock data for the profile endpoint
+  "/sys/personal/profile": {
+    user: mockSignInUser, // Use the correct variable name
+    resources: resources,
+  },
 };
 
 const getPaginationData = (data: unknown, params?: API.SearchParams) => {
@@ -18,10 +25,9 @@ const getPaginationData = (data: unknown, params?: API.SearchParams) => {
       data: paginatedData,
     };
   }
-  return {
-    total: 0,
-    data: [],
-  };
+  // If data is not an array, it might be a single object (like our profile)
+  // or pagination is not applicable.
+  return null;
 };
 
 const sortData = (mockData: unknown, params?: API.SearchParams) => {
@@ -30,8 +36,19 @@ const sortData = (mockData: unknown, params?: API.SearchParams) => {
   }
   return mockData;
 };
+
 const mocks = <T>(path: string, params?: API.SearchParams) => {
   const data = sortData(mockData[path], params);
+
+  // Handle non-paginated data like the profile endpoint
+  if (path === "/sys/personal/profile") {
+    if (data) {
+      return {
+        success: true,
+        data: data as T,
+      };
+    }
+  }
 
   const pageData = getPaginationData(data, params);
 
@@ -43,6 +60,15 @@ const mocks = <T>(path: string, params?: API.SearchParams) => {
       total: pageData.total,
     };
   }
+
+  // Fallback for data that is not paginated and not the profile
+  if (data) {
+    return {
+      success: true,
+      data: data as T,
+    };
+  }
+
   return {
     success: false,
     error: {

@@ -46,6 +46,9 @@ import { Route as AuthorizationExamplesFormAdvancedImport } from "./routes/_auth
 
 // Create Virtual Routes
 
+const AuthorizationSystemViewLazyImport = createFileRoute(
+  "/_authorization/system/view",
+)();
 const AuthorizationSystemUserLazyImport = createFileRoute(
   "/_authorization/system/user",
 )();
@@ -179,6 +182,15 @@ const AuthorizationAppsIndexRoute = AuthorizationAppsIndexImport.update({
   path: "/apps/",
   getParentRoute: () => AuthorizationRoute,
 } as any);
+
+const AuthorizationSystemViewLazyRoute =
+  AuthorizationSystemViewLazyImport.update({
+    id: "/system/view",
+    path: "/system/view",
+    getParentRoute: () => AuthorizationRoute,
+  } as any).lazy(() =>
+    import("./routes/_authorization/system/view.lazy").then((d) => d.Route),
+  );
 
 const AuthorizationSystemUserLazyRoute =
   AuthorizationSystemUserLazyImport.update({
@@ -476,6 +488,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationSystemUserLazyImport;
       parentRoute: typeof AuthorizationImport;
     };
+    "/_authorization/system/view": {
+      id: "/_authorization/system/view";
+      path: "/system/view";
+      fullPath: "/system/view";
+      preLoaderRoute: typeof AuthorizationSystemViewLazyImport;
+      parentRoute: typeof AuthorizationImport;
+    };
     "/_authorization/apps/": {
       id: "/_authorization/apps/";
       path: "/apps";
@@ -570,6 +589,7 @@ interface AuthorizationRouteChildren {
   AuthorizationSystemRoleLazyRoute: typeof AuthorizationSystemRoleLazyRoute;
   AuthorizationSystemSettingsLazyRoute: typeof AuthorizationSystemSettingsLazyRoute;
   AuthorizationSystemUserLazyRoute: typeof AuthorizationSystemUserLazyRoute;
+  AuthorizationSystemViewLazyRoute: typeof AuthorizationSystemViewLazyRoute;
   AuthorizationAppsIndexRoute: typeof AuthorizationAppsIndexRoute;
   AuthorizationChatsIndexRoute: typeof AuthorizationChatsIndexRoute;
   AuthorizationDashboardIndexRoute: typeof AuthorizationDashboardIndexRoute;
@@ -596,6 +616,7 @@ const AuthorizationRouteChildren: AuthorizationRouteChildren = {
   AuthorizationSystemRoleLazyRoute: AuthorizationSystemRoleLazyRoute,
   AuthorizationSystemSettingsLazyRoute: AuthorizationSystemSettingsLazyRoute,
   AuthorizationSystemUserLazyRoute: AuthorizationSystemUserLazyRoute,
+  AuthorizationSystemViewLazyRoute: AuthorizationSystemViewLazyRoute,
   AuthorizationAppsIndexRoute: AuthorizationAppsIndexRoute,
   AuthorizationChatsIndexRoute: AuthorizationChatsIndexRoute,
   AuthorizationDashboardIndexRoute: AuthorizationDashboardIndexRoute,
@@ -639,6 +660,7 @@ export interface FileRoutesByFullPath {
   "/system/role": typeof AuthorizationSystemRoleLazyRoute;
   "/system/settings": typeof AuthorizationSystemSettingsLazyRoute;
   "/system/user": typeof AuthorizationSystemUserLazyRoute;
+  "/system/view": typeof AuthorizationSystemViewLazyRoute;
   "/apps": typeof AuthorizationAppsIndexRoute;
   "/chats": typeof AuthorizationChatsIndexRoute;
   "/dashboard": typeof AuthorizationDashboardIndexRoute;
@@ -676,6 +698,7 @@ export interface FileRoutesByTo {
   "/system/role": typeof AuthorizationSystemRoleLazyRoute;
   "/system/settings": typeof AuthorizationSystemSettingsLazyRoute;
   "/system/user": typeof AuthorizationSystemUserLazyRoute;
+  "/system/view": typeof AuthorizationSystemViewLazyRoute;
   "/apps": typeof AuthorizationAppsIndexRoute;
   "/chats": typeof AuthorizationChatsIndexRoute;
   "/dashboard": typeof AuthorizationDashboardIndexRoute;
@@ -715,6 +738,7 @@ export interface FileRoutesById {
   "/_authorization/system/role": typeof AuthorizationSystemRoleLazyRoute;
   "/_authorization/system/settings": typeof AuthorizationSystemSettingsLazyRoute;
   "/_authorization/system/user": typeof AuthorizationSystemUserLazyRoute;
+  "/_authorization/system/view": typeof AuthorizationSystemViewLazyRoute;
   "/_authorization/apps/": typeof AuthorizationAppsIndexRoute;
   "/_authorization/chats/": typeof AuthorizationChatsIndexRoute;
   "/_authorization/dashboard/": typeof AuthorizationDashboardIndexRoute;
@@ -755,6 +779,7 @@ export interface FileRouteTypes {
     | "/system/role"
     | "/system/settings"
     | "/system/user"
+    | "/system/view"
     | "/apps"
     | "/chats"
     | "/dashboard"
@@ -791,6 +816,7 @@ export interface FileRouteTypes {
     | "/system/role"
     | "/system/settings"
     | "/system/user"
+    | "/system/view"
     | "/apps"
     | "/chats"
     | "/dashboard"
@@ -828,6 +854,7 @@ export interface FileRouteTypes {
     | "/_authorization/system/role"
     | "/_authorization/system/settings"
     | "/_authorization/system/user"
+    | "/_authorization/system/view"
     | "/_authorization/apps/"
     | "/_authorization/chats/"
     | "/_authorization/dashboard/"
@@ -913,6 +940,7 @@ export const routeTree = rootRoute
         "/_authorization/system/role",
         "/_authorization/system/settings",
         "/_authorization/system/user",
+        "/_authorization/system/view",
         "/_authorization/apps/",
         "/_authorization/chats/",
         "/_authorization/dashboard/",
@@ -1004,6 +1032,10 @@ export const routeTree = rootRoute
     },
     "/_authorization/system/user": {
       "filePath": "_authorization/system/user.lazy.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/system/view": {
+      "filePath": "_authorization/system/view.lazy.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/apps/": {
