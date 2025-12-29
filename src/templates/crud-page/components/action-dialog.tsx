@@ -13,8 +13,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
 import { PageConfig, ApiHooks } from "../types";
 
 interface Props<T, TForm extends z.ZodType<any, any>> {
@@ -28,7 +29,7 @@ interface Props<T, TForm extends z.ZodType<any, any>> {
   renderFields: (form: ReturnType<typeof useForm<z.infer<TForm>>>) => React.ReactNode;
 }
 
-export function ActionDialog<T extends { id?: string }, TForm extends z.ZodType<any, any>>({
+export function ActionDialog<T extends { id?: string; status?: number; visible?: boolean }, TForm extends z.ZodType<any, any>>({
   currentRow,
   open,
   onOpenChange,
@@ -45,7 +46,6 @@ export function ActionDialog<T extends { id?: string }, TForm extends z.ZodType<
     : `Create new ${pageConfig.title.toLowerCase()} here.`;
   const formId = `${pageConfig.title.toLowerCase()}-form`;
 
-  // Dynamically generate default values from the Zod schema
   const defaultValues = formSchema.safeParse({}).success
     ? Object.fromEntries(
         Object.keys(formSchema.shape).map((key) => [key, undefined])
@@ -58,7 +58,7 @@ export function ActionDialog<T extends { id?: string }, TForm extends z.ZodType<
     shouldFocusError: false,
     defaultValues: is_edit
       ? { ...currentRow, is_edit }
-      : { ...defaultValues, is_edit: false },
+      : { ...defaultValues, status: 1, visible: true, is_edit: false },
   });
 
   const queryClient = useQueryClient();
@@ -73,16 +73,14 @@ export function ActionDialog<T extends { id?: string }, TForm extends z.ZodType<
     }
 
     toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
+      title: "Success",
+      description: `Successfully ${is_edit ? "updated" : "created"} ${pageConfig.title.toLowerCase()}.`,
     });
     onOpenChange(false);
     form.reset();
   };
+
+  const hasStatus = "status" in form.getValues();
 
   return (
     <Dialog
@@ -93,21 +91,40 @@ export function ActionDialog<T extends { id?: string }, TForm extends z.ZodType<
       }}
     >
       <DialogContent className={cn("sm:max-w-2xl", className)}>
-        <DialogHeader className='text-left'>
+        <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description} Click save when you're done.</DialogDescription>
         </DialogHeader>
-        <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
-          <Form {...form}>
-            <form
-              id={formId}
-              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
-              className='space-y-4'
-            >
+        <Form {...form}>
+          <form
+            id={formId}
+            onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
+            className='relative space-y-4'
+          >
+            {hasStatus && (
+              <div className="absolute top-0 right-12 z-10 bg-background p-2 rounded-lg">
+                <FormField
+                  control={form.control}
+                  name='status'
+                  render={({ field }) => (
+                    <FormItem className='flex items-center space-x-2'>
+                      <FormLabel>Status</FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value === 1}
+                          onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+            <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
               {renderFields(form)}
-            </form>
-          </Form>
-        </ScrollArea>
+            </ScrollArea>
+          </form>
+        </Form>
         <DialogFooter>
           <Button type='submit' form={formId} disabled={isCreatePending || isUpdatePending}>
             Save changes

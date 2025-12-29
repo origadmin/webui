@@ -16,159 +16,158 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import IconPicker from "@/components/IconPicker";
 import { Textarea } from "@/components/ui/textarea";
 
 export const renderFields = (form: ReturnType<typeof useForm<FormType>>) => (
-  <div className="grid grid-cols-2 gap-4">
-    <FormField
-      control={form.control}
-      name="name"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Name</FormLabel>
-          <FormControl>
-            <Input placeholder="e.g., User Management" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="keyword"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Keyword</FormLabel>
-          <FormControl>
-            <Input placeholder="e.g., user_management" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="path"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Path</FormLabel>
-          <FormControl>
-            <Input placeholder="e.g., /system/user" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="scope"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Scope</FormLabel>
-          <FormControl>
-            <Input placeholder="e.g., system" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="type"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Type</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a type" />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              <SelectItem value="MENU">Menu</SelectItem>
-              <SelectItem value="BUTTON">Button</SelectItem>
-              <SelectItem value="PAGE">Page</SelectItem>
-            </SelectContent>
-          </Select>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="sequence"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Sequence</FormLabel>
-          <FormControl>
-            <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="icon"
-      render={({ field }) => (
-        <FormItem className="col-span-2">
-          <FormLabel>Icon</FormLabel>
-          <FormControl>
-            <IconPicker value={field.value} onValueChange={field.onChange} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <FormField
-      control={form.control}
-      name="description"
-      render={({ field }) => (
-        <FormItem className="col-span-2">
-          <FormLabel>Description</FormLabel>
-          <FormControl>
-            <Textarea
-              placeholder="A brief description of the view."
-              className="resize-none"
-              {...field}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-    <div className="col-span-2 grid grid-cols-2 gap-4">
-      <FormField
-        control={form.control}
-        name="status"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-            <FormLabel>Status</FormLabel>
-            <FormControl>
-              <Switch
-                checked={field.value === 1}
-                onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
-              />
-            </FormControl>
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="visible"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-            <FormLabel>Visible</FormLabel>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
-            </FormControl>
-          </FormItem>
-        )}
-      />
+  <div className="space-y-4">
+    {/* Base Info Section */}
+    <div className='space-y-2'>
+      <h3 className='text-lg font-medium'>Base Info</h3>
+      <Separator />
+      <div className='grid grid-cols-2 gap-4 pt-2'>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., User Management" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="keyword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Keyword</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., user_management" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="path"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Path</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., /system/user" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="scope"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Scope</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., system" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+    </div>
+
+    {/* Details Section */}
+    <div className='space-y-2 pt-4'>
+      <h3 className='text-lg font-medium'>Details</h3>
+      <Separator />
+      <div className='grid grid-cols-2 gap-4 pt-2'>
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="MENU">Menu</SelectItem>
+                  <SelectItem value="BUTTON">Button</SelectItem>
+                  <SelectItem value="PAGE">Page</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="sequence"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sequence</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem className="col-span-2">
+              <FormLabel>Icon</FormLabel>
+              <FormControl>
+                <IconPicker value={field.value} onValueChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="col-span-2">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="A brief description of the view."
+                  className="resize-none"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="visible"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <FormLabel>Visible</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   </div>
 );

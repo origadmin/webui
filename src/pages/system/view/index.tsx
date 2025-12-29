@@ -1,4 +1,7 @@
+import { useMemo } from "react";
+import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
+import { buildTree } from "@/utils/tree";
 import {
   Card,
   CardContent,
@@ -17,8 +20,11 @@ import { renderFields } from "./components/fields";
 export default function ViewPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
     useDataTable({
-      useQuery: (params) => apiHooks.useQuery(params),
+      useQuery: (params) => apiHooks.useQuery({ ...params, pageSize: 1000 }), // Fetch all for tree
     });
+
+  // Memoize the tree structure
+  const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
 
   return (
     <CrudTableProvider>
@@ -31,14 +37,19 @@ export default function ViewPage() {
           <CardContent>
             <DataTable
               columns={columns}
-              dataSource={dataSource}
+              dataSource={treeData} // Use the tree data
               total={total}
               isLoading={isLoading}
               // Spread all table state and handlers
               {...tableProps}
-              // Static props
-              useManual
-              showPagination
+              // Static props for tree table
+              useManual={false}
+              showPagination={false} // Pagination is often disabled for tree views
+              // Options for tree table
+              options={{
+                getExpandedRowModel: getExpandedRowModel(),
+                getSubRows: (row: API.System.View) => row.children,
+              }}
               // Toolbar and sub-component props
               toolbarPosition="top"
               toolbars={() => <PrimaryButtons pageConfig={pageConfig} />}

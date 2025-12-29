@@ -20,6 +20,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
 
@@ -137,12 +138,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           control={form.control}
           name='password'
           render={({ field }) => (
-            <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-              <FormLabel className='col-span-2 text-left'>Password</FormLabel>
+            <FormItem>
+              <FormLabel>Password</FormLabel>
               <FormControl>
-                <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' className='col-span-4' {...field} />
+                <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' {...field} />
               </FormControl>
-              <FormMessage className='col-span-4' />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -152,17 +153,16 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           control={form.control}
           name='confirmPassword'
           render={({ field }) => (
-            <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-              <FormLabel className='col-span-2 text-left'>Confirm Password</FormLabel>
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <PasswordInput
                   disabled={!isPasswordTouched}
                   placeholder='e.g., S3cur3P@ssw0rd'
-                  className='col-span-4'
                   {...field}
                 />
               </FormControl>
-              <FormMessage className='col-span-4 col-start-2' />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -180,153 +180,169 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
       }}
     >
       <DialogContent className={cn(`${maxWClass}`, className)}>
-        <DialogHeader className='text-left'>
+        <DialogHeader>
           <DialogTitle>{is_edit ? "Edit User" : "Add New User"}</DialogTitle>
           <DialogDescription>
             {is_edit ? "Update the user here. " : "Create new user here. "}
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
-          <Form {...form}>
-            <form
-              id='user-form'
-              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
-              className='space-y-0'
-            >
-              <div className='grid grid-cols-12 mb-4 border-b border-gray-200 dark:border-gray-700 pb-4'>
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>
-                  Base Info
-                </h2>
-                <FormField
-                  control={form.control}
-                  name='username'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Username</FormLabel>
-                      <FormControl>
-                        <Input placeholder='john_doe' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='nickname'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Nickname</FormLabel>
-                      <FormControl>
-                        <Input placeholder='John' className='col-span-4' autoComplete='off' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder='john.doe@gmail.com' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='phone'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Phone</FormLabel>
-                      <FormControl>
-                        <Input placeholder='+123456789' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4' />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='status'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Status</FormLabel>
-                      <FormControl>
-                        <Switch checked={field.value === 1} onCheckedChange={(checked) => field.onChange(checked ? 1 : 2)} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+        <Form {...form}>
+          <form
+            id='user-form'
+            onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
+            className='relative space-y-4'
+          >
+            <div className="absolute top-0 right-12 z-10 bg-background p-2 rounded-lg">
+              <FormField
+                control={form.control}
+                name='status'
+                render={({ field }) => (
+                  <FormItem className='flex items-center space-x-2'>
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value === 1}
+                        onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
+              {/* Base Info Section */}
+              <div className='space-y-2'>
+                <h3 className='text-lg font-medium'>Base Info</h3>
+                <Separator />
+                <div className='grid grid-cols-2 gap-4 pt-2'>
+                  <FormField
+                    control={form.control}
+                    name='username'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input placeholder='john_doe' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='nickname'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nickname</FormLabel>
+                        <FormControl>
+                          <Input placeholder='John' autoComplete='off' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder='john.doe@gmail.com' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name='phone'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone</FormLabel>
+                        <FormControl>
+                          <Input placeholder='+123456789' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <div className='grid grid-cols-12 mb-4 border-gray-200 dark:border-gray-700 pb-4'>
-                <h2 className='col-span-10 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>安全设置</h2>
-                <FormField
-                  control={form.control}
-                  name='random_password'
-                  render={({ field }) => (
-                    <FormItem className='col-span-2 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='w-24 text-left'>随机密码</FormLabel>
-                      <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                {useRandomPassword()}
-                <FormField
-                  control={form.control}
-                  name='allowed_ip'
-                  render={({ field }) => (
-                    <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Allowed IP</FormLabel>
-                      <FormControl>
-                        <Input placeholder='0.0.0.0' className='col-span-4' {...field} />
-                      </FormControl>
-                      <FormMessage className='col-span-4' />
-                    </FormItem>
-                  )}
-                />
+
+              {/* Security Settings Section */}
+              <div className='space-y-2 pt-4'>
+                <h3 className='text-lg font-medium'>Security Settings</h3>
+                <Separator />
+                <div className='grid grid-cols-2 gap-4 pt-2'>
+                  <FormField
+                    control={form.control}
+                    name='random_password'
+                    render={({ field }) => (
+                      <FormItem className='flex items-center space-x-2'>
+                        <FormLabel>Random Password</FormLabel>
+                        <FormControl>
+                          <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {useRandomPassword()}
+                  <FormField
+                    control={form.control}
+                    name='allowed_ip'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Allowed IP</FormLabel>
+                        <FormControl>
+                          <Input placeholder='0.0.0.0' {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <div className='grid grid-cols-12 mb-4 border-gray-200 dark:border-gray-700 pt-4'>
-                <h2 className='col-span-12 text-lg font-medium text-gray-900 dark:text-gray-100 mb-2 px-2'>角色管理</h2>
-                <FormField
-                  control={form.control}
-                  name='role_ids'
-                  render={({ field }) => (
-                    <FormItem className='col-span-12 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
-                      <FormLabel className='col-span-2 text-left'>Role</FormLabel>
-                      <FormControl>
-                        <MultiSelect
-                          defaultValue={field.value}
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder='Select a role'
-                          className='col-span-10'
-                          options={
-                            !isRolesLoading && roles.data
-                              ? roles.data
-                                  .filter(({ id, name }) => !!id && !!name)
-                                  .map(({ id, name }) => ({
-                                    value: id || "",
-                                    label: name || "",
-                                  }))
-                              : []
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage className='col-span-4' />
-                    </FormItem>
-                  )}
-                />
+
+              {/* Role Management Section */}
+              <div className='space-y-2 pt-4'>
+                <h3 className='text-lg font-medium'>Role Management</h3>
+                <Separator />
+                <div className='pt-2'>
+                  <FormField
+                    control={form.control}
+                    name='role_ids'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Roles</FormLabel>
+                        <FormControl>
+                          <MultiSelect
+                            defaultValue={field.value}
+                            value={field.value}
+                            onChange={field.onChange}
+                            placeholder='Select roles'
+                            options={
+                              !isRolesLoading && roles.data
+                                ? roles.data
+                                    .filter(({ id, name }) => !!id && !!name)
+                                    .map(({ id, name }) => ({
+                                      value: id || "",
+                                      label: name || "",
+                                    }))
+                                : []
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-            </form>
-          </Form>
-        </ScrollArea>
+            </ScrollArea>
+          </form>
+        </Form>
         <DialogFooter>
           <Button type='submit' form='user-form' disabled={isPending}>
             Save changes

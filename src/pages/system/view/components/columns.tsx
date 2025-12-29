@@ -20,7 +20,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
           <Checkbox
             checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
             onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
-            aria-label='Select all'
+            aria-label='Toggle All Expanded'
           />
         )}
         <DataTableColumnHeader className='px-2' column={column} title='Name' />
@@ -28,25 +28,21 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     ),
     searchable: true,
     meta: defaultHeaderMeta.meta,
-    cell: ({ row }) => {
-      return (
-        <div className='flex items-center min-w-24' style={{ paddingLeft: `${row.depth}rem` }}>
-          {row.getCanExpand() ? (
-            <button onClick={row.getToggleExpandedHandler()} className='mr-2'>
-              {row.getIsExpanded() ? <ChevronDown className='h-4 w-4' /> : <ChevronRight className='h-4 w-4' />}
-            </button>
-          ) : (
-            <span className='w-6' />
-          )}
-          <LongText className='px-2 max-w-48 flex items-center overflow-x-auto no-scrollbar'>
-            {row.original.icon && row.original.icon !== "" ? (
-              <TablerIcon className='mr-2' name={row.original.icon} />
-            ) : null}
-            {row.getValue("name")}
-          </LongText>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className='flex items-center min-w-24' style={{ paddingLeft: `${row.depth}rem` }}>
+        {row.getCanExpand() ? (
+          <button onClick={row.getToggleExpandedHandler()} className='mr-2'>
+            {row.getIsExpanded() ? <ChevronDown className='h-4 w-4' /> : <ChevronRight className='h-4 w-4' />}
+          </button>
+        ) : (
+          <span className='w-6 mr-2' /> // Placeholder for alignment
+        )}
+        <LongText className='px-2 max-w-48 flex items-center overflow-x-auto no-scrollbar'>
+          {row.original.icon && <TablerIcon className='mr-2 h-4 w-4 flex-shrink-0' name={row.original.icon} />}
+          {row.getValue("name")}
+        </LongText>
+      </div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
