@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import StatusAvatar, { RingWidth, StatusPosition, Size } from "@/components/StatusAvatar";
+import StatusAvatar, { RingWidth, StatusPosition, Size, StatusType } from "@/components/StatusAvatar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
-const ALL_STATUSES: StatusAvatarProps["status"][] = ["online", "notification", "new", "verified", "alert"];
+const ALL_STATUSES: StatusType[] = ["online", "notification", "new", "verified", "alert"];
 const ALL_SIZES: Size[] = ["xs", "sm", "md", "lg", "xl"];
 
 export default function AvatarStatusDemo() {
@@ -16,6 +16,8 @@ export default function AvatarStatusDemo() {
   const [position, setPosition] = useState<StatusPosition>("top-right");
   const [statusOffsetX, setStatusOffsetX] = useState<string>("0px");
   const [statusOffsetY, setStatusOffsetY] = useState<string>("0px");
+  const [shape, setShape] = useState<"circle" | "square" | "rounded-square">("circle");
+  const [useBorderSync, setUseBorderSync] = useState<boolean>(true);
 
   const handleOffsetChange = (setter: React.Dispatch<React.SetStateAction<string>>, increment: number) => {
     setter((prev) => `${parseInt(prev, 10) + increment}px`);
@@ -26,7 +28,7 @@ export default function AvatarStatusDemo() {
       <Card>
         <CardHeader>
           <CardTitle>Image Avatars with Status</CardTitle>
-          <CardDescription>Demonstrates different statuses on a standard image avatar.</CardDescription>
+          <CardDescription>Demonstrates different statuses on a standard image avatar with new shape support and smart badge adaptation.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {ALL_SIZES.map((s) => (
@@ -39,10 +41,13 @@ export default function AvatarStatusDemo() {
                       src='/static/logo.svg'
                       alt={`User - ${status}`}
                       size={s}
+                      shape={shape}
                       status={status}
                       statusContent={status === 'notification' ? 5 : undefined}
-                      statusRingWidth={ringWidth}
-                      statusRingColor={ringColor}
+                      statusBorderStyle={{
+                        width: ringWidth,
+                        color: ringColor
+                      }}
                       statusPosition={position}
                       statusOffsetX={statusOffsetX}
                       statusOffsetY={statusOffsetY}
@@ -59,13 +64,13 @@ export default function AvatarStatusDemo() {
       <Card>
         <CardHeader>
           <CardTitle>Icon Avatars with Status</CardTitle>
-          <CardDescription>Demonstrates using an icon as the main avatar content, with synchronized borders.</CardDescription>
+          <CardDescription>Demonstrates using an icon as the main avatar content, with synchronized borders and smart shape adaptation.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
            <div className='flex flex-wrap items-end gap-8'>
-              <StatusAvatar size="lg" status="online" statusRingWidth={ringWidth} statusRingColor={ringColor} statusPosition={position}><Crown className="h-full w-full text-yellow-500" /></StatusAvatar>
-              <StatusAvatar size="lg" status="notification" statusContent={9} statusRingWidth={ringWidth} statusRingColor={ringColor} statusPosition={position}><Heart className="h-full w-full text-red-500" /></StatusAvatar>
-              <StatusAvatar size="lg" status="verified" statusRingWidth={ringWidth} statusRingColor={ringColor} statusPosition={position}><Star className="h-full w-full text-blue-500" /></StatusAvatar>
+              <StatusAvatar size="lg" shape={shape} status="online" statusBorderStyle={{ width: ringWidth, color: ringColor }} statusPosition={position}><Crown className="h-full w-full text-yellow-500" /></StatusAvatar>
+              <StatusAvatar size="lg" shape={shape} status="notification" statusContent={9} statusBorderStyle={{ width: ringWidth, color: ringColor }} statusPosition={position}><Heart className="h-full w-full text-red-500" /></StatusAvatar>
+              <StatusAvatar size="lg" shape={shape} status="verified" statusBorderStyle={{ width: ringWidth, color: ringColor }} statusPosition={position}><Star className="h-full w-full text-blue-500" /></StatusAvatar>
            </div>
         </CardContent>
       </Card>
@@ -73,9 +78,20 @@ export default function AvatarStatusDemo() {
       <Card className="max-w-lg">
         <CardHeader>
           <CardTitle>Controls</CardTitle>
-          <CardDescription>Dynamically change the properties of the avatars above.</CardDescription>
+          <CardDescription>Dynamically change the properties of the avatars above. Test new features including shape support and smart badge adaptation.</CardDescription>
         </CardHeader>
         <CardContent className='space-y-4'>
+          <div className='space-y-2'>
+            <Label>Avatar Shape</Label>
+            <Tabs value={shape} onValueChange={(value) => setShape(value as "circle" | "square" | "rounded-square")} className='w-full'>
+              <TabsList className='grid w-full grid-cols-3'>
+                <TabsTrigger value='circle'>Circle</TabsTrigger>
+                <TabsTrigger value='square'>Square</TabsTrigger>
+                <TabsTrigger value='rounded-square'>Rounded</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
           <div className='space-y-2'>
             <Label>Status Indicator Border Width</Label>
             <Tabs value={ringWidth} onValueChange={(value) => setRingWidth(value as RingWidth)} className='w-full'>
