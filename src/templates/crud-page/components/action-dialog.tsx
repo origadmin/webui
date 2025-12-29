@@ -120,8 +120,10 @@ export function ActionDialog<T extends { id?: string; status?: number; visible?:
                 />
               </div>
             )}
-            <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
-              {renderFields(form)}
+            <ScrollArea className='h-[26.25rem] w-full'>
+              <div className="p-4">
+                {renderFields(form)}
+              </div>
             </ScrollArea>
           </form>
         </Form>

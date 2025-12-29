@@ -1,6 +1,8 @@
-import { userTypes } from "@/mocks/user/data";
+import { useRolesQuery } from "@/api/system/role";
+import { useInviteUser } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconMailPlus, IconSend } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -17,13 +19,11 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { SelectDropdown } from "@/components/select-dropdown";
+import { MultiSelect } from "@/components/MultiSelect";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
-  role: z.string().min(1, { message: "Role is required." }),
-  desc: z.string().optional(),
+  role_ids: z.array(z.string()).min(1, { message: "At least one role is required." }),
 });
 type UserInviteForm = z.infer<typeof formSchema>;
 
@@ -36,27 +36,46 @@ interface Props {
 export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
   const form = useForm<UserInviteForm>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", role: "", desc: "" },
+    defaultValues: { email: "", role_ids: [] },
   });
 
+  const queryClient = useQueryClient();
+  const { mutate: inviteUser, isPending } = useInviteUser(queryClient);
+  const { data: rolesData } = useRolesQuery({ page_size: 1000 });
+
+  const roleOptions =
+    rolesData?.data?.map((role) => ({
+      value: role.id,
+      label: role.name,
+    })) || [];
+
   const onSubmit = (values: UserInviteForm) => {
-    form.reset();
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
+    inviteUser(values, {
+      onSuccess: () => {
+        toast({
+          title: "Invitation Sent",
+          description: `An invitation has been sent to ${values.email}.`,
+        });
+        onOpenChange(false);
+        form.reset();
+      },
+      onError: (error: any) => {
+        toast({
+          title: "Failed to Send Invitation",
+          description: error.message || "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      },
     });
-    onOpenChange(false);
   };
 
   return (
     <Dialog
       open={open}
       onOpenChange={(state) => {
-        form.reset();
+        if (!state) {
+          form.reset();
+        }
         onOpenChange(state);
       }}
     >
@@ -66,8 +85,7 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
             <IconMailPlus /> Invite User
           </DialogTitle>
           <DialogDescription>
-            Invite new user to join your team by sending them an email invitation. Assign a role to define their access
-            level.
+            Invite a new user by sending them an email. They will be prompted to set their own password.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -87,34 +105,16 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
             />
             <FormField
               control={form.control}
-              name='role'
+              name='role_ids'
               render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Role</FormLabel>
-                  <SelectDropdown
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                    placeholder='Select a role'
-                    items={userTypes.map(({ label, value }) => ({
-                      label,
-                      value,
-                    }))}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='desc'
-              render={({ field }) => (
-                <FormItem className=''>
-                  <FormLabel>Description (optional)</FormLabel>
+                <FormItem>
+                  <FormLabel>Roles</FormLabel>
                   <FormControl>
-                    <Textarea
-                      className='resize-none'
-                      placeholder='Add a personal note to your invitation (optional)'
-                      {...field}
+                    <MultiSelect
+                      placeholder="Select roles..."
+                      options={roleOptions}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -127,8 +127,9 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
           <DialogClose asChild>
             <Button variant='outline'>Cancel</Button>
           </DialogClose>
-          <Button type='submit' form='user-invite-form'>
-            Invite <IconSend />
+          <Button type='submit' form='user-invite-form' disabled={isPending}>
+            {isPending ? "Sending..." : "Send Invitation"}
+            <IconSend className="ml-2 h-4 w-4" />
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,106 +1,90 @@
-import { Fragment } from "react";
-import { useUserTable } from "@/pages/system/user/components/users-table-provider";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
+"use client";
+
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { IconPencil, IconTrash, IconKey } from "@tabler/icons-react";
+import { useUserTable } from "./users-table-provider"; // Corrected import
+import { useResetUserPassword } from "@/api/system/user";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
 
-export const UserRowActions = ({ row }: { row: RowActionsProps<API.System.User>["row"] }) => {
-  const { setOpen, setCurrentRow } = useUserTable();
-  return <RowActions<API.System.User> row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />;
-};
-
-export const UserIconRowActions = ({ row }: { row: RowActionsProps<API.System.User>["row"] }) => {
-  const { setOpen, setCurrentRow } = useUserTable();
-  return <IconRowActions<API.System.User> row={row} setOpen={setOpen} setCurrentRow={setCurrentRow} />;
-};
-
-export type OpenStateType = "preview" | "invite" | "add" | "add-sub" | "edit" | "delete";
-
-export interface RowActionsProps<TData> {
+interface RowActionsProps<TData extends { id?: string; email?: string }> {
   row: Row<TData>;
-  setOpen: (state: OpenStateType) => void;
-  setCurrentRow: (row: TData) => void;
-  setParentRow?: (row: TData) => void;
 }
 
-export function RowActions<TData>({ row, setOpen, setCurrentRow }: RowActionsProps<TData>) {
-  return (
-    <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'>
-          <DotsHorizontalIcon className='h-4 w-4' />
-          <span className='sr-only'>Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem
-          onClick={() => {
-            setCurrentRow?.(row.original);
-            setOpen?.("edit");
-          }}
-        >
-          Edit
-          <DropdownMenuShortcut>
-            <IconEdit size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            setCurrentRow?.(row.original);
-            setOpen?.("delete");
-          }}
-          className='!text-red-500'
-        >
-          Delete
-          <DropdownMenuShortcut>
-            <IconTrash size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
+export function UserIconRowActions<TData extends { id?: string; email?: string }>({ row }: RowActionsProps<TData>) {
+  const { setOpen, setCurrentRow } = useUserTable(); // Corrected hook
+  const queryClient = useQueryClient();
+  const { mutate: resetPassword, isPending: isResetting } = useResetUserPassword(queryClient, row.original.id || "");
 
-export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRow }: RowActionsProps<TData>) {
-  const onClick = (open: OpenStateType) => {
-    if (setCurrentRow && open !== "add") {
-      setCurrentRow(row.original);
-    }
-    if (setParentRow && open !== "edit") {
-      setParentRow(row.original);
-    }
-    if (setOpen) {
-      setOpen(open);
-    }
+  const handleEdit = () => {
+    setCurrentRow(row.original);
+    setOpen("edit");
+  };
+
+  const handleDelete = () => {
+    setCurrentRow(row.original);
+    setOpen("delete");
+  };
+
+  const handleResetPassword = () => {
+    resetPassword(undefined, {
+      onSuccess: () => {
+        toast({
+          title: "Password Reset Email Sent",
+          description: `An email has been sent to ${row.original.email} with instructions to reset the password.`,
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: "Failed to Reset Password",
+          description: error.message || "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      },
+    });
   };
 
   return (
-    <Fragment>
-      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("preview")} title='Preview'>
-        <IconEye size={16} />
+    <div className='flex items-center gap-1'>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant='ghost' size='sm' title="Reset Password">
+            <IconKey size={16} />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will send a password reset link to <span className="font-semibold">{row.original.email}</span>. The user will be prompted to create a new password.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleResetPassword} disabled={isResetting}>
+              {isResetting ? "Sending..." : "Confirm & Send Email"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Button variant='ghost' size='sm' onClick={handleEdit} title="Edit">
+        <IconPencil size={16} />
       </Button>
-      <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
-        <IconEdit size={16} />
-      </Button>
-      <Button
-        className='h-8 w-8 !text-red-500'
-        variant='ghost'
-        size='icon'
-        onClick={() => onClick("delete")}
-        title='Delete'
-      >
+      <Button variant='ghost' size='sm' onClick={handleDelete} title="Delete">
         <IconTrash size={16} />
       </Button>
-    </Fragment>
+    </div>
   );
 }

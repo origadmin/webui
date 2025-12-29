@@ -156,8 +156,8 @@ export const renderFields = (form: ReturnType<typeof useForm<FormType>>) => (
           control={form.control}
           name="visible"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-              <FormLabel>Visible</FormLabel>
+            <FormItem className="flex flex-row items-center space-x-2 pt-8">
+              <FormLabel>Visible in Menu</FormLabel>
               <FormControl>
                 <Switch
                   checked={field.value}

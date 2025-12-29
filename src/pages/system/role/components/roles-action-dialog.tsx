@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea"; // Import Textarea
 import { RolesPermissionSelect } from "./roles-permission-select";
 import { RolesSequenceDialog } from "./roles-sequence-dialogs";
 
@@ -144,112 +145,51 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                 )}
               />
             </div>
-            <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
-              {/* Base Info Section */}
-              <div className='space-y-2'>
-                <h3 className='text-lg font-medium'>Base Info</h3>
-                <Separator />
-                <div className='grid grid-cols-2 gap-4 pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='name'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder='Please enter a name' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='keyword'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Keyword</FormLabel>
-                        <FormControl>
-                          <Input placeholder='Please enter a keyword' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='type'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Type</FormLabel>
-                        <FormControl>
-                          <Input {...field} disabled />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='sequence'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sequence</FormLabel>
-                        <div className='flex'>
+            <ScrollArea className='h-[26.25rem] w-full'>
+              <div className="space-y-4 p-4">
+                {/* Base Info Section */}
+                <div className='space-y-2'>
+                  <h3 className='text-lg font-medium'>Base Info</h3>
+                  <Separator />
+                  <div className='grid grid-cols-2 gap-4 pt-2'>
+                    <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='Please enter a name' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='Please enter a keyword' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='type' render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input {...field} disabled /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='sequence' render={({ field }) => (<FormItem><FormLabel>Sequence</FormLabel><div className='flex'><FormControl><Input className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0' placeholder='' {...field} /></FormControl><Button type='button' variant='outline' onClick={handleSortOpen} className='h-9 w-12 gap-0 px-0 rounded-l-none' size='icon'><IconArrowsSort className='h-5 w-5' /></Button></div><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='description'
+                      render={({ field }) => (
+                        <FormItem className='col-span-2'>
+                          <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Input
-                              className='rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0'
-                              placeholder=''
-                              {...field}
-                            />
+                            <Textarea placeholder='A brief description for this role.' {...field} />
                           </FormControl>
-                          <Button
-                            type='button'
-                            variant='outline'
-                            onClick={handleSortOpen}
-                            className='h-9 w-12 gap-0 px-0 rounded-l-none'
-                            size='icon'
-                          >
-                            <IconArrowsSort className='h-5 w-5' />
-                          </Button>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='description'
-                    render={({ field }) => (
-                      <FormItem className='col-span-2'>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                          <Input placeholder='Please enter description' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Permission Settings Section */}
-              <div className='space-y-2 pt-4'>
-                <h3 className='text-lg font-medium'>Permission Settings</h3>
-                <Separator />
-                <div className='pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='permission_ids'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <RolesPermissionSelect value={field.value} onChange={field.onChange} permissions={treeData} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* Permission Settings Section */}
+                <div className='space-y-2 pt-4'>
+                  <h3 className='text-lg font-medium'>Permission Settings</h3>
+                  <Separator />
+                  <div className='pt-2'>
+                    <FormField
+                      control={form.control}
+                      name='permission_ids'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <RolesPermissionSelect value={field.value} onChange={field.onChange} permissions={treeData} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             </ScrollArea>

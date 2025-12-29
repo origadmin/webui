@@ -23,8 +23,9 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { ResourceTreeSelect } from "./resource-tree-select"; // Import the new component
-import { ViewTreeSelect } from "./view-tree-select"; // Import the new component
+import { Textarea } from "@/components/ui/textarea"; // Import Textarea
+import { ResourceTreeSelect } from "./resource-tree-select";
+import { ViewTreeSelect } from "./view-tree-select";
 
 const formSchema = z
   .object({
@@ -134,66 +135,80 @@ export function PermissionsActionDialog({
             onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
             className='relative space-y-4'
           >
-            <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
-              {/* Base Info Section */}
-              <div className='space-y-2'>
-                <h3 className='text-lg font-medium'>Base Info</h3>
-                <Separator />
-                <div className='grid grid-cols-2 gap-4 pt-2'>
-                  <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='e.g., View Users' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='e.g., user_view' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name='data_scope' render={({ field }) => (<FormItem><FormLabel>Data Scope</FormLabel><Select value={field.value || "self"} onValueChange={field.onChange}><FormControl><SelectTrigger><SelectValue placeholder='Select data scope' /></SelectTrigger></FormControl><SelectContent><SelectItem value='self'>Self</SelectItem><SelectItem value='role'>Role</SelectItem><SelectItem value='dept'>Department</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name='description' render={({ field }) => (<FormItem className='col-span-2'><FormLabel>Description</FormLabel><FormControl><Input placeholder='A brief description' {...field} /></FormControl><FormMessage /></FormItem>)} />
+            <ScrollArea className='h-[26.25rem] w-full'>
+              <div className="space-y-4 p-4">
+                {/* Base Info Section */}
+                <div className='space-y-2'>
+                  <h3 className='text-lg font-medium'>Base Info</h3>
+                  <Separator />
+                  <div className='grid grid-cols-2 gap-4 pt-2'>
+                    <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='e.g., View Users' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='e.g., user_view' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='data_scope' render={({ field }) => (<FormItem><FormLabel>Data Scope</FormLabel><Select value={field.value || "self"} onValueChange={field.onChange}><FormControl><SelectTrigger><SelectValue placeholder='Select data scope' /></SelectTrigger></FormControl><SelectContent><SelectItem value='self'>Self</SelectItem><SelectItem value='role'>Role</SelectItem><SelectItem value='dept'>Department</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='description'
+                      render={({ field }) => (
+                        <FormItem className='col-span-2'>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder='A brief description for this permission.' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Resource Settings Section */}
-              <div className='space-y-2 pt-4'>
-                <h3 className='text-lg font-medium'>Resource Settings</h3>
-                <Separator />
-                <div className='pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='resource_ids'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Associated Resources</FormLabel>
-                        <FormControl>
-                          <ResourceTreeSelect
-                            resources={resourcesData.data}
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* Resource Settings Section */}
+                <div className='space-y-2 pt-4'>
+                  <h3 className='text-lg font-medium'>Resource Settings</h3>
+                  <Separator />
+                  <div className='pt-2'>
+                    <FormField
+                      control={form.control}
+                      name='resource_ids'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Associated Resources</FormLabel>
+                          <FormControl>
+                            <ResourceTreeSelect
+                              resources={resourcesData.data}
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* View Settings Section */}
-              <div className='space-y-2 pt-4'>
-                <h3 className='text-lg font-medium'>View Settings</h3>
-                <Separator />
-                <div className='pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='view_ids'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Associated Views</FormLabel>
-                        <FormControl>
-                          <ViewTreeSelect
-                            views={viewsData.data}
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* View Settings Section */}
+                <div className='space-y-2 pt-4'>
+                  <h3 className='text-lg font-medium'>View Settings</h3>
+                  <Separator />
+                  <div className='pt-2'>
+                    <FormField
+                      control={form.control}
+                      name='view_ids'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Associated Views</FormLabel>
+                          <FormControl>
+                            <ViewTreeSelect
+                              views={viewsData.data}
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             </ScrollArea>

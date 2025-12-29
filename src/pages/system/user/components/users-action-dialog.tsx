@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useRolesQuery } from "@/api/system/role";
 import { useUserCreate, useUserUpdate, useUpdateUserRoles } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,24 +29,28 @@ const formSchema = z
     username: z.string().min(1, { message: "Username is required." }),
     phone: z.string().min(1, { message: "Phone number is required." }),
     email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
-    password: z.string().transform((pwd) => pwd.trim()),
+    password: z.string().optional(),
     status: z.number().optional(),
     role_ids: z.string().array().optional(),
-    confirmPassword: z.string().transform((pwd) => pwd.trim()),
     allowed_ip: z.string().min(1, { message: "IP is required." }),
-    random_password: z.boolean().default(false),
     is_edit: z.boolean(),
   })
-  .superRefine(({ is_edit, password, confirmPassword }, ctx) => {
-    if (!is_edit || (is_edit && password !== "")) {
-      if (password === "") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Password is required.",
-          path: ["password"],
-        });
-      }
-      // ... (rest of the password validation logic)
+  .superRefine(({ is_edit, password }, ctx) => {
+    // In create mode, password is required
+    if (!is_edit && (!password || password.trim() === "")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Initial password is required.",
+        path: ["password"],
+      });
+    }
+    // If a password is provided (in either mode), it must be at least 8 chars
+    if (password && password.length < 8) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Password must be at least 8 characters long.",
+        path: ["password"],
+      });
     }
   });
 type UserForm = z.infer<typeof formSchema>;
@@ -71,8 +74,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
       ? {
           ...currentRow,
           role_ids: currentRow.role_ids || [],
-          password: "",
-          confirmPassword: "",
+          password: "", // Always start with an empty password field in edit mode
           is_edit,
         }
       : {
@@ -81,7 +83,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           email: "",
           phone: "",
           password: "",
-          confirmPassword: "",
           allowed_ip: "0.0.0.0",
           status: 1,
           role_ids: [],
@@ -94,11 +95,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const { mutate: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
   const { mutate: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
 
-  const [rolePages, setRolePages] = useState({
-    current: 1,
-    page_size: 1000,
-  });
-  const { data: roles = {}, isLoading: isRolesLoading } = useRolesQuery(rolePages);
+  const { data: roles = {} } = useRolesQuery({ page_size: 1000 });
 
   const onSubmit = async (values: UserForm) => {
     try {
@@ -106,6 +103,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         createUser(values);
       } else {
         const { role_ids, ...userBasicInfo } = values;
+        // If password field is empty, don't include it in the update payload
+        if (!userBasicInfo.password || userBasicInfo.password.trim() === "") {
+          delete userBasicInfo.password;
+        }
         await Promise.all([
           updateUser(userBasicInfo),
           updateUserRoles(role_ids || []),
@@ -128,47 +129,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     }
   };
 
-  const isPasswordTouched = !!form.formState.dirtyFields.password;
   const isPending = isCreatePending || isUpdatePending || isRolesUpdatePending;
-
-  const useRandomPassword = () => (
-    <>
-      {!form.watch("random_password") && (
-        <FormField
-          control={form.control}
-          name='password'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder='e.g., S3cur3P@ssw0rd' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
-      {!form.watch("random_password") && (
-        <FormField
-          control={form.control}
-          name='confirmPassword'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <PasswordInput
-                  disabled={!isPasswordTouched}
-                  placeholder='e.g., S3cur3P@ssw0rd'
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
-    </>
-  );
 
   const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
@@ -183,8 +144,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
         <DialogHeader>
           <DialogTitle>{is_edit ? "Edit User" : "Add New User"}</DialogTitle>
           <DialogDescription>
-            {is_edit ? "Update the user here. " : "Create new user here. "}
-            Click save when you&apos;re done.
+            {is_edit ? "Update the user's information here." : "Create a new user account."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -210,134 +170,76 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                 )}
               />
             </div>
-            <ScrollArea className='h-[26.25rem] w-full pr-4 -mr-4 py-1'>
-              {/* Base Info Section */}
-              <div className='space-y-2'>
-                <h3 className='text-lg font-medium'>Base Info</h3>
-                <Separator />
-                <div className='grid grid-cols-2 gap-4 pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='username'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input placeholder='john_doe' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='nickname'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nickname</FormLabel>
-                        <FormControl>
-                          <Input placeholder='John' autoComplete='off' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='email'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder='john.doe@gmail.com' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='phone'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone</FormLabel>
-                        <FormControl>
-                          <Input placeholder='+123456789' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+            <ScrollArea className='h-[26.25rem] w-full'>
+              <div className="space-y-4 p-4">
+                {/* Base Info Section */}
+                <div className='space-y-2'>
+                  <h3 className='text-lg font-medium'>Base Info</h3>
+                  <Separator />
+                  <div className='grid grid-cols-2 gap-4 pt-2'>
+                    <FormField control={form.control} name='username' render={({ field }) => (<FormItem><FormLabel>Username</FormLabel><FormControl><Input placeholder='john_doe' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='nickname' render={({ field }) => (<FormItem><FormLabel>Nickname</FormLabel><FormControl><Input placeholder='John' autoComplete='off' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='email' render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input placeholder='john.doe@gmail.com' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='phone' render={({ field }) => (<FormItem><FormLabel>Phone</FormLabel><FormControl><Input placeholder='+123456789' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  </div>
                 </div>
-              </div>
 
-              {/* Security Settings Section */}
-              <div className='space-y-2 pt-4'>
-                <h3 className='text-lg font-medium'>Security Settings</h3>
-                <Separator />
-                <div className='grid grid-cols-2 gap-4 pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='random_password'
-                    render={({ field }) => (
-                      <FormItem className='flex items-center space-x-2'>
-                        <FormLabel>Random Password</FormLabel>
-                        <FormControl>
-                          <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  {useRandomPassword()}
-                  <FormField
-                    control={form.control}
-                    name='allowed_ip'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Allowed IP</FormLabel>
-                        <FormControl>
-                          <Input placeholder='0.0.0.0' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* Security Settings Section */}
+                <div className='space-y-2 pt-4'>
+                  <h3 className='text-lg font-medium'>Security Settings</h3>
+                  <Separator />
+                  <div className='grid grid-cols-2 gap-4 pt-2 items-start'>
+                    <FormField
+                      control={form.control}
+                      name='password'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{is_edit ? 'New Password' : 'Initial Password'}</FormLabel>
+                          <FormControl>
+                            <PasswordInput placeholder={is_edit ? 'Leave blank to keep unchanged' : 'Enter password'} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField control={form.control} name='allowed_ip' render={({ field }) => (<FormItem><FormLabel>Allowed IP</FormLabel><FormControl><Input placeholder='0.0.0.0' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  </div>
                 </div>
-              </div>
 
-              {/* Role Management Section */}
-              <div className='space-y-2 pt-4'>
-                <h3 className='text-lg font-medium'>Role Management</h3>
-                <Separator />
-                <div className='pt-2'>
-                  <FormField
-                    control={form.control}
-                    name='role_ids'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Roles</FormLabel>
-                        <FormControl>
-                          <MultiSelect
-                            defaultValue={field.value}
-                            value={field.value}
-                            onChange={field.onChange}
-                            placeholder='Select roles'
-                            options={
-                              !isRolesLoading && roles.data
-                                ? roles.data
-                                    .filter(({ id, name }) => !!id && !!name)
-                                    .map(({ id, name }) => ({
-                                      value: id || "",
-                                      label: name || "",
-                                    }))
-                                : []
-                            }
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* Role Management Section */}
+                <div className='space-y-2 pt-4'>
+                  <h3 className='text-lg font-medium'>Role Management</h3>
+                  <Separator />
+                  <div className='pt-2'>
+                    <FormField
+                      control={form.control}
+                      name='role_ids'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Roles</FormLabel>
+                          <FormControl>
+                            <MultiSelect
+                              defaultValue={field.value}
+                              value={field.value}
+                              onChange={field.onChange}
+                              placeholder='Select roles'
+                              options={
+                                roles.data
+                                  ? roles.data
+                                      .filter(({ id, name }) => !!id && !!name)
+                                      .map(({ id, name }) => ({
+                                        value: id || "",
+                                        label: name || "",
+                                      }))
+                                  : []
+                              }
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             </ScrollArea>

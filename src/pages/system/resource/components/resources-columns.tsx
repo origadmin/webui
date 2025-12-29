@@ -4,7 +4,7 @@ import LongText from "@/components/long-text";
 import { defaultHeaderMeta } from "@/types";
 import { statusBadges, statusValue } from "@/types/system";
 import { cn } from "@/lib/utils";
-import { ResourceRowActions } from "./resources-row-actions";
+import { ResourceIconRowActions } from "./resources-row-actions";
 
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {
@@ -65,7 +65,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => <ResourceRowActions row={row} />,
+    cell: ({ row }) => <ResourceIconRowActions row={row} />,
     meta: defaultHeaderMeta.meta,
   },
 ];

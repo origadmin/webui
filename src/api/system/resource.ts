@@ -8,7 +8,7 @@ export async function listResource(params: API.SearchParams, options?: API.Reque
 }
 
 /** Create resource record POST /sys/resources */
-export async function addResource(body: API.Resource, options?: API.RequestOptions) {
+export async function addResource(body: Omit<API.System.Resource, "id">, options?: API.RequestOptions) {
   return post<API.System.Resource>("/sys/resources", body, options);
 }
 
@@ -18,7 +18,7 @@ export async function getResource(id: string, options?: API.RequestOptions) {
 }
 
 /** Update resource record by ID PUT /sys/resources/${id} */
-export async function updateResource(id: string, body: API.Resource, options?: API.RequestOptions) {
+export async function updateResource(id: string, body: Partial<API.System.Resource>, options?: API.RequestOptions) {
   return put<never>(`/sys/resources/${id}`, body, options);
 }
 
@@ -27,8 +27,12 @@ export async function deleteResource(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/resources/${id}`, options);
 }
 
+/** Sync resources from code POST /sys/resources/sync */
+export async function syncResources(options?: API.RequestOptions) {
+  return post<never>("/sys/resources/sync", {}, options);
+}
+
 export const useResourcesQuery = (opts?: API.SearchParams) => {
-  console.log("useResourcesQuery", opts);
   return useQuery(
     queryOptions({
       queryKey: ["/sys/resources", { ...opts }],
@@ -42,6 +46,7 @@ export const useResourceQuery = (id: string) => {
     queryOptions({
       queryKey: ["/sys/resources", id],
       queryFn: ({ queryKey: [, id] }) => getResource(id),
+      enabled: !!id,
     }),
   );
 };
@@ -55,7 +60,7 @@ export const useResourceCreate = (queryClient: QueryClient) => {
 
 export const useResourceUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (resource: Omit<API.System.Resource, "id">) => updateResource(id, resource),
+    mutationFn: (resource: Partial<API.System.Resource>) => updateResource(id, resource),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/resources"]),
   });
 };
@@ -67,43 +72,9 @@ export const useResourceDelete = (queryClient: QueryClient) => {
   });
 };
 
-export const buildTree = (items?: API.System.Resource[]) => {
-  const map = new Map<string, API.System.Resource>();
-  const roots: API.System.Resource[] = [];
-
-  if (!items) {
-    return roots;
-  }
-
-  // create a map of id to item
-  items.forEach((item) => {
-    if (!item.id) {
-      return;
-    }
-    item.children = [];
-    map.set(item.id, item);
+export const useSyncResources = (queryClient: QueryClient) => {
+  return useMutation({
+    mutationFn: () => syncResources(),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/resources"]),
   });
-
-  // build the tree
-  items.forEach((item) => {
-    if (!item.parent_id || !item.tree_path) {
-      roots.push(item);
-      return;
-    }
-    const parent = map.get(item.parent_id);
-    if (!parent || !parent.children) {
-      return;
-    }
-    parent.children.push(item);
-  });
-
-  map.forEach((node) => {
-    if (node.children && node.children.length > 0) {
-      node.children.sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
-    }
-  });
-
-  roots.sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
-  console.log("tree", roots);
-  return roots;
 };

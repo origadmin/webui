@@ -4,13 +4,17 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
 
 /** Query user list GET /sys/users */
 export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
-  console.log("listUser", params, options);
   return get<API.System.User[]>("/sys/users", params, options);
 }
 
 /** Create user record POST /sys/users */
 export async function addUser(body: API.System.User, options?: API.RequestOptions) {
   return post<API.System.User>("/sys/users", body, options);
+}
+
+/** Invite user record POST /sys/users/invite */
+export async function inviteUser(body: { email: string; role_ids: string[] }, options?: API.RequestOptions) {
+  return post<never>("/sys/users/invite", body, options);
 }
 
 /** Get user record by ID GET /sys/users/${id} */
@@ -75,6 +79,13 @@ export const useUserResourceQuery = (id: string) => {
 export const useUserCreate = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (user: Omit<API.System.User, "id">) => addUser(user),
+    onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
+  });
+};
+
+export const useInviteUser = (queryClient: QueryClient) => {
+  return useMutation({
+    mutationFn: (data: { email: string; role_ids: string[] }) => inviteUser(data),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
   });
 };
