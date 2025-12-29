@@ -34,13 +34,22 @@ export function ResourcesPrimaryButtons() {
 
   return (
     <div className="flex items-center gap-2">
-      <Button variant="default" size="sm" onClick={handleAdd}>
-        <IconPlus className="mr-2 h-4 w-4" />
-        Add New Resource
+      <Button 
+        variant="outline" 
+        size="sm" 
+        onClick={handleSync} 
+        disabled={isSyncing}
+        className='ml-auto hidden h-8 lg:flex'
+      >
+        <span>{isSyncing ? "Syncing..." : "Sync from Code"}</span> <IconRefresh size={18} className={isSyncing ? "animate-spin" : ""} />
       </Button>
-      <Button variant="outline" size="sm" onClick={handleSync} disabled={isSyncing}>
-        <IconRefresh className="mr-2 h-4 w-4" />
-        {isSyncing ? "Syncing..." : "Sync from Code"}
+      <Button 
+        variant="secondary" 
+        size="sm" 
+        onClick={handleAdd}
+        className='ml-auto hidden h-8 lg:flex'
+      >
+        <span>Add New Resource</span> <IconPlus size={18} />
       </Button>
     </div>
   );

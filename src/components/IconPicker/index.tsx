@@ -20,7 +20,7 @@ interface IconPickerProps
   extends Omit<React.ComponentPropsWithoutRef<typeof PopoverTrigger>, "onSelect" | "onOpenChange"> {
   value?: IconName;
   defaultValue?: IconName;
-  onValueChange?: (value: IconName) => void;
+  onValueChange?: (value: IconName | undefined) => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   count?: number;
@@ -50,7 +50,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
     const [search, setSearch] = useState("");
     const [isOpen, setIsOpen] = useState(open || false);
     const [displayCount, setDisplayCount] = useState(count);
-    const handleValueChange = (icon: IconName) => {
+    const handleValueChange = (icon: IconName | undefined) => {
       if (!onValueChange) {
         return;
       }
@@ -104,30 +104,58 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
             (selectedIcon ? (
               <Button
                 variant='outline'
-                className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+                className='group flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
               >
-                <TablerIcon name={(selectedIcon || selectedIcon)!} />
-                <span>{selectedIcon || selectedIcon}</span>
+                <div className="flex items-center gap-2">
+                  <TablerIcon name={selectedIcon} />
+                  <span>{selectedIcon}</span>
+                </div>
+                <div
+                  className="opacity-50 group-hover:opacity-100 cursor-pointer p-0.5 hover:bg-muted rounded-sm transition-opacity z-10 relative"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleValueChange(undefined);
+                  }}
+                >
+                  <TablerIcon name="x" className="h-4 w-4 text-muted-foreground" />
+                </div>
               </Button>
             ) : (
               <Button
                 variant='outline'
-                className='flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+                className='flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
               >
                 <span>{triggerPlaceholder}</span>
                 <TablerIcon name='chevron-down' />
               </Button>
             ))}
         </PopoverTrigger>
-        <PopoverContent className='w-full p-2' style={{ width: "var(--radix-popover-trigger-width)" }}>
-          {searchable && (
-            <Input
-              placeholder={searchPlaceholder}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className='mb-2'
-            />
-          )}
+        <PopoverContent 
+          className='w-full p-2' 
+          style={{ width: "var(--radix-popover-trigger-width)" }}
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            {searchable && (
+              <Input
+                placeholder={searchPlaceholder}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className='flex-1'
+              />
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                handleValueChange(undefined);
+                setIsOpen(false);
+              }}
+              title="Clear selection"
+            >
+              <TablerIcon name="x" />
+            </Button>
+          </div>
           <div
             className='grid grid-cols-4 gap-2 max-h-60 overflow-y-auto'
             onWheel={handleWheel}

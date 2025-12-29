@@ -10,6 +10,9 @@ type IconProps = {
 type IconType = ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
 
 const TablerIcon = ({ name, size = 24, ...props }: IconProps) => {
+  if (!name) {
+    return null;
+  }
   if (typeof name !== "string") {
     const IconComponent = name;
     return <IconComponent size={size} {...props} />;

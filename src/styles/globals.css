@@ -84,3 +84,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Override Select Trigger to match Input style */
+  button[role="combobox"] {
+    @apply h-9 focus:ring-1 focus:ring-offset-0 !important;
+  }
+
+  /* Override Textarea to match Input style */
+  textarea {
+    @apply focus-visible:ring-1 focus-visible:ring-offset-0 !important;
+  }
+}

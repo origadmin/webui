@@ -46,10 +46,16 @@ export function ActionDialog<T extends { id?: string; status?: number; visible?:
     : `Create new ${pageConfig.title.toLowerCase()} here.`;
   const formId = `${pageConfig.title.toLowerCase()}-form`;
 
-  const defaultValues = formSchema.safeParse({}).success
-    ? Object.fromEntries(
-        Object.keys(formSchema.shape).map((key) => [key, undefined])
-      )
+  // Generate default values from schema shape to ensure controlled inputs
+  const shape = (formSchema as any).shape;
+  const generatedDefaults = shape
+    ? Object.keys(shape).reduce((acc, key) => {
+        // Default to empty string for all fields. 
+        // This might need adjustment for specific types (number, boolean), 
+        // but empty string works well for Input/Textarea/Select initial states.
+        acc[key] = ""; 
+        return acc;
+      }, {} as any)
     : {};
 
   const form = useForm<z.infer<TForm>>({
@@ -58,7 +64,7 @@ export function ActionDialog<T extends { id?: string; status?: number; visible?:
     shouldFocusError: false,
     defaultValues: is_edit
       ? { ...currentRow, is_edit }
-      : { ...defaultValues, status: 1, visible: true, is_edit: false },
+      : { ...generatedDefaults, status: 1, visible: true, is_edit: false },
   });
 
   const queryClient = useQueryClient();

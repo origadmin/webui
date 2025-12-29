@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { useRoleTable } from "@/pages/system/role/components/roles-table-provider";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
@@ -85,7 +84,7 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
   };
 
   return (
-    <Fragment>
+    <div className="flex items-center space-x-1">
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>
@@ -98,6 +97,6 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
       >
         <IconTrash size={16} />
       </Button>
-    </Fragment>
+    </div>
   );
 }

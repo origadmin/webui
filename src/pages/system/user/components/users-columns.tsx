@@ -4,69 +4,55 @@ import { t } from "@/utils/locale";
 import { statusValue, statusBadges } from "@/types/system";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { DataTableColumnType } from "@/components/DataTable";
-import { FacetedFilter } from "@/components/DataTable/faceted-filter";
 import LongText from "@/components/long-text";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export const columns: DataTableColumnType<API.System.User>[] = [
   {
-    accessorKey: "id",
-    header: t("pages.system.users.columns.id"),
-    cell: ({ row }) => <LongText>{row.original.id}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    enableSorting: true,
-    enableHiding: false,
-    searchable: true,
-    renderSearch: (_column, index, table) => (
-      <Input
-        key={`title-${index}`}
-        aria-label={"Filter by title"}
-        placeholder={"Filter by title..."}
-        value={(table.getState().columnFilters.find((filter) => filter.id === "title")?.value as string) ?? ""}
-        onChange={(event) => {
-          console.log("event", event.target.value);
-          table.setColumnFilters((old) => {
-            return [
-              ...old.filter((filter) => filter.id !== "title"),
-              {
-                id: "title",
-                value: event.target.value,
-              },
-            ];
-          });
-        }}
-        className='h-8 w-[120px] lg:w-[250px]'
-      />
-    ),
+    id: "expander",
+    header: () => null,
+    cell: ({ row }) => {
+      return row.getCanExpand() ? (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={row.getToggleExpandedHandler()}
+          className="h-8 w-8 p-0"
+        >
+          {row.getIsExpanded() ? (
+            <ChevronDown className="h-4 w-4" />
+          ) : (
+            <ChevronRight className="h-4 w-4" />
+          )}
+        </Button>
+      ) : null;
+    },
+    meta: {
+      className: "w-[40px] px-2",
+    },
   },
   {
     accessorKey: "nickname",
     header: "Nickname",
     cell: ({ row }) => <LongText>{row.original.nickname}</LongText>,
     meta: defaultHeaderMeta.meta,
-    enableColumnFilter: true,
+    searchable: true,
   },
   {
     accessorKey: "username",
     header: t("pages.system.users.columns.username"),
     cell: ({ row }) => <LongText>{row.original.username}</LongText>,
     meta: defaultHeaderMeta.meta,
-    enableSorting: true,
-    enableHiding: false,
+    searchable: true,
   },
   {
     accessorKey: "email",
     header: "Email",
     cell: ({ row }) => <div>{row.original.email}</div>,
     meta: defaultHeaderMeta.meta,
-  },
-  {
-    accessorKey: "phone",
-    header: "Phone",
-    cell: ({ row }) => <div>{row.original.phone}</div>,
-    meta: defaultHeaderMeta.meta,
-    enableSorting: false,
+    searchable: true,
   },
   {
     accessorKey: "status",
@@ -82,56 +68,12 @@ export const columns: DataTableColumnType<API.System.User>[] = [
         </div>
       );
     },
-    filterFn: (row, id, value: string[]) => {
-      return value.includes(row.getValue(id));
-    },
-    searchable: true,
-    renderSearch: (_column, _index, table) => (
-      <FacetedFilter
-        column={table.getColumn("status")}
-        title={"Status"}
-        options={[
-          { label: "Active", value: "active" },
-          { label: "Inactive", value: "inactive" },
-          { label: "Invited", value: "invited" },
-          { label: "Suspended", value: "suspended" },
-        ]}
-      />
-    ),
     meta: defaultHeaderMeta.meta,
-    enableHiding: false,
-    enableSorting: false,
   },
-  {
-    accessorKey: "create_time",
-    header: "Create Time",
-    cell: ({ row }) => <div>{row.original.create_time}</div>,
-    meta: defaultHeaderMeta.meta,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "last_login_time",
-    header: "Last Login Time",
-    cell: ({ row }) => <div>{row.original.last_login_time}</div>,
-    meta: defaultHeaderMeta.meta,
-    enableSorting: false,
-  },
-  // {
-  //   accessorKey: "update_time",
-  //   header: "Update Time",
-  //   cell: ({ row }) => <div>{row.original.update_time}</div>,
-  //   meta: defaultHeaderMeta.meta,
-  //   enableSorting: false,
-  //   hiddenInTable: true,
-  // },
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => (
-      <div className='flex gap-1.5'>
-        <UserIconRowActions row={row} />
-      </div>
-    ),
+    cell: ({ row }) => <UserIconRowActions row={row} />,
     meta: defaultHeaderMeta.meta,
   },
 ];

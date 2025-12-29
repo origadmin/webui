@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, ReactNode } from "react";
 import {
   PaginationOptions,
   ColumnFiltersState,
@@ -6,6 +6,7 @@ import {
   VisibilityState,
   OnChangeFn,
   TableOptions,
+  Row,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { Table, TableBody, TableHeader } from "@/components/ui/table";
@@ -69,6 +70,7 @@ export interface DataTableProps<TData, TValue = unknown>
   toolbars?: ToolbarProps<TData>["children"] | ToolbarProps<TData>["render"];
   options?: Partial<Omit<TableOptions<TData>, "data" | "columns">>;
   props: ComponentProps<TData, TValue>;
+  renderSubComponent?: (props: { row: Row<TData> }) => ReactNode;
 }
 
 function DataTable<TData, TValue = unknown>({
@@ -80,6 +82,7 @@ function DataTable<TData, TValue = unknown>({
   toolbarPosition = "top",
   props,
   isLoading,
+  renderSubComponent,
   ...rest
 }: DataTableProps<TData, TValue>) {
   const { table, rowCount, columnFilters } = useDataTable({
@@ -127,7 +130,7 @@ function DataTable<TData, TValue = unknown>({
             {isLoading ? (
               <LoadingRow colSpan={columns.length} />
             ) : table.getRowModel().rows?.length ? (
-              renderCell(table.getRowModel().rows)
+              renderCell(table.getRowModel().rows, renderSubComponent)
             ) : (
               <NoResults colSpan={columns.length} />
             )}

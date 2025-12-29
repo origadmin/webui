@@ -14,29 +14,46 @@ const syncStatusBadges: Record<string, string> = {
   Orphaned: "bg-gray-500",
 };
 
+const methodColors: Record<string, string> = {
+  GET: "bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100",
+  POST: "bg-green-100 text-green-800 border-green-200 hover:bg-green-100",
+  PUT: "bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-100",
+  DELETE: "bg-red-100 text-red-800 border-red-200 hover:bg-red-100",
+  PATCH: "bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-100",
+  HEAD: "bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-100",
+  OPTIONS: "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100",
+};
+
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
     accessorKey: "service_name",
     header: "Service Name",
     cell: ({ row }) => <LongText>{row.original.service_name}</LongText>,
     meta: defaultHeaderMeta.meta,
+    searchable: true,
   },
   {
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText>{row.original.keyword}</LongText>,
     meta: defaultHeaderMeta.meta,
+    searchable: true,
   },
   {
     accessorKey: "path",
     header: "Path",
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
     meta: defaultHeaderMeta.meta,
+    searchable: true,
   },
   {
     accessorKey: "method",
     header: "Method",
-    cell: ({ row }) => <Badge variant='outline'>{row.original.method}</Badge>,
+    cell: ({ row }) => {
+      const method = (row.original.method || "").toUpperCase();
+      const colorClass = methodColors[method] || "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100";
+      return <Badge variant='outline' className={cn("font-mono", colorClass)}>{method || "ANY"}</Badge>;
+    },
     meta: defaultHeaderMeta.meta,
   },
   {

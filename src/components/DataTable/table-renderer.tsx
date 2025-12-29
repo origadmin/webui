@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import {
   flexRender,
   HeaderContext,
@@ -59,17 +59,29 @@ const dataState = <TData,>(row: Row<TData>) => {
   return undefined;
 };
 
-export const renderCell = <TData,>(rows: Row<TData>[]): ReactNode => {
+export const renderCell = <TData,>(
+  rows: Row<TData>[],
+  renderSubComponent?: (props: { row: Row<TData> }) => ReactNode
+): ReactNode => {
   return rows.map((row) => (
-    <TableRow key={row.id} data-state={dataState(row)} className="group/row">
-      {row.getVisibleCells().map((cell) => (
-        <TableCell
-          key={cell.id}
-          className={cn("px-4", cell.column.columnDef.meta?.className)}
-        >
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
-      ))}
-    </TableRow>
+    <Fragment key={row.id}>
+      <TableRow data-state={dataState(row)} className="group/row">
+        {row.getVisibleCells().map((cell) => (
+          <TableCell
+            key={cell.id}
+            className={cn("px-4", cell.column.columnDef.meta?.className)}
+          >
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </TableCell>
+        ))}
+      </TableRow>
+      {row.getIsExpanded() && renderSubComponent && (
+        <TableRow>
+          <TableCell colSpan={row.getVisibleCells().length}>
+            {renderSubComponent({ row })}
+          </TableCell>
+        </TableRow>
+      )}
+    </Fragment>
   ));
 };

@@ -7,39 +7,10 @@ import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 
 export const columns: DataTableColumnType<API.System.Role>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) =>
-  //     table ? (
-  //       <Checkbox
-  //         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-  //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //         aria-label='Select all'
-  //         className='translate-y-[2px]'
-  //       />
-  //     ) : null,
-  //   meta: {
-  //     className: cn(
-  //       "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-  //       "md:table-cell",
-  //     ),
-  //   },
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //       aria-label='Select row'
-  //       className='translate-y-[2px]'
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
   {
     accessorKey: "name",
     header: "Name",
     searchable: true,
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Rolename' />,
     cell: ({ row }) => <LongText>{row.getValue("name")}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
@@ -49,29 +20,24 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     accessorKey: "keyword",
     header: "Keyword",
     searchable: true,
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Nickname' />,
     cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "type",
     header: "Type",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div>{row.getValue("type")}</div>,
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "sequence",
     header: "Sequence",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div>{row.getValue("sequence")}</div>,
     meta: defaultHeaderMeta.meta,
   },
-
   {
     accessorKey: "permission_ids",
     header: "Permissions",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => (
       <div>
         {row.original.permissions &&
@@ -92,7 +58,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
       const { status = 0 } = row.original;
       const badgeColor = statusBadges.get(status || 0);
@@ -114,20 +79,13 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   {
     accessorKey: "is_system",
     header: "Is System",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Email' />,
     cell: ({ row }) => <div>{row.getValue("is_system") ? "Yes" : "No"}</div>,
     meta: defaultHeaderMeta.meta,
   },
-
   {
     id: "actions",
     header: "Actions",
-    // header: ({ column }) => <DataTableColumnHeader column={column} title='Options' />,
-    cell: ({ row }) => (
-      <div className='flex gap-1.5'>
-        <RoleIconRowActions row={row} />
-      </div>
-    ),
+    cell: ({ row }) => <RoleIconRowActions row={row} />,
     meta: defaultHeaderMeta.meta,
   },
 ];

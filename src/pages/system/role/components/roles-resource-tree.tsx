@@ -153,7 +153,7 @@ export function ResourceTree({ resources = [], selectedResources = [], onSelecte
             )}
             <Checkbox
               id={node.id}
-              checked={node.checked}
+              checked={node.indeterminate ? "indeterminate" : node.checked}
               onCheckedChange={(checked) => handleNodeCheck(node, checked as boolean)}
               className='mr-2'
             />

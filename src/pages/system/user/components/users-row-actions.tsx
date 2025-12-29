@@ -57,10 +57,10 @@ export function UserIconRowActions<TData extends { id?: string; email?: string }
   };
 
   return (
-    <div className='flex items-center gap-1'>
+    <div className='flex items-center space-x-1'>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant='ghost' size='sm' title="Reset Password">
+          <Button variant='ghost' size='icon' className="h-8 w-8" title="Reset Password">
             <IconKey size={16} />
           </Button>
         </AlertDialogTrigger>
@@ -79,10 +79,10 @@ export function UserIconRowActions<TData extends { id?: string; email?: string }
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <Button variant='ghost' size='sm' onClick={handleEdit} title="Edit">
+      <Button variant='ghost' size='icon' className="h-8 w-8" onClick={handleEdit} title="Edit">
         <IconPencil size={16} />
       </Button>
-      <Button variant='ghost' size='sm' onClick={handleDelete} title="Delete">
+      <Button variant='ghost' size='icon' className="h-8 w-8" onClick={handleDelete} title="Delete">
         <IconTrash size={16} />
       </Button>
     </div>

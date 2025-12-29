@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { FormType } from "../config";
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -156,8 +157,13 @@ export const renderFields = (form: ReturnType<typeof useForm<FormType>>) => (
           control={form.control}
           name="visible"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center space-x-2 pt-8">
-              <FormLabel>Visible in Menu</FormLabel>
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 col-span-2">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Visible in Menu</FormLabel>
+                <FormDescription>
+                  This menu will be displayed in the sidebar.
+                </FormDescription>
+              </div>
               <FormControl>
                 <Switch
                   checked={field.value}

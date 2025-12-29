@@ -7,15 +7,15 @@ import { DataTableProps } from "@/components/DataTable";
 export const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
   keyword: z.string().min(1, "Keyword is required."),
-  scope: z.string().optional(),
+  scope: z.string().nullable().optional(),
   type: z.string().default("MENU"),
-  path: z.string().optional(),
-  icon: z.string().optional(),
+  path: z.string().nullable().optional(),
+  icon: z.string().nullable().optional(),
   sequence: z.number().default(0),
   visible: z.boolean().default(true),
   status: z.number().default(1),
-  description: z.string().optional(),
-  parent_id: z.string().optional(),
+  description: z.string().nullable().optional(),
+  parent_id: z.string().nullable().optional(),
   // 'component' is not in the openapi spec for View, so it's removed.
 });
 export type FormType = z.infer<typeof formSchema>;

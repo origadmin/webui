@@ -11,12 +11,392 @@ info:
         email: waitforadding@gmail.com
     license:
         name: MIT
-        url: https://github.com/origadmin/backend/blob/master/LICENSE
+        url: https://origadmin/application/admin/blob/master/LICENSE
     version: Version from annotation
 servers:
     - url: http://localhost:10080
     - url: https://localhost:10080
 paths:
+    /auth/authenticate:
+        post:
+            tags:
+                - AuthService
+            description: Authenticate authenticates a user.
+            operationId: AuthService_Authenticate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.auth.AuthenticateRequest_Data'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.AuthenticateResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/destroy:
+        post:
+            tags:
+                - AuthService
+            description: DestroyToken invalidates a JWT token.
+            operationId: AuthService_DestroyToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.auth.DestroyTokenRequest_Data'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.DestroyTokenResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/logout:
+        post:
+            tags:
+                - AuthService
+            description: AuthLogout logs out a user.
+            operationId: AuthService_AuthLogout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.auth.AuthLogoutRequest_Data'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.AuthLogoutResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/logout:
+        post:
+            tags:
+                - PersonalService
+            description: PersonalLogout Personal user logs out
+            operationId: PersonalService_PersonalLogout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.PersonalLogoutResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/password:
+        put:
+            tags:
+                - PersonalService
+            description: UpdatePersonalProfilePassword The user changes the password
+            operationId: PersonalService_UpdatePersonalPassword
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.UpdatePersonalPasswordResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/profile:
+        get:
+            tags:
+                - PersonalService
+            description: GetPersonalProfile Update the personal user information
+            operationId: PersonalService_GetPersonalProfile
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.GetPersonalProfileResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        put:
+            tags:
+                - PersonalService
+            description: UpdatePersonalProfile Update the personal user information
+            operationId: PersonalService_UpdatePersonalProfile
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.UpdatePersonalProfileResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/resources:
+        get:
+            tags:
+                - PersonalService
+            description: ListPersonalResources List the personal user's menu
+            operationId: PersonalService_ListPersonalResources
+            parameters:
+                - name: id
+                  in: query
+                  description: The parent resource id, for example, "shelves/shelf1".
+                  schema:
+                    type: string
+                - name: current
+                  in: query
+                  description: The current page number.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  description: The maximum number of items to return.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: The next_page_token value returned from a previous List request, if any.
+                  schema:
+                    type: string
+                - name: no_paging
+                  in: query
+                  description: The no_paging is used to disable pagination.
+                  schema:
+                    type: boolean
+                - name: only_count
+                  in: query
+                  description: The only_count is the query parameter for set only to query the total number
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.ListPersonalResourcesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/roles:
+        get:
+            tags:
+                - PersonalService
+            description: ListPersonalResources List the personal user's menu
+            operationId: PersonalService_ListPersonalRoles
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.ListPersonalRolesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/setting:
+        put:
+            tags:
+                - PersonalService
+            description: UpdatePersonalSetting User settings are saved
+            operationId: PersonalService_UpdatePersonalSetting
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.UpdatePersonalSettingResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/personal/token/refresh:
+        post:
+            tags:
+                - PersonalService
+            description: RefreshPersonalToken Refresh the personal user's token
+            operationId: PersonalService_RefreshPersonalToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.RefreshPersonalTokenResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/resources:
+        get:
+            tags:
+                - AuthService
+            description: ListAuthResources returns a list of Auths.
+            operationId: AuthService_ListAuthResources
+            parameters:
+                - name: page_size
+                  in: query
+                  description: The maximum number of Auths to return.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: The next_page_token value returned from a previous List request, if any.
+                  schema:
+                    type: string
+                - name: current
+                  in: query
+                  description: The current page number.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: no_paging
+                  in: query
+                  description: The no_paging is used to disable pagination.
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.ListAuthResourcesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/token:
+        post:
+            tags:
+                - AuthService
+            description: CreateToken generates a new JWT token for the given user.
+            operationId: AuthService_CreateToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.auth.CreateTokenRequest_Data'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.CreateTokenResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /auth/validate:
+        get:
+            tags:
+                - AuthService
+            description: ValidateToken verifies the validity of a JWT token.
+            operationId: AuthService_ValidateToken
+            parameters:
+                - name: token
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.ValidateTokenResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
     /captcha:
         get:
             tags:
@@ -49,7 +429,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.CaptchaResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.CaptchaResponse'
                 default:
                     description: Default error response
                     content:
@@ -115,7 +495,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.CaptchaAudioResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.CaptchaAudioResponse'
                 default:
                     description: Default error response
                     content:
@@ -143,7 +523,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.CaptchaIdResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.CaptchaIdResponse'
                 default:
                     description: Default error response
                     content:
@@ -209,7 +589,240 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.CaptchaImageResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.CaptchaImageResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /casbin/groupings:
+        get:
+            tags:
+                - CasbinSourceService
+            operationId: CasbinSourceService_ListGroupings
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.ListGroupingsResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /casbin/policies:
+        get:
+            tags:
+                - CasbinSourceService
+            operationId: CasbinSourceService_ListPolicies
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.ListPoliciesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /casbin/watch:
+        get:
+            tags:
+                - CasbinSourceService
+            operationId: CasbinSourceService_WatchUpdate
+            parameters:
+                - name: last_modified
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.WatchUpdateResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /datastore:
+        get:
+            tags:
+                - DatastoreService
+            operationId: DatastoreService_ListDatastore
+            parameters:
+                - name: id
+                  in: query
+                  description: The parent data id, for example, "shelves/shelf1".
+                  schema:
+                    type: string
+                - name: current
+                  in: query
+                  description: The current page number.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  description: The maximum number of items to return.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: The next_page_token value returned from a previous List request, if any.
+                  schema:
+                    type: string
+                - name: no_paging
+                  in: query
+                  description: The no_paging is used to disable pagination.
+                  schema:
+                    type: boolean
+                - name: only_count
+                  in: query
+                  description: The only_count is the query parameter for set only to query the total number
+                  schema:
+                    type: boolean
+                - name: type
+                  in: query
+                  description: data type
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.datastore.ListDatastoreResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        post:
+            tags:
+                - DatastoreService
+            operationId: DatastoreService_CreateDatastore
+            parameters:
+                - name: parent
+                  in: query
+                  description: The parent data id where the data is to be created.
+                  schema:
+                    type: string
+                - name: data_id
+                  in: query
+                  description: The data id to use for this data.
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.datastore.CreateDatastoreResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /datastore/{data.id}:
+        put:
+            tags:
+                - DatastoreService
+            operationId: DatastoreService_UpdateDatastore
+            parameters:
+                - name: data.id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: query
+                  description: The id of the data object to update.
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.datastore.UpdateDatastoreResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /datastore/{id}:
+        get:
+            tags:
+                - DatastoreService
+            operationId: DatastoreService_GetDatastore
+            parameters:
+                - name: id
+                  in: path
+                  description: "The field will contain id of the data requested, for example:\r\n \"shelves/shelf1/datastore/data2\""
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.datastore.GetDatastoreResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        delete:
+            tags:
+                - DatastoreService
+            operationId: DatastoreService_DeleteDatastore
+            parameters:
+                - name: id
+                  in: path
+                  description: "The data id of the data to be deleted, for example:\r\n \"shelves/shelf1/datastore/data2\""
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.datastore.DeleteDatastoreResponse'
                 default:
                     description: Default error response
                     content:
@@ -225,7 +838,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.LoginRequest_Data'
+                            $ref: '#/components/schemas/api.v1.services.auth.LoginRequest_Data'
                 required: true
             responses:
                 "200":
@@ -233,7 +846,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.LoginResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.LoginResponse'
                 default:
                     description: Default error response
                     content:
@@ -257,23 +870,24 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.LogoutResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.LogoutResponse'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /register:
+    /message/personal/logout:
         post:
             tags:
-                - LoginService
-            operationId: LoginService_Register
+                - PersonalService
+            description: PersonalLogout Personal user logs out
+            operationId: PersonalService_PersonalLogout
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.RegisterRequest_Data'
+                            $ref: '#/components/schemas/google.protobuf.Any'
                 required: true
             responses:
                 "200":
@@ -281,23 +895,24 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.RegisterResponse'
+                                $ref: '#/components/schemas/api.v1.services.message.PersonalLogoutResponse'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/auth/authenticate:
-        post:
+    /message/personal/password:
+        put:
             tags:
-                - AuthService
-            operationId: AuthService_Authenticate
+                - PersonalService
+            description: UpdatePersonalProfilePassword The user changes the password
+            operationId: PersonalService_UpdatePersonalPassword
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.AuthenticateRequest_Data'
+                            $ref: '#/components/schemas/google.protobuf.Any'
                 required: true
             responses:
                 "200":
@@ -305,114 +920,42 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.AuthenticateResponse'
+                                $ref: '#/components/schemas/api.v1.services.message.UpdatePersonalPasswordResponse'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/auth/destroy:
-        post:
-            tags:
-                - AuthService
-            description: DestroyToken invalidates a JWT token.
-            operationId: AuthService_DestroyToken
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.v1.services.system.DestroyTokenRequest_Data'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.DestroyTokenResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/auth/logout:
-        post:
-            tags:
-                - AuthService
-            operationId: AuthService_AuthLogout
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.v1.services.system.AuthLogoutRequest_Data'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.AuthLogoutResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/auth/resources:
+    /message/personal/profile:
         get:
             tags:
-                - AuthService
-            operationId: AuthService_ListAuthResources
-            parameters:
-                - name: page_size
-                  in: query
-                  description: The maximum number of Auths to return.
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_token
-                  in: query
-                  description: The next_page_token value returned from a previous List request, if any.
-                  schema:
-                    type: string
-                - name: current
-                  in: query
-                  description: The current page number.
-                  schema:
-                    type: integer
-                    format: int32
-                - name: no_paging
-                  in: query
-                  description: The no_paging is used to disable pagination.
-                  schema:
-                    type: boolean
+                - PersonalService
+            description: GetPersonalProfile Update the personal user information
+            operationId: PersonalService_GetPersonalProfile
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ListAuthResourcesResponse'
+                                $ref: '#/components/schemas/api.v1.services.message.GetPersonalProfileResponse'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/auth/token:
-        post:
+        put:
             tags:
-                - AuthService
-            description: CreateToken generates a new JWT token for the given user.
-            operationId: AuthService_CreateToken
+                - PersonalService
+            description: UpdatePersonalProfile Update the personal user information
+            operationId: PersonalService_UpdatePersonalProfile
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.CreateTokenRequest_Data'
+                            $ref: '#/components/schemas/google.protobuf.Any'
                 required: true
             responses:
                 "200":
@@ -420,42 +963,19 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.CreateTokenResponse'
+                                $ref: '#/components/schemas/api.v1.services.message.UpdatePersonalProfileResponse'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/auth/validate:
+    /message/personal/resources:
         get:
             tags:
-                - AuthService
-            description: ValidateToken verifies the validity of a JWT token.
-            operationId: AuthService_ValidateToken
-            parameters:
-                - name: token
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ValidateTokenResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/departments:
-        get:
-            tags:
-                - DepartmentService
-            operationId: DepartmentService_ListDepartments
+                - PersonalService
+            description: ListPersonalResources List the personal user's menu
+            operationId: PersonalService_ListPersonalResources
             parameters:
                 - name: id
                   in: query
@@ -495,6 +1015,155 @@ paths:
                     content:
                         application/json:
                             schema:
+                                $ref: '#/components/schemas/api.v1.services.message.ListPersonalResourcesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /message/personal/roles:
+        get:
+            tags:
+                - PersonalService
+            description: ListPersonalResources List the personal user's menu
+            operationId: PersonalService_ListPersonalRoles
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.message.ListPersonalRolesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /message/personal/setting:
+        put:
+            tags:
+                - PersonalService
+            description: UpdatePersonalSetting User settings are saved
+            operationId: PersonalService_UpdatePersonalSetting
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.message.UpdatePersonalSettingResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /message/personal/token/refresh:
+        post:
+            tags:
+                - PersonalService
+            description: RefreshPersonalToken Refresh the personal user's token
+            operationId: PersonalService_RefreshPersonalToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/google.protobuf.Any'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.message.RefreshPersonalTokenResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /register:
+        post:
+            tags:
+                - LoginService
+            operationId: LoginService_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.auth.RegisterRequest_Data'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.RegisterResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/departments:
+        get:
+            tags:
+                - DepartmentService
+            operationId: DepartmentService_ListDepartments
+            parameters:
+                - name: id
+                  in: query
+                  description: The parent resource id, for example, "shelves/shelf1".
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  description: The page number.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  description: The maximum number of items to return.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: The next_page_token value returned from a previous List request, if any.
+                  schema:
+                    type: string
+                - name: no_paging
+                  in: query
+                  description: The no_paging is used to disable pagination.
+                  schema:
+                    type: boolean
+                - name: only_count
+                  in: query
+                  description: The only_count is the query parameter for set only to query the total number
+                  schema:
+                    type: boolean
+                - name: keyword
+                  in: query
+                  description: The keyword is the query parameter for set only to query the department by keyword
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
                                 $ref: '#/components/schemas/api.v1.services.system.ListDepartmentsResponse'
                 default:
                     description: Default error response
@@ -506,22 +1175,11 @@ paths:
             tags:
                 - DepartmentService
             operationId: DepartmentService_CreateDepartment
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the department is to be created.
-                  schema:
-                    type: string
-                - name: department_id
-                  in: query
-                  description: The department id to use for this department.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Department'
+                            $ref: '#/components/schemas/api.v1.services.system.CreateDepartmentRequest'
                 required: true
             responses:
                 "200":
@@ -556,7 +1214,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Department'
+                            $ref: '#/components/schemas/api.v1.services.types.Department'
                 required: true
             responses:
                 "200":
@@ -624,174 +1282,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/menus:
-        get:
-            tags:
-                - MenuService
-            operationId: MenuService_ListMenus
-            parameters:
-                - name: id
-                  in: query
-                  description: The parent resource id, for example, "shelves/shelf1".
-                  schema:
-                    type: string
-                - name: current
-                  in: query
-                  description: The current page number.
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_size
-                  in: query
-                  description: The maximum number of items to return.
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page_token
-                  in: query
-                  description: The next_page_token value returned from a previous List request, if any.
-                  schema:
-                    type: string
-                - name: no_paging
-                  in: query
-                  description: The no_paging is used to disable pagination.
-                  schema:
-                    type: boolean
-                - name: only_count
-                  in: query
-                  description: The only_count is the query parameter for set only to query the total number
-                  schema:
-                    type: boolean
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ListMenusResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-        post:
-            tags:
-                - MenuService
-            operationId: MenuService_CreateMenu
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the menu is to be created.
-                  schema:
-                    type: string
-                - name: menu_id
-                  in: query
-                  description: The menu id to use for this menu.
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Menu'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.CreateMenuResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/menus/{id}:
-        get:
-            tags:
-                - MenuService
-            operationId: MenuService_GetMenu
-            parameters:
-                - name: id
-                  in: path
-                  description: |-
-                    The field will contain id of the resource requested, for example:
-                     "shelves/shelf1/menus/menu2"
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.GetMenuResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-        delete:
-            tags:
-                - MenuService
-            operationId: MenuService_DeleteMenu
-            parameters:
-                - name: id
-                  in: path
-                  description: |-
-                    The resource id of the menu to be deleted, for example:
-                     "shelves/shelf1/menus/menu2"
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.DeleteMenuResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/menus/{menu.id}:
-        put:
-            tags:
-                - MenuService
-            operationId: MenuService_UpdateMenu
-            parameters:
-                - name: menu.id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Menu'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.UpdateMenuResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
     /sys/permissions:
         get:
             tags:
@@ -803,9 +1293,9 @@ paths:
                   description: The parent resource id, for example, "shelves/shelf1".
                   schema:
                     type: string
-                - name: current
+                - name: page
                   in: query
-                  description: The current page number.
+                  description: The page number.
                   schema:
                     type: integer
                     format: int32
@@ -837,6 +1327,11 @@ paths:
                     type: array
                     items:
                         type: string
+                - name: keyword
+                  in: query
+                  description: The keyword is the query parameter for set only to query the permission by keyword
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -854,22 +1349,11 @@ paths:
             tags:
                 - PermissionService
             operationId: PermissionService_CreatePermission
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the permission is to be created.
-                  schema:
-                    type: string
-                - name: permission_id
-                  in: query
-                  description: The permission id to use for this permission.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Permission'
+                            $ref: '#/components/schemas/api.v1.services.system.CreatePermissionRequest'
                 required: true
             responses:
                 "200":
@@ -957,7 +1441,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Permission'
+                            $ref: '#/components/schemas/api.v1.services.types.Permission'
                 required: true
             responses:
                 "200":
@@ -966,227 +1450,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.v1.services.system.UpdatePermissionResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/logout:
-        post:
-            tags:
-                - PersonalService
-            description: PersonalLogout Personal user logs out
-            operationId: PersonalService_PersonalLogout
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.PersonalLogoutResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/menus:
-        get:
-            tags:
-                - PersonalService
-            description: ListPersonalResources List the personal user's menu
-            operationId: PersonalService_ListPersonalResources
-            parameters:
-                - name: data.type_url
-                  in: query
-                  description: |-
-                    A URL/resource name that uniquely identifies the type of the serialized
-                     protocol buffer message. This string must contain at least
-                     one "/" character. The last segment of the URL's path must represent
-                     the fully qualified name of the type (as in
-                     `path/google.protobuf.Duration`). The name should be in a canonical form
-                     (e.g., leading "." is not accepted).
-
-                     In practice, teams usually precompile into the binary all types that they
-                     expect it to use in the context of Any. However, for URLs which use the
-                     scheme `http`, `https`, or no scheme, one can optionally set up a type
-                     server that maps type URLs to message definitions as follows:
-
-                     * If no scheme is provided, `https` is assumed.
-                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-                       value in binary format, or produce an error.
-                     * Applications are allowed to cache lookup results based on the
-                       URL, or have them precompiled into a binary to avoid any
-                       lookup. Therefore, binary compatibility needs to be preserved
-                       on changes to types. (Use versioned type names to manage
-                       breaking changes.)
-
-                     Note: this functionality is not currently available in the official
-                     protobuf release, and it is not used for type URLs beginning with
-                     type.googleapis.com. As of May 2023, there are no widely used type server
-                     implementations and no plans to implement one.
-
-                     Schemes other than `http`, `https` (or the empty scheme) might be
-                     used with implementation specific semantics.
-                  schema:
-                    type: string
-                - name: data.value
-                  in: query
-                  description: Must be a valid serialized protocol buffer of the above specified type.
-                  schema:
-                    type: string
-                    format: bytes
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ListPersonalResourcesResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/password:
-        put:
-            tags:
-                - PersonalService
-            description: UpdatePersonalProfilePassword The user changes the password
-            operationId: PersonalService_UpdatePersonalPassword
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.UpdatePersonalPasswordResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/profile:
-        get:
-            tags:
-                - PersonalService
-            description: GetPersonalProfile Update the personal user information
-            operationId: PersonalService_GetPersonalProfile
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.GetPersonalProfileResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-        put:
-            tags:
-                - PersonalService
-            description: UpdatePersonalProfile Update the personal user information
-            operationId: PersonalService_UpdatePersonalProfile
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.UpdatePersonalProfileResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/roles:
-        get:
-            tags:
-                - PersonalService
-            description: ListPersonalResources List the personal user's menu
-            operationId: PersonalService_ListPersonalRoles
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ListPersonalRolesResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/setting:
-        put:
-            tags:
-                - PersonalService
-            description: UpdatePersonalSetting User settings are saved
-            operationId: PersonalService_UpdatePersonalSetting
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.UpdatePersonalSettingResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/personal/token/refresh:
-        post:
-            tags:
-                - PersonalService
-            description: RefreshPersonalToken Refresh the personal user's token
-            operationId: PersonalService_RefreshPersonalToken
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.RefreshPersonalTokenResponse'
                 default:
                     description: Default error response
                     content:
@@ -1204,9 +1467,9 @@ paths:
                   description: The parent resource id, for example, "shelves/shelf1".
                   schema:
                     type: string
-                - name: current
+                - name: page
                   in: query
-                  description: The current page number.
+                  description: The page number.
                   schema:
                     type: integer
                     format: int32
@@ -1231,6 +1494,11 @@ paths:
                   description: The only_count is the query parameter for set only to query the total number
                   schema:
                     type: boolean
+                - name: keyword
+                  in: query
+                  description: The keyword is the query parameter for set only to query the position by keyword
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -1248,22 +1516,11 @@ paths:
             tags:
                 - PositionService
             operationId: PositionService_CreatePosition
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the position is to be created.
-                  schema:
-                    type: string
-                - name: position_id
-                  in: query
-                  description: The position id to use for this position.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Position'
+                            $ref: '#/components/schemas/api.v1.services.system.CreatePositionRequest'
                 required: true
             responses:
                 "200":
@@ -1351,7 +1608,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Position'
+                            $ref: '#/components/schemas/api.v1.services.types.Position'
                 required: true
             responses:
                 "200":
@@ -1370,43 +1627,45 @@ paths:
         get:
             tags:
                 - ResourceService
+            description: Lists all backend resources.
             operationId: ResourceService_ListResources
             parameters:
                 - name: id
                   in: query
-                  description: The parent resource id, for example, "shelves/shelf1".
                   schema:
                     type: string
-                - name: current
+                - name: page
                   in: query
-                  description: The current page number.
                   schema:
                     type: integer
                     format: int32
                 - name: page_size
                   in: query
-                  description: The maximum number of items to return.
                   schema:
                     type: integer
                     format: int32
                 - name: page_token
                   in: query
-                  description: The next_page_token value returned from a previous List request, if any.
                   schema:
                     type: string
                 - name: no_paging
                   in: query
-                  description: The no_paging is used to disable pagination.
                   schema:
                     type: boolean
                 - name: only_count
                   in: query
-                  description: The only_count is the query parameter for set only to query the total number
                   schema:
                     type: boolean
-                - name: type
+                - name: keyword
                   in: query
-                  description: resource type
+                  schema:
+                    type: string
+                - name: service_name
+                  in: query
+                  schema:
+                    type: string
+                - name: sync_status
+                  in: query
                   schema:
                     type: string
             responses:
@@ -1425,23 +1684,13 @@ paths:
         post:
             tags:
                 - ResourceService
+            description: Creates a new backend resource.
             operationId: ResourceService_CreateResource
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the resource is to be created.
-                  schema:
-                    type: string
-                - name: resource_id
-                  in: query
-                  description: The resource id to use for this resource.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Resource'
+                            $ref: '#/components/schemas/api.v1.services.system.CreateResourceRequest'
                 required: true
             responses:
                 "200":
@@ -1460,13 +1709,11 @@ paths:
         get:
             tags:
                 - ResourceService
+            description: Gets a single backend resource.
             operationId: ResourceService_GetResource
             parameters:
                 - name: id
                   in: path
-                  description: |-
-                    The field will contain id of the resource requested, for example:
-                     "shelves/shelf1/resources/resource2"
                   required: true
                   schema:
                     type: string
@@ -1486,13 +1733,11 @@ paths:
         delete:
             tags:
                 - ResourceService
+            description: Deletes a backend resource.
             operationId: ResourceService_DeleteResource
             parameters:
                 - name: id
                   in: path
-                  description: |-
-                    The resource id of the resource to be deleted, for example:
-                     "shelves/shelf1/resources/resource2"
                   required: true
                   schema:
                     type: string
@@ -1513,6 +1758,7 @@ paths:
         put:
             tags:
                 - ResourceService
+            description: Updates a backend resource.
             operationId: ResourceService_UpdateResource
             parameters:
                 - name: resource.id
@@ -1520,16 +1766,11 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: id
-                  in: query
-                  description: The id of the resource object to update.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Resource'
+                            $ref: '#/components/schemas/api.v1.services.types.Resource'
                 required: true
             responses:
                 "200":
@@ -1555,9 +1796,9 @@ paths:
                   description: The parent resource id, for example, "shelves/shelf1".
                   schema:
                     type: string
-                - name: current
+                - name: page
                   in: query
-                  description: The current page number.
+                  description: The page number.
                   schema:
                     type: integer
                     format: int32
@@ -1582,6 +1823,11 @@ paths:
                   description: The only_count is the query parameter for set only to query the total number
                   schema:
                     type: boolean
+                - name: keyword
+                  in: query
+                  description: The keyword is the query parameter for set only to query the role by keyword
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -1599,22 +1845,11 @@ paths:
             tags:
                 - RoleService
             operationId: RoleService_CreateRole
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the role is to be created.
-                  schema:
-                    type: string
-                - name: role_id
-                  in: query
-                  description: The role id to use for this role.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Role'
+                            $ref: '#/components/schemas/api.v1.services.system.CreateRoleRequest'
                 required: true
             responses:
                 "200":
@@ -1702,7 +1937,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.Role'
+                            $ref: '#/components/schemas/api.v1.services.types.Role'
                 required: true
             responses:
                 "200":
@@ -1728,9 +1963,9 @@ paths:
                   description: The parent resource id, for example, "shelves/shelf1".
                   schema:
                     type: string
-                - name: current
+                - name: page
                   in: query
-                  description: The current page number.
+                  description: The page number.
                   schema:
                     type: integer
                     format: int32
@@ -1755,7 +1990,7 @@ paths:
                   description: The only_count is the query parameter for set only to query the total number
                   schema:
                     type: boolean
-                - name: title
+                - name: keyword
                   in: query
                   description: The title query parameter for set only to query the title
                   schema:
@@ -1777,32 +2012,11 @@ paths:
             tags:
                 - UserService
             operationId: UserService_CreateUser
-            parameters:
-                - name: parent
-                  in: query
-                  description: The parent resource id where the user is to be created.
-                  schema:
-                    type: string
-                - name: user_id
-                  in: query
-                  description: The user id to use for this user.
-                  schema:
-                    type: string
-                - name: is_system
-                  in: query
-                  description: The user is_system to use for this user.
-                  schema:
-                    type: boolean
-                - name: random_password
-                  in: query
-                  description: The random_password is the query parameter for set only to generate a random password
-                  schema:
-                    type: boolean
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.User'
+                            $ref: '#/components/schemas/api.v1.services.system.CreateUserRequest'
                 required: true
             responses:
                 "200":
@@ -1844,113 +2058,14 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/users/{id}/password/reset:
-        post:
-            tags:
-                - UserService
-            description: ResetUserPassword reset the user s password
-            operationId: UserService_ResetUserPassword
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/google.protobuf.Any'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ResetUserPasswordResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/users/{id}/resources:
-        get:
-            tags:
-                - UserService
-            operationId: UserService_ListUserResources
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.ListUserResourcesResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /sys/users/{user.id}:
-        put:
-            tags:
-                - UserService
-            operationId: UserService_UpdateUser
-            parameters:
-                - name: user.id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                - name: user_id
-                  in: query
-                  description: The user id to use for this user.
-                  schema:
-                    type: string
-                - name: is_system
-                  in: query
-                  description: The user is_system to use for this user.
-                  schema:
-                    type: boolean
-                - name: random_password
-                  in: query
-                  description: The random_password is the query parameter for set only to generate a random password
-                  schema:
-                    type: boolean
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.v1.services.system.User'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.system.UpdateUserResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
         delete:
             tags:
                 - UserService
             operationId: UserService_DeleteUser
             parameters:
-                - name: user.id
+                - name: id
                   in: path
+                  description: The resource id of the user to be deleted.
                   required: true
                   schema:
                     type: string
@@ -2016,20 +2131,6 @@ paths:
                 - name: user.gender
                   in: query
                   description: user.field.gender
-                  schema:
-                    type: string
-                - name: user.password
-                  in: query
-                  description: |-
-                    user.field.password
-                     @Decrypted don't show this field in response
-                  schema:
-                    type: string
-                - name: user.salt
-                  in: query
-                  description: |-
-                    user.field.salt
-                     @Decrypted don't show this field in response
                   schema:
                     type: string
                 - name: user.phone
@@ -2105,33 +2206,78 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/users/{user.id}/roles:
+    /sys/users/{id}/password/reset:
+        post:
+            tags:
+                - UserService
+            description: ResetUserPassword reset the user s password
+            operationId: UserService_ResetUserPassword
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.ResetUserPasswordResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/users/{id}/resources:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_ListUserResources
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.ListUserResourcesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/users/{id}/roles:
         put:
             tags:
                 - UserService
             description: UpdateUserRoles update the user roles
             operationId: UserService_UpdateUserRoles
             parameters:
-                - name: user.id
+                - name: id
                   in: path
                   required: true
                   schema:
                     type: string
-                - name: id
-                  in: query
-                  schema:
-                    type: string
-                - name: role_ids
-                  in: query
-                  schema:
-                    type: array
-                    items:
-                        type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.User'
+                            $ref: '#/components/schemas/api.v1.services.system.UpdateUserRolesRequest'
                 required: true
             responses:
                 "200":
@@ -2146,14 +2292,14 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /sys/users/{user.id}/status:
+    /sys/users/{id}/status:
         put:
             tags:
                 - UserService
             description: UpdateUserStatus Update the status of the user information
             operationId: UserService_UpdateUserStatus
             parameters:
-                - name: user.id
+                - name: id
                   in: path
                   required: true
                   schema:
@@ -2162,7 +2308,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.User'
+                            $ref: '#/components/schemas/api.v1.services.system.UpdateUserStatusRequest'
                 required: true
             responses:
                 "200":
@@ -2171,6 +2317,209 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.v1.services.system.UpdateUserStatusResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/users/{user.id}:
+        put:
+            tags:
+                - UserService
+            operationId: UserService_UpdateUser
+            parameters:
+                - name: user.id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: user_id
+                  in: query
+                  description: The user id to use for this user.
+                  schema:
+                    type: string
+                - name: is_system
+                  in: query
+                  description: The user is_system to use for this user.
+                  schema:
+                    type: boolean
+                - name: random_password
+                  in: query
+                  description: The random_password is the query parameter for set only to generate a random password
+                  schema:
+                    type: boolean
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.types.User'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.UpdateUserResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/views:
+        get:
+            tags:
+                - ViewService
+            description: Lists all view elements.
+            operationId: ViewService_ListViews
+            parameters:
+                - name: id
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  schema:
+                    type: string
+                - name: no_paging
+                  in: query
+                  schema:
+                    type: boolean
+                - name: only_count
+                  in: query
+                  schema:
+                    type: boolean
+                - name: keyword
+                  in: query
+                  schema:
+                    type: string
+                - name: scope
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.ListViewsResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        post:
+            tags:
+                - ViewService
+            description: Creates a new view element.
+            operationId: ViewService_CreateView
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.system.CreateViewRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.CreateViewResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/views/{id}:
+        get:
+            tags:
+                - ViewService
+            description: Gets a single view element.
+            operationId: ViewService_GetView
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.GetViewResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        delete:
+            tags:
+                - ViewService
+            description: Deletes a view element.
+            operationId: ViewService_DeleteView
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.DeleteViewResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /sys/views/{view.id}:
+        put:
+            tags:
+                - ViewService
+            description: Updates a view element.
+            operationId: ViewService_UpdateView
+            parameters:
+                - name: view.id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.types.View'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.system.UpdateViewResponse'
                 default:
                     description: Default error response
                     content:
@@ -2186,7 +2535,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.system.TokenRefreshRequest_Data'
+                            $ref: '#/components/schemas/api.v1.services.auth.TokenRefreshRequest_Data'
                 required: true
             responses:
                 "200":
@@ -2194,7 +2543,181 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.v1.services.system.TokenRefreshResponse'
+                                $ref: '#/components/schemas/api.v1.services.auth.TokenRefreshResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /upload:
+        get:
+            tags:
+                - UploadService
+            operationId: UploadService_ListUpload
+            parameters:
+                - name: id
+                  in: query
+                  description: The parent data id, for example, "shelves/shelf1".
+                  schema:
+                    type: string
+                - name: current
+                  in: query
+                  description: The current page number.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_size
+                  in: query
+                  description: The maximum number of items to return.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page_token
+                  in: query
+                  description: The next_page_token value returned from a previous List request, if any.
+                  schema:
+                    type: string
+                - name: no_paging
+                  in: query
+                  description: The no_paging is used to disable pagination.
+                  schema:
+                    type: boolean
+                - name: only_count
+                  in: query
+                  description: The only_count is the query parameter for set only to query the total number
+                  schema:
+                    type: boolean
+                - name: type
+                  in: query
+                  description: data type
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.upload.ListUploadResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        post:
+            tags:
+                - UploadService
+            operationId: UploadService_CreateUpload
+            parameters:
+                - name: parent
+                  in: query
+                  description: The parent data id where the data is to be created.
+                  schema:
+                    type: string
+                - name: data_id
+                  in: query
+                  description: The data id to use for this data.
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.upload.CreateUploadResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /upload/{data.id}:
+        put:
+            tags:
+                - UploadService
+            operationId: UploadService_UpdateUpload
+            parameters:
+                - name: data.id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: id
+                  in: query
+                  description: The id of the data object to update.
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.upload.UpdateUploadResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+    /upload/{id}:
+        get:
+            tags:
+                - UploadService
+            operationId: UploadService_GetUpload
+            parameters:
+                - name: id
+                  in: path
+                  description: "The field will contain id of the data requested, for example:\r\n \"shelves/shelf1/upload/data2\""
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.upload.GetUploadResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
+        delete:
+            tags:
+                - UploadService
+            operationId: UploadService_DeleteUpload
+            parameters:
+                - name: id
+                  in: path
+                  description: "The data id of the data to be deleted, for example:\r\n \"shelves/shelf1/upload/data2\""
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.upload.DeleteUploadResponse'
                 default:
                     description: Default error response
                     content:
@@ -2203,15 +2726,15 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
 components:
     schemas:
-        api.v1.services.system.AuthLogoutRequest_Data:
+        api.v1.services.auth.AuthLogoutRequest_Data:
             type: object
             properties:
                 token:
                     type: string
-        api.v1.services.system.AuthLogoutResponse:
+        api.v1.services.auth.AuthLogoutResponse:
             type: object
             properties: {}
-        api.v1.services.system.AuthenticateRequest_Data:
+        api.v1.services.auth.AuthenticateRequest_Data:
             type: object
             properties:
                 token:
@@ -2222,12 +2745,12 @@ components:
                     type: string
                 operation:
                     type: string
-        api.v1.services.system.AuthenticateResponse:
+        api.v1.services.auth.AuthenticateResponse:
             type: object
             properties:
                 is_valid:
                     type: boolean
-        api.v1.services.system.CaptchaAudioResponse:
+        api.v1.services.auth.CaptchaAudioResponse:
             type: object
             properties:
                 headers:
@@ -2238,12 +2761,12 @@ components:
                     type: string
                     format: bytes
             description: The response message containing the greetings
-        api.v1.services.system.CaptchaIdResponse:
+        api.v1.services.auth.CaptchaIdResponse:
             type: object
             properties:
                 data:
                     type: string
-        api.v1.services.system.CaptchaImageResponse:
+        api.v1.services.auth.CaptchaImageResponse:
             type: object
             properties:
                 headers:
@@ -2254,7 +2777,7 @@ components:
                     type: string
                     format: bytes
             description: The response message containing the greetings
-        api.v1.services.system.CaptchaResponse:
+        api.v1.services.auth.CaptchaResponse:
             type: object
             properties:
                 id:
@@ -2263,39 +2786,7 @@ components:
                     type: string
                 data:
                     type: string
-        api.v1.services.system.CreateDepartmentResponse:
-            type: object
-            properties:
-                department:
-                    $ref: '#/components/schemas/api.v1.services.system.Department'
-        api.v1.services.system.CreateMenuResponse:
-            type: object
-            properties:
-                menu:
-                    $ref: '#/components/schemas/api.v1.services.system.Menu'
-            description: CreateMenuResponse is the response for the MenuService.CreateMenu method.
-        api.v1.services.system.CreatePermissionResponse:
-            type: object
-            properties:
-                permission:
-                    $ref: '#/components/schemas/api.v1.services.system.Permission'
-        api.v1.services.system.CreatePositionResponse:
-            type: object
-            properties:
-                position:
-                    $ref: '#/components/schemas/api.v1.services.system.Position'
-        api.v1.services.system.CreateResourceResponse:
-            type: object
-            properties:
-                resource:
-                    $ref: '#/components/schemas/api.v1.services.system.Resource'
-            description: CreateResourceResponse is the response for the ResourceService.CreateResource method.
-        api.v1.services.system.CreateRoleResponse:
-            type: object
-            properties:
-                role:
-                    $ref: '#/components/schemas/api.v1.services.system.Role'
-        api.v1.services.system.CreateTokenRequest_Data:
+        api.v1.services.auth.CreateTokenRequest_Data:
             type: object
             properties:
                 user_id:
@@ -2304,24 +2795,416 @@ components:
                     type: array
                     items:
                         type: string
-        api.v1.services.system.CreateTokenResponse:
+        api.v1.services.auth.CreateTokenResponse:
             type: object
             properties:
                 token:
                     type: string
             description: CreateTokenResponse contains the generated token.
+        api.v1.services.auth.DestroyTokenRequest_Data:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.v1.services.auth.DestroyTokenResponse:
+            type: object
+            properties: {}
+            description: DestroyTokenResponse contains the result of the invalidation.
+        api.v1.services.auth.GetPersonalProfileResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.auth.GroupingRule:
+            type: object
+            properties:
+                p_type:
+                    type: string
+                params:
+                    type: array
+                    items:
+                        type: string
+        api.v1.services.auth.ListAuthResourcesResponse:
+            type: object
+            properties:
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+                    description: The list of Auths.
+                total_size:
+                    type: integer
+                    description: The total number of Auths in the result set.
+                    format: int32
+        api.v1.services.auth.ListGroupingsResponse:
+            type: object
+            properties:
+                rules:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.auth.GroupingRule'
+        api.v1.services.auth.ListPersonalResourcesResponse:
+            type: object
+            properties:
+                total_size:
+                    type: string
+                    description: The total number of items in the list.
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+                    description: list of resources
+                next_page_token:
+                    type: string
+                    description: "Token to retrieve the next page of results, or empty if there are no\r\n more results in the list."
+        api.v1.services.auth.ListPersonalRolesResponse:
+            type: object
+            properties:
+                roles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Role'
+        api.v1.services.auth.ListPoliciesResponse:
+            type: object
+            properties:
+                rules:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.auth.PolicyRule'
+        api.v1.services.auth.LoginRequest_Data:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+                captcha_id:
+                    type: string
+                captcha_code:
+                    type: string
+        api.v1.services.auth.LoginResponse:
+            type: object
+            properties:
+                token:
+                    $ref: '#/components/schemas/contrib.api.security.v1.TokenCredential'
+        api.v1.services.auth.LogoutResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        api.v1.services.auth.PersonalLogoutResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        api.v1.services.auth.PolicyRule:
+            type: object
+            properties:
+                p_type:
+                    type: string
+                params:
+                    type: array
+                    items:
+                        type: string
+        api.v1.services.auth.RefreshPersonalTokenResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.v1.services.auth.RegisterRequest_Data:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+                captcha_id:
+                    type: string
+                captcha_code:
+                    type: string
+        api.v1.services.auth.RegisterResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                data:
+                    $ref: '#/components/schemas/api.v1.services.auth.RegisterResponse_Data'
+        api.v1.services.auth.RegisterResponse_Data:
+            type: object
+            properties:
+                redirect:
+                    type: string
+        api.v1.services.auth.TokenRefreshRequest_Data:
+            type: object
+            properties:
+                refresh_token:
+                    type: string
+        api.v1.services.auth.TokenRefreshResponse:
+            type: object
+            properties:
+                token:
+                    $ref: '#/components/schemas/contrib.api.security.v1.TokenCredential'
+        api.v1.services.auth.UpdatePersonalPasswordResponse:
+            type: object
+            properties: {}
+        api.v1.services.auth.UpdatePersonalProfileResponse:
+            type: object
+            properties: {}
+        api.v1.services.auth.UpdatePersonalSettingResponse:
+            type: object
+            properties: {}
+        api.v1.services.auth.ValidateTokenResponse:
+            type: object
+            properties:
+                is_valid:
+                    type: boolean
+                claims:
+                    type: object
+                    additionalProperties:
+                        type: string
+            description: VerifyTokenResponse contains the result of the verification.
+        api.v1.services.auth.WatchUpdateResponse:
+            type: object
+            properties:
+                modified_date:
+                    type: string
+        api.v1.services.datastore.CreateDatastoreResponse:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/api.v1.services.types.DataObject'
+            description: CreateDatastoreResponse is the response for the DatastoreService.CreateDatastore method.
+        api.v1.services.datastore.DeleteDatastoreResponse:
+            type: object
+            properties: {}
+            description: DeleteDatastoreResponse is the response for the DatastoreService.DeleteDatastore method.
+        api.v1.services.datastore.GetDatastoreResponse:
+            type: object
+            properties:
+                data:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                    description: The field id should match the Noun in the method id.
+            description: GetDatastoreResponse is the response for the DatastoreService.GetDatastore method.
+        api.v1.services.datastore.ListDatastoreResponse:
+            type: object
+            properties:
+                total_size:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                    description: The paging datastore
+                current:
+                    type: integer
+                    description: The current page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: "Token to retrieve the next page of results, or empty if there are no\r\n more results in the list."
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: "Additional information about this response.\r\n content to be added without destroying the current data format"
+            description: ListDatastoreResponse is the response for the DatastoreService.ListDatastore method.
+        api.v1.services.datastore.UpdateDatastoreResponse:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/api.v1.services.types.DataObject'
+            description: UpdateDatastoreResponse is the response for the DatastoreService.UpdateDatastore method.
+        api.v1.services.message.GetPersonalProfileResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.message.ListPersonalResourcesResponse:
+            type: object
+            properties:
+                total_size:
+                    type: string
+                    description: The total number of items in the list.
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+                    description: list of resources
+                next_page_token:
+                    type: string
+                    description: "Token to retrieve the next page of results, or empty if there are no\r\n more results in the list."
+        api.v1.services.message.ListPersonalRolesResponse:
+            type: object
+            properties:
+                roles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Role'
+        api.v1.services.message.PersonalLogoutResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        api.v1.services.message.RefreshPersonalTokenResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.v1.services.message.UpdatePersonalPasswordResponse:
+            type: object
+            properties: {}
+        api.v1.services.message.UpdatePersonalProfileResponse:
+            type: object
+            properties: {}
+        api.v1.services.message.UpdatePersonalSettingResponse:
+            type: object
+            properties: {}
+        api.v1.services.system.CreateDepartmentRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: The parent resource id where the department is to be created.
+                department_id:
+                    type: string
+                    description: The department id to use for this department.
+                department:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.Department'
+                    description: |-
+                        The department resource to create.
+                         The field id should match the Noun in the method id.
+        api.v1.services.system.CreateDepartmentResponse:
+            type: object
+            properties:
+                department:
+                    $ref: '#/components/schemas/api.v1.services.types.Department'
+        api.v1.services.system.CreatePermissionRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: The parent resource id where the permission is to be created.
+                permission_id:
+                    type: string
+                    description: The permission id to use for this permission.
+                permission:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.Permission'
+                    description: |-
+                        The permission resource to create.
+                         The field id should match the Noun in the method id.
+        api.v1.services.system.CreatePermissionResponse:
+            type: object
+            properties:
+                permission:
+                    $ref: '#/components/schemas/api.v1.services.types.Permission'
+        api.v1.services.system.CreatePositionRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: The parent resource id where the position is to be created.
+                position_id:
+                    type: string
+                    description: The position id to use for this position.
+                position:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.Position'
+                    description: The position object to create.
+        api.v1.services.system.CreatePositionResponse:
+            type: object
+            properties:
+                position:
+                    $ref: '#/components/schemas/api.v1.services.types.Position'
+        api.v1.services.system.CreateResourceRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                resource_id:
+                    type: string
+                resource:
+                    $ref: '#/components/schemas/api.v1.services.types.Resource'
+            description: Request message for ResourceService.CreateResource.
+        api.v1.services.system.CreateResourceResponse:
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/api.v1.services.types.Resource'
+            description: Response message for ResourceService.CreateResource.
+        api.v1.services.system.CreateRoleRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: The parent resource id where the role is to be created.
+                role_id:
+                    type: string
+                    description: The role id to use for this role.
+                role:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.Role'
+                    description: |-
+                        The role resource to create.
+                         The field id should match the Noun in the method id.
+        api.v1.services.system.CreateRoleResponse:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/api.v1.services.types.Role'
+        api.v1.services.system.CreateUserRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: The parent resource id where the user is to be created.
+                user:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.User'
+                    description: The user resource to be created.
+                password:
+                    type: string
+                    description: The password to use for this user.
+                user_id:
+                    type: string
+                    description: The user id to use for this user.
+                is_system:
+                    type: boolean
+                    description: The user is_system to use for this user.
+                random_password:
+                    type: boolean
+                    description: The random_password is the query parameter for set only to generate a random password
         api.v1.services.system.CreateUserResponse:
             type: object
             properties:
                 user:
-                    $ref: '#/components/schemas/api.v1.services.system.User'
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.system.CreateViewRequest:
+            type: object
+            properties:
+                parent:
+                    type: string
+                view_id:
+                    type: string
+                view:
+                    $ref: '#/components/schemas/api.v1.services.types.View'
+            description: Request message for ViewService.CreateView.
+        api.v1.services.system.CreateViewResponse:
+            type: object
+            properties:
+                view:
+                    $ref: '#/components/schemas/api.v1.services.types.View'
+            description: Response message for ViewService.CreateView.
         api.v1.services.system.DeleteDepartmentResponse:
             type: object
             properties: {}
-        api.v1.services.system.DeleteMenuResponse:
-            type: object
-            properties: {}
-            description: DeleteMenuResponse is the response for the MenuService.DeleteMenu method.
         api.v1.services.system.DeletePermissionResponse:
             type: object
             properties: {}
@@ -2331,14 +3214,365 @@ components:
         api.v1.services.system.DeleteResourceResponse:
             type: object
             properties: {}
-            description: DeleteResourceResponse is the response for the ResourceService.DeleteResource method.
+            description: Response message for ResourceService.DeleteResource.
         api.v1.services.system.DeleteRoleResponse:
             type: object
             properties: {}
         api.v1.services.system.DeleteUserResponse:
             type: object
             properties: {}
-        api.v1.services.system.Department:
+        api.v1.services.system.DeleteViewResponse:
+            type: object
+            properties: {}
+            description: Response message for ViewService.DeleteView.
+        api.v1.services.system.GetDepartmentResponse:
+            type: object
+            properties:
+                department:
+                    $ref: '#/components/schemas/api.v1.services.types.Department'
+        api.v1.services.system.GetPermissionResponse:
+            type: object
+            properties:
+                permission:
+                    $ref: '#/components/schemas/api.v1.services.types.Permission'
+        api.v1.services.system.GetPositionResponse:
+            type: object
+            properties:
+                position:
+                    $ref: '#/components/schemas/api.v1.services.types.Position'
+        api.v1.services.system.GetResourceResponse:
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/api.v1.services.types.Resource'
+            description: Response message for ResourceService.GetResource.
+        api.v1.services.system.GetRoleResponse:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/api.v1.services.types.Role'
+        api.v1.services.system.GetUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.system.GetViewResponse:
+            type: object
+            properties:
+                view:
+                    $ref: '#/components/schemas/api.v1.services.types.View'
+            description: Response message for ViewService.GetView.
+        api.v1.services.system.ListDepartmentsResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                departments:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Department'
+                    description: The paging menus
+                page:
+                    type: integer
+                    description: The page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: |-
+                        Token to retrieve the next page of results, or empty if there are no
+                         more results in the list.
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: |-
+                        Additional information about this response.
+                         content to be added without destroying the page data format
+        api.v1.services.system.ListPermissionsResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Permission'
+                    description: The paging menus
+                page:
+                    type: integer
+                    description: The page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: |-
+                        Token to retrieve the next page of results, or empty if there are no
+                         more results in the list.
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: |-
+                        Additional information about this response.
+                         content to be added without destroying the page data format
+        api.v1.services.system.ListPositionsResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                positions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Position'
+                    description: The paging menus
+                page:
+                    type: integer
+                    description: The page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: |-
+                        Token to retrieve the next page of results, or empty if there are no
+                         more results in the list.
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: |-
+                        Additional information about this response.
+                         content to be added without destroying the page data format
+        api.v1.services.system.ListResourcesResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    format: int32
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+                page:
+                    type: integer
+                    format: int32
+                page_size:
+                    type: integer
+                    format: int32
+                next_page_token:
+                    type: string
+                extra:
+                    $ref: '#/components/schemas/google.protobuf.Any'
+            description: Response message for ResourceService.ListResources.
+        api.v1.services.system.ListRolesResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                roles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Role'
+                    description: The paging menus
+                page:
+                    type: integer
+                    description: The page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: |-
+                        Token to retrieve the next page of results, or empty if there are no
+                         more results in the list.
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: |-
+                        Additional information about this response.
+                         content to be added without destroying the page data format
+        api.v1.services.system.ListUserResourcesResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    format: int32
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+        api.v1.services.system.ListUsersResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.User'
+                    description: The paging menus
+                page:
+                    type: integer
+                    description: The page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: |-
+                        Token to retrieve the next page of results, or empty if there are no
+                         more results in the list.
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: |-
+                        Additional information about this response.
+                         content to be added without destroying the page data format
+        api.v1.services.system.ListViewsResponse:
+            type: object
+            properties:
+                total:
+                    type: integer
+                    format: int32
+                views:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.View'
+                page:
+                    type: integer
+                    format: int32
+                page_size:
+                    type: integer
+                    format: int32
+                next_page_token:
+                    type: string
+                extra:
+                    $ref: '#/components/schemas/google.protobuf.Any'
+            description: Response message for ViewService.ListViews.
+        api.v1.services.system.ResetUserPasswordResponse:
+            type: object
+            properties: {}
+        api.v1.services.system.UpdateDepartmentResponse:
+            type: object
+            properties:
+                department:
+                    $ref: '#/components/schemas/api.v1.services.types.Department'
+        api.v1.services.system.UpdatePermissionResponse:
+            type: object
+            properties:
+                permission:
+                    $ref: '#/components/schemas/api.v1.services.types.Permission'
+        api.v1.services.system.UpdatePositionResponse:
+            type: object
+            properties:
+                position:
+                    $ref: '#/components/schemas/api.v1.services.types.Position'
+        api.v1.services.system.UpdateResourceResponse:
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/api.v1.services.types.Resource'
+            description: Response message for ResourceService.UpdateResource.
+        api.v1.services.system.UpdateRoleResponse:
+            type: object
+            properties:
+                role:
+                    $ref: '#/components/schemas/api.v1.services.types.Role'
+        api.v1.services.system.UpdateUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.system.UpdateUserRolesRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+                role_ids:
+                    type: array
+                    items:
+                        type: string
+        api.v1.services.system.UpdateUserRolesResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.system.UpdateUserStatusRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                user:
+                    $ref: '#/components/schemas/api.v1.services.types.User'
+        api.v1.services.system.UpdateUserStatusResponse:
+            type: object
+            properties: {}
+        api.v1.services.system.UpdateViewResponse:
+            type: object
+            properties:
+                view:
+                    $ref: '#/components/schemas/api.v1.services.types.View'
+            description: Response message for ViewService.UpdateView.
+        api.v1.services.types.DataObject:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: ID of the ent.
+                create_time:
+                    type: string
+                    description: CreateTime holds the value of the "create_time" field.
+                    format: date-time
+                update_time:
+                    type: string
+                    description: UpdateTime holds the value of the "update_time" field.
+                    format: date-time
+                delete_time:
+                    type: string
+                    description: DeleteTime holds the value of the "delete_time" field.
+                    format: date-time
+                version:
+                    type: string
+                    description: Version holds the value of the "version" field.
+                owner_id:
+                    type: string
+                    description: OwnerID holds the value of the "owner_id" field.
+                metadata:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Metadata holds the value of the "metadata" field.
+                payload:
+                    type: string
+                    description: Payload holds the value of the "payload" field.
+                    format: bytes
+            description: DataObject is the model entity for the DataObject schema.
+        api.v1.services.types.Department:
             type: object
             properties:
                 id:
@@ -2362,7 +3596,7 @@ components:
                     description: department.field.name
                 tree_path:
                     type: string
-                    description: menu.field.tree_path
+                    description: department.field.tree_path
                 sequence:
                     type: integer
                     description: department.field.sequence
@@ -2384,417 +3618,14 @@ components:
                 children:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Department'
+                        $ref: '#/components/schemas/api.v1.services.types.Department'
                     description: Children holds the value of the children edge.
                 parent:
                     allOf:
-                        - $ref: '#/components/schemas/api.v1.services.system.Department'
+                        - $ref: '#/components/schemas/api.v1.services.types.Department'
                     description: Parent holds the value of the parent edge.
             description: department.table.comment
-        api.v1.services.system.DestroyTokenRequest_Data:
-            type: object
-            properties:
-                token:
-                    type: string
-        api.v1.services.system.DestroyTokenResponse:
-            type: object
-            properties: {}
-            description: DestroyTokenResponse contains the result of the invalidation.
-        api.v1.services.system.GetDepartmentResponse:
-            type: object
-            properties:
-                department:
-                    $ref: '#/components/schemas/api.v1.services.system.Department'
-        api.v1.services.system.GetMenuResponse:
-            type: object
-            properties:
-                menu:
-                    allOf:
-                        - $ref: '#/components/schemas/api.v1.services.system.Menu'
-                    description: The field id should match the Noun in the method id.
-            description: GetMenuResponse is the response for the MenuService.GetMenu method.
-        api.v1.services.system.GetPermissionResponse:
-            type: object
-            properties:
-                permission:
-                    $ref: '#/components/schemas/api.v1.services.system.Permission'
-        api.v1.services.system.GetPersonalProfileResponse:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/api.v1.services.system.User'
-        api.v1.services.system.GetPositionResponse:
-            type: object
-            properties:
-                position:
-                    $ref: '#/components/schemas/api.v1.services.system.Position'
-        api.v1.services.system.GetResourceResponse:
-            type: object
-            properties:
-                resource:
-                    allOf:
-                        - $ref: '#/components/schemas/api.v1.services.system.Resource'
-                    description: The field id should match the Noun in the method id.
-            description: GetResourceResponse is the response for the ResourceService.GetResource method.
-        api.v1.services.system.GetRoleResponse:
-            type: object
-            properties:
-                role:
-                    $ref: '#/components/schemas/api.v1.services.system.Role'
-        api.v1.services.system.GetUserResponse:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/api.v1.services.system.User'
-        api.v1.services.system.ListAuthResourcesResponse:
-            type: object
-            properties:
-                resources:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
-                    description: The list of Auths.
-                total_size:
-                    type: integer
-                    description: The total number of Auths in the result set.
-                    format: int32
-        api.v1.services.system.ListDepartmentsResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                departments:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Department'
-                    description: The paging menus
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-        api.v1.services.system.ListMenusResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                menus:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Menu'
-                    description: The paging menus
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-            description: ListMenusResponse is the response for the MenuService.ListMenus method.
-        api.v1.services.system.ListPermissionsResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                permissions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Permission'
-                    description: The paging menus
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-        api.v1.services.system.ListPersonalResourcesResponse:
-            type: object
-            properties:
-                menus:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Menu'
-        api.v1.services.system.ListPersonalRolesResponse:
-            type: object
-            properties:
-                roles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Role'
-        api.v1.services.system.ListPositionsResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                positions:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Position'
-                    description: The paging menus
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-        api.v1.services.system.ListResourcesResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                resources:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
-                    description: The paging resources
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-            description: ListResourcesResponse is the response for the ResourceService.ListResources method.
-        api.v1.services.system.ListRolesResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                roles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Role'
-                    description: The paging menus
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-        api.v1.services.system.ListUserResourcesResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    format: int32
-                resources:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
-        api.v1.services.system.ListUsersResponse:
-            type: object
-            properties:
-                total_size:
-                    type: integer
-                    description: The total number of items in the list.
-                    format: int32
-                users:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.User'
-                    description: The paging menus
-                current:
-                    type: integer
-                    description: The current page number.
-                    format: int32
-                page_size:
-                    type: integer
-                    description: The maximum number of items to return.
-                    format: int32
-                next_page_token:
-                    type: string
-                    description: |-
-                        Token to retrieve the next page of results, or empty if there are no
-                         more results in the list.
-                extra:
-                    allOf:
-                        - $ref: '#/components/schemas/google.protobuf.Any'
-                    description: |-
-                        Additional information about this response.
-                         content to be added without destroying the current data format
-        api.v1.services.system.LoginRequest_Data:
-            type: object
-            properties:
-                username:
-                    type: string
-                password:
-                    type: string
-                captcha_id:
-                    type: string
-                captcha_code:
-                    type: string
-        api.v1.services.system.LoginResponse:
-            type: object
-            properties:
-                token:
-                    $ref: '#/components/schemas/security.jwt.v1.Token'
-        api.v1.services.system.LogoutResponse:
-            type: object
-            properties:
-                success:
-                    type: boolean
-        api.v1.services.system.Menu:
-            type: object
-            properties:
-                id:
-                    type: string
-                    description: ID of the ent.
-                create_time:
-                    type: string
-                    description: CreateTime holds the value of the "create_time" field.
-                    format: date-time
-                update_time:
-                    type: string
-                    description: UpdateTime holds the value of the "update_time" field.
-                    format: date-time
-                keyword:
-                    type: string
-                    description: Code holds the value of the "keyword" field.
-                name:
-                    type: string
-                    description: Name holds the value of the "name" field.
-                i18n_key:
-                    type: string
-                    description: I18nKey holds the value
-                description:
-                    type: string
-                    description: Description holds the value of the "description" field.
-                sequence:
-                    type: integer
-                    description: Sequence holds the value of the "sequence" field.
-                    format: int32
-                type:
-                    type: string
-                    description: Type holds the value of the "type" field.
-                icon:
-                    type: string
-                    description: Icon holds the value of the "icon" field.
-                path:
-                    type: string
-                    description: Path holds the value of the "path" field.
-                properties:
-                    type: string
-                    description: Properties holds the value of the "properties" field.
-                status:
-                    type: integer
-                    description: Status holds the value of the "status" field.
-                    format: int32
-                parent_id:
-                    type: string
-                    description: ParentID holds the value of the "parent_id" field.
-                parent_path:
-                    type: string
-                    description: ParentPath holds the value of the "parent_path" field.
-                children:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Menu'
-                    description: Children holds the value of the children edge.
-                parent:
-                    allOf:
-                        - $ref: '#/components/schemas/api.v1.services.system.Menu'
-                    description: Parent holds the value of the parent edge.
-                resources:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
-                    description: Resources holds the value of the resources edge.
-                roles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.system.Role'
-                    description: Roles holds the value of the roles edge.
-            description: Menu is the model entity for the Menu schema.
-        api.v1.services.system.Permission:
+        api.v1.services.types.Permission:
             type: object
             properties:
                 id:
@@ -2835,15 +3666,10 @@ components:
                 resources:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
                     description: permission.field.resources
             description: permission.table.comment
-        api.v1.services.system.PersonalLogoutResponse:
-            type: object
-            properties:
-                success:
-                    type: boolean
-        api.v1.services.system.Position:
+        api.v1.services.types.Position:
             type: object
             properties:
                 id:
@@ -2872,38 +3698,7 @@ components:
                     type: string
                     description: department.field.department_id
             description: position.table.comment
-        api.v1.services.system.RefreshPersonalTokenResponse:
-            type: object
-            properties:
-                token:
-                    type: string
-        api.v1.services.system.RegisterRequest_Data:
-            type: object
-            properties:
-                username:
-                    type: string
-                password:
-                    type: string
-                captcha_id:
-                    type: string
-                captcha_code:
-                    type: string
-        api.v1.services.system.RegisterResponse:
-            type: object
-            properties:
-                success:
-                    type: boolean
-                data:
-                    $ref: '#/components/schemas/api.v1.services.system.RegisterResponse_Data'
-        api.v1.services.system.RegisterResponse_Data:
-            type: object
-            properties:
-                redirect:
-                    type: string
-        api.v1.services.system.ResetUserPasswordResponse:
-            type: object
-            properties: {}
-        api.v1.services.system.Resource:
+        api.v1.services.types.Resource:
             type: object
             properties:
                 id:
@@ -2974,11 +3769,11 @@ components:
                 children:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
                     description: Children holds the value of the children edge.
                 parent:
                     allOf:
-                        - $ref: '#/components/schemas/api.v1.services.system.Resource'
+                        - $ref: '#/components/schemas/api.v1.services.types.Resource'
                     description: Parent holds the value of the parent edge.
                 permission_ids:
                     type: array
@@ -2988,10 +3783,10 @@ components:
                 permissions:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Permission'
+                        $ref: '#/components/schemas/api.v1.services.types.Permission'
                     description: Permissions holds the value of the permissions edge.
             description: Resource is the model entity for the Resource schema.
-        api.v1.services.system.Role:
+        api.v1.services.types.Role:
             type: object
             properties:
                 id:
@@ -3028,23 +3823,23 @@ components:
                     type: integer
                     description: role.field.status
                     format: int32
-                is_system:
+                is_types:
                     type: boolean
-                    description: role.field.is_system
-                menus:
+                    description: role.field.is_types
+                views:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Menu'
-                    description: Menus holds the value of the menus edge.
+                        $ref: '#/components/schemas/api.v1.services.types.View'
+                    description: Views holds the value of the views edge.
                 users:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.User'
+                        $ref: '#/components/schemas/api.v1.services.types.User'
                     description: Users holds the value of the users edge.
                 resources:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Resource'
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
                     description: Resources holds the value of the resources edge.
                 resource_ids:
                     type: array
@@ -3054,7 +3849,7 @@ components:
                 permissions:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Permission'
+                        $ref: '#/components/schemas/api.v1.services.types.Permission'
                     description: Permissions holds the value of the permissions edge.
                 permission_ids:
                     type: array
@@ -3062,71 +3857,7 @@ components:
                         type: string
                     description: Permission Ids holds the value of the permission_ids edge.
             description: Role is the model entity for the Role schema.
-        api.v1.services.system.TokenRefreshRequest_Data:
-            type: object
-            properties:
-                refresh_token:
-                    type: string
-        api.v1.services.system.TokenRefreshResponse:
-            type: object
-            properties:
-                token:
-                    $ref: '#/components/schemas/security.jwt.v1.Token'
-        api.v1.services.system.UpdateDepartmentResponse:
-            type: object
-            properties:
-                department:
-                    $ref: '#/components/schemas/api.v1.services.system.Department'
-        api.v1.services.system.UpdateMenuResponse:
-            type: object
-            properties:
-                menu:
-                    $ref: '#/components/schemas/api.v1.services.system.Menu'
-            description: UpdateMenuResponse is the response for the MenuService.UpdateMenu method.
-        api.v1.services.system.UpdatePermissionResponse:
-            type: object
-            properties:
-                permission:
-                    $ref: '#/components/schemas/api.v1.services.system.Permission'
-        api.v1.services.system.UpdatePersonalPasswordResponse:
-            type: object
-            properties: {}
-        api.v1.services.system.UpdatePersonalProfileResponse:
-            type: object
-            properties: {}
-        api.v1.services.system.UpdatePersonalSettingResponse:
-            type: object
-            properties: {}
-        api.v1.services.system.UpdatePositionResponse:
-            type: object
-            properties:
-                position:
-                    $ref: '#/components/schemas/api.v1.services.system.Position'
-        api.v1.services.system.UpdateResourceResponse:
-            type: object
-            properties:
-                resource:
-                    $ref: '#/components/schemas/api.v1.services.system.Resource'
-            description: UpdateResourceResponse is the response for the ResourceService.UpdateResource method.
-        api.v1.services.system.UpdateRoleResponse:
-            type: object
-            properties:
-                role:
-                    $ref: '#/components/schemas/api.v1.services.system.Role'
-        api.v1.services.system.UpdateUserResponse:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/api.v1.services.system.User'
-        api.v1.services.system.UpdateUserRolesResponse:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/api.v1.services.system.User'
-        api.v1.services.system.UpdateUserStatusResponse:
-            type: object
-            properties: {}
-        api.v1.services.system.User:
+        api.v1.services.types.User:
             type: object
             properties:
                 id:
@@ -3169,16 +3900,6 @@ components:
                 gender:
                     type: string
                     description: user.field.gender
-                password:
-                    type: string
-                    description: |-
-                        user.field.password
-                         @Decrypted don't show this field in response
-                salt:
-                    type: string
-                    description: |-
-                        user.field.salt
-                         @Decrypted don't show this field in response
                 phone:
                     type: string
                     description: user.field.phone
@@ -3215,7 +3936,7 @@ components:
                 roles:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.v1.services.system.Role'
+                        $ref: '#/components/schemas/api.v1.services.types.Role'
                     description: Roles holds the value of the roles edge.
                 role_ids:
                     type: array
@@ -3223,16 +3944,158 @@ components:
                         type: string
                     description: Role Ids holds the value of the role_ids
             description: User is the model entity for the User schema.
-        api.v1.services.system.ValidateTokenResponse:
+        api.v1.services.types.View:
             type: object
             properties:
-                is_valid:
+                id:
+                    type: string
+                    description: ID of the ent.
+                create_time:
+                    type: string
+                    description: CreateTime holds the value of the "create_time" field.
+                    format: date-time
+                update_time:
+                    type: string
+                    description: UpdateTime holds the value of the "update_time" field.
+                    format: date-time
+                keyword:
+                    type: string
+                    description: Code holds the value of the "keyword" field.
+                name:
+                    type: string
+                    description: Name holds the value of the "name" field.
+                scope:
+                    type: string
+                    description: Scope holds the value of the "scope" field.
+                i18n_key:
+                    type: string
+                    description: I18nKey holds the value of the "i18n_key" field.
+                description:
+                    type: string
+                    description: Description holds the value of the "description" field.
+                sequence:
+                    type: integer
+                    description: Sequence holds the value of the "sequence" field.
+                    format: int32
+                type:
+                    type: string
+                    description: Type holds the value of the "type" field.
+                comment:
+                    type: string
+                    description: Comment holds the value of the "comment" field.
+                icon:
+                    type: string
+                    description: Icon holds the value of the "icon" field.
+                visible:
                     type: boolean
-                claims:
-                    type: object
-                    additionalProperties:
-                        type: string
-            description: VerifyTokenResponse contains the result of the verification.
+                    description: Visible holds the value of the "visible" field.
+                path:
+                    type: string
+                    description: Path holds the value of the "path" field.
+                tree_path:
+                    type: string
+                    description: TreePath holds the value of the "tree_path" field.
+                properties:
+                    type: string
+                    description: Properties holds the value of the "properties" field.
+                status:
+                    type: integer
+                    description: Status holds the value of the "status" field.
+                    format: int32
+                parent_id:
+                    type: string
+                    description: ParentID holds the value of the "parent_id" field.
+                parent_path:
+                    type: string
+                    description: ParentPath holds the value of the "parent_path" field.
+                children:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.View'
+                    description: Children holds the value of the children edge.
+                parent:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.View'
+                    description: Parent holds the value of the parent edge.
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+                    description: Resources holds the value of the resources edge.
+                roles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Role'
+                    description: Roles holds the value of the roles edge.
+            description: View is the model entity for the View schema.
+        api.v1.services.upload.CreateUploadResponse:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/api.v1.services.types.DataObject'
+            description: CreateUploadResponse is the response for the UploadService.CreateUpload method.
+        api.v1.services.upload.DeleteUploadResponse:
+            type: object
+            properties: {}
+            description: DeleteUploadResponse is the response for the UploadService.DeleteUpload method.
+        api.v1.services.upload.GetUploadResponse:
+            type: object
+            properties:
+                data:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                    description: The field id should match the Noun in the method id.
+            description: GetUploadResponse is the response for the UploadService.GetUpload method.
+        api.v1.services.upload.ListUploadResponse:
+            type: object
+            properties:
+                total_size:
+                    type: integer
+                    description: The total number of items in the list.
+                    format: int32
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.DataObject'
+                    description: The paging upload
+                current:
+                    type: integer
+                    description: The current page number.
+                    format: int32
+                page_size:
+                    type: integer
+                    description: The maximum number of items to return.
+                    format: int32
+                next_page_token:
+                    type: string
+                    description: "Token to retrieve the next page of results, or empty if there are no\r\n more results in the list."
+                extra:
+                    allOf:
+                        - $ref: '#/components/schemas/google.protobuf.Any'
+                    description: "Additional information about this response.\r\n content to be added without destroying the current data format"
+            description: ListUploadResponse is the response for the UploadService.ListUpload method.
+        api.v1.services.upload.UpdateUploadResponse:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/api.v1.services.types.DataObject'
+            description: UpdateUploadResponse is the response for the UploadService.UpdateUpload method.
+        contrib.api.security.v1.TokenCredential:
+            type: object
+            properties:
+                access_token:
+                    type: string
+                    description: The access token used for authentication.
+                refresh_token:
+                    type: string
+                    description: The refresh token used to obtain a new access token.
+                expires_in:
+                    type: string
+                    description: The remaining lifetime of the access token in seconds.
+                token_type:
+                    type: string
+                    description: The type of the token, typically 'Bearer'.
+            description: "TokenCredential holds the credentials for token-based authentication flows\r\n like OAuth2 and JWT.\r\n\r\n IMPORTANT: This message represents the full set of tokens typically returned\r\n from a token issuance endpoint (e.g., /login). It is designed for use in\r\n CredentialResponse."
         google.protobuf.Any:
             type: object
             properties:
@@ -3257,25 +4120,6 @@ components:
                         $ref: '#/components/schemas/google.protobuf.Any'
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
-        security.jwt.v1.Token:
-            type: object
-            properties:
-                client_id:
-                    type: string
-                    description: The client ID associated with the token.
-                user_id:
-                    type: string
-                    description: The ID of the user associated with the token.
-                access_token:
-                    type: string
-                    description: The web access token used for authentication.
-                refresh_token:
-                    type: string
-                    description: The refresh token used to obtain a new access token.
-                expiration_time:
-                    type: string
-                    description: The expiration time of the token.
-            description: PWT is a web token that can be used to authenticate a user with protobuf services.
     securitySchemes:
         Basic:
             type: http
@@ -3286,21 +4130,34 @@ components:
             in: header
 tags:
     - name: AuthService
+    - name: CasbinSourceService
+      description: The Casbin source service definition.
+    - name: DatastoreService
+      description: The data service definition.
     - name: DepartmentService
       description: The login service definition.
     - name: LoginService
       description: The login service definition.
-    - name: MenuService
-      description: The menu service definition.
     - name: PermissionService
       description: The login service definition.
+    - name: PersonalService
+      description: PersonalService Personal user service
     - name: PersonalService
       description: PersonalService Personal user service
     - name: PositionService
       description: The login service definition.
     - name: ResourceService
-      description: The resource service definition.
+      description: |-
+        The resource service definition.
+         A Resource represents a backend asset that requires access control, such as an HTTP API or a gRPC method.
+         The definition of the Resource message in types/system.proto should be updated to include fields
+         like service_name, path, method, operation, policy, version_id, last_sync_version_id, and sync_status
+         as specified in 09_Data_Model_Schema.md.
     - name: RoleService
       description: The login service definition.
+    - name: UploadService
+      description: The data service definition.
     - name: UserService
       description: The login service definition.
+    - name: ViewService
+      description: "The view service definition.\r\n A View represents a UI element that can be controlled by permissions, such as a menu, button, or page."
