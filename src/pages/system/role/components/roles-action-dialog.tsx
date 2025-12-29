@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea"; // Import Textarea
+import { Textarea } from "@/components/ui/textarea";
 import { RolesPermissionSelect } from "./roles-permission-select";
 import { RolesSequenceDialog } from "./roles-sequence-dialogs";
 
@@ -155,7 +155,35 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='Please enter a name' {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='Please enter a keyword' {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='type' render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input {...field} disabled /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='sequence' render={({ field }) => (<FormItem><FormLabel>Sequence</FormLabel><div className='flex items-center'><FormControl><Input className='rounded-r-none focus-visible:z-10' placeholder='' {...field} /></FormControl><Button type='button' variant='outline' onClick={handleSortOpen} className='h-9 w-12 gap-0 px-0 rounded-l-none -ml-px focus-visible:z-10' size='icon'><IconArrowsSort className='h-5 w-5' /></Button></div><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='sequence'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Sequence</FormLabel>
+                          <div className='flex'>
+                            <FormControl>
+                              <Input
+                                className='rounded-r-none focus-visible:z-10'
+                                placeholder='Click button to sort'
+                                value={field.value || 0}
+                                readOnly
+                              />
+                            </FormControl>
+                            <Button
+                              type='button'
+                              variant='outline'
+                              onClick={handleSortOpen}
+                              className='h-9 w-12 gap-0 px-0 rounded-l-none -ml-px focus-visible:z-10'
+                              size='icon'
+                            >
+                              <IconArrowsSort className='h-5 w-5' />
+                            </Button>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name='description'
@@ -204,11 +232,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
       <RolesSequenceDialog
         open={sortDialogOpen}
         onOpenChange={setSortDialogOpen}
-        currentRow={{
-          id: currentRow?.id,
-          sequence: currentRow?.sequence ?? 0,
-          name: currentRow?.name ?? "",
-        }}
+        currentRow={currentRow}
       />
     </Dialog>
   );

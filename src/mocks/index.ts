@@ -1,7 +1,7 @@
 import { roles } from "@/mocks/role/roles";
 import { users } from "@/mocks/user/users";
 import { permissions } from "@/mocks/permission/permissions";
-import { views } from "@/mocks/view/views"; // Import views mock data
+import { views } from "@/mocks/view/views";
 import { mockSignInUser } from "./mock-sign-in";
 import { resources } from "./resources";
 
@@ -9,9 +9,8 @@ const mockData: Record<string, any> = {
   "/sys/users": users,
   "/sys/roles": roles,
   "/sys/permissions": permissions,
-  "/sys/views": views, // Add views to mockData
-  "/sys/resources": resources, // Also ensure resources are mocked for consistency
-  // Add mock data for the profile endpoint
+  "/sys/views": views,
+  "/sys/resources": resources,
   "/sys/personal/profile": {
     user: mockSignInUser,
     resources: resources,
@@ -28,11 +27,16 @@ const mockData: Record<string, any> = {
 };
 
 const getPaginationData = (data: unknown, params?: API.SearchParams) => {
-  const { current = 1, page_size = 15 } = params || {};
+  const { current = 1, page_size = 15, no_paging } = params || {};
+  if (no_paging) {
+    return {
+      total: Array.isArray(data) ? data.length : 0,
+      data: data,
+    };
+  }
   if (data && Array.isArray(data)) {
     const startIndex = (current - 1) * page_size;
     const endIndex = startIndex + page_size;
-
     const paginatedData = data.slice(startIndex, endIndex);
     return {
       total: data.length,
@@ -46,13 +50,30 @@ const sortData = (mockData: unknown, params?: API.SearchParams) => {
   if (!params) {
     return mockData;
   }
+  // Sorting logic can be added here if needed in the future
   return mockData;
 };
 
-const mocks = <T>(path: string, params?: API.SearchParams) => {
-  console.log(`[Mock] Requesting path: ${path}`, { mockData });
-  const data = sortData(mockData[path], params);
-  console.log(`[Mock] Data for path ${path}:`, data);
+const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
+  let data = mockData[path];
+
+  // --- NEW FILTERING LOGIC ---
+  if (params && data && Array.isArray(data)) {
+    // Filter by parent_id if it exists in params
+    if (params.parent_id !== undefined) {
+      data = data.filter(item => {
+        // Handle root items where parent_id can be null, undefined or ""
+        if (params.parent_id === null || params.parent_id === "" || params.parent_id === undefined) {
+          return item.parent_id === null || item.parent_id === "" || item.parent_id === undefined;
+        }
+        return item.parent_id === params.parent_id;
+      });
+    }
+  }
+  // --- END OF NEW LOGIC ---
+
+  const sortedData = sortData(data, params);
+  const pageData = getPaginationData(sortedData, params);
 
   if (path === "/sys/personal/profile") {
     if (data) {
@@ -62,8 +83,6 @@ const mocks = <T>(path: string, params?: API.SearchParams) => {
       };
     }
   }
-
-  const pageData = getPaginationData(data, params);
 
   if (pageData) {
     return {

@@ -12,10 +12,9 @@ import {
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { CrudTableProvider } from "@/templates/crud-page/hooks/use-crud-table";
-import { Dialogs } from "@/templates/crud-page/components/dialogs";
 import { PrimaryButtons } from "@/templates/crud-page/components/primary-buttons";
-import { columns, apiHooks, pageConfig, formSchema } from "./config";
-import { renderFields } from "./components/fields";
+import { columns, apiHooks, pageConfig } from "./config";
+import { ViewDialogs } from "./components/dialogs";
 
 export default function ViewPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
@@ -60,12 +59,7 @@ export default function ViewPage() {
           </CardContent>
         </Card>
       </PageContainer>
-      <Dialogs
-        pageConfig={pageConfig}
-        formSchema={formSchema}
-        apiHooks={apiHooks}
-        renderFields={renderFields}
-      />
+      <ViewDialogs />
     </CrudTableProvider>
   );
 }

@@ -20,8 +20,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import IconPicker from "@/components/IconPicker";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { IconArrowsSort } from "@tabler/icons-react";
 
-export const renderFields = (form: ReturnType<typeof useForm<FormType>>) => (
+export const renderFields = (
+  form: ReturnType<typeof useForm<FormType>>,
+  onSortClick: () => void
+) => (
   <div className="space-y-4">
     {/* Base Info Section */}
     <div className='space-y-2'>
@@ -116,9 +121,25 @@ export const renderFields = (form: ReturnType<typeof useForm<FormType>>) => (
           render={({ field }) => (
             <FormItem>
               <FormLabel>Sequence</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)} />
-              </FormControl>
+              <div className='flex'>
+                <FormControl>
+                  <Input
+                    className='rounded-r-none focus-visible:z-10'
+                    placeholder='Click button to sort'
+                    value={field.value || 0}
+                    readOnly
+                  />
+                </FormControl>
+                <Button
+                  type='button'
+                  variant='outline'
+                  onClick={onSortClick}
+                  className='h-9 w-12 gap-0 px-0 rounded-l-none -ml-px focus-visible:z-10'
+                  size='icon'
+                >
+                  <IconArrowsSort className='h-5 w-5' />
+                </Button>
+              </div>
               <FormMessage />
             </FormItem>
           )}
