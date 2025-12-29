@@ -1,13 +1,15 @@
 import { Suspense } from "react";
-import { Outlet, createRootRouteWithContext, redirect } from "@tanstack/react-router";
+import { InternalServerError, NotFoundError } from "@/pages/errors";
+import { SIGN_IN_URL, SIGN_UP_URL } from "@/types";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { AuthContextType, useAuth } from "@/hooks/use-auth";
 import { LocaleProvider } from "@/hooks/use-locale";
 import { LoadingSpinner } from "@/components/Loading";
-import { InternalServerError, NotFoundError } from "@/pages/errors";
-import { SIGN_IN_URL, SIGN_UP_URL } from "@/types"; // Import all auth URLs
+
+// Import all auth URLs
 
 interface MyRouterContext {
   auth: AuthContextType;

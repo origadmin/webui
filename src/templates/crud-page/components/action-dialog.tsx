@@ -1,6 +1,6 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
@@ -16,7 +16,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { PageConfig, ApiHooks } from "../types";
+import { ApiHooks, PageConfig } from "../types";
 
 interface Props<T, TForm extends z.ZodType<any, any>> {
   currentRow?: T;
@@ -29,16 +29,10 @@ interface Props<T, TForm extends z.ZodType<any, any>> {
   renderFields: (form: ReturnType<typeof useForm<z.infer<TForm>>>) => React.ReactNode;
 }
 
-export function ActionDialog<T extends { id?: string; status?: number; visible?: boolean }, TForm extends z.ZodType<any, any>>({
-  currentRow,
-  open,
-  onOpenChange,
-  className,
-  pageConfig,
-  formSchema,
-  apiHooks,
-  renderFields,
-}: Props<T, TForm>) {
+export function ActionDialog<
+  T extends { id?: string; status?: number; visible?: boolean },
+  TForm extends z.ZodType<any, any>,
+>({ currentRow, open, onOpenChange, className, pageConfig, formSchema, apiHooks, renderFields }: Props<T, TForm>) {
   const is_edit = !!currentRow;
   const title = is_edit ? `Edit ${pageConfig.title}` : `Add New ${pageConfig.title}`;
   const description = is_edit
@@ -50,10 +44,10 @@ export function ActionDialog<T extends { id?: string; status?: number; visible?:
   const shape = (formSchema as any).shape;
   const generatedDefaults = shape
     ? Object.keys(shape).reduce((acc, key) => {
-        // Default to empty string for all fields. 
-        // This might need adjustment for specific types (number, boolean), 
+        // Default to empty string for all fields.
+        // This might need adjustment for specific types (number, boolean),
         // but empty string works well for Input/Textarea/Select initial states.
-        acc[key] = ""; 
+        acc[key] = "";
         return acc;
       }, {} as any)
     : {};
@@ -108,7 +102,7 @@ export function ActionDialog<T extends { id?: string; status?: number; visible?:
             className='relative space-y-4'
           >
             {hasStatus && (
-              <div className="absolute top-0 right-12 z-10 bg-background p-2 rounded-lg">
+              <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
                 <FormField
                   control={form.control}
                   name='status'
@@ -127,9 +121,7 @@ export function ActionDialog<T extends { id?: string; status?: number; visible?:
               </div>
             )}
             <ScrollArea className='h-[26.25rem] w-full'>
-              <div className="p-4">
-                {renderFields(form)}
-              </div>
+              <div className='p-4'>{renderFields(form)}</div>
             </ScrollArea>
           </form>
         </Form>
