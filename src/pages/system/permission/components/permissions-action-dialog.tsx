@@ -23,7 +23,8 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea"; // Import Textarea
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { ResourceTreeSelect } from "./resource-tree-select";
 import { ViewTreeSelect } from "./view-tree-select";
 
@@ -40,6 +41,7 @@ const formSchema = z
     view_ids: z.array(z.string()).optional(),
     data_scope: z.string().optional(),
     data_rules: z.object({}).optional(),
+    status: z.number().default(1),
     is_edit: z.boolean(),
   });
 type PermissionForm = z.infer<typeof formSchema>;
@@ -69,6 +71,7 @@ export function PermissionsActionDialog({
           resource_ids: currentRow.resource_ids || [],
           view_ids: (currentRow as any).view_ids || [],
           data_rules: currentRow?.data_rules || {},
+          status: currentRow?.status ?? 1,
           is_edit,
         }
       : {
@@ -78,6 +81,7 @@ export function PermissionsActionDialog({
           resource_ids: [],
           view_ids: [],
           data_rules: {},
+          status: 1,
           is_edit,
         },
   });
@@ -135,6 +139,23 @@ export function PermissionsActionDialog({
             onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
             className='relative space-y-4'
           >
+            <div className="absolute top-0 right-12 z-10 bg-background p-2 rounded-lg">
+              <FormField
+                control={form.control}
+                name='status'
+                render={({ field }) => (
+                  <FormItem className='flex items-center space-x-2'>
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value === 1}
+                        onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
             <ScrollArea className='h-[26.25rem] w-full'>
               <div className="space-y-4 p-4">
                 {/* Base Info Section */}

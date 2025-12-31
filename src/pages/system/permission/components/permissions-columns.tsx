@@ -1,6 +1,8 @@
 import { PermissionIconRowActions } from "@/pages/system/permission/components/permissions-row-actions";
 import { defaultHeaderMeta } from "@/types";
+import { statusValue, statusBadges } from "@/types/system";
 import { permissionTypeBadgeColor } from "@/types/system/permissions";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
@@ -31,22 +33,24 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
           {row.original.data_scope}
         </Badge>
       ),
-    // <div>{row.getValue("data_scope")}</div>,
     meta: defaultHeaderMeta.meta,
   },
-  // {
-  //   accessorKey: "data_rules",
-  //   header: "Data Rules",
-  //   cell: ({ row }) => <div>{row.getValue("data_rules")}</div>,
-  //   meta: defaultHeaderMeta.meta,
-  // },
-  // {
-  //   accessorKey: "create_time",
-  //   header: "Create Time",
-  //   cell: ({ row }) => <div>{row.original.create_time}</div>,
-  //   meta: defaultHeaderMeta.meta,
-  //   enableSorting: false,
-  // },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const { status = 0 } = row.original;
+      const badgeColor = statusBadges.get(status || 0);
+      return (
+        <div className='flex space-x-2'>
+          <Badge variant='outline' className={cn("capitalize", badgeColor)}>
+            {statusValue[status]}
+          </Badge>
+        </div>
+      );
+    },
+    meta: defaultHeaderMeta.meta,
+  },
   {
     accessorKey: "resources",
     header: "Resources",
