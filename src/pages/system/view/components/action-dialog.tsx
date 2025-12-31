@@ -13,7 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { FormType, formSchema, apiHooks, pageConfig } from "../config";
@@ -22,6 +23,7 @@ import { ViewsSequenceDialog } from "./views-sequence-dialog";
 
 interface Props {
   currentRow?: API.System.View;
+  parentRow?: API.System.View;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
@@ -29,12 +31,14 @@ interface Props {
 
 export function ViewActionDialog({
   currentRow,
+  parentRow,
   open,
   onOpenChange,
   className,
 }: Props) {
   const is_edit = !!currentRow;
-  const title = is_edit ? `Edit ${pageConfig.title}` : `Add New ${pageConfig.title}`;
+  const is_sub = !!parentRow;
+  const title = is_edit ? `Edit ${pageConfig.title}` : is_sub ? `Add Sub ${pageConfig.title}` : `Add New ${pageConfig.title}`;
   const description = is_edit
     ? `Update the ${pageConfig.title.toLowerCase()} here.`
     : `Create new ${pageConfig.title.toLowerCase()} here.`;
@@ -54,7 +58,7 @@ export function ViewActionDialog({
     shouldFocusError: false,
     defaultValues: is_edit
       ? { ...currentRow, is_edit }
-      : { ...generatedDefaults, status: 1, visible: true, is_edit: false },
+      : { ...generatedDefaults, status: 1, visible: true, is_edit: false, parent_id: parentRow?.id || null },
   });
 
   const queryClient = useQueryClient();
@@ -121,7 +125,15 @@ export function ViewActionDialog({
                 </div>
               )}
               <ScrollArea className='h-[26.25rem] w-full'>
-                <div className="p-4">
+                <div className="p-4 space-y-4">
+                  {parentRow && (
+                    <FormItem>
+                      <FormLabel>Parent View</FormLabel>
+                      <FormControl>
+                        <Input readOnly disabled value={parentRow.name} />
+                      </FormControl>
+                    </FormItem>
+                  )}
                   {renderFields(form, () => setSortDialogOpen(true))}
                 </div>
               </ScrollArea>

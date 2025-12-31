@@ -30,12 +30,14 @@ const formSchema = z.object({
   operation: z.string().optional(),
   description: z.string().optional(),
   status: z.number().default(1),
+  parent_id: z.string().nullable().optional(),
 });
 
 type ResourceForm = z.infer<typeof formSchema>;
 
 interface Props {
   currentRow?: API.System.Resource;
+  parentRow?: API.System.Resource;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
@@ -43,12 +45,14 @@ interface Props {
 
 export function ResourcesActionDialog({
   currentRow,
+  parentRow,
   open,
   onOpenChange,
   className,
 }: Props) {
   const isEditMode = !!currentRow;
-  // A resource is considered "synced" if it has a sync_status. Manually added resources won't have this.
+  const isSubMode = !!parentRow;
+  const title = isEditMode ? "Edit Resource" : isSubMode ? "Add Sub Resource" : "Add New Resource";
   const isSyncedResource = isEditMode && !!currentRow?.sync_status;
 
   const form = useForm<ResourceForm>({
@@ -56,13 +60,7 @@ export function ResourcesActionDialog({
     mode: "onSubmit",
     defaultValues: isEditMode
       ? {
-          service_name: currentRow?.service_name || "",
-          keyword: currentRow?.keyword || "",
-          path: currentRow?.path || "",
-          method: currentRow?.method || "",
-          operation: currentRow?.operation || "",
-          description: currentRow?.description || "",
-          status: currentRow?.status || 1,
+          ...currentRow,
         }
       : {
           service_name: "",
@@ -72,6 +70,7 @@ export function ResourcesActionDialog({
           operation: "",
           description: "",
           status: 1,
+          parent_id: parentRow?.id || null,
         },
   });
 
@@ -84,8 +83,6 @@ export function ResourcesActionDialog({
 
   const onSubmit = (values: ResourceForm) => {
     if (isEditMode) {
-      // For synced resources, we likely only want to update status/description.
-      // For manually added ones, we update everything.
       const payload = isSyncedResource
         ? { status: values.status, description: values.description }
         : values;
@@ -108,13 +105,15 @@ export function ResourcesActionDialog({
     <Dialog
       open={open}
       onOpenChange={(state) => {
-        form.reset();
+        if (!state) {
+          form.reset();
+        }
         onOpenChange(state);
       }}
     >
       <DialogContent className={cn("sm:max-w-2xl", className)}>
         <DialogHeader>
-          <DialogTitle>{isEditMode ? "Edit Resource" : "Add New Resource"}</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
             {isEditMode
               ? "Edit the details of this backend resource. Core fields of synced resources are read-only."
@@ -146,6 +145,14 @@ export function ResourcesActionDialog({
             </div>
             <ScrollArea className='h-[26.25rem] w-full'>
               <div className="space-y-4 p-4">
+                {parentRow && (
+                  <FormItem>
+                    <FormLabel>Parent Resource</FormLabel>
+                    <FormControl>
+                      <Input readOnly disabled value={parentRow.keyword} />
+                    </FormControl>
+                  </FormItem>
+                )}
                 <div className='space-y-2'>
                   <h3 className='text-lg font-medium'>Resource Details</h3>
                   <Separator />
