@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
-import { DataTableColumnType } from "@/components/DataTable";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 import { defaultHeaderMeta } from "@/types";
 import { statusBadges, statusValue } from "@/types/system";
 import { cn } from "@/lib/utils";
 import { ResourceIconRowActions } from "./resources-row-actions";
+import { Button } from "@/components/ui/button";
+import { IconChevronRight, IconChevronDown } from "@tabler/icons-react";
 
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {
@@ -26,16 +29,46 @@ const methodColors: Record<string, string> = {
 
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
-    accessorKey: "service_name",
-    header: "Service Name",
-    cell: ({ row }) => <LongText>{row.original.service_name}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    searchable: true,
-  },
-  {
     accessorKey: "keyword",
-    header: "Keyword",
-    cell: ({ row }) => <LongText>{row.original.keyword}</LongText>,
+    header: ({ column, table }) => (
+      <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
+        {table.getRowModel().rows.length > 0 && (
+          <Checkbox
+            checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
+            onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
+            aria-label='Toggle All Expanded'
+          />
+        )}
+        <DataTableColumnHeader className='px-2' column={column} title='Name' />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div
+        className="flex items-center"
+        style={{ paddingLeft: `${row.depth * 1.5}rem` }}
+      >
+        {row.getCanExpand() ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 mr-2"
+            {...{
+              onClick: row.getToggleExpandedHandler(),
+            }}
+          >
+            {row.getIsExpanded() ? <IconChevronDown /> : <IconChevronRight />}
+          </Button>
+        ) : (
+          <span className="w-6 h-6 mr-2 inline-block" /> // Placeholder for alignment
+        )}
+        <LongText>{row.original.keyword}</LongText>
+        {row.original.service_name && (
+          <span className="ml-2 text-xs text-muted-foreground">
+            ({row.original.service_name})
+          </span>
+        )}
+      </div>
+    ),
     meta: defaultHeaderMeta.meta,
     searchable: true,
   },
