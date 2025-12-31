@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
-import { CrudTableProvider } from "@/templates/crud-page/hooks/use-crud-table";
-import { PrimaryButtons } from "@/templates/crud-page/components/primary-buttons";
 import { columns, apiHooks, pageConfig } from "./config";
 import { ViewDialogs } from "./components/dialogs";
+import { ViewTableProvider } from "./components/views-table-provider";
+import { ViewsPrimaryButtons } from "./components/views-primary-buttons";
 
 export default function ViewPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
@@ -26,7 +26,7 @@ export default function ViewPage() {
   const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
 
   return (
-    <CrudTableProvider>
+    <ViewTableProvider>
       <PageContainer>
         <Card>
           <CardHeader>
@@ -51,7 +51,7 @@ export default function ViewPage() {
               }}
               // Toolbar and sub-component props
               toolbarPosition="top"
-              toolbars={() => <PrimaryButtons pageConfig={pageConfig} />}
+              toolbars={() => <ViewsPrimaryButtons />}
               props={{
                 search: searchProps,
               }}
@@ -60,6 +60,6 @@ export default function ViewPage() {
         </Card>
       </PageContainer>
       <ViewDialogs />
-    </CrudTableProvider>
+    </ViewTableProvider>
   );
 }
