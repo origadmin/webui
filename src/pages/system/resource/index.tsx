@@ -1,4 +1,12 @@
-import { useDataTable } from "@/hooks/use-data-table";
+import { useMemo, useState } from "react";
+import {
+  getCoreRowModel,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  useReactTable,
+  getPaginationRowModel,
+  getSortedRowModel,
+} from "@tanstack/react-table";
 import {
   Card,
   CardContent,
@@ -13,12 +21,40 @@ import { ResourcesPrimaryButtons } from "./components/resources-primary-buttons"
 import { ResourceTableProvider } from "./components/resources-table-provider";
 import { columns } from "./components/resources-columns";
 import { useResourcesQuery } from "@/api/system/resource";
+import { buildTree } from "@/utils/tree";
 
 export default function ResourcesPage() {
-  const { dataSource, total, isLoading, tableProps, searchProps } =
-    useDataTable({
-      useQuery: (params) => useResourcesQuery(params),
-    });
+  const [globalFilter, setGlobalFilter] = useState("");
+
+  const { data: resourceData, isLoading } = useResourcesQuery({
+    page_size: 1000, // Fetch all data to build the tree
+  });
+
+  const treeData = useMemo(() => {
+    if (!resourceData?.data) return [];
+    return buildTree(resourceData.data);
+  }, [resourceData]);
+
+  const table = useReactTable({
+    data: treeData,
+    columns,
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getSubRows: (row) => row.children,
+  });
+
+  const searchProps = {
+    value: globalFilter,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+      setGlobalFilter(e.target.value),
+  };
 
   return (
     <ResourceTableProvider>
@@ -31,17 +67,12 @@ export default function ResourcesPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <DataTable<API.System.Resource>
+            <DataTable
+              table={table}
               columns={columns}
-              dataSource={dataSource}
-              total={total}
               isLoading={isLoading}
-              // Spread all table state and handlers
-              {...tableProps}
-              // Static props
-              useManual
-              showPagination
-              // Toolbar and sub-component props
+              useManual={false}
+              showPagination={false}
               toolbarPosition="top"
               toolbars={() => <ResourcesPrimaryButtons />}
               props={{

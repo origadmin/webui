@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { API } from "@/types/api";
 
 const roleSchema = z.object({
   id: z.string(),

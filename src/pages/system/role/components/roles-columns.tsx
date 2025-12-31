@@ -77,12 +77,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "is_system",
-    header: "Is System",
-    cell: ({ row }) => <div>{row.getValue("is_system") ? "Yes" : "No"}</div>,
-    meta: defaultHeaderMeta.meta,
-  },
-  {
     id: "actions",
     header: "Actions",
     cell: ({ row }) => <RoleIconRowActions row={row} />,
