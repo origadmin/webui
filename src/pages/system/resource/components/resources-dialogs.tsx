@@ -1,10 +1,10 @@
 import { Fragment } from "react";
-import { useCrudTable } from "@/templates/crud-page/hooks/use-crud-table";
+import { useResourceTable } from "./resources-table-provider";
 import { ResourcesActionDialog } from "./resources-action-dialog";
 import { ResourcesDeleteDialog } from "./resources-delete-dialog";
 
 export function ResourcesDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useCrudTable<API.System.Resource>();
+  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useResourceTable();
   const className = "sm:max-w-3xl";
 
   const handleOpenChange = (isOpen: boolean) => {

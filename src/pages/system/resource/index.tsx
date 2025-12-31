@@ -1,7 +1,4 @@
-import { useMemo } from "react";
-import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
-import { buildTree } from "@/utils/tree";
 import {
   Card,
   CardContent,
@@ -11,23 +8,20 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
-import { CrudTableProvider } from "@/templates/crud-page/hooks/use-crud-table";
 import { ResourcesDialogs } from "./components/resources-dialogs";
 import { ResourcesPrimaryButtons } from "./components/resources-primary-buttons";
+import { ResourceTableProvider } from "./components/resources-table-provider";
 import { columns } from "./components/resources-columns";
 import { useResourcesQuery } from "@/api/system/resource";
 
 export default function ResourcesPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
     useDataTable({
-      useQuery: (params) => useResourcesQuery({ ...params, page_size: 1000 }), // Fetch all for tree
+      useQuery: (params) => useResourcesQuery(params),
     });
 
-  // Memoize the tree structure
-  const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
-
   return (
-    <CrudTableProvider>
+    <ResourceTableProvider>
       <PageContainer>
         <Card>
           <CardHeader>
@@ -39,19 +33,14 @@ export default function ResourcesPage() {
           <CardContent>
             <DataTable<API.System.Resource>
               columns={columns}
-              dataSource={treeData} // Use the tree data
+              dataSource={dataSource}
               total={total}
               isLoading={isLoading}
               // Spread all table state and handlers
               {...tableProps}
-              // Static props for tree table
-              useManual={false}
-              showPagination={false} // Pagination is often disabled for tree views
-              // Options for tree table
-              options={{
-                getExpandedRowModel: getExpandedRowModel(),
-                getSubRows: (row: API.System.Resource) => row.children,
-              }}
+              // Static props
+              useManual
+              showPagination
               // Toolbar and sub-component props
               toolbarPosition="top"
               toolbars={() => <ResourcesPrimaryButtons />}
@@ -63,6 +52,6 @@ export default function ResourcesPage() {
         </Card>
       </PageContainer>
       <ResourcesDialogs />
-    </CrudTableProvider>
+    </ResourceTableProvider>
   );
 }

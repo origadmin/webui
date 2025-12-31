@@ -3,14 +3,14 @@
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { IconPencil, IconTrash, IconPlus } from "@tabler/icons-react";
-import { useCrudTable } from "@/templates/crud-page/hooks/use-crud-table";
+import { useResourceTable } from "./resources-table-provider";
 
 interface RowActionsProps<TData> {
   row: Row<TData>;
 }
 
 export function ResourceIconRowActions<TData>({ row }: RowActionsProps<TData>) {
-  const { setOpen, setCurrentRow, setParentRow } = useCrudTable<TData>();
+  const { setOpen, setCurrentRow, setParentRow } = useResourceTable();
 
   const handleAddSub = () => {
     setParentRow(row.original);
