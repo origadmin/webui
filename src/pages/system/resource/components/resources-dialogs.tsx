@@ -1,13 +1,19 @@
 import { Fragment } from "react";
-import { PermissionDialog } from "@/pages/system/components/permission-dialog";
+import { useCrudTable } from "@/templates/crud-page/hooks/use-crud-table";
 import { ResourcesActionDialog } from "./resources-action-dialog";
 import { ResourcesDeleteDialog } from "./resources-delete-dialog";
-import { useResourceTable } from "./resources-table-provider";
 
 export function ResourcesDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useResourceTable();
+  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useCrudTable<API.System.Resource>();
   const className = "sm:max-w-3xl";
-  console.log("currentRow", currentRow, "parentRow", parentRow);
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setOpen(null);
+      setCurrentRow(null);
+      setParentRow(null);
+    }
+  };
 
   return (
     <Fragment>
@@ -15,27 +21,14 @@ export function ResourcesDialogs() {
         className={className}
         key='resource-add'
         open={open === "add"}
-        onOpenChange={() => {
-          setOpen("add");
-          setTimeout(() => {
-            setCurrentRow(null);
-            setParentRow(null);
-          }, 500);
-        }}
+        onOpenChange={handleOpenChange}
       />
-      <PermissionDialog open={open === "edit-permission"} onOpenChange={() => setOpen("edit-permission")} />
       {parentRow && (
         <ResourcesActionDialog
           className={className}
-          key={`resource-add-${parentRow.id}`}
+          key={`resource-add-sub-${parentRow.id}`}
           open={open === "add-sub"}
-          onOpenChange={() => {
-            setOpen("add-sub");
-            setTimeout(() => {
-              setCurrentRow(null);
-              setParentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           parentRow={parentRow}
         />
       )}
@@ -44,13 +37,7 @@ export function ResourcesDialogs() {
           className={className}
           key={`resource-edit-${currentRow.id}`}
           open={open === "edit"}
-          onOpenChange={() => {
-            setOpen("edit");
-            setTimeout(() => {
-              setCurrentRow(null);
-              setParentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
         />
       )}
@@ -58,13 +45,7 @@ export function ResourcesDialogs() {
         <ResourcesDeleteDialog
           key={`resource-delete-${currentRow.id}`}
           open={open === "delete"}
-          onOpenChange={() => {
-            setOpen("delete");
-            setTimeout(() => {
-              setCurrentRow(null);
-              setParentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
         />
       )}

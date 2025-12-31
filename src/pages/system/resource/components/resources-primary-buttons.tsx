@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { IconPlus, IconRefresh } from "@tabler/icons-react";
-import { useResourceTable } from "./resources-table-provider";
+import { useCrudTable } from "@/templates/crud-page/hooks/use-crud-table";
 import { useSyncResources } from "@/api/system/resource";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 
 export function ResourcesPrimaryButtons() {
-  const { setOpen } = useResourceTable();
+  const { setOpen } = useCrudTable();
   const queryClient = useQueryClient();
   const { mutate: syncResources, isPending: isSyncing } = useSyncResources(queryClient);
 

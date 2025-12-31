@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
+import { CrudTableProvider } from "@/templates/crud-page/hooks/use-crud-table";
 import { ResourcesDialogs } from "./components/resources-dialogs";
 import { ResourcesPrimaryButtons } from "./components/resources-primary-buttons";
-import { ResourceTableProvider } from "./components/resources-table-provider";
 import { columns } from "./components/resources-columns";
 import { useResourcesQuery } from "@/api/system/resource";
 
@@ -27,7 +27,7 @@ export default function ResourcesPage() {
   const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
 
   return (
-    <ResourceTableProvider>
+    <CrudTableProvider>
       <PageContainer>
         <Card>
           <CardHeader>
@@ -63,6 +63,6 @@ export default function ResourcesPage() {
         </Card>
       </PageContainer>
       <ResourcesDialogs />
-    </ResourceTableProvider>
+    </CrudTableProvider>
   );
 }
