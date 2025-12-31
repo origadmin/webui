@@ -12,6 +12,7 @@ export const resources: API.System.Resource[] = [
     icon: "dashboard",
     visible: true,
     sequence: 1,
+    operation: "/api.v1.services.system.DashboardService/GetDashboard",
   },
   {
     id: "2",
@@ -23,6 +24,7 @@ export const resources: API.System.Resource[] = [
     parent_id: "1",
     visible: true,
     sequence: 1,
+    operation: "/api.v1.services.system.DashboardService/GetOverview",
   },
   // System Management
   {
@@ -46,6 +48,7 @@ export const resources: API.System.Resource[] = [
     parent_id: "10",
     visible: true,
     sequence: 1,
+    operation: "/api.v1.services.system.UserService/ListUsers",
   },
   {
     id: "12",
@@ -57,6 +60,7 @@ export const resources: API.System.Resource[] = [
     parent_id: "10",
     visible: true,
     sequence: 2,
+    operation: "/api.v1.services.system.RoleService/ListRoles",
   },
   {
     id: "13",
@@ -68,6 +72,7 @@ export const resources: API.System.Resource[] = [
     parent_id: "10",
     visible: true,
     sequence: 3,
+    operation: "/api.v1.services.system.PermissionService/ListPermissions",
   },
   {
     id: "14",
@@ -79,6 +84,7 @@ export const resources: API.System.Resource[] = [
     parent_id: "10",
     visible: true,
     sequence: 4,
+    operation: "/api.v1.services.system.ResourceService/ListResources",
   },
   {
     id: "15",
@@ -90,6 +96,7 @@ export const resources: API.System.Resource[] = [
     parent_id: "10",
     visible: true,
     sequence: 5,
+    operation: "/api.v1.services.system.ViewService/ListViews",
   },
   // Button-level permission
   {
@@ -98,5 +105,6 @@ export const resources: API.System.Resource[] = [
     name: "Create User",
     type: "BUTTON",
     parent_id: "11",
+    operation: "/api.v1.services.system.UserService/CreateUser",
   },
 ];

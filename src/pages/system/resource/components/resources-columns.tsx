@@ -73,6 +73,13 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     searchable: true,
   },
   {
+    accessorKey: "operation",
+    header: "Operation",
+    cell: ({ row }) => <LongText>{row.original.operation}</LongText>,
+    meta: defaultHeaderMeta.meta,
+    searchable: true,
+  },
+  {
     accessorKey: "path",
     header: "Path",
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
