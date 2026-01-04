@@ -13,7 +13,7 @@ const config = defineConfig({
     htmlFallback: 'index',
     proxy: dev && {
       '/api': {
-        target: 'http://localhost:25100',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
     },

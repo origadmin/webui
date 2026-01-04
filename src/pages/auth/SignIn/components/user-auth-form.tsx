@@ -1,7 +1,5 @@
-import { HTMLAttributes, useCallback, useEffect, useState, useTransition } from "react";
-import Placeholder from "@/assets/static/placeholder.jpg";
+import { HTMLAttributes, useState, useTransition } from "react";
 import { signIn } from "@/utils/auth";
-import { get } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -9,16 +7,15 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-// Import useAuth
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Image } from "@/components/Image";
 import { LoadingButton } from "@/components/LoadingButton";
 import { PasswordInput } from "@/components/password-input";
+import { CaptchaDialog } from "./captcha-dialog";
 
 export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
+// Schema for the main form (without captcha fields)
 const formSchema = z.object({
   username: z.string().min(1, { message: "Please enter your Email, Phone, or Username" }),
   password: z
@@ -29,90 +26,73 @@ const formSchema = z.object({
     .min(7, {
       message: "Password must be at least 7 characters long",
     }),
-  captcha_id: z.string(),
-  captcha_code: z.string().length(4, { message: "Invalid captcha code" }),
 });
 
-export type Captcha = {
-  id?: string;
-  data?: string;
-};
-
-const defaultCaptcha: Captcha = {
-  id: undefined,
-  data: Placeholder,
-};
+type FormValues = z.infer<typeof formSchema>;
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [captcha, setCaptcha] = useState<Captcha>(defaultCaptcha);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCaptchaDialogOpen, setCaptchaDialogOpen] = useState(false);
   const [submitting, startTransition] = useTransition();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const auth = useAuth(); // Get the auth context
+  const auth = useAuth();
   const urlParams = new URLSearchParams(location.search);
   const redirectUrl = urlParams.get("redirect") || "/";
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       password: "",
-      captcha_id: captcha.id || "",
-      captcha_code: "",
     },
+    // By setting the mode to 'onSubmit' (or removing it, as it's the default),
+    // validation will only run when the form is submitted or trigger() is called.
+    mode: "onSubmit",
   });
 
-  const refreshCaptcha = useCallback(async () => {
-    if (submitting || isLoading) return;
-    setIsLoading(true);
-    const url = `/captcha${captcha.id ? `?id=${captcha.id}&reload=true` : ""}`;
-    try {
-      const response = await get<Captcha>(url);
-      if (response.success && response.data) {
-        setCaptcha(response.data);
-      }
-    } catch (err) {
-      console.error("Captcha Err:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [submitting, isLoading, captcha.id]);
-
-  useEffect(() => {
-    if (isLoading) return;
-    refreshCaptcha();
-  }, [isLoading]);
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    values.captcha_id = captcha.id || "";
+  // This function will be called by the CaptchaDialog upon successful verification
+  const handleLoginWithCaptcha = (captchaId: string, captchaCode: string) => {
+    const values = form.getValues(); // Get the current username and password
     startTransition(async () => {
       try {
-        // 1. Call the simplified signIn function to get the token
-        const token = await signIn(values);
-
-        // 2. Call the login method from the auth context
+        const token = await signIn({
+          ...values,
+          captcha_id: captchaId,
+          captcha_code: captchaCode,
+        });
         await auth.login(token);
-
         toast({ description: "Signed In Successfully!" });
-
-        // 3. Navigate to the redirect URL
         navigate({ to: redirectUrl, replace: true });
       } catch (err) {
-        console.error("SignIn Err:", err);
-        refreshCaptcha(); // Refresh captcha on error
         toast({
           variant: "destructive",
-          description: err instanceof Error ? err.message : "Unknown error",
+          description: err instanceof Error ? err.message : "Login failed. Please try again.",
         });
+        // Do not close the captcha dialog on login failure, allow user to retry captcha.
+        // The dialog itself will handle captcha refresh on its own failed verification.
       }
     });
-  }
+  };
+
+  // This is the new handler for the Login button click.
+  const handleLoginClick = async () => {
+    // 1. Manually trigger validation for the fields we care about.
+    const isValid = await form.trigger(["username", "password"]);
+
+    // 2. If validation fails, do nothing. The UI will show error messages.
+    if (!isValid) {
+      return;
+    }
+
+    // 3. If validation passes, open the captcha dialog.
+    setCaptchaDialogOpen(true);
+  };
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        {/* The form tag is still useful for semantics and accessibility */}
+        <form onSubmit={(e) => e.preventDefault()}>
           <div className='grid gap-2 py-4'>
             <FormField
               control={form.control}
@@ -145,39 +125,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <div className='grid gap-2'>
-              <FormField
-                control={form.control}
-                name='captcha_code'
-                render={({ field }) => (
-                  <FormItem className='space-y-1'>
-                    <Label htmlFor='captcha_code'>CAPTCHA</Label>
-                    <div className='flex items-center gap-2'>
-                      <FormControl>
-                        <Input className='flex-1' id='captcha_code' placeholder='Enter CAPTCHA' {...field} required />
-                      </FormControl>
-                      <Image
-                        isLoading={isLoading}
-                        src={captcha.data || Placeholder}
-                        alt='CAPTCHA'
-                        className='w-[120px]'
-                        size='sm'
-                        onClick={refreshCaptcha}
-                        label='Click to refresh CAPTCHA'
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <LoadingButton type='submit' className='mt-2' loading={submitting}>
+            <LoadingButton
+              type='button' // Changed from 'submit' to 'button'
+              className='mt-2'
+              loading={submitting}
+              onClick={handleLoginClick} // Use the new click handler
+            >
               Login
             </LoadingButton>
-            {/* ... other elements */}
           </div>
         </form>
       </Form>
+      <CaptchaDialog
+        open={isCaptchaDialogOpen}
+        onOpenChange={setCaptchaDialogOpen}
+        onVerifySuccess={handleLoginWithCaptcha}
+      />
     </div>
   );
 }

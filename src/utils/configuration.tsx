@@ -3,7 +3,7 @@ import { PAGE_SIZE, START_PAGE, PAGE_SIZE_OPTIONS, HOST } from "@/types";
 const defaultConfig = {
   request: {
     // baseURL: "",
-    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:25100" : HOST,
+    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:8000" : HOST,
     timeout: 30000,
   },
   api: {
