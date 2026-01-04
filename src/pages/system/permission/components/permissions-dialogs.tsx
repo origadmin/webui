@@ -6,7 +6,14 @@ import { usePermissionTable } from "./permissions-table-provider";
 export function PermissionsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = usePermissionTable();
   const className = "sm:max-w-3xl";
-  console.log("currentRow", currentRow, "parentRow", parentRow);
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setOpen(null);
+      setCurrentRow(null);
+      setParentRow(null);
+    }
+  };
 
   return (
     <Fragment>
@@ -14,26 +21,14 @@ export function PermissionsDialogs() {
         className={className}
         key='permission-add'
         open={open === "add"}
-        onOpenChange={() => {
-          setOpen("add");
-          setTimeout(() => {
-            setCurrentRow(null);
-            setParentRow(null);
-          }, 500);
-        }}
+        onOpenChange={handleOpenChange}
       />
       {currentRow && (
         <PermissionsActionDialog
           className={className}
           key={`permission-edit-${currentRow.id}`}
           open={open === "edit"}
-          onOpenChange={() => {
-            setOpen("edit");
-            setTimeout(() => {
-              setCurrentRow(null);
-              setParentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
         />
       )}
@@ -41,13 +36,7 @@ export function PermissionsDialogs() {
         <PermissionsDeleteDialog
           key={`permission-delete-${currentRow.id}`}
           open={open === "delete"}
-          onOpenChange={() => {
-            setOpen("delete");
-            setTimeout(() => {
-              setCurrentRow(null);
-              setParentRow(null);
-            }, 500);
-          }}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
         />
       )}
