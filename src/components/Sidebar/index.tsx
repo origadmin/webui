@@ -3,8 +3,6 @@ import { SidebarRail, Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } f
 import { FooterContent, FooterProps } from "./footer-content";
 import { GroupContent, GroupContentProps } from "./group-content";
 import { HeaderContent, HeaderProps } from "./header-content";
-import { MainContent, MainContentProps } from "./main-content";
-import { SecondaryContent, SecondaryContentProps } from "./secondary-content";
 
 type SidebarProps = {
   props?: React.ComponentProps<typeof Sidebar>;
@@ -13,12 +11,16 @@ type SidebarProps = {
   footer?: FooterProps;
 };
 
-const SidebarComponent: React.FC = ({ props, header, content, footer }: SidebarProps) => {
+const SidebarComponent: React.FC<SidebarProps> = ({ props, header, content, footer }) => {
   return (
     <Sidebar className='border-r-2' collapsible='icon' {...props}>
-      {header && <HeaderContent {...header} />}
-      {content && <GroupContent {...content} />}
-      {footer && <FooterContent {...footer} />}
+      {/* The parent div is now a flex container to push the footer down */}
+      <div className="flex flex-col h-full">
+        {header && <HeaderContent {...header} />}
+        {content && <GroupContent {...content} />}
+        {/* The footer will be pushed to the bottom because GroupContent is flex-1 */}
+        {footer && <FooterContent {...footer} />}
+      </div>
       <SidebarRail />
     </Sidebar>
   );
@@ -29,15 +31,11 @@ export type {
   HeaderProps as SidebarHeaderProps,
   FooterProps as SidebarFooterProps,
   GroupContentProps as SidebarGroupContentProps,
-  MainContentProps as SidebarMainContentProps,
-  SecondaryContentProps as SidebarSecondaryContentProps,
 };
 export {
   SidebarComponent,
   HeaderContent,
   FooterContent,
-  MainContent,
-  SecondaryContent,
   GroupContent,
   SidebarInset,
   SidebarProvider,
