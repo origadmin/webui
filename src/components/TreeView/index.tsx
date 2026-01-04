@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect, useCallback, useMemo, JSX, ReactNode, RefObject } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Folder, ChevronRight, ChevronDown, Box, Search, X, Info } from "lucide-react";
+import { JSX, ReactNode, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Box, ChevronDown, ChevronRight, Folder, Info, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Input } from "@/components/ui/input";
