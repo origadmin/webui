@@ -18,7 +18,6 @@ export default function ThemeSwitch() {
 
   return (
     <Button
-      size='icon'
       variant='ghost'
       className='size-8 bg-muted relative rounded-full'
       aria-label={theme === "light" ? "switch to dark mode" : "switch to light mode"}
