@@ -15,8 +15,8 @@ export function AppSidebar() {
       return {};
     }
 
-    // Mock data to demonstrate grouping, layering, and sub-menus
     const mockMenuItems: API.MenuItem[] = [
+      // Main Menu Items (with groups and nesting)
       { id: "1", title: "Dashboard", path: "/dashboard/overview", icon: "layout-dashboard", group: "Analytics" },
       { id: "2", title: "Analytics", path: "/dashboard/analytics", icon: "chart-bar", group: "Analytics" },
       { 
@@ -30,35 +30,25 @@ export function AppSidebar() {
           { id: "3-3", title: "Permissions", path: "/system/permission", icon: "shield-lock" },
         ]
       },
-      // Layer separator will be inserted here
-      { id: "6", title: "Tasks", path: "/tasks", icon: "check-check", location: "layer-2" },
-      { id: "7", title: "Chats", path: "/chats", icon: "message-circle", location: "layer-2" },
+      // Bottom Menu Items
+      { id: "6", title: "Tasks", path: "/tasks", icon: "check-check", location: "bottom" },
+      { id: "7", title: "Chats", path: "/chats", icon: "message-circle", location: "bottom" },
     ];
 
-    // Process items to include group labels and separators
-    const processedItems: (API.MenuItem | { type: 'separator' | 'group-label', label: string })[] = [];
+    // --- Correct Data Filtering ---
+    const mainItems = mockMenuItems.filter(item => !item.location || item.location === 'sidebar');
+    const bottomItems = mockMenuItems.filter(item => item.location === 'bottom');
+
+    // Process main items for grouping
+    const processedMainItems: (API.MenuItem | { type: 'group-label', label: string })[] = [];
     let lastGroup: string | undefined = undefined;
-    let layerSeparated = false;
 
-    // NO MORE SORTING - process in the original order
-    mockMenuItems.forEach(item => {
-      // Handle layer separation
-      if (item.location === 'layer-2' && !layerSeparated) {
-        processedItems.push({ type: 'separator', label: 'layer-separator' });
-        layerSeparated = true;
-        lastGroup = undefined; // Reset group tracking after layer separator
-      }
-
-      // Handle grouping
+    mainItems.forEach(item => {
       if (item.group && item.group !== lastGroup) {
-        // Add a separator before a new group, but not for the very first item
-        if (processedItems.length > 0 && (processedItems[processedItems.length - 1] as API.MenuItem).id) {
-            processedItems.push({ type: 'separator', label: `sep-before-${item.group}` });
-        }
-        processedItems.push({ type: 'group-label', label: item.group });
+        processedMainItems.push({ type: 'group-label', label: item.group });
         lastGroup = item.group;
       }
-      processedItems.push(item);
+      processedMainItems.push(item);
     });
     
     const systemMenus = [
@@ -79,7 +69,10 @@ export function AppSidebar() {
         custom: <Brand />,
       },
       content: {
-        items: processedItems,
+        items: processedMainItems,
+      },
+      bottom: {
+        items: bottomItems,
       },
       footer: {
         version: "v1.0.0",

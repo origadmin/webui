@@ -13,7 +13,7 @@ import TablerIcon from "@/components/IconPicker/tabler-icon";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 
-type ProcessedItem = API.MenuItem | { type: 'separator' | 'group-label', label: string };
+type ProcessedItem = API.MenuItem | { type: 'group-label', label: string };
 
 export type GroupContentProps = {
   items?: ProcessedItem[];
@@ -69,19 +69,18 @@ const RecursiveMenuItem = ({ item }: { item: API.MenuItem }) => {
 
 function GroupContent({ items = [] }: GroupContentProps) {
   return (
-    // Use flex-1 and overflow-auto to make this section scrollable and push the footer down
+    // This section is now the main scrollable area
     <SidebarContent className="flex-1 overflow-y-auto">
-      <SidebarMenu>
+      <SidebarMenu className="p-2">
         {items.map((item, index) => {
           if ('type' in item) {
             if (item.type === 'group-label') {
               return <SidebarGroupLabel key={`group-${item.label}-${index}`}>{item.label}</SidebarGroupLabel>;
             }
-            if (item.type === 'separator') {
-              return <SidebarSeparator key={`sep-${index}`} className="my-1" />;
-            }
+            // Separators can be handled if needed, but grouping implies separation
+            return null;
           }
-          
+
           const menuItem = item as API.MenuItem;
           return (
             <SidebarMenuItem key={menuItem.id}>
