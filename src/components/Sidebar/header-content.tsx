@@ -1,4 +1,4 @@
-import { ElementType } from "react";
+import { ElementType, ReactNode } from "react";
 import { Command } from "lucide-react";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import { TeamSwitcher } from "@/components/team-switcher";
@@ -9,6 +9,7 @@ type HeaderProps = {
     logo: ElementType;
     plan: string;
   }[];
+  custom?: ReactNode;
 };
 
 const DefaultTeam = {
@@ -18,7 +19,12 @@ const DefaultTeam = {
 };
 
 function HeaderContent(props?: HeaderProps) {
-  const { teams = [DefaultTeam] } = props || {};
+  const { teams = [DefaultTeam], custom } = props || {};
+
+  if (custom) {
+    return <SidebarHeader>{custom}</SidebarHeader>;
+  }
+
   return (
     <SidebarHeader>
       <TeamSwitcher teams={teams} />

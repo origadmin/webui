@@ -19,11 +19,11 @@ export default function ThemeSwitch() {
   return (
     <Button
       variant='ghost'
-      className='size-8 bg-muted relative rounded-full'
+      className='size-8 p-0 bg-muted relative rounded-full'
       aria-label={theme === "light" ? "switch to dark mode" : "switch to light mode"}
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
-      <span className='relative flex shrink-0 overflow-hidden rounded-full'>
+      <span className='relative flex shrink-0 overflow-hidden rounded-full items-center justify-center'>
         {theme === "light" ? <TablerIcon name='moon' /> : <TablerIcon name='sun' />}
       </span>
     </Button>

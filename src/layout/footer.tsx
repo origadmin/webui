@@ -1,7 +1,7 @@
 import { useMemo } from "react";
+import { mockFooter } from "@/mocks/mock-sidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { Footer, FooterProps } from "@/components/footer";
-import { mockFooter } from "@/mocks/mock-sidebar";
 
 export function AppFooter() {
   const { user } = useAuth();
