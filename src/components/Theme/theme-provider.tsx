@@ -35,7 +35,6 @@ export function ThemeProvider({
 
     if (theme === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
       root.classList.add(systemTheme);
       return;
     }
@@ -45,9 +44,21 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme: Theme) => {
+      const body = document.body;
+      
+      // 1. Add class to disable transitions
+      body.classList.add("no-transition");
+
+      // 2. Update theme
+      localStorage.setItem(storageKey, newTheme);
+      setTheme(newTheme);
+
+      // 3. Remove the class after a short delay, allowing the UI to update instantly
+      // The timeout ensures that the class is removed after the re-render has completed.
+      setTimeout(() => {
+        body.classList.remove("no-transition");
+      }, 100); // 100ms is a safe buffer
     },
   };
 

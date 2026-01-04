@@ -26,7 +26,6 @@ export function AppHeader() {
         <SidebarTrigger />
       </div>
       
-      {/* TopNav placed after SidebarTrigger */}
       <div className="hidden md:flex">
          <TopNav {...topNavProps} />
       </div>
@@ -34,7 +33,7 @@ export function AppHeader() {
       <div className="ml-auto flex items-center gap-2">
         <SearchInput />
         <ThemeSwitch />
-        <Notification content={12} className="cursor-pointer" />
+        <Notification />
         <UserNav />
       </div>
     </header>
