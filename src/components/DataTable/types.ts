@@ -9,10 +9,13 @@ import {
 
 export type ColumnType<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
   accessorKey?: string;
-  searchable?: boolean;
   renderSearch?: (
-    column: ColumnType<TData, TValue>,
+    columnDef: ColumnType<TData, TValue>,
     index: number,
+    table: ReactTable<TData>
+  ) => ReactNode;
+  filterComponent?: (
+    column: Column<TData, TValue>,
     table: ReactTable<TData>
   ) => ReactNode;
   headerTitle?: string;

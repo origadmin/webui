@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 import { defaultHeaderMeta } from "@/types";
-import { statusBadges, statusValue } from "@/types/system";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { cn } from "@/lib/utils";
 import { ResourceIconRowActions } from "./resources-row-actions";
 import { Button } from "@/components/ui/button";
@@ -105,20 +105,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     },
     meta: defaultHeaderMeta.meta,
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.original.status || 0;
-      const badgeColor = statusBadges.get(status);
-      return (
-        <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-          {statusValue[status]}
-        </Badge>
-      );
-    },
-    meta: defaultHeaderMeta.meta,
-  },
+  systemStatusColumn,
   {
     id: "actions",
     header: "Actions",

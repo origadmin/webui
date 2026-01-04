@@ -1,7 +1,6 @@
 import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
 import { defaultHeaderMeta } from "@/types";
-import { statusValue, statusBadges } from "@/types/system";
-import { cn } from "@/lib/utils";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
@@ -10,7 +9,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    searchable: true,
     cell: ({ row }) => <LongText>{row.getValue("name")}</LongText>,
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
@@ -19,7 +17,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
   {
     accessorKey: "keyword",
     header: "Keyword",
-    searchable: true,
     cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
@@ -27,6 +24,12 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => <div>{row.getValue("type")}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => <LongText>{row.getValue("description")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -49,27 +52,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     ),
     meta: defaultHeaderMeta.meta,
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const { status = 0 } = row.original;
-      const badgeColor = statusBadges.get(status || 0);
-      return (
-        <div className='flex space-x-2'>
-          <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statusValue[status]}
-          </Badge>
-        </div>
-      );
-    },
-    filterFn: (row, id, value: string[]) => {
-      return value.includes(row.getValue(id));
-    },
-    meta: defaultHeaderMeta.meta,
-    enableHiding: false,
-    enableSorting: false,
-  },
+  systemStatusColumn,
   {
     id: "actions",
     header: "Actions",

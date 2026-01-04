@@ -1,8 +1,7 @@
 import { PermissionIconRowActions } from "@/pages/system/permission/components/permissions-row-actions";
 import { defaultHeaderMeta } from "@/types";
-import { statusValue, statusBadges } from "@/types/system";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { permissionTypeBadgeColor } from "@/types/system/permissions";
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
@@ -35,22 +34,7 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
       ),
     meta: defaultHeaderMeta.meta,
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const { status = 0 } = row.original;
-      const badgeColor = statusBadges.get(status || 0);
-      return (
-        <div className='flex space-x-2'>
-          <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statusValue[status]}
-          </Badge>
-        </div>
-      );
-    },
-    meta: defaultHeaderMeta.meta,
-  },
+  systemStatusColumn,
   {
     accessorKey: "resources",
     header: "Resources",

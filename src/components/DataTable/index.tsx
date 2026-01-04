@@ -23,6 +23,7 @@ import {
   NoResults,
 } from "@/components/ui/data-table-feedback";
 import { PAGE_SIZE_OPTIONS } from "@/types";
+import { DataTableFacetedFilter } from "./faceted-filter";
 
 interface DataProps<TData, TValue> {
   columns: ColumnType<TData, TValue>[];
@@ -42,6 +43,7 @@ interface BehaviorProps {
   paginationState?: PaginationState;
   columnFiltersState?: ColumnFiltersState;
   sorting?: SortingState;
+  globalFilterKey?: string;
   onSortingChange?: OnChangeFn<SortingState>;
   onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
   onPaginationChange?: OnChangeFn<PaginationState>;
@@ -52,7 +54,7 @@ interface BehaviorProps {
 interface ComponentProps<TData, TValue> {
   search?: Omit<
     SearchProps<TData, TValue>,
-    "table" | "columns" | "columnFilters"
+    "table" | "columns" | "columnFilters" | "globalFilterKey"
   >;
   pagination?: Omit<
     PaginationProps<TData>,
@@ -115,6 +117,7 @@ function DataTable<TData, TValue = unknown>({
         table={table}
         columns={searchFields}
         columnFilters={columnFilters}
+        globalFilterKey={rest.globalFilterKey}
       />
       <TitleBar
         {...title}
@@ -168,5 +171,6 @@ export {
   ViewOptions as DataTableViewOptions,
   ColumnHeader as DataTableColumnHeader,
   Search as DataTableSearchBar,
+  DataTableFacetedFilter,
 };
 export { DataTable };

@@ -2,10 +2,9 @@
 
 import { defaultHeaderMeta } from "@/types";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { statusBadges, statusValue } from "@/types/system";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ColorBadge } from "@/components/ui/color-badge";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
 import LongText from "@/components/long-text";
@@ -26,7 +25,6 @@ export const columns: DataTableColumnType<API.System.View>[] = [
         <DataTableColumnHeader className='px-2' column={column} title='Name' />
       </div>
     ),
-    searchable: true,
     meta: defaultHeaderMeta.meta,
     cell: ({ row }) => (
       <div className='flex items-center min-w-24' style={{ paddingLeft: `${row.depth}rem` }}>
@@ -49,20 +47,25 @@ export const columns: DataTableColumnType<API.System.View>[] = [
   {
     accessorKey: "keyword",
     header: "Keyword",
-    searchable: true,
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "scope",
     header: "Scope",
-    cell: ({ row }) => <Badge variant='outline'>{row.original.scope}</Badge>,
+    cell: ({ row }) => {
+      const scope = row.original.scope;
+      return <ColorBadge colorKey={scope}>{scope}</ColorBadge>;
+    },
     meta: defaultHeaderMeta.meta,
   },
   {
     accessorKey: "type",
     header: "Type",
-    cell: ({ row }) => <Badge variant='outline'>{row.original.type}</Badge>,
+    cell: ({ row }) => {
+      const type = row.original.type;
+      return <ColorBadge colorKey={type}>{type}</ColorBadge>;
+    },
     meta: defaultHeaderMeta.meta,
   },
   {
@@ -83,22 +86,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     cell: ({ row }) => <div>{row.original.visible ? "Yes" : "No"}</div>,
     meta: defaultHeaderMeta.meta,
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.original.status || 0;
-      const badgeColor = statusBadges.get(status);
-      return (
-        <div className='flex space-x-2'>
-          <Badge variant='outline' className={cn("capitalize", badgeColor)}>
-            {statusValue[status]}
-          </Badge>
-        </div>
-      );
-    },
-    meta: defaultHeaderMeta.meta,
-  },
+  systemStatusColumn,
   {
     id: "actions",
     header: "Actions",

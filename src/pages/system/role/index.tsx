@@ -18,6 +18,7 @@ export default function RolesPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
     useDataTable({
       useQuery: (params) => useRolesQuery(params),
+      globalFilterKey: "q",
     });
 
   return (

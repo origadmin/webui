@@ -1,6 +1,7 @@
 import * as React from "react";
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { Check, PlusCircle } from "lucide-react";
 import { Column } from "@tanstack/react-table";
+
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,17 +24,22 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     label: string;
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
+    color?: string;
   }[];
 }
 
-export function FacetedFilter<TData, TValue>({ column, title, options }: DataTableFacetedFilterProps<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues();
+export function DataTableFacetedFilter<TData, TValue>({
+  column,
+  title,
+  options,
+}: DataTableFacetedFilterProps<TData, TValue>) {
   const selectedValues = new Set(column?.getFilterValue() as string[]);
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='h-8 border-dashed'>
-          <PlusCircledIcon className='h-4 w-4' />
+          <PlusCircle className='mr-2 size-4' />
           {title}
           {selectedValues?.size > 0 && (
             <>
@@ -83,19 +89,16 @@ export function FacetedFilter<TData, TValue>({ column, title, options }: DataTab
                   >
                     <div
                       className={cn(
-                        "flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected ? "bg-primary text-primary-foreground" : "opacity-50 [&_svg]:invisible",
+                        "mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
+                        isSelected ? "bg-primary text-primary-foreground" : "opacity-50 [&_svg]:invisible"
                       )}
                     >
-                      <CheckIcon className={cn("h-4 w-4")} />
+                      <Check className={cn("size-4")} />
                     </div>
-                    {option.icon && <option.icon className='h-4 w-4 text-muted-foreground' />}
-                    <span>{option.label}</span>
-                    {facets?.get(option.value) && (
-                      <span className='ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs'>
-                        {facets.get(option.value)}
-                      </span>
+                    {option.icon && (
+                      <option.icon className={cn("mr-2 size-4", option.color || "text-muted-foreground")} />
                     )}
+                    <span>{option.label}</span>
                   </CommandItem>
                 );
               })}
