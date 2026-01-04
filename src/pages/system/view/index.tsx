@@ -1,26 +1,19 @@
 import { useMemo } from "react";
+import { buildTree } from "@/utils/tree";
 import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
-import { buildTree } from "@/utils/tree";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
-import { columns, apiHooks, pageConfig } from "./config";
 import { ViewDialogs } from "./components/dialogs";
-import { ViewTableProvider } from "./components/views-table-provider";
 import { ViewsPrimaryButtons } from "./components/views-primary-buttons";
+import { ViewTableProvider } from "./components/views-table-provider";
+import { apiHooks, columns, pageConfig } from "./config";
 
 export default function ViewPage() {
-  const { dataSource, total, isLoading, tableProps, searchProps } =
-    useDataTable({
-      useQuery: (params) => apiHooks.useQuery({ ...params, pageSize: 1000 }), // Fetch all for tree
-    });
+  const { dataSource, total, isLoading, tableProps, searchProps } = useDataTable({
+    useQuery: (params) => apiHooks.useQuery({ ...params, pageSize: 1000 }), // Fetch all for tree
+  });
 
   // Memoize the tree structure
   const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
@@ -50,7 +43,7 @@ export default function ViewPage() {
                 getSubRows: (row: API.System.View) => row.children,
               }}
               // Toolbar and sub-component props
-              toolbarPosition="top"
+              toolbarPosition='top'
               toolbars={() => <ViewsPrimaryButtons />}
               props={{
                 search: searchProps,

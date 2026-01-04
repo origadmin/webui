@@ -3,6 +3,7 @@ import { useResourcesQuery } from "@/api/system/resource";
 import { useViewsQuery } from "@/api/system/view";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconTemplate } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,6 +25,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { PRESET_TEMPLATES } from "./permission-templates";
 import { ResourceTreeSelect } from "./resource-tree-select";
 import { ViewTreeSelect } from "./view-tree-select";
 
@@ -88,6 +90,44 @@ export function PermissionsActionDialog({
   const { data: resourcesData = {} } = useResourcesQuery({ page_size: 1000 });
   const { data: viewsData = {} } = useViewsQuery({ pageSize: 1000 });
 
+  // --- Template Logic Start ---
+  const applyTemplate = (templateValue: string) => {
+    const template = PRESET_TEMPLATES.find((t) => t.value === templateValue);
+    if (!template) return;
+
+    const allViews = viewsData.data || [];
+    const allResources = resourcesData.data || [];
+
+    // Find View IDs by keywords
+    const matchedViewIds = allViews
+      .filter((v) => v.keyword && template.viewKeywords.includes(v.keyword))
+      .map((v) => v.id)
+      .filter((id): id is string => !!id);
+
+    // Find Resource IDs by keywords
+    const matchedResourceIds = allResources
+      .filter((r) => r.keyword && template.resourceKeywords.includes(r.keyword))
+      .map((r) => r.id)
+      .filter((id): id is string => !!id);
+
+    // Update Form
+    form.setValue("view_ids", matchedViewIds);
+    form.setValue("resource_ids", matchedResourceIds);
+
+    // Optional: Auto-fill name/desc if empty
+    if (!form.getValues("name")) form.setValue("name", template.label);
+    if (!form.getValues("description")) form.setValue("description", template.description);
+
+    toast({
+      title: "Template Applied",
+      description: `Applied template: ${template.label}. Views and Resources have been updated.`,
+    });
+  };
+  // --- Template Logic End ---
+
+  // --- Legacy Auto-Link Logic (Optional: Keep or Remove based on preference) ---
+  // Keeping it allows "hybrid" mode: Template sets initial state, then user can tweak,
+  // and this logic helps with manual tweaks.
   const getResourcesFromViews = (viewIds: string[], allViews: API.System.View[]) => {
     const resourceIds = new Set<string>();
     const viewMap = new Map(allViews.map((v) => [v.id, v]));
@@ -189,6 +229,31 @@ export function PermissionsActionDialog({
             </div>
             <ScrollArea className='h-[26.25rem] w-full'>
               <div className='space-y-4 p-4'>
+                {/* Template Selection Area */}
+                {!is_edit && (
+                  <div className='bg-muted/50 p-4 rounded-lg border border-dashed'>
+                    <div className='flex items-center gap-2 mb-2'>
+                      <IconTemplate size={18} className='text-muted-foreground' />
+                      <h4 className='text-sm font-medium'>Quick Start with Templates</h4>
+                    </div>
+                    <Select onValueChange={applyTemplate}>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select a permission template...' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PRESET_TEMPLATES.map((tpl) => (
+                          <SelectItem key={tpl.value} value={tpl.value}>
+                            <div className='flex flex-col items-start'>
+                              <span className='font-medium'>{tpl.label}</span>
+                              <span className='text-xs text-muted-foreground'>{tpl.description}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
                 {/* Step 1: Define Core */}
                 <div className='space-y-2'>
                   <h3 className='text-lg font-medium'>Step 1: Define Permission Core</h3>

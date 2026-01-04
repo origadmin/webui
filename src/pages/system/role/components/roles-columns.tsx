@@ -30,12 +30,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
-    accessorKey: "sequence",
-    header: "Sequence",
-    cell: ({ row }) => <div>{row.getValue("sequence")}</div>,
-    meta: defaultHeaderMeta.meta,
-  },
-  {
     accessorKey: "permission_ids",
     header: "Permissions",
     cell: ({ row }) => (

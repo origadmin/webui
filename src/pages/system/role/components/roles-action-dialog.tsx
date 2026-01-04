@@ -1,9 +1,8 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { usePermissionsQuery } from "@/api/system/permission";
 import { useRoleCreate, useRoleUpdate } from "@/api/system/role";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconArrowsSort } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,7 +24,6 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { RolesPermissionSelect } from "./roles-permission-select";
-import { RolesSequenceDialog } from "./roles-sequence-dialogs";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -33,7 +31,6 @@ const formSchema = z.object({
   }),
   keyword: z.string().min(1, { message: "Keyword is required." }),
   type: z.number().optional(),
-  sequence: z.number().default(1),
   description: z.string().optional(),
   status: z.number().default(1),
   is_edit: z.boolean(),
@@ -65,7 +62,6 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           name: "",
           keyword: "",
           type: 1,
-          sequence: 1,
           description: "",
           status: 1,
           is_edit,
@@ -101,10 +97,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
     });
     onOpenChange(false);
   };
-  const [sortDialogOpen, setSortDialogOpen] = useState(false);
-  const handleSortOpen = async () => {
-    setSortDialogOpen(true);
-  };
+
   const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
     <Dialog
@@ -157,38 +150,9 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormField control={form.control} name='type' render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input {...field} disabled /></FormControl><FormMessage /></FormItem>)} />
                     <FormField
                       control={form.control}
-                      name='sequence'
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Sequence</FormLabel>
-                          <div className='flex'>
-                            <FormControl>
-                              <Input
-                                className='rounded-r-none focus-visible:z-10'
-                                placeholder='Click button to sort'
-                                value={field.value || 0}
-                                readOnly
-                              />
-                            </FormControl>
-                            <Button
-                              type='button'
-                              variant='outline'
-                              onClick={handleSortOpen}
-                              className='h-9 w-12 gap-0 px-0 rounded-l-none -ml-px focus-visible:z-10'
-                              size='icon'
-                            >
-                              <IconArrowsSort className='h-5 w-5' />
-                            </Button>
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
                       name='description'
                       render={({ field }) => (
-                        <FormItem className='col-span-2'>
+                        <FormItem className='col-span-1'>
                           <FormLabel>Description</FormLabel>
                           <FormControl>
                             <Textarea placeholder='A brief description for this role.' {...field} />
@@ -229,11 +193,6 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           </Button>
         </DialogFooter>
       </DialogContent>
-      <RolesSequenceDialog
-        open={sortDialogOpen}
-        onOpenChange={setSortDialogOpen}
-        currentRow={currentRow}
-      />
     </Dialog>
   );
 }

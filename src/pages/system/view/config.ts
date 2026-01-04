@@ -1,7 +1,7 @@
+import { useViewCreate, useViewDelete, useViewsQuery, useViewUpdate } from "@/api/system/view";
 import { z } from "zod";
-import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
-import { columns as viewColumns } from "./components/columns";
 import { DataTableProps } from "@/components/DataTable";
+import { columns as viewColumns } from "./components/columns";
 
 // Zod Schema for form validation, aligned with openapi.yaml
 export const formSchema = z.object({
