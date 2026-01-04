@@ -28,9 +28,8 @@ export function AppSidebar() {
     ];
 
     return {
-      // Use the new Brand component for the header
       header: {
-        custom: <Brand className="p-4" />,
+        custom: <Brand />,
       },
       content: {
         items: mainMenus,
