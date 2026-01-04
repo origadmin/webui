@@ -28,12 +28,7 @@ const Content = ({ className, fixed = false, ...props }: ContentProps) => {
 
   return (
     <ContentContext.Provider value={{ offset, fixed }}>
-      <div
-        ref={divRef}
-        data-layout='layout'
-        className={cn(fixed && "flex flex-col", className)}
-        {...props}
-      />
+      <div ref={divRef} data-layout='layout' className={cn(fixed && "flex flex-col", className)} {...props} />
     </ContentContext.Provider>
   );
 };

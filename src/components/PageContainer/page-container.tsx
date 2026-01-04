@@ -1,9 +1,10 @@
-import React, { Fragment, JSX } from "react"; // Import Fragment
+import React, { Fragment, JSX } from "react";
+// Import Fragment
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Watermark, { WatermarkProps } from "@/components/Watermark";
-import { Breadcrumbs, BreadcrumbProps } from "@/components/breadcrumbs";
+import { BreadcrumbProps, Breadcrumbs } from "@/components/breadcrumbs";
 import { Content, ContentBody, ContentHeader, ContentProps, HeaderProps } from "./page-content";
 
 interface PageContainerProps {

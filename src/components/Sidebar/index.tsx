@@ -3,32 +3,23 @@ import { SidebarRail, Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } f
 import { FooterContent, FooterProps } from "./footer-content";
 import { GroupContent, GroupContentProps } from "./group-content";
 import { HeaderContent, HeaderProps } from "./header-content";
-import { BottomContent, BottomContentProps } from "./bottom-content"; // Import the new component
+import { BottomContent, BottomContentProps } from "./bottom-content";
 
 type SidebarProps = {
   props?: React.ComponentProps<typeof Sidebar>;
   header?: HeaderProps;
   content?: GroupContentProps;
-  bottom?: BottomContentProps; // Prop for the bottom menu
+  bottom?: BottomContentProps;
   footer?: FooterProps;
 };
 
 const SidebarComponent: React.FC<SidebarProps> = ({ props, header, content, bottom, footer }) => {
   return (
     <Sidebar className='border-r-2' collapsible='icon' {...props}>
-      {/* This div is the flex container for the entire sidebar content */}
-      <div className="flex flex-col h-full">
-        {header && <HeaderContent {...header} />}
-        
-        {/* Main scrollable content */}
-        {content && <GroupContent {...content} />}
-        
-        {/* Bottom fixed menu (above the absolute footer) */}
-        {bottom && <BottomContent {...bottom} />}
-        
-        {/* Absolute bottom footer */}
-        {footer && <FooterContent {...footer} />}
-      </div>
+      {header && <HeaderContent {...header} />}
+      {content && <GroupContent {...content} />}
+      {bottom && <BottomContent {...bottom} />}
+      {footer && <FooterContent {...footer} />}
       <SidebarRail />
     </Sidebar>
   );
@@ -46,7 +37,7 @@ export {
   HeaderContent,
   FooterContent,
   GroupContent,
-  BottomContent, // Export the new component
+  BottomContent,
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,

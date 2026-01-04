@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { Check, Bell, User } from "lucide-react";
+import { Bell, Check, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -62,8 +62,6 @@ const statusSizeClasses: Record<Size, string> = {
   xl: "h-6 w-6",
 };
 
-
-
 const ringWidthClasses: Record<RingWidth, string> = {
   none: "",
   "extra-thin": "ring-[1px]",
@@ -89,7 +87,6 @@ export default function StatusAvatar({
   statusOffsetY,
   className,
 }: StatusAvatarProps) {
-
   const getRingClass = (style?: { width?: RingWidth; color?: string }) => {
     if (!style?.width || style.width === "none") return "";
     return cn(ringWidthClasses[style.width], style.color || "ring-white");
@@ -104,23 +101,21 @@ export default function StatusAvatar({
       shapeClasses[shape],
       "flex items-center justify-center bg-secondary border border-border",
       borderRingClass,
-      className
+      className,
     );
 
     return (
       <Avatar className={avatarClass}>
         {children ? (
-          <div className="w-2/3 h-2/3 flex items-center justify-center">
-            {children}
-          </div>
+          <div className='w-2/3 h-2/3 flex items-center justify-center'>{children}</div>
         ) : src ? (
           <>
             <AvatarImage src={src} alt={alt} />
             <AvatarFallback>{fallback || alt.charAt(0).toUpperCase()}</AvatarFallback>
           </>
         ) : (
-          <div className="w-2/3 h-2/3 flex items-center justify-center text-muted-foreground">
-            <User className="w-full h-full" />
+          <div className='w-2/3 h-2/3 flex items-center justify-center text-muted-foreground'>
+            <User className='w-full h-full' />
           </div>
         )}
       </Avatar>
@@ -134,57 +129,51 @@ export default function StatusAvatar({
     const statusSizeClass = statusSizeClasses[size];
 
     const customStyle = {
-      transform: `translate(${statusOffsetX || '0'}, ${statusOffsetY || '0'})`,
+      transform: `translate(${statusOffsetX || "0"}, ${statusOffsetY || "0"})`,
     };
-    const styleProp = (statusOffsetX || statusOffsetY) ? { style: customStyle } : {};
+    const styleProp = statusOffsetX || statusOffsetY ? { style: customStyle } : {};
 
     const statusShapeClass = "rounded-full"; // 所有角标都使用圆形
 
     switch (status) {
       case "online":
         return (
-          <span 
-            className={cn(
-              baseClasses, 
-              statusSizeClass, 
-              statusShapeClass,
-              "bg-green-500", 
-              statusRingClass
-            )} 
-            {...styleProp} 
+          <span
+            className={cn(baseClasses, statusSizeClass, statusShapeClass, "bg-green-500", statusRingClass)}
+            {...styleProp}
           />
         );
 
-      case "notification":
+      case "notification": {
         const notificationCount = statusContent || 0;
         const displayCount = notificationCount > 99 ? "99+" : notificationCount.toString();
-        
+
         return (
-          <Badge 
-            variant='destructive' 
+          <Badge
+            variant='destructive'
             className={cn(
-              baseClasses, 
-              statusSizeClass, 
+              baseClasses,
+              statusSizeClass,
               "flex items-center justify-center p-0 font-medium hover:bg-destructive",
               statusShapeClass,
-              statusRingClass
-            )} 
+              statusRingClass,
+            )}
             {...styleProp}
           >
             {displayCount}
           </Badge>
         );
-
+      }
       case "new":
         return (
-          <Badge 
+          <Badge
             className={cn(
-              baseClasses, 
-              statusSizeClass, 
+              baseClasses,
+              statusSizeClass,
               "flex items-center justify-center bg-pink-500 text-white font-medium hover:bg-pink-500 p-0 text-[8px]",
               statusShapeClass,
-              statusRingClass
-            )} 
+              statusRingClass,
+            )}
             {...styleProp}
           >
             N
@@ -193,14 +182,14 @@ export default function StatusAvatar({
 
       case "verified":
         return (
-          <span 
+          <span
             className={cn(
-              baseClasses, 
-              statusSizeClass, 
+              baseClasses,
+              statusSizeClass,
               "flex items-center justify-center bg-green-500 text-white",
               statusShapeClass,
-              statusRingClass
-            )} 
+              statusRingClass,
+            )}
             {...styleProp}
           >
             <Check className='h-3/4 w-3/4' />
@@ -209,15 +198,15 @@ export default function StatusAvatar({
 
       case "alert":
         return (
-          <Badge 
-            variant='destructive' 
+          <Badge
+            variant='destructive'
             className={cn(
-              baseClasses, 
-              statusSizeClass, 
+              baseClasses,
+              statusSizeClass,
               "flex items-center justify-center p-0 hover:bg-destructive",
               statusShapeClass,
-              statusRingClass
-            )} 
+              statusRingClass,
+            )}
             {...styleProp}
           >
             <Bell className='h-3/4 w-3/4' />
