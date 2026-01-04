@@ -13,6 +13,7 @@ type NavMenu = {
   title: string;
   href: string;
   isActive: boolean;
+  search?: Record<string, any>; // Allow passing search params to the Link component
 };
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -30,9 +31,9 @@ export function TopNav({ className, menus, ...props }: TopNavProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom' align='start'>
-            {menus?.map(({ title, href, isActive }) => (
+            {menus?.map(({ title, href, isActive, search }) => (
               <DropdownMenuItem key={`${title}-${href}`} asChild>
-                <Link to={href} className={!isActive ? "text-muted-foreground" : ""}>
+                <Link to={href} search={search} className={!isActive ? "text-muted-foreground" : ""}>
                   {title}
                 </Link>
               </DropdownMenuItem>
@@ -42,10 +43,11 @@ export function TopNav({ className, menus, ...props }: TopNavProps) {
       </div>
 
       <nav className={cn("hidden items-center space-x-4 md:flex lg:space-x-6", className)} {...props}>
-        {menus?.map(({ title, href, isActive }) => (
+        {menus?.map(({ title, href, isActive, search }) => (
           <Link
             key={`${title}-${href}`}
             to={href}
+            search={search}
             className={`text-sm font-medium transition-colors hover:text-primary ${isActive ? "" : "text-muted-foreground"}`}
           >
             {title}

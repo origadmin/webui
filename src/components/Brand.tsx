@@ -1,4 +1,3 @@
-import { Command } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/components/ui/sidebar";
 
@@ -15,9 +14,9 @@ export function Brand({ className }: BrandProps) {
     <div
       className={cn("flex h-12 items-center gap-2 rounded-lg", isCollapsed ? "justify-center px-0" : "px-2", className)}
     >
-      {/* Icon container: Fixed size, does not shrink. */}
-      <div className='flex flex-none aspect-square size-8 items-center justify-center rounded-lg bg-foreground text-background'>
-        <Command className='size-5' />
+      {/* Icon container: Use an <img> tag to display the project's own SVG logo. */}
+      <div className='flex flex-none items-center justify-center'>
+        <img src='/static/logo.svg' alt='OrigAdmin Logo' className='size-8' />
       </div>
 
       {/* Text container: The key is to hide it when collapsed. */}

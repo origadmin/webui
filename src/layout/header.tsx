@@ -4,12 +4,10 @@ import { TopNav, TopNavProps } from "@/components/top-nav";
 import { UserNav } from "@/components/user-nav";
 import { Notification } from "@/components/Notification";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { mockTopNav } from "@/mocks/mock-sidebar";
 import SearchInput from "@/components/search-input";
 import { ThemeSwitch } from "@/components/Theme";
 import { Separator } from "@/components/ui/separator";
 
-// This component is restored to its original and correct structure.
 export function AppHeader() {
   const { user } = useAuth();
 
@@ -17,6 +15,25 @@ export function AppHeader() {
     if (!user) {
       return {};
     }
+
+    const mockTopNav = [
+      {
+        title: "Dashboard",
+        href: "/dashboard",
+        isActive: false,
+      },
+      {
+        title: "System",
+        href: "/system",
+        isActive: false,
+      },
+      {
+        title: "OpenAPI",
+        href: "/openapi",
+        isActive: false,
+      },
+    ];
+
     return {
       menus: mockTopNav,
     };
