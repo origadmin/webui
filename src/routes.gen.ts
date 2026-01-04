@@ -89,6 +89,9 @@ const AuthorizationSettingsAppearanceLazyImport = createFileRoute(
 const AuthorizationSettingsAccountLazyImport = createFileRoute(
   "/_authorization/settings/account",
 )();
+const AuthorizationExamplesDashboardLazyImport = createFileRoute(
+  "/_authorization/examples/dashboard",
+)();
 const AuthorizationDashboardAnalyticsLazyImport = createFileRoute(
   "/_authorization/dashboard/analytics",
 )();
@@ -348,6 +351,17 @@ const AuthorizationSettingsAccountLazyRoute =
     getParentRoute: () => AuthorizationSettingsRoute,
   } as any).lazy(() =>
     import("./routes/_authorization/settings/account.lazy").then(
+      (d) => d.Route,
+    ),
+  );
+
+const AuthorizationExamplesDashboardLazyRoute =
+  AuthorizationExamplesDashboardLazyImport.update({
+    id: "/examples/dashboard",
+    path: "/examples/dashboard",
+    getParentRoute: () => AuthorizationRoute,
+  } as any).lazy(() =>
+    import("./routes/_authorization/examples/dashboard.lazy").then(
       (d) => d.Route,
     ),
   );
@@ -612,6 +626,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthorizationDashboardAnalyticsLazyImport;
       parentRoute: typeof AuthorizationImport;
     };
+    "/_authorization/examples/dashboard": {
+      id: "/_authorization/examples/dashboard";
+      path: "/examples/dashboard";
+      fullPath: "/examples/dashboard";
+      preLoaderRoute: typeof AuthorizationExamplesDashboardLazyImport;
+      parentRoute: typeof AuthorizationImport;
+    };
     "/_authorization/settings/account": {
       id: "/_authorization/settings/account";
       path: "/account";
@@ -831,6 +852,7 @@ interface AuthorizationRouteChildren {
   AuthorizationDashboardProductsRoute: typeof AuthorizationDashboardProductsRoute;
   AuthorizationDashboardSettingsRoute: typeof AuthorizationDashboardSettingsRoute;
   AuthorizationDashboardAnalyticsLazyRoute: typeof AuthorizationDashboardAnalyticsLazyRoute;
+  AuthorizationExamplesDashboardLazyRoute: typeof AuthorizationExamplesDashboardLazyRoute;
   AuthorizationAppsIndexRoute: typeof AuthorizationAppsIndexRoute;
   AuthorizationChatsIndexRoute: typeof AuthorizationChatsIndexRoute;
   AuthorizationDashboardIndexRoute: typeof AuthorizationDashboardIndexRoute;
@@ -857,6 +879,8 @@ const AuthorizationRouteChildren: AuthorizationRouteChildren = {
   AuthorizationDashboardSettingsRoute: AuthorizationDashboardSettingsRoute,
   AuthorizationDashboardAnalyticsLazyRoute:
     AuthorizationDashboardAnalyticsLazyRoute,
+  AuthorizationExamplesDashboardLazyRoute:
+    AuthorizationExamplesDashboardLazyRoute,
   AuthorizationAppsIndexRoute: AuthorizationAppsIndexRoute,
   AuthorizationChatsIndexRoute: AuthorizationChatsIndexRoute,
   AuthorizationDashboardIndexRoute: AuthorizationDashboardIndexRoute,
@@ -900,6 +924,7 @@ export interface FileRoutesByFullPath {
   "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
   "/dashboard/analytics": typeof AuthorizationDashboardAnalyticsLazyRoute;
+  "/examples/dashboard": typeof AuthorizationExamplesDashboardLazyRoute;
   "/settings/account": typeof AuthorizationSettingsAccountLazyRoute;
   "/settings/appearance": typeof AuthorizationSettingsAppearanceLazyRoute;
   "/settings/display": typeof AuthorizationSettingsDisplayLazyRoute;
@@ -947,6 +972,7 @@ export interface FileRoutesByTo {
   "/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
   "/dashboard/analytics": typeof AuthorizationDashboardAnalyticsLazyRoute;
+  "/examples/dashboard": typeof AuthorizationExamplesDashboardLazyRoute;
   "/settings/account": typeof AuthorizationSettingsAccountLazyRoute;
   "/settings/appearance": typeof AuthorizationSettingsAppearanceLazyRoute;
   "/settings/display": typeof AuthorizationSettingsDisplayLazyRoute;
@@ -997,6 +1023,7 @@ export interface FileRoutesById {
   "/_authorization/dashboard/products": typeof AuthorizationDashboardProductsRoute;
   "/_authorization/dashboard/settings": typeof AuthorizationDashboardSettingsRoute;
   "/_authorization/dashboard/analytics": typeof AuthorizationDashboardAnalyticsLazyRoute;
+  "/_authorization/examples/dashboard": typeof AuthorizationExamplesDashboardLazyRoute;
   "/_authorization/settings/account": typeof AuthorizationSettingsAccountLazyRoute;
   "/_authorization/settings/appearance": typeof AuthorizationSettingsAppearanceLazyRoute;
   "/_authorization/settings/display": typeof AuthorizationSettingsDisplayLazyRoute;
@@ -1048,6 +1075,7 @@ export interface FileRouteTypes {
     | "/dashboard/products"
     | "/dashboard/settings"
     | "/dashboard/analytics"
+    | "/examples/dashboard"
     | "/settings/account"
     | "/settings/appearance"
     | "/settings/display"
@@ -1094,6 +1122,7 @@ export interface FileRouteTypes {
     | "/dashboard/products"
     | "/dashboard/settings"
     | "/dashboard/analytics"
+    | "/examples/dashboard"
     | "/settings/account"
     | "/settings/appearance"
     | "/settings/display"
@@ -1142,6 +1171,7 @@ export interface FileRouteTypes {
     | "/_authorization/dashboard/products"
     | "/_authorization/dashboard/settings"
     | "/_authorization/dashboard/analytics"
+    | "/_authorization/examples/dashboard"
     | "/_authorization/settings/account"
     | "/_authorization/settings/appearance"
     | "/_authorization/settings/display"
@@ -1238,6 +1268,7 @@ export const routeTree = rootRoute
         "/_authorization/dashboard/products",
         "/_authorization/dashboard/settings",
         "/_authorization/dashboard/analytics",
+        "/_authorization/examples/dashboard",
         "/_authorization/apps/",
         "/_authorization/chats/",
         "/_authorization/dashboard/",
@@ -1344,6 +1375,10 @@ export const routeTree = rootRoute
     },
     "/_authorization/dashboard/analytics": {
       "filePath": "_authorization/dashboard/analytics.lazy.tsx",
+      "parent": "/_authorization"
+    },
+    "/_authorization/examples/dashboard": {
+      "filePath": "_authorization/examples/dashboard.lazy.tsx",
       "parent": "/_authorization"
     },
     "/_authorization/settings/account": {
