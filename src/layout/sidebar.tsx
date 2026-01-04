@@ -28,6 +28,8 @@ export function AppSidebar() {
           { id: "3-1", title: "Users", path: "/system/user", icon: "users" },
           { id: "3-2", title: "Roles", path: "/system/role", icon: "user-check" },
           { id: "3-3", title: "Permissions", path: "/system/permission", icon: "shield-lock" },
+          { id: "3-4", title: "Views", path: "/system/view", icon: "layout-grid" },
+          { id: "3-5", title: "Resources", path: "/system/resource", icon: "box" },
         ]
       },
       // Bottom Menu Items
