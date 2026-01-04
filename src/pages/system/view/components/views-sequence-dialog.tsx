@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
-import { IconChevronsUp, IconChevronUp, IconChevronDown, IconChevronsDown } from "@tabler/icons-react";
-import { createMoveHandlers, SequenceAble } from "@/lib/array";
+import { useEffect, useState } from "react";
+import { useViewSequenceUpdate, useViewsQuery } from "@/api/system/view";
+import { IconChevronDown, IconChevronsDown, IconChevronsUp, IconChevronUp } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { createMoveHandlers } from "@/lib/array";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { useViewsQuery, useViewSequenceUpdate } from "@/api/system/view";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/hooks/use-toast";
 
 interface Props {
   parentId?: string;
@@ -26,7 +26,7 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
 
   const { data: viewsData, isLoading } = useViewsQuery(
     { parent_id: parentId, pageSize: 1000, no_paging: true },
-    { enabled: open } // Only fetch when the dialog is open
+    { enabled: open }, // Only fetch when the dialog is open
   );
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { buildMenuTree } from "@/utils/menu";
 import { SidebarComponent as Sidebar, SidebarProps } from "@/components/Sidebar";
-import { IconUsers } from "@tabler/icons-react"; // Import a default icon
+import { IconCommand } from "@tabler/icons-react";
 
 export function AppSidebar() {
   const { user, permissions: views } = useAuth();
@@ -13,15 +13,30 @@ export function AppSidebar() {
     }
 
     const menuItems = buildMenuTree(views);
+    // TODO: Implement location-based filtering here when backend supports it
+    // const sidebarMenus = menuItems.filter(m => !m.location || m.location === 'sidebar');
+    
     const mainMenus = menuItems.filter((item) => item.keyword !== "submenu");
     const subMenus = menuItems.filter((item) => item.keyword === "submenu");
 
-    // THE CRITICAL FIX: Construct the `teams` array with the correct structure.
+    // Brand / Team Switcher Data
     const teams = [
       {
-        name: user.nickname || "Default Team",
-        logo: IconUsers, // Provide a default icon component
-        plan: "Free", // Provide a default plan
+        name: "OrigAdmin WebUI",
+        logo: IconCommand,
+        plan: "Enterprise",
+      },
+    ];
+
+    // System Settings Menu (Sidebar Footer)
+    const systemMenus = [
+      {
+        title: "Global Settings",
+        onClick: () => console.log("Go to Global Settings"),
+      },
+      {
+        title: "About OrigAdmin",
+        onClick: () => console.log("Show About"),
       },
     ];
 
@@ -36,11 +51,9 @@ export function AppSidebar() {
         },
       },
       footer: {
-        user: {
-          name: user.nickname || "Unknown User",
-          email: user.email || "",
-          avatar: user.avatar || "/static/images/avatar.png",
-        },
+        // Now passing menus instead of user object, matching the updated footer-content.tsx
+        version: "v1.0.0",
+        menus: systemMenus,
       },
     };
   }, [user, views]);
