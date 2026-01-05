@@ -5,9 +5,8 @@ import {
   ColumnFiltersState,
 } from "@tanstack/react-table";
 import { PAGE_SIZE, START_PAGE } from "@/types";
-import { DataTableProps } from "@/components/DataTable";
 
-// (Interfaces remain the same)
+// Defines the standardized query parameters for any data table.
 interface DataTableQuery {
   page: number;
   pageSize: number;
@@ -15,29 +14,33 @@ interface DataTableQuery {
   filters?: ColumnFiltersState;
 }
 
-interface QueryResult<T> {
-  data?: {
-    data?: T[];
-    total?: number;
-  };
-  isLoading: boolean;
+// Defines the standardized, simple shape of data returned from an API list endpoint.
+// This now includes pagination info returned from the server.
+interface DataTableQueryResult<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
+// Defines the props for the useDataTable hook.
 interface UseDataTableProps<T> {
-  useQuery: (params: DataTableQuery) => QueryResult<T>;
+  // The query hook's result must be wrapped in a `data` property by React Query.
+  // The value of that `data` property must be our standardized result shape.
+  useQuery: (params: DataTableQuery) => {
+    data?: DataTableQueryResult<T>;
+    isLoading: boolean;
+  };
   globalFilterKey?: string;
 }
 
 /**
  * A custom hook to manage the state and data fetching for a data table.
- * It now returns a `tableProps` object that can be spread directly
- * onto the DataTable component for cleaner usage.
+ * It enforces a consistent data structure from the API layer.
  *
- * It implements manual search by separating the live column filters
- * (for input state) from the active filters (used for the query).
- *
- * @param useQuery The React Query hook used to fetch data.
- * @returns An object containing data, loading state, and spreadable tableProps.
+ * @param useQuery The React Query hook used to fetch data. The hook must return an object
+ *                 containing `{ data: T[], total: number, page: number, pageSize: number }`.
+ * @returns An object containing dataSource, total, loading state, and spreadable props for the DataTable.
  */
 export function useDataTable<T>({
   useQuery,
@@ -48,26 +51,23 @@ export function useDataTable<T>({
     pageIndex: START_PAGE,
     pageSize: PAGE_SIZE,
   });
-  // Live filters for input state
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  // Active filters for the query
   const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
+  // `data` from useQuery will be the { data, total, page, pageSize } object.
   const { data, isLoading } = useQuery({
     page: pagination.pageIndex,
     pageSize: pagination.pageSize,
     sorting: sorting,
-    filters: activeFilters, // Use active filters for the query
+    filters: activeFilters,
   });
 
   const handleSearch = (filters: ColumnFiltersState) => {
-    // When search is clicked, apply the live filters to the active filters
     setActiveFilters(filters);
     setPagination((prev) => ({ ...prev, pageIndex: START_PAGE }));
   };
 
   const handleReset = () => {
-    // Reset both live and active filters
     setColumnFilters([]);
     setActiveFilters([]);
     setSorting([]);
@@ -77,18 +77,16 @@ export function useDataTable<T>({
     });
   };
 
-  // Group state and handlers into a spreadable object
   const tableProps = {
     paginationState: pagination,
     onPaginationChange: setPagination,
     sorting: sorting,
     onSortingChange: setSorting,
-    columnFiltersState: columnFilters, // Pass live filters to the table for input control
+    columnFiltersState: columnFilters,
     onColumnFiltersChange: setColumnFilters,
     globalFilterKey,
   };
 
-  // Group search handlers for the search sub-component
   const searchProps = {
     onSearch: handleSearch,
     onReset: handleReset,

@@ -2,19 +2,40 @@ import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** Query role list GET /sys/roles */
+/** 
+ * Query role list GET /sys/roles 
+ * This is the "smart adapter" function. It adapts params and transforms the response.
+ */
 export async function listRole(params: API.SearchParams, options?: API.RequestOptions) {
-  return get<API.System.Role[]>("/sys/roles", params, options);
-}
+  // 1. Adapt frontend params for the backend.
+  const adaptedParams = {
+    ...params,
+    page: (params.page || 0) + 1,
+    page_size: params.pageSize,
+  };
 
-/** Create role record POST /sys/roles */
-export async function addRole(body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
-  return post<API.System.Role>("/sys/roles", body, options);
+  // 2. Call the "dumb" fetcher.
+  const rawResponse = await get<API.System.ListRolesResponse>("/sys/roles", adaptedParams, options);
+
+  // 3. Transform the raw response into the standardized structure.
+  return {
+    data: rawResponse?.roles || [],
+    total: rawResponse?.total || 0,
+    page: rawResponse?.page || 1,
+    pageSize: rawResponse?.page_size || 0,
+  };
 }
 
 /** Get role record by ID GET /sys/roles/${id} */
 export async function getRole(id: string, options?: API.RequestOptions) {
-  return get<API.System.Role>(`/sys/roles/${id}`, options);
+  const rawResponse = await get<API.System.GetRoleResponse>(`/sys/roles/${id}`, undefined, options);
+  return rawResponse?.role;
+}
+
+/** Create role record POST /sys/roles */
+export async function addRole(body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
+  const rawResponse = await post<API.System.CreateRoleResponse>("/sys/roles", body, options);
+  return rawResponse?.role;
 }
 
 /** Update role record by ID PUT /sys/roles/${id} */
@@ -26,6 +47,8 @@ export async function updateRole(id: string, body: Omit<API.System.Role, "id">, 
 export async function deleteRole(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/roles/${id}`, options);
 }
+
+// --- React Query hooks remain the same ---
 
 export const useRolesQuery = (opts?: API.SearchParams) => {
   return useQuery(

@@ -61,7 +61,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           captcha_code: captchaCode,
         });
         await auth.login(token);
-        toast({ description: "Signed In Successfully!" });
+        toast({ description: "Signed In Successfully!", duration: 1000 });
+        setCaptchaDialogOpen(false);
         navigate({ to: redirectUrl, replace: true });
       } catch (err) {
         toast({

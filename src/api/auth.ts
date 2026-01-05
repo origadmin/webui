@@ -16,7 +16,7 @@ const auth = {
     method: "POST",
   },
   refreshToken: {
-    url: "/token/refresh",
+    url: "/auth/token",
     method: "POST",
   },
 };

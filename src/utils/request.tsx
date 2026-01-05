@@ -2,37 +2,22 @@ import mocks from "@/mocks";
 import { HOST_REQUEST_TIMEOUT, HOST } from "@/types";
 import { getAccessToken } from "@/utils/storage";
 import GlobalConfig from "@config";
-import axios, { AxiosBasicCredentials, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
+import type { AxiosBasicCredentials, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
-// Create an instance of axios
 const request = axios.create({
-  baseURL: GlobalConfig.request.baseURL || HOST || window.location.origin, // Replace with your API base URL
-  timeout: GlobalConfig.request.timeout ? GlobalConfig.request.timeout : HOST_REQUEST_TIMEOUT, // The request timeout period
+  baseURL: GlobalConfig.request.baseURL || HOST || window.location.origin,
+  timeout: GlobalConfig.request.timeout ? GlobalConfig.request.timeout : HOST_REQUEST_TIMEOUT,
 });
 
-// Request an interceptor
 request.interceptors.request.use(
-  (config) => {
-    // console.log("type config:", config);
-    return config;
-  },
-  (error) => {
-    // What to do about request errors
-    return Promise.reject(error);
-  },
+  (config) => config,
+  (error) => Promise.reject(error),
 );
 
-// Respond to the interceptor
 request.interceptors.response.use(
-  (response) => {
-    // console.log("type response:", response);
-    // Do something about the response data
-    return response;
-  },
-  (response) => {
-    // Do something about response errors
-    return Promise.reject(response);
-  },
+  (response) => response,
+  (error) => Promise.reject(error),
 );
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -44,24 +29,6 @@ function stringifyParam(value: unknown): string | undefined {
   return String(value);
 }
 
-const convertError = <T,>(error: AxiosError<API.Result<T>>) => {
-  if (error && error.response && error.response.data) {
-    const respData = error.response.data;
-    if (typeof respData === "string") {
-      return new Error(respData);
-    }
-    const apiErr = respData as API.Result<T>;
-    if (!apiErr.success) {
-      const error = apiErr.error;
-      if (error) {
-        return new Error(error.message, { cause: error });
-      }
-      return new Error("Unknown error", { cause: error });
-    }
-  }
-  return error;
-};
-
 const headerAuth = (bearerToken: API.BearerAuth) => {
   if (bearerToken.token) {
     return {
@@ -72,32 +39,17 @@ const headerAuth = (bearerToken: API.BearerAuth) => {
 };
 
 const fetchBearerToken = (auth: API.AxiosAuthConfig | null) => {
-  let token: API.BearerAuth;
-  if (auth === null) {
-    return {};
+  if (auth === null) return {};
+  if (typeof auth === "string") return headerAuth({ token: auth });
+  if (typeof auth === "function") {
+    const token = auth();
+    return typeof token === "string" ? headerAuth({ token }) : headerAuth(token);
   }
-
-  if (typeof auth === "string") {
-    token = { headerKey: "Authorization", tokenType: "Bearer", token: auth };
-  } else if (typeof auth === "object") {
-    token = auth as API.BearerAuth;
-  } else if (typeof auth === "function") {
-    const _bearerToken = auth();
-    if (typeof _bearerToken === "string") {
-      token = { headerKey: "Authorization", tokenType: "Bearer", token: _bearerToken };
-    } else {
-      token = _bearerToken;
-    }
-  } else {
-    return {};
-  }
-
-  return headerAuth(token);
+  if (typeof auth === "object") return auth as API.BearerAuth;
+  return {};
 };
 
 const fetchBasicToken = (auth: API.AxiosAuthConfig | null) => {
-  // THE CRITICAL FIX: Add a null check before accessing properties.
-  // The `typeof auth === "object"` check is true for `null`, which caused the error.
   if (auth && typeof auth === "object") {
     const basicToken = auth as AxiosBasicCredentials;
     return headerAuth({
@@ -108,161 +60,120 @@ const fetchBasicToken = (auth: API.AxiosAuthConfig | null) => {
   }
   return {};
 };
+
 const fetchHeader = (options: API.RequestOptions) => {
   const { useAuth = "auto", auth = getAccessToken() } = options;
   const { headers = {} } = options;
-  if ((useAuth === "auto" || useAuth === "none") && auth === undefined) {
+  if ((useAuth === "auto" || useAuth === "none") && !auth) {
     return headers;
   }
   switch (useAuth) {
-    case "auto": {
-      const bearerToken = fetchBearerToken(auth);
-      const basicToken = fetchBasicToken(auth);
-      return {
-        ...headers,
-        ...bearerToken,
-        ...basicToken,
-      };
-    }
-    case "bearer_token": {
-      const requestToken = fetchBearerToken(auth);
-      return {
-        ...headers,
-        ...requestToken,
-      };
-    }
-    case "bearer": {
-      return {
-        ...headers,
-        ...fetchBearerToken(auth),
-      };
-    }
-    case "basic": {
-      return {
-        ...headers,
-        ...fetchBasicToken(auth),
-      };
-    }
+    case "auto":
+      return { ...headers, ...fetchBearerToken(auth), ...fetchBasicToken(auth) };
+    case "bearer":
+    case "bearer_token":
+      return { ...headers, ...fetchBearerToken(auth) };
+    case "basic":
+      return { ...headers, ...fetchBasicToken(auth) };
+    default:
+      return headers;
   }
-
-  // todo: add middleware
-  GlobalConfig.api.middlewares.map(({ beforeRequest }) => {
-    return typeof beforeRequest === "function" ? beforeRequest(options) : undefined;
-  });
-  return headers;
 };
 
-const fillBody = <TData,>(body?: TData, options?: API.RequestOptions<TData>) => {
-  if (options || body) {
-    options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      ...options,
-      body: body,
-    };
-  } else {
-    options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      ...(options || {}),
-    };
-  }
-  return options;
-};
+const fillBody = <TData extends object>(body?: TData, options?: API.RequestOptions<TData>) => ({
+  headers: { "Content-Type": "application/json", ...options?.headers },
+  ...options,
+  body,
+});
 
-const fillParams = <TData,>(params?: API.SearchParams, options?: API.RequestOptions<TData>) => {
-  if (options || params) {
-    options = {
-      ...options,
-      params,
-    };
-  } else {
-    /* empty */
-  }
-  return options;
-};
+const fillParams = <TData extends object>(params?: API.SearchParams, options?: API.RequestOptions<TData>) => ({
+  ...options,
+  params,
+});
 
-/** Generic API request handler */
-async function fetchRequest<T, TData = unknown>(
+async function fetchRequest<T extends object, TData extends object = object>(
   url: string,
   method: Method = "GET",
   options: API.RequestOptions<TData> = {},
-): Promise<API.Result<T>> {
-  // console.log("fetchRequest:", url, method, "options:", options);
-  // console.log("request url", request.defaults.baseURL);
-
+): Promise<T> {
   if (GlobalConfig.mocks) {
-    console.log("mock request:", url, method, options);
-    return new Promise<API.Result<T>>((resolve, reject) => {
-      setTimeout(() => {
-        const data = mocks<T>(url, options.params);
-        console.log("mock data:", data);
-        if (data.success) {
-          resolve(data);
-          return;
-        }
-        reject(data);
-      }, 1000);
-    });
+    const mockResponse = mocks<T>(url, options.params);
+    if (mockResponse.success && mockResponse.data) {
+      return Promise.resolve(mockResponse.data as T);
+    }
+    return Promise.reject(mockResponse);
   }
+
   const localVarUrlObj = new URL(url, request.defaults.baseURL);
   const searchParams = new URLSearchParams(localVarUrlObj.search);
+
   for (const key in options.params) {
     const value = stringifyParam(options.params[key]);
-    if (value === undefined) {
-      continue;
+    if (value !== undefined) {
+      searchParams.set(key, value);
     }
-    searchParams.set(key, value);
   }
+
   localVarUrlObj.search = searchParams.toString();
-  url = localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash;
-  url = GlobalConfig.api.urlPrefix ? GlobalConfig.api.urlPrefix + url : url;
 
-  const needsSerialization =
-    typeof options.body !== "string" ||
-    (options.headers && stringifyParam(options.headers["Content-Type"]) === "application/json");
+  const finalUrl = (GlobalConfig.api.urlPrefix || "") + localVarUrlObj.pathname + localVarUrlObj.search;
 
-  options.headers = fetchHeader(options);
+  const needsSerialization = typeof options.body !== "string" && options.body !== undefined;
 
-  const config = {
+  const config: AxiosRequestConfig<TData> = {
     method,
-    headers: options.headers,
-    data: needsSerialization ? JSON.stringify(options.body || {}) : options.body,
+    headers: fetchHeader(options),
+    data: needsSerialization ? JSON.stringify(options.body) : options.body,
     ...options.config,
-  } as AxiosRequestConfig<TData>;
-  return request<API.Result<T>>(url, config)
-    .then((resp: AxiosResponse<API.Result<T>>) => resp.data)
-    .catch((respErr: AxiosError<API.Result<T>>) => {
-      console.log("request error:", respErr);
-      throw convertError(respErr);
+  };
+
+  return request<T>(finalUrl, config)
+    .then((resp: AxiosResponse<T>) => resp.data)
+    .catch((err: AxiosError) => {
+      if (err?.response?.data) {
+        const errorData = err.response.data;
+        const kratosError = errorData as API.Error;
+        if (kratosError && kratosError.message) {
+          throw new Error(kratosError.message, { cause: kratosError });
+        }
+        if (typeof errorData === "string") {
+          throw new Error(errorData);
+        }
+      }
+      throw err;
     });
 }
 
-async function get<T>(url: string, params?: API.SearchParams, options?: API.RequestOptions) {
-  options = fillParams(params, options);
-  return fetchRequest<T>(url, "GET", options);
+async function get<T extends object>(url: string, params?: API.SearchParams, options?: API.RequestOptions) {
+  return fetchRequest<T>(url, "GET", fillParams(params, options));
 }
 
-async function del<T>(url: string, params?: API.SearchParams, options?: API.RequestOptions) {
-  options = fillParams(params, options);
-  return fetchRequest<T>(url, "DELETE", options);
+async function del<T extends object>(url: string, params?: API.SearchParams, options?: API.RequestOptions) {
+  return fetchRequest<T>(url, "DELETE", fillParams(params, options));
 }
 
-async function post<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
-  options = fillBody(body, options);
-  return fetchRequest<T, TData>(url, "POST", options);
+async function post<T extends object, TData extends object = object>(
+  url: string,
+  body?: TData,
+  options?: API.RequestOptions<TData>,
+) {
+  return fetchRequest<T, TData>(url, "POST", fillBody(body, options));
 }
 
-async function put<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
-  options = fillBody(body, options);
-  return fetchRequest<T, TData>(url, "PUT", options);
+async function put<T extends object, TData extends object = object>(
+  url: string,
+  body?: TData,
+  options?: API.RequestOptions<TData>,
+) {
+  return fetchRequest<T, TData>(url, "PUT", fillBody(body, options));
 }
 
-async function patch<T, TData = unknown>(url: string, body?: TData, options?: API.RequestOptions<TData>) {
-  options = fillBody(body, options);
-  return fetchRequest<T, TData>(url, "PATCH", options);
+async function patch<T extends object, TData extends object = object>(
+  url: string,
+  body?: TData,
+  options?: API.RequestOptions<TData>,
+) {
+  return fetchRequest<T, TData>(url, "PATCH", fillBody(body, options));
 }
 
 export { request, get, post, put, patch, del, fetchRequest };

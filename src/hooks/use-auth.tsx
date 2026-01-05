@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { Storage, noop } from "@/utils";
 import { clearStorage, setAuth } from "@/utils/storage";
-import { getProfile, listPersonalResources } from "@/api/system/personal"; // CORRECTED: Import listPersonalResources
+import { getProfile, listPersonalResources } from "@/api/system/personal";
 
 type AuthState = {
   user: API.System.User | null;
@@ -44,20 +44,17 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     }
 
     try {
-      // CORRECTED: Fetch user profile and resources in parallel
-      const [profileRes, resourcesRes] = await Promise.all([
+      // Fetch user profile and resources in parallel
+      // The API functions now handle unwrapping, so we get the data directly.
+      const [user, permissions] = await Promise.all([
         getProfile(),
         listPersonalResources(),
       ]);
 
-      // Defensively check both responses
-      const user = profileRes || null;
-      const permissions = resourcesRes || [];
-
       setAuthState((s) => ({
         ...s,
-        user,
-        permissions,
+        user: user || null,
+        permissions: permissions || [],
         loading: false,
         token,
       }));

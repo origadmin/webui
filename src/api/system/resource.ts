@@ -2,19 +2,40 @@ import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** Query resource list GET /sys/resources */
+/** 
+ * Query resource list GET /sys/resources 
+ * This is the "smart adapter" function. It adapts params and transforms the response.
+ */
 export async function listResource(params: API.SearchParams, options?: API.RequestOptions) {
-  return get<API.System.Resource[]>("/sys/resources", params, options);
-}
+  // 1. Adapt frontend params for the backend.
+  const adaptedParams = {
+    ...params,
+    page: (params.page || 0) + 1,
+    page_size: params.pageSize,
+  };
 
-/** Create resource record POST /sys/resources */
-export async function addResource(body: Omit<API.System.Resource, "id">, options?: API.RequestOptions) {
-  return post<API.System.Resource>("/sys/resources", body, options);
+  // 2. Call the "dumb" fetcher.
+  const rawResponse = await get<API.System.ListResourcesResponse>("/sys/resources", adaptedParams, options);
+
+  // 3. Transform the raw response into the standardized structure.
+  return {
+    data: rawResponse?.resources || [],
+    total: rawResponse?.total || 0,
+    page: rawResponse?.page || 1,
+    pageSize: rawResponse?.page_size || 0,
+  };
 }
 
 /** Get resource record by ID GET /sys/resources/${id} */
 export async function getResource(id: string, options?: API.RequestOptions) {
-  return get<API.System.Resource>(`/sys/resources/${id}`, undefined, options);
+  const rawResponse = await get<API.System.GetResourceResponse>(`/sys/resources/${id}`, undefined, options);
+  return rawResponse?.resource;
+}
+
+/** Create resource record POST /sys/resources */
+export async function addResource(body: Omit<API.System.Resource, "id">, options?: API.RequestOptions) {
+  const rawResponse = await post<API.System.CreateResourceResponse>("/sys/resources", body, options);
+  return rawResponse?.resource;
 }
 
 /** Update resource record by ID PUT /sys/resources/${id} */
@@ -31,6 +52,8 @@ export async function deleteResource(id: string, options?: API.RequestOptions) {
 export async function syncResources(options?: API.RequestOptions) {
   return post<never>("/sys/resources/sync", {}, options);
 }
+
+// --- React Query hooks remain the same ---
 
 export const useResourcesQuery = (opts?: API.SearchParams) => {
   return useQuery(

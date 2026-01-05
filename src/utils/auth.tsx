@@ -80,7 +80,7 @@ export const signOut = async () => {
 
 export const failureRetry = (failureCount: number, error: Error) => {
   const cause = error.cause as API.Error;
-  if (cause && cause.code === 500 && failureCount < 2) {
+  if (cause && cause.code === 401 && failureCount < 2) {
     try {
       const resp = refreshToken();
       return resp !== undefined;

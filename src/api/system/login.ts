@@ -16,9 +16,9 @@ export async function login<T extends API.Token = API.Token>(body: API.LoginForm
   return post<T>("/auth/login", body, options);
 }
 
-/** Logout system POST /personal/logout */
+/** Logout system POST /auth/logout */
 export async function logout(options?: API.RequestOptions) {
-  return post<never>("/personal/logout", options);
+  return post<never>("/auth/logout", options);
 }
 
 /** Query personal user menus based on the personal user role GET /personal/menus */

@@ -42,7 +42,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
     } catch (err) {
       console.error("Captcha fetch error:", err);
       setHasError(true);
-      toast({ variant: "destructive", description: "Failed to load captcha. Please try again." });
+      // toast({ variant: "destructive", description: "Failed to load captcha. Please try again." });
     } finally {
       setIsLoading(false);
     }
