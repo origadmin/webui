@@ -3,16 +3,10 @@ import { get } from "@/utils/request";
 import { IconAlertCircle, IconRefresh, IconVolume } from "@tabler/icons-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+
 
 interface CaptchaDialogProps {
   open: boolean;
@@ -21,9 +15,9 @@ interface CaptchaDialogProps {
 }
 
 type CaptchaResponse = {
-  captchaId?: string;
-  captchaData?: string;
-  mimeType?: string;
+  captcha_id?: string;
+  captcha_data?: string;
+  mime_type?: string;
 };
 
 export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDialogProps) {
@@ -38,15 +32,11 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
     setIsLoading(true);
     setHasError(false);
     try {
-      // The `get` utility directly returns the data payload on success.
       const response = await get<CaptchaResponse>("/auth/captcha", { captcha_type: "digit" });
-
-      // FINAL, CORRECTED LOGIC: The response object IS the data. No ".success" or ".data" wrapper.
-      if (response && response.captchaData) {
-        setCaptchaId(response.captchaId);
-        setCaptchaImage(response.captchaData);
+      if (response && response.captcha_data) {
+        setCaptchaId(response.captcha_id);
+        setCaptchaImage(response.captcha_data);
       } else {
-        // This will now correctly catch cases where the response is empty or malformed.
         throw new Error("Failed to load or parse captcha data.");
       }
     } catch (err) {
@@ -65,8 +55,8 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
         captcha_id: captchaId,
         captcha_type: "audio",
       });
-      if (response && response.captchaData) {
-        const audio = new Audio(response.captchaData);
+      if (response && response.captcha_data) {
+        const audio = new Audio(response.captcha_data);
         audio.play().catch((e) => {
           console.error("Audio playback failed:", e);
           toast({ variant: "destructive", description: "Failed to play audio." });
@@ -83,7 +73,6 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
     if (open) {
       refreshCaptcha();
     } else {
-      // Reset state when dialog closes
       setCaptchaCode("");
       setCaptchaId(undefined);
       setCaptchaImage(undefined);
@@ -100,15 +89,15 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
 
   const renderCaptchaImage = () => {
     if (isLoading) {
-      return <Skeleton className='h-[50px] w-[150px]' />;
+      return <Skeleton className='h-[50px] w-full' />;
     }
     if (hasError) {
       return (
         <div
-          className='flex h-[50px] w-[150px] cursor-pointer flex-col items-center justify-center rounded-md border border-dashed text-destructive'
+          className='flex h-[50px] w-full cursor-pointer flex-col items-center justify-center rounded-l-md'
           onClick={refreshCaptcha}
         >
-          <IconAlertCircle className='size-5' />
+          <IconAlertCircle className='size-5 text-destructive' />
           <span className='text-xs'>Load failed</span>
         </div>
       );
@@ -117,7 +106,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
       <img
         src={captchaImage || ""}
         alt='CAPTCHA'
-        className='h-[50px] w-[150px] cursor-pointer rounded-md border'
+        className='h-[50px] w-full cursor-pointer rounded-l-md'
         onClick={refreshCaptcha}
       />
     );
@@ -130,26 +119,31 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
           <DialogTitle>Complete Security Verification</DialogTitle>
           <DialogDescription>Enter the characters from the image to continue.</DialogDescription>
         </DialogHeader>
-        <div className='space-y-4 py-2'>
-          <div className='relative'>
-            <Input
-              id='captcha-code'
-              value={captchaCode}
-              onChange={(e) => setCaptchaCode(e.target.value)}
-              placeholder='Enter code'
-              className='pr-28' // Make space for the buttons inside
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-            />
-            <div className='absolute inset-y-0 right-0 flex items-center pr-2'>
-              <Button variant='ghost' size='icon' className='size-7' onClick={playAudio}>
-                <IconVolume className='size-5 text-muted-foreground' />
-              </Button>
-              <Button variant='ghost' size='icon' className='size-7' onClick={refreshCaptcha}>
+        {/* CORRECTED: Reduced vertical spacing from space-y-3 to space-y-2 */}
+        <div className='space-y-2 py-2'>
+          {/* Unified container for image and buttons */}
+          <div className='flex h-[52px] items-center rounded-md border border-input'>
+            <div className='flex-grow'>{renderCaptchaImage()}</div>
+            <div className='h-full w-px bg-border' />
+            <div className='flex h-full flex-col items-center justify-center gap-y-1 px-1'>
+              {/* CORRECTED: Re-added the onClick handlers */}
+              <Button variant='ghost' size='icon' className='size-8' onClick={refreshCaptcha}>
                 <IconRefresh className='size-5 text-muted-foreground' />
+              </Button>
+              <Button variant='ghost' size='icon' className='size-8' onClick={playAudio}>
+                <IconVolume className='size-5 text-muted-foreground' />
               </Button>
             </div>
           </div>
-          <div className='flex justify-center'>{renderCaptchaImage()}</div>
+
+          {/* Input field below */}
+          <Input
+            id='captcha-code'
+            value={captchaCode}
+            onChange={(e) => setCaptchaCode(e.target.value)}
+            placeholder='Please enter the characters'
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          />
         </div>
         <DialogFooter>
           <Button type='button' className='w-full' onClick={handleSubmit}>

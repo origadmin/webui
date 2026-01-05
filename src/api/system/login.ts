@@ -11,9 +11,9 @@ export function getCaptchaImageURL(id: string) {
   return `/captcha/image?id=${id}&reload=1&ts=${new Date().getTime()}`;
 }
 
-/** Login system with username and password POST /login */
+/** Login system with username and password POST /auth/login */
 export async function login<T extends API.Token = API.Token>(body: API.LoginForm, options?: API.RequestOptions) {
-  return post<T>("/login", body, options);
+  return post<T>("/auth/login", body, options);
 }
 
 /** Logout system POST /personal/logout */

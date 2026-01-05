@@ -22,12 +22,19 @@ export const signIn = async (params: API.LoginForm): Promise<API.Token> => {
     throw new Error(message);
   }
 
-  const resp = await login(params);
-  if (resp && resp.success && resp.data) {
-    return resp.data;
+  // CORRECTED: The `login` function directly returns the token object on success.
+  // There is no ".success" or ".data" wrapper.
+  const token = await login(params);
+
+  // If the token has an access_token, we consider it a successful login.
+  if (token && token.access_token) {
+    return token;
   }
 
-  const message = resp?.message || "Invalid username or password";
+  // If we reach here, it means the login failed. The `request` utility will have
+  // thrown an AxiosError, which is caught by the calling component.
+  // We can throw a generic error as a fallback.
+  const message = (token as any)?.message || "Invalid username or password";
   throw new Error(message);
 };
 
@@ -44,10 +51,12 @@ export async function refreshToken() {
     return;
   }
   try {
+    // This assumes the refresh token API also returns a direct object.
+    // If it's wrapped, this would need changing too. For now, let's assume consistency.
     const response = await post<API.Token>(url, { refresh_token: refreshToken });
-    if (response && response.success && response.data) {
-      setAuth(response.data);
-      return response.data.access_token || "";
+    if (response && response.access_token) {
+      setAuth(response);
+      return response.access_token || "";
     }
   } catch (err) {
     console.error("Refresh Token Error:", err);

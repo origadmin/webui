@@ -1,9 +1,9 @@
 import { get } from "@/utils/request";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-/** Query current user's profile (info and resources) GET /sys/personal/profile */
+/** Query current user's profile (info and resources) GET /me/profile */
 export async function getProfile(options?: API.RequestOptions) {
-  return get<API.System.PersonalProfile>("/sys/personal/profile", undefined, options);
+  return get<API.System.PersonalProfile>("/me/profile", undefined, options);
 }
 
 /**
