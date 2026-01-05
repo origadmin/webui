@@ -1,24 +1,16 @@
 import { get } from "@/utils/request";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-/** 
- * Query current user's profile (info and resources) GET /me/profile 
- * Returns the User object directly.
- */
+/** Query current user's profile (info and resources) GET /me/profile */
 export async function getProfile(options?: API.RequestOptions) {
-  const response = await get<API.System.PersonalProfileResponse>("/me/profile", undefined, options);
-  // Unwrapping: Return the user object directly, or null/undefined if missing
-  return response?.user;
+  return get<API.System.PersonalProfileResponse>("/me/profile", undefined, options);
 }
 
 /**
- * Query personal resources (menus/permissions) GET /me/resources
- * Returns the Resource array directly.
+ * @deprecated This is deprecated, use getProfile instead.
  */
 export async function listPersonalResources(params?: API.SearchParams, options?: API.RequestOptions) {
-  const response = await get<API.System.PersonalResourcesResponse>("/me/resources", params, options);
-  // Unwrapping: Return the resources array directly, or an empty array
-  return response?.resources || [];
+  return get<API.System.PersonalResourcesResponse>("/me/resources", params, options);
 }
 
 /**

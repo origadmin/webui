@@ -14,7 +14,7 @@ export async function addPermission(body: Omit<API.System.Permission, "id">, opt
 
 /** Get permission record by ID GET /sys/permissions/${id} */
 export async function getPermission(id: string, options?: API.RequestOptions) {
-  return get<API.System.Permission>(`/sys/permissions/${id}`, options);
+  return get<API.System.Permission>(`/sys/permissions/${id}`, undefined, options);
 }
 
 /** Update permission record by ID PUT /sys/permissions/${id} */
@@ -41,6 +41,7 @@ export const usePermissionQuery = (id: string) => {
     queryOptions({
       queryKey: ["/sys/permissions", id],
       queryFn: ({ queryKey: [, id] }) => getPermission(id),
+      enabled: !!id,
     }),
   );
 };

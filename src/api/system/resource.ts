@@ -3,16 +3,6 @@ import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
 /**
- * Represents the parameters sent from the useDataTable hook.
- * It uses frontend-idiomatic names (camelCase).
- */
-type DataTableParams = {
-  page?: number; // 0-based page index
-  pageSize?: number;
-  [key: string]: any;
-};
-
-/**
  * Query resource list GET /sys/resources
  * This is the "smart adapter" function. It adapts params and transforms the response.
  */
