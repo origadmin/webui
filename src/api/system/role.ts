@@ -2,20 +2,20 @@ import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** 
- * Query role list GET /sys/roles 
+/**
+ * Query role list GET /sys/roles
  * This is the "smart adapter" function. It adapts params and transforms the response.
  */
-export async function listRole(params: API.SearchParams, options?: API.RequestOptions) {
-  // 1. Adapt frontend params for the backend.
-  const adaptedParams = {
+export async function listRole(params: API.DataTableParams, options?: API.RequestOptions) {
+  // 1. Translate frontend params to backend params.
+  const backendParams: API.SearchParams = {
     ...params,
     page: (params.page || 0) + 1,
     page_size: params.pageSize,
   };
 
-  // 2. Call the "dumb" fetcher.
-  const rawResponse = await get<API.System.ListRolesResponse>("/sys/roles", adaptedParams, options);
+  // 2. Call the fetcher with backend-compatible params.
+  const rawResponse = await get<API.System.ListRolesResponse>("/sys/roles", backendParams, options);
 
   // 3. Transform the raw response into the standardized structure.
   return {
@@ -50,11 +50,11 @@ export async function deleteRole(id: string, options?: API.RequestOptions) {
 
 // --- React Query hooks remain the same ---
 
-export const useRolesQuery = (opts?: API.SearchParams) => {
+export const useRolesQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/roles", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listRole(opts),
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listRole(opts),
     }),
   );
 };

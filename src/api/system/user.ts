@@ -5,21 +5,21 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
 /**
  * Query user list GET /sys/users
  * This is the "smart adapter" function. It:
- * 1. Adapts frontend pagination (0-based) to backend (1-based).
- * 2. Calls the "dumb" fetcher.
- * 3. Transforms the backend-specific response into a standardized frontend data structure,
- *    preserving pagination metadata.
+ * 1. Receives frontend-idiomatic params (API.DataTableParams).
+ * 2. Translates them into backend-idiomatic params (API.SearchParams).
+ * 3. Calls the "dumb" fetcher.
+ * 4. Transforms the backend response into a standardized frontend data structure.
  */
-export async function listUser(params: API.SearchParams, options?: API.RequestOptions) {
-  // 1. Adapt frontend params for the backend.
-  const adaptedParams = {
+export async function listUser(params: API.DataTableParams, options?: API.RequestOptions) {
+  // 1. Translate frontend params to backend params.
+  const backendParams: API.SearchParams = {
     ...params,
-    page: (params.page || 0) + 1, // Frontend is 0-based, Backend is 1-based
-    page_size: params.pageSize,
+    page: (params.page || 0) + 1, // Translate 0-based pageIndex to 1-based page number
+    page_size: params.pageSize, // Translate pageSize to page_size
   };
 
-  // 2. Call the "dumb" fetcher, which returns the raw backend response.
-  const rawResponse = await get<API.System.ListUsersResponse>("/sys/users", adaptedParams, options);
+  // 2. Call the fetcher with backend-compatible params.
+  const rawResponse = await get<API.System.ListUsersResponse>("/sys/users", backendParams, options);
 
   // 3. Transform the raw response into the standardized structure for the frontend.
   return {
@@ -32,7 +32,6 @@ export async function listUser(params: API.SearchParams, options?: API.RequestOp
 
 /** Get user record by ID GET /sys/users/${id} */
 export async function getUser(id: string, options?: API.RequestOptions) {
-  // The `get` function returns the raw backend response. We unwrap the `user` field here.
   const rawResponse = await get<API.System.GetUserResponse>(`/sys/users/${id}`, undefined, options);
   return rawResponse?.user;
 }
@@ -42,8 +41,6 @@ export async function addUser(body: API.System.User, options?: API.RequestOption
   const rawResponse = await post<API.System.CreateUserResponse>("/sys/users", body, options);
   return rawResponse?.user;
 }
-
-// --- Other functions remain largely the same as they don't handle list data ---
 
 /** Invite user record POST /sys/users/invite */
 export async function inviteUser(body: { email: string; role_ids: string[] }, options?: API.RequestOptions) {
@@ -76,13 +73,11 @@ export async function resetUserPassword(id: string, options?: API.RequestOptions
   return post<never>(`/sys/users/${id}/password/reset`, {}, options);
 }
 
-// --- React Query hooks remain the same, consuming the now-standardized API functions ---
-
-export const useUsersQuery = (opts?: API.SearchParams) => {
+export const useUsersQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/users", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listUser(opts),
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listUser(opts),
     }),
   );
 };

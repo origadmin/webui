@@ -2,20 +2,30 @@ import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** 
- * Query resource list GET /sys/resources 
+/**
+ * Represents the parameters sent from the useDataTable hook.
+ * It uses frontend-idiomatic names (camelCase).
+ */
+type DataTableParams = {
+  page?: number; // 0-based page index
+  pageSize?: number;
+  [key: string]: any;
+};
+
+/**
+ * Query resource list GET /sys/resources
  * This is the "smart adapter" function. It adapts params and transforms the response.
  */
-export async function listResource(params: API.SearchParams, options?: API.RequestOptions) {
-  // 1. Adapt frontend params for the backend.
-  const adaptedParams = {
+export async function listResource(params: API.DataTableParams, options?: API.RequestOptions) {
+  // 1. Translate frontend params to backend params.
+  const backendParams: API.SearchParams = {
     ...params,
     page: (params.page || 0) + 1,
     page_size: params.pageSize,
   };
 
-  // 2. Call the "dumb" fetcher.
-  const rawResponse = await get<API.System.ListResourcesResponse>("/sys/resources", adaptedParams, options);
+  // 2. Call the fetcher with backend-compatible params.
+  const rawResponse = await get<API.System.ListResourcesResponse>("/sys/resources", backendParams, options);
 
   // 3. Transform the raw response into the standardized structure.
   return {
@@ -55,11 +65,11 @@ export async function syncResources(options?: API.RequestOptions) {
 
 // --- React Query hooks remain the same ---
 
-export const useResourcesQuery = (opts?: API.SearchParams) => {
+export const useResourcesQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/resources", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listResource(opts),
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listResource(opts),
     }),
   );
 };

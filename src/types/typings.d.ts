@@ -5,19 +5,31 @@ import { RouteObject } from "@tanstack/react-router";
 import { AxiosRequestConfig, AxiosBasicCredentials } from "axios";
 import { LucideIcon } from "lucide-react";
 
-
 declare global {
   namespace API {
+    /**
+     * Represents the pure backend API search parameters.
+     */
     type Search = {
-      current: number;
-      page_token: string; // page token used for automatic pagination
-      page_size: number;
-      only_count: boolean;
-      no_paging: boolean;
-      sort: string;
+      page?: number;
+      page_size?: number;
+      page_token?: string;
+      only_count?: boolean;
+      no_paging?: boolean;
+      sort?: string;
     };
 
     type SearchParams = Record<string, unknown> & Partial<Search>;
+
+    /**
+     * Represents the parameters sent from the useDataTable hook.
+     * It uses frontend-idiomatic names (camelCase).
+     */
+    type DataTableParams = {
+      page?: number; // 0-based page index
+      pageSize?: number;
+      [key: string]: any;
+    };
 
     type BearerAuth = {
       headerKey?: string;

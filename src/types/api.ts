@@ -5,7 +5,6 @@ import { components } from "./schema";
 type Schemas = components["schemas"];
 
 declare global {
-  // 定义全局 API 命名空间映射
   namespace API {
     namespace System {
       // 根据 system.proto 的 package api.v1.services.types;
@@ -20,16 +19,16 @@ declare global {
       // Response Types
       export type PersonalProfileResponse = Schemas["api.v1.services.auth.GetPersonalProfileResponse"];
       export type PersonalResourcesResponse = Schemas["api.v1.services.auth.ListPersonalResourcesResponse"];
-      // User
+
       export type ListUsersResponse = Schemas["api.v1.services.system.ListUsersResponse"];
       export type GetUserResponse = Schemas["api.v1.services.system.GetUserResponse"];
       export type CreateUserResponse = Schemas["api.v1.services.system.CreateUserResponse"];
       export type ListUserResourcesResponse = Schemas["api.v1.services.system.ListUserResourcesResponse"];
-      
+
       export type ListRolesResponse = Schemas["api.v1.services.system.ListRolesResponse"];
       export type GetRoleResponse = Schemas["api.v1.services.system.GetRoleResponse"];
       export type CreateRoleResponse = Schemas["api.v1.services.system.CreateRoleResponse"];
-      
+
       export type ListResourcesResponse = Schemas["api.v1.services.system.ListResourcesResponse"];
       export type GetResourceResponse = Schemas["api.v1.services.system.GetResourceResponse"];
       export type CreateResourceResponse = Schemas["api.v1.services.system.CreateResourceResponse"];
