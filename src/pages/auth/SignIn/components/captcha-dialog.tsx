@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { getCaptcha } from "@/api/auth/login";
-import type { CaptchaResponse } from "@/api/auth/login"; // Import the correct type
 import { IconAlertCircle, IconRefresh, IconVolume } from "@tabler/icons-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,9 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
         setCaptchaId(response.captcha_id);
         setCaptchaImage(response.captcha_data);
       } else {
-        throw new Error("Failed to load or parse captcha data.");
+        // Directly handle the error case instead of throwing
+        console.error("Captcha fetch error: Failed to load or parse captcha data.");
+        setHasError(true);
       }
     } catch (err) {
       console.error("Captcha fetch error:", err);
@@ -62,9 +63,10 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
           toast({ variant: "destructive", description: "Failed to play audio." });
         });
       } else {
-        throw new Error("Failed to load audio captcha.");
+        // Directly handle the error case instead of throwing
+        toast({ variant: "destructive", description: "Failed to load audio. Please try again." });
       }
-    } catch (_error) {
+    } catch {
       toast({ variant: "destructive", description: "Failed to load audio. Please try again." });
     }
   }, [captchaId, toast]);
