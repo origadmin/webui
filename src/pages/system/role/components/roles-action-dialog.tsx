@@ -69,33 +69,43 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
         },
   });
 
-  const { data: permissions = {} } = usePermissionsQuery({ page_size: 1000 });
+  const { data: permissions = { data: [] } } = usePermissionsQuery({ page_size: 1000 });
   const treeData = useMemo(() => permissions.data, [permissions.data]);
 
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
-  const { mutate: createRole, isPending: isCreatePending } = useRoleCreate(queryClient);
-  const { mutate: updateRole, isPending: isUpdatePending } = useRoleUpdate(queryClient, id);
-  const onSubmit = (values: RoleForm) => {
-    form.reset();
-    if (!is_edit) {
-      createRole({
-        ...values,
+  const { mutateAsync: createRole, isPending: isCreatePending } = useRoleCreate(queryClient);
+  const { mutateAsync: updateRole, isPending: isUpdatePending } = useRoleUpdate(queryClient, id);
+
+  const onSubmit = async (values: RoleForm) => {
+    try {
+      const payload = { ...values };
+      delete (payload as Partial<RoleForm>).is_edit;
+
+      if (!is_edit) {
+        await createRole(payload);
+      } else {
+        const putPayload = {
+          ...currentRow,
+          ...payload,
+        };
+        await updateRole(putPayload);
+      }
+
+      toast({
+        title: "Success",
+        description: `Role has been successfully ${is_edit ? "updated" : "created"}.`,
       });
-    } else {
-      updateRole({
-        ...values,
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        title: "Operation Failed",
+        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        variant: "destructive",
       });
+    } finally {
+      form.reset();
     }
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
-    onOpenChange(false);
   };
 
   const maxWClass = `sm:max-w-${columns * 500}px`;

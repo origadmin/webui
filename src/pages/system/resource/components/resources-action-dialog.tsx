@@ -75,28 +75,38 @@ export function ResourcesActionDialog({
   });
 
   const queryClient = useQueryClient();
-  const { mutate: createResource, isPending: isCreatePending } = useResourceCreate(queryClient);
-  const { mutate: updateResource, isPending: isUpdatePending } = useResourceUpdate(
+  const { mutateAsync: createResource, isPending: isCreatePending } = useResourceCreate(queryClient);
+  const { mutateAsync: updateResource, isPending: isUpdatePending } = useResourceUpdate(
     queryClient,
     currentRow?.id || ""
   );
 
-  const onSubmit = (values: ResourceForm) => {
-    if (isEditMode) {
-      const payload = isSyncedResource
-        ? { status: values.status, description: values.description }
-        : values;
-      updateResource(payload);
-    } else {
-      createResource(values);
-    }
+  const onSubmit = async (values: ResourceForm) => {
+    try {
+      if (isEditMode) {
+        const putPayload = {
+          ...currentRow,
+          ...values,
+        };
+        await updateResource(putPayload);
+      } else {
+        await createResource(values);
+      }
 
-    toast({
-      title: "Success",
-      description: `Resource has been successfully ${isEditMode ? "updated" : "created"}.`,
-    });
-    onOpenChange(false);
-    form.reset();
+      toast({
+        title: "Success",
+        description: `Resource has been successfully ${isEditMode ? "updated" : "created"}.`,
+      });
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        title: "Operation Failed",
+        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      form.reset();
+    }
   };
 
   const isPending = isCreatePending || isUpdatePending;

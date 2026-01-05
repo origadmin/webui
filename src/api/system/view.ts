@@ -9,7 +9,10 @@ export async function listView(params: API.SearchParams, options?: API.RequestOp
 
 /** Create view record POST /sys/views */
 export async function addView(body: Omit<API.System.View, "id">, options?: API.RequestOptions) {
-  return post<API.System.View>("/sys/views", body, options);
+  const requestBody = {
+    view: body,
+  };
+  return post<API.System.View>("/sys/views", requestBody, options);
 }
 
 /** Get view record by ID GET /sys/views/${id} */
@@ -19,7 +22,10 @@ export async function getView(id: string, options?: API.RequestOptions) {
 
 /** Update view record by ID PUT /sys/views/${id} */
 export async function updateView(id: string, body: Omit<API.System.View, "id">, options?: API.RequestOptions) {
-  return put<never>(`/sys/views/${id}`, body, options);
+  const requestBody = {
+    view: body,
+  };
+  return put<never>(`/sys/views/${id}`, requestBody, options);
 }
 
 /** Delete view record by ID DELETE /sys/views/${id} */

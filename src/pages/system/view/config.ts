@@ -16,6 +16,7 @@ export const formSchema = z.object({
   status: z.number().default(1),
   description: z.string().nullable().optional(),
   parent_id: z.string().nullable().optional(),
+  is_edit: z.boolean(),
   // 'component' is not in the openapi spec for View, so it's removed.
 });
 export type FormType = z.infer<typeof formSchema>;

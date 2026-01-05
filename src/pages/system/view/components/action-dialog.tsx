@@ -62,23 +62,40 @@ export function ViewActionDialog({
   });
 
   const queryClient = useQueryClient();
-  const { mutate: createItem, isPending: isCreatePending } = apiHooks.useCreate(queryClient);
-  const { mutate: updateItem, isPending: isUpdatePending } = apiHooks.useUpdate(queryClient, currentRow?.id || "");
+  const { mutateAsync: createItem, isPending: isCreatePending } = apiHooks.useCreate(queryClient);
+  const { mutateAsync: updateItem, isPending: isUpdatePending } = apiHooks.useUpdate(queryClient, currentRow?.id || "");
 
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
-  const onSubmit = (values: FormType) => {
-    if (!is_edit) {
-      createItem(values);
-    } else {
-      updateItem(values);
+  const onSubmit = async (values: FormType) => {
+    try {
+      const payload = { ...values };
+      delete (payload as Partial<FormType>).is_edit;
+
+      if (!is_edit) {
+        await createItem(payload);
+      } else {
+        const putPayload = {
+          ...currentRow,
+          ...payload,
+        };
+        await updateItem(putPayload);
+      }
+
+      toast({
+        title: "Success",
+        description: `Successfully ${is_edit ? "updated" : "created"} ${pageConfig.title.toLowerCase()}.`,
+      });
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        title: "Operation Failed",
+        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      form.reset();
     }
-    toast({
-      title: "Success",
-      description: `Successfully ${is_edit ? "updated" : "created"} ${pageConfig.title.toLowerCase()}.`,
-    });
-    onOpenChange(false);
-    form.reset();
   };
 
   const hasStatus = "status" in form.getValues();

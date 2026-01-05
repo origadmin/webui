@@ -1,5 +1,5 @@
 import { useRolesQuery } from "@/api/system/role";
-import { useUserCreate, useUserUpdate, useUpdateUserRoles } from "@/api/system/user";
+import { useUpdateUserRoles, useUserCreate, useUserUpdate } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -18,8 +18,8 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
 
@@ -91,26 +91,37 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   });
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
-  const { mutate: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
-  const { mutate: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
-  const { mutate: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
+  const { mutateAsync: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
+  const { mutateAsync: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
+  const { mutateAsync: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
 
-  const { data: roles = {} } = useRolesQuery({ page_size: 1000 });
+  const { data: roles = { data: [] } } = useRolesQuery({ page_size: 1000 });
 
   const onSubmit = async (values: UserForm) => {
     try {
+      // 1. Create a mutable, clean payload by removing the helper field.
+      const payload = { ...values };
+      delete (payload as Partial<UserForm>).is_edit;
+
       if (!is_edit) {
-        createUser(values);
+        // 2. For creation, pass the flat payload. The adapter will structure it.
+        await createUser(payload);
       } else {
-        const { role_ids, ...userBasicInfo } = values;
-        // If password field is empty, don't include it in the update payload
-        if (!userBasicInfo.password || userBasicInfo.password.trim() === "") {
-          delete userBasicInfo.password;
+        // 3. For update, create the full object for a proper PUT operation.
+        const putPayload = {
+          ...currentRow,
+          ...payload,
+        };
+
+        // If password field is empty, don't include it in the update payload.
+        if (!putPayload.password || putPayload.password.trim() === "") {
+          delete putPayload.password;
         }
-        await Promise.all([
-          updateUser(userBasicInfo),
-          updateUserRoles(role_ids || []),
-        ]);
+
+        const { role_ids, ...userBasicInfo } = putPayload;
+
+        // 4. Send requests concurrently. The adapter will structure the flat object.
+        await Promise.all([updateUser(userBasicInfo), updateUserRoles(role_ids || [])]);
       }
 
       toast({
@@ -153,7 +164,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
             onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
             className='relative space-y-4'
           >
-            <div className="absolute top-0 right-12 z-10 bg-background p-2 rounded-lg">
+            <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
               <FormField
                 control={form.control}
                 name='status'
@@ -171,16 +182,64 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
               />
             </div>
             <ScrollArea className='h-[26.25rem] w-full'>
-              <div className="space-y-4 p-4">
+              <div className='space-y-4 p-4'>
                 {/* Base Info Section */}
                 <div className='space-y-2'>
                   <h3 className='text-lg font-medium'>Base Info</h3>
                   <Separator />
                   <div className='grid grid-cols-2 gap-4 pt-2'>
-                    <FormField control={form.control} name='username' render={({ field }) => (<FormItem><FormLabel>Username</FormLabel><FormControl><Input placeholder='john_doe' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='nickname' render={({ field }) => (<FormItem><FormLabel>Nickname</FormLabel><FormControl><Input placeholder='John' autoComplete='off' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='email' render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input placeholder='john.doe@gmail.com' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='phone' render={({ field }) => (<FormItem><FormLabel>Phone</FormLabel><FormControl><Input placeholder='+123456789' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='username'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Username</FormLabel>
+                          <FormControl>
+                            <Input placeholder='john_doe' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='nickname'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nickname</FormLabel>
+                          <FormControl>
+                            <Input placeholder='John' autoComplete='off' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='email'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder='john.doe@gmail.com' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='phone'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone</FormLabel>
+                          <FormControl>
+                            <Input placeholder='+123456789' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
 
@@ -194,15 +253,30 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                       name='password'
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{is_edit ? 'New Password' : 'Initial Password'}</FormLabel>
+                          <FormLabel>{is_edit ? "New Password" : "Initial Password"}</FormLabel>
                           <FormControl>
-                            <PasswordInput placeholder={is_edit ? 'Leave blank to keep unchanged' : 'Enter password'} {...field} />
+                            <PasswordInput
+                              placeholder={is_edit ? "Leave blank to keep unchanged" : "Enter password"}
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <FormField control={form.control} name='allowed_ip' render={({ field }) => (<FormItem><FormLabel>Allowed IP</FormLabel><FormControl><Input placeholder='0.0.0.0' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='allowed_ip'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Allowed IP</FormLabel>
+                          <FormControl>
+                            <Input placeholder='0.0.0.0' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
 

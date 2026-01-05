@@ -12,10 +12,11 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
  */
 export async function listUser(params: API.DataTableParams, options?: API.RequestOptions) {
   // 1. Translate frontend params to backend params.
+  const { pageSize, ...rest } = params; // Destructure to separate pageSize
   const backendParams: API.SearchParams = {
-    ...params,
+    ...rest,
     page: (params.page || 0) + 1, // Translate 0-based pageIndex to 1-based page number
-    page_size: params.pageSize, // Translate pageSize to page_size
+    page_size: pageSize, // Use the destructured pageSize
   };
 
   // 2. Call the fetcher with backend-compatible params.
@@ -37,8 +38,13 @@ export async function getUser(id: string, options?: API.RequestOptions) {
 }
 
 /** Create user record POST /sys/users */
-export async function addUser(body: API.System.User, options?: API.RequestOptions) {
-  const rawResponse = await post<API.System.CreateUserResponse>("/sys/users", body, options);
+export async function addUser(body: Omit<API.System.User, "id"> & { password?: string }, options?: API.RequestOptions) {
+  const { password, ...userPayload } = body;
+  const requestBody = {
+    user: userPayload,
+    password: password,
+  };
+  const rawResponse = await post<API.System.CreateUserResponse>("/sys/users", requestBody, options);
   return rawResponse?.user;
 }
 
@@ -55,7 +61,10 @@ export async function getUserResources(id: string, options?: API.RequestOptions)
 
 /** Update user record by ID PUT /sys/users/${id} */
 export async function updateUser(id: string, body: Omit<API.System.User, "id">, options?: API.RequestOptions) {
-  return put<never>(`/sys/users/${id}`, body, options);
+  const requestBody = {
+    user: body,
+  };
+  return put<never>(`/sys/users/${id}`, requestBody, options);
 }
 
 /** Update user roles by ID PUT /sys/users/${id}/roles */
@@ -104,7 +113,7 @@ export const useUserResourceQuery = (id: string) => {
 
 export const useUserCreate = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (user: Omit<API.System.User, "id">) => addUser(user),
+    mutationFn: (user: Omit<API.System.User, "id"> & { password?: string }) => addUser(user),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/users"]),
   });
 };

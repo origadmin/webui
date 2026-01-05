@@ -8,10 +8,11 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
  */
 export async function listResource(params: API.DataTableParams, options?: API.RequestOptions) {
   // 1. Translate frontend params to backend params.
+  const { pageSize, ...rest } = params;
   const backendParams: API.SearchParams = {
-    ...params,
+    ...rest,
     page: (params.page || 0) + 1,
-    page_size: params.pageSize,
+    page_size: pageSize,
   };
 
   // 2. Call the fetcher with backend-compatible params.
@@ -34,13 +35,19 @@ export async function getResource(id: string, options?: API.RequestOptions) {
 
 /** Create resource record POST /sys/resources */
 export async function addResource(body: Omit<API.System.Resource, "id">, options?: API.RequestOptions) {
-  const rawResponse = await post<API.System.CreateResourceResponse>("/sys/resources", body, options);
+  const requestBody = {
+    resource: body,
+  };
+  const rawResponse = await post<API.System.CreateResourceResponse>("/sys/resources", requestBody, options);
   return rawResponse?.resource;
 }
 
 /** Update resource record by ID PUT /sys/resources/${id} */
 export async function updateResource(id: string, body: Partial<API.System.Resource>, options?: API.RequestOptions) {
-  return put<never>(`/sys/resources/${id}`, body, options);
+  const requestBody = {
+    resource: body,
+  };
+  return put<never>(`/sys/resources/${id}`, requestBody, options);
 }
 
 /** Delete resource record by ID DELETE /sys/resources/${id} */

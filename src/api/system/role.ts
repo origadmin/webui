@@ -8,10 +8,11 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
  */
 export async function listRole(params: API.DataTableParams, options?: API.RequestOptions) {
   // 1. Translate frontend params to backend params.
+  const { pageSize, ...rest } = params;
   const backendParams: API.SearchParams = {
-    ...params,
+    ...rest,
     page: (params.page || 0) + 1,
-    page_size: params.pageSize,
+    page_size: pageSize,
   };
 
   // 2. Call the fetcher with backend-compatible params.
@@ -34,13 +35,19 @@ export async function getRole(id: string, options?: API.RequestOptions) {
 
 /** Create role record POST /sys/roles */
 export async function addRole(body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
-  const rawResponse = await post<API.System.CreateRoleResponse>("/sys/roles", body, options);
+  const requestBody = {
+    role: body,
+  };
+  const rawResponse = await post<API.System.CreateRoleResponse>("/sys/roles", requestBody, options);
   return rawResponse?.role;
 }
 
 /** Update role record by ID PUT /sys/roles/${id} */
 export async function updateRole(id: string, body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
-  return put<never>(`/sys/roles/${id}`, body, options);
+  const requestBody = {
+    role: body,
+  };
+  return put<never>(`/sys/roles/${id}`, requestBody, options);
 }
 
 /** Delete role record by ID DELETE /sys/roles/${id} */

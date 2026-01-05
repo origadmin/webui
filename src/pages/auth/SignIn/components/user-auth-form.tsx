@@ -118,12 +118,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <LoadingButton
-              type='button'
-              className='mt-2'
-              loading={submitting}
-              onClick={handleLoginClick}
-            >
+            <LoadingButton type='button' className='mt-2' loading={submitting} onClick={handleLoginClick}>
               Login
             </LoadingButton>
           </div>
