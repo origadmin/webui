@@ -40,11 +40,11 @@ declare global {
     };
 
     type Error = {
-      id?: string;
       code?: number;
+      reason?: string;
       message?: string;
-      detail?: string;
-      status?: string;
+      metadata?: Record<string, string>;
+      details?: any[];
     };
 
     type Result<T> = {

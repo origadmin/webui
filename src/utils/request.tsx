@@ -118,14 +118,12 @@ async function fetchRequest<T extends object, TData extends object = object>(
 
   const finalUrl = (GlobalConfig.api.urlPrefix || "") + localVarUrlObj.pathname + localVarUrlObj.search;
 
-  const needsSerialization = typeof options.body !== "string" && options.body !== undefined;
-
-  const config: AxiosRequestConfig<TData> = {
+  const config = {
     method,
     headers: fetchHeader(options),
-    data: needsSerialization ? JSON.stringify(options.body) : options.body,
+    data: options.body,
     ...options.config,
-  };
+  } as AxiosRequestConfig<TData>;
 
   return request<T>(finalUrl, config)
     .then((resp: AxiosResponse<T>) => resp.data)
