@@ -80,13 +80,13 @@ const fetchHeader = (options: API.RequestOptions) => {
   }
 };
 
-const fillBody = <TData extends object>(body?: TData, options?: API.RequestOptions<TData>) => ({
-  headers: { "Content-Type": "application/json", ...options?.headers },
+const fillBody = <TData extends object>(body?: TData, options?: Omit<API.RequestOptions, "body">) => ({
+  headers: { "Content-Type": "application/json", ...(options?.headers || {}) },
   ...options,
   body,
 });
 
-const fillParams = <TData extends object>(params?: API.SearchParams, options?: API.RequestOptions<TData>) => ({
+const fillParams = (params?: API.SearchParams, options?: Omit<API.RequestOptions, "body">) => ({
   ...options,
   params,
 });
@@ -161,7 +161,7 @@ async function del<T extends object>(
 async function post<T extends object, TData extends object = object>(
   url: string,
   body?: TData,
-  options?: API.RequestOptions<TData>,
+  options?: Omit<API.RequestOptions, "body">,
 ) {
   return fetchRequest<T, TData>(url, "POST", fillBody(body, options));
 }
@@ -169,7 +169,7 @@ async function post<T extends object, TData extends object = object>(
 async function put<T extends object, TData extends object = object>(
   url: string,
   body?: TData,
-  options?: API.RequestOptions<TData>,
+  options?: Omit<API.RequestOptions, "body">,
 ) {
   return fetchRequest<T, TData>(url, "PUT", fillBody(body, options));
 }
@@ -177,7 +177,7 @@ async function put<T extends object, TData extends object = object>(
 async function patch<T extends object, TData extends object = object>(
   url: string,
   body?: TData,
-  options?: API.RequestOptions<TData>,
+  options?: Omit<API.RequestOptions, "body">,
 ) {
   return fetchRequest<T, TData>(url, "PATCH", fillBody(body, options));
 }

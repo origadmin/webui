@@ -2,8 +2,8 @@ import { Query } from "@/utils";
 import { post, get, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** 
- * Query user list GET /sys/users 
+/**
+ * Query user list GET /sys/users
  * This is the "smart adapter" function. It:
  * 1. Adapts frontend pagination (0-based) to backend (1-based).
  * 2. Calls the "dumb" fetcher.
