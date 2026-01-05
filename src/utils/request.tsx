@@ -142,11 +142,19 @@ async function fetchRequest<T extends object, TData extends object = object>(
     });
 }
 
-async function get<T extends object>(url: string, params?: API.SearchParams, options?: API.RequestOptions<object>) {
+async function get<T extends object>(
+  url: string,
+  params?: API.SearchParams,
+  options?: Omit<API.RequestOptions, "body">,
+) {
   return fetchRequest<T>(url, "GET", fillParams(params, options));
 }
 
-async function del<T extends object>(url: string, params?: API.SearchParams, options?: API.RequestOptions<object>) {
+async function del<T extends object>(
+  url: string,
+  params?: API.SearchParams,
+  options?: Omit<API.RequestOptions, "body">,
+) {
   return fetchRequest<T>(url, "DELETE", fillParams(params, options));
 }
 
