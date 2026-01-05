@@ -1,114 +1,96 @@
-import { useEffect, useState } from "react";
-import { Search } from "@/utils/index";
-import { PaginationState, SortingState, Updater, ColumnFiltersState, OnChangeFn } from "@tanstack/react-table";
-import { useFilters } from "@/hooks/use-filters";
+import { useState } from "react";
+import { PAGE_SIZE, START_PAGE } from "@/types";
+import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 
-export interface ReturnType<T> {
-  data: T;
-  isLoading: boolean;
-  isFetching: boolean;
-  isError: boolean;
-  isSuccess: boolean;
-  error: unknown;
+// Defines the standardized query parameters for any data table.
+interface DataTableQuery {
+  page: number;
+  pageSize: number;
+  sorting?: SortingState;
+  filters?: ColumnFiltersState;
 }
 
-export interface UseDataTableProps<T> {
-  useQuery: (search: API.SearchParams) => Partial<ReturnType<API.Result<T>>>;
+// Defines the standardized, simple shape of data returned from an API list endpoint.
+// This now includes pagination info returned from the server.
+interface DataTableQueryResult<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
-export interface UseDataTableReturn<T> {
-  sorting: SortingState;
-  pagination: PaginationState;
-  columnFilters: ColumnFiltersState;
-  params: API.SearchParams;
-  isLoading: boolean;
-  data: API.Result<T>;
-  setSorting: (updaterOrValue: Updater<SortingState>) => void;
-  setPagination: (updaterOrValue: Updater<PaginationState>) => void;
-  setColumnFilters: OnChangeFn<ColumnFiltersState>;
-  handleSearch: (filters: ColumnFiltersState) => void;
-  handleReset: () => void;
+// Defines the props for the useDataTable hook.
+interface UseDataTableProps<T> {
+  // The query hook's result must be wrapped in a `data` property by React Query.
+  // The value of that `data` property must be our standardized result shape.
+  useQuery: (params: DataTableQuery) => {
+    data?: DataTableQueryResult<T>;
+    isLoading: boolean;
+  };
+  globalFilterKey?: string;
 }
 
-export function useDataTable<T extends object>({ useQuery }: UseDataTableProps<T>): UseDataTableReturn<T> {
-  const { search, setFilters, resetFilters } = useFilters();
-  const oldFilters = Search.getColumnFilters(search);
-  const [sorting, _setSorting] = useState(Search.getSorting(search));
-  const [pagination, _setPagination] = useState(Search.getPagination(search));
-  const [columnFilters, _setColumnFilters] = useState(oldFilters);
-  const [searching, setSearching] = useState(false);
-  const [params, setParams] = useState<API.SearchParams>(
-    Search.parse({
-      pagination,
-      sorting,
-      columnFilters,
-    }),
-  );
+/**
+ * A custom hook to manage the state and data fetching for a data table.
+ * It enforces a consistent data structure from the API layer.
+ *
+ * @param useQuery The React Query hook used to fetch data. The hook must return an object
+ *                 containing `{ data: T[], total: number, page: number, pageSize: number }`.
+ * @param globalFilterKey The key to use for global filtering.
+ * @returns An object containing dataSource, total, loading state, and spreadable props for the DataTable.
+ */
+export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps<T>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: START_PAGE,
+    pageSize: PAGE_SIZE,
+  });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
-  useEffect(() => {
-    if (!searching) return;
-    setSearching(false);
-    setParams(
-      Search.parse({
-        pagination,
-        sorting,
-        columnFilters,
-      }),
-    );
-  }, [searching, pagination, sorting, columnFilters]);
-  const setSorting = (updaterOrValue: Updater<SortingState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(sorting) : updaterOrValue;
-    _setSorting(state);
-    setFilters({
-      ...params,
-      ...Search.parseSorting(state),
+  // `data` from useQuery will be the { data, total, page, pageSize } object.
+  const { data, isLoading } = useQuery({
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    sorting: sorting,
+    filters: activeFilters,
+  });
+
+  const handleSearch = (filters: ColumnFiltersState) => {
+    setActiveFilters(filters);
+    setPagination((prev) => ({ ...prev, pageIndex: START_PAGE }));
+  };
+
+  const handleReset = () => {
+    setColumnFilters([]);
+    setActiveFilters([]);
+    setSorting([]);
+    setPagination({
+      pageIndex: START_PAGE,
+      pageSize: PAGE_SIZE,
     });
-    setSearching(true);
   };
 
-  const setPagination = (updaterOrValue: Updater<PaginationState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(pagination) : updaterOrValue;
-    _setPagination(state);
-    setFilters({
-      ...params,
-      ...Search.parsePagination(state),
-    });
-    setSearching(true);
+  const tableProps = {
+    paginationState: pagination,
+    onPaginationChange: setPagination,
+    sorting: sorting,
+    onSortingChange: setSorting,
+    columnFiltersState: columnFilters,
+    onColumnFiltersChange: setColumnFilters,
+    globalFilterKey,
   };
 
-  const setColumnFilters = (updaterOrValue: Updater<ColumnFiltersState>) => {
-    const state = typeof updaterOrValue === "function" ? updaterOrValue(columnFilters) : updaterOrValue;
-    _setColumnFilters(state);
-  };
-
-  console.log("query", params);
-  const { data = {}, isLoading } = useQuery(params);
-
-  const handleReset = async () => {
-    setSearching(true);
-    resetFilters();
-  };
-
-  const handleSearch = async (filters: ColumnFiltersState) => {
-    setSearching(true);
-    setFilters({
-      ...params,
-      ...Search.parseColumnFilters(filters),
-      current: 1,
-    });
+  const searchProps = {
+    onSearch: handleSearch,
+    onReset: handleReset,
   };
 
   return {
-    sorting,
-    pagination,
-    columnFilters,
-    params,
-    isLoading: isLoading || false,
-    data,
-    setSorting,
-    setPagination,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
+    dataSource: data?.data ?? [],
+    total: data?.total ?? 0,
+    isLoading,
+    tableProps,
+    searchProps,
   };
 }
