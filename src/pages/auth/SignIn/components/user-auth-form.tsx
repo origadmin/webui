@@ -15,7 +15,6 @@ import { CaptchaDialog } from "./captcha-dialog";
 
 export type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
-// Schema for the main form (without captcha fields)
 const formSchema = z.object({
   username: z.string().min(1, { message: "Please enter your Email, Phone, or Username" }),
   password: z
@@ -45,16 +44,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       username: "",
       password: "",
     },
-    // By setting the mode to 'onSubmit' (or removing it, as it's the default),
-    // validation will only run when the form is submitted or trigger() is called.
     mode: "onSubmit",
   });
 
-  // This function will be called by the CaptchaDialog upon successful verification
   const handleLoginWithCaptcha = (captchaId: string, captchaCode: string) => {
-    const values = form.getValues(); // Get the current username and password
+    console.log("[UserAuthForm] handleLoginWithCaptcha called with:", { captchaId, captchaCode });
+    const values = form.getValues();
     startTransition(async () => {
       try {
+        console.log("[UserAuthForm] Submitting with:", { ...values, captchaId, captchaCode });
         const token = await signIn({
           ...values,
           captcha_id: captchaId,
@@ -65,34 +63,28 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setCaptchaDialogOpen(false);
         navigate({ to: redirectUrl, replace: true });
       } catch (err) {
+        console.error("[UserAuthForm] SignIn Error:", err);
         toast({
           variant: "destructive",
           description: err instanceof Error ? err.message : "Login failed. Please try again.",
         });
-        // Do not close the captcha dialog on login failure, allow user to retry captcha.
-        // The dialog itself will handle captcha refresh on its own failed verification.
       }
     });
   };
 
-  // This is the new handler for the Login button click.
   const handleLoginClick = async () => {
-    // 1. Manually trigger validation for the fields we care about.
+    console.log("[UserAuthForm] handleLoginClick called");
     const isValid = await form.trigger(["username", "password"]);
-
-    // 2. If validation fails, do nothing. The UI will show error messages.
+    console.log("[UserAuthForm] Form validation result:", isValid);
     if (!isValid) {
       return;
     }
-
-    // 3. If validation passes, open the captcha dialog.
     setCaptchaDialogOpen(true);
   };
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <Form {...form}>
-        {/* The form tag is still useful for semantics and accessibility */}
         <form onSubmit={(e) => e.preventDefault()}>
           <div className='grid gap-2 py-4'>
             <FormField
@@ -127,10 +119,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               )}
             />
             <LoadingButton
-              type='button' // Changed from 'submit' to 'button'
+              type='button'
               className='mt-2'
               loading={submitting}
-              onClick={handleLoginClick} // Use the new click handler
+              onClick={handleLoginClick}
             >
               Login
             </LoadingButton>

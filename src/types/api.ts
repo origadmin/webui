@@ -33,8 +33,8 @@ declare global {
       export type GetResourceResponse = Schemas["api.v1.services.system.GetResourceResponse"];
       export type CreateResourceResponse = Schemas["api.v1.services.system.CreateResourceResponse"];
     }
-    export type Captcha = Schemas["api.v1.services.auth.CaptchaIdResponse"];
-    export type LoginForm = Schemas["api.v1.services.auth.LoginRequest_Data"];
+    export type Captcha = Schemas["api.v1.services.auth.GetCaptchaResponse"];
+    export type LoginForm = Schemas["api.v1.services.auth.LoginRequest"];
     export type LoginToken = Schemas["api.v1.services.auth.LoginResponse"];
     export type UpdateLoginPassword = Schemas["google.protobuf.Any"];
   }

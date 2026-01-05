@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useViewSequenceUpdate, useViewsQuery } from "@/api/system/view";
+import { useViewsQuery } from "@/api/system/view";
 import { IconChevronDown, IconChevronsDown, IconChevronsUp, IconChevronUp } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { createMoveHandlers } from "@/lib/array";
@@ -41,7 +41,7 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
 
   const moveHandlers = createMoveHandlers(setSortableItems, () => selectedItemId);
   const queryClient = useQueryClient();
-  const { mutate: updateSequence, isPending: isUpdating } = useViewSequenceUpdate(queryClient);
+  // const { mutate: updateSequence, isPending: isUpdating } = useViewSequenceUpdate(queryClient);
 
   const handleSave = () => {
     const sequenceUpdates = sortableItems.map((item, index) => ({
@@ -49,19 +49,19 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
       sequence: index + 1,
     }));
 
-    updateSequence(sequenceUpdates, {
-      onSuccess: () => {
-        toast({ title: "Success", description: "View sequence updated successfully." });
-        onOpenChange(false);
-      },
-      onError: (error: any) => {
-        toast({
-          title: "Error",
-          description: error.message || "Failed to update sequence.",
-          variant: "destructive",
-        });
-      },
-    });
+    // updateSequence(sequenceUpdates, {
+    //   onSuccess: () => {
+    //     toast({ title: "Success", description: "View sequence updated successfully." });
+    //     onOpenChange(false);
+    //   },
+    //   onError: (error: any) => {
+    //     toast({
+    //       title: "Error",
+    //       description: error.message || "Failed to update sequence.",
+    //       variant: "destructive",
+    //     });
+    //   },
+    // });
   };
 
   return (
@@ -106,8 +106,8 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
         </div>
 
         <DialogFooter>
-          <Button type='button' onClick={handleSave} disabled={isUpdating}>
-            {isUpdating ? "Saving..." : "Save Order"}
+          <Button type='button' onClick={handleSave} >
+            Save Order
           </Button>
         </DialogFooter>
       </DialogContent>

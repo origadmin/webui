@@ -1,12 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
-import { get } from "@/utils/request";
+import { getCaptcha } from "@/api/auth/login";
+import type { CaptchaResponse } from "@/api/auth/login"; // Import the correct type
 import { IconAlertCircle, IconRefresh, IconVolume } from "@tabler/icons-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-
 
 interface CaptchaDialogProps {
   open: boolean;
@@ -14,15 +21,9 @@ interface CaptchaDialogProps {
   onVerifySuccess: (captchaId: string, captchaCode: string) => void;
 }
 
-type CaptchaResponse = {
-  captcha_id?: string;
-  captcha_data?: string;
-  mime_type?: string;
-};
-
 export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDialogProps) {
   const [captchaId, setCaptchaId] = useState<string | undefined>();
-  const [captchaImage, setCaptchaImage] = useState<string | undefined>();
+  const [captchaImage, setCaptchaImage] = useState<string | null>(null);
   const [captchaCode, setCaptchaCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -32,7 +33,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
     setIsLoading(true);
     setHasError(false);
     try {
-      const response = await get<CaptchaResponse>("/auth/captcha", { captcha_type: "digit" });
+      const response = await getCaptcha({ captcha_type: "digit" });
       if (response && response.captcha_data) {
         setCaptchaId(response.captcha_id);
         setCaptchaImage(response.captcha_data);
@@ -42,16 +43,15 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
     } catch (err) {
       console.error("Captcha fetch error:", err);
       setHasError(true);
-      // toast({ variant: "destructive", description: "Failed to load captcha. Please try again." });
     } finally {
       setIsLoading(false);
     }
-  }, [toast]);
+  }, []);
 
   const playAudio = useCallback(async () => {
     if (!captchaId) return;
     try {
-      const response = await get<CaptchaResponse>("/auth/captcha", {
+      const response = await getCaptcha({
         captcha_id: captchaId,
         captcha_type: "audio",
       });
@@ -64,7 +64,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
       } else {
         throw new Error("Failed to load audio captcha.");
       }
-    } catch (error) {
+    } catch (_error) {
       toast({ variant: "destructive", description: "Failed to load audio. Please try again." });
     }
   }, [captchaId, toast]);
@@ -75,7 +75,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
     } else {
       setCaptchaCode("");
       setCaptchaId(undefined);
-      setCaptchaImage(undefined);
+      setCaptchaImage(null);
     }
   }, [open, refreshCaptcha]);
 
@@ -102,14 +102,17 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
         </div>
       );
     }
-    return (
-      <img
-        src={captchaImage || ""}
-        alt='CAPTCHA'
-        className='h-[50px] w-full cursor-pointer rounded-l-md'
-        onClick={refreshCaptcha}
-      />
-    );
+    if (captchaImage) {
+      return (
+        <img
+          src={captchaImage}
+          alt='CAPTCHA'
+          className='h-[50px] w-full cursor-pointer rounded-l-md'
+          onClick={refreshCaptcha}
+        />
+      );
+    }
+    return null;
   };
 
   return (
@@ -119,14 +122,11 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
           <DialogTitle>Complete Security Verification</DialogTitle>
           <DialogDescription>Enter the characters from the image to continue.</DialogDescription>
         </DialogHeader>
-        {/* CORRECTED: Reduced vertical spacing from space-y-3 to space-y-2 */}
         <div className='space-y-2 py-2'>
-          {/* Unified container for image and buttons */}
           <div className='flex h-[52px] items-center rounded-md border border-input'>
             <div className='flex-grow'>{renderCaptchaImage()}</div>
             <div className='h-full w-px bg-border' />
             <div className='flex h-full flex-col items-center justify-center gap-y-1 px-1'>
-              {/* CORRECTED: Re-added the onClick handlers */}
               <Button variant='ghost' size='icon' className='size-8' onClick={refreshCaptcha}>
                 <IconRefresh className='size-5 text-muted-foreground' />
               </Button>
@@ -135,8 +135,6 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
               </Button>
             </div>
           </div>
-
-          {/* Input field below */}
           <Input
             id='captcha-code'
             value={captchaCode}

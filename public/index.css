@@ -4877,11 +4877,6 @@ body {
   height: 1.5rem;
 }
 
-.size-7 {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
 .size-8 {
   width: 2rem;
   height: 2rem;
@@ -5024,6 +5019,10 @@ body {
 
 .h-\[50px\] {
   height: 50px;
+}
+
+.h-\[52px\] {
+  height: 52px;
 }
 
 .h-\[var\(--header-height\)\] {
@@ -6655,10 +6654,6 @@ body {
 
 .pr-2\.5 {
   padding-right: 0.625rem;
-}
-
-.pr-28 {
-  padding-right: 7rem;
 }
 
 .pr-4 {
