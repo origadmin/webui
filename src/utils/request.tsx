@@ -1,5 +1,5 @@
 import mocks from "@/mocks";
-import { HOST, HOST_REQUEST_TIMEOUT, API_REFRESH_TOKEN_URL } from "@/types";
+import { API_REFRESH_TOKEN_URL, HOST, HOST_REQUEST_TIMEOUT, SIGN_IN_URL } from "@/types";
 import { clearStorage, getRefreshToken, setAuth } from "@/utils/storage";
 import { getAccessToken } from "@/utils/storage";
 import GlobalConfig from "@config";
@@ -57,7 +57,7 @@ const handleAuthError = () => {
   clearStorage();
   // Redirect to login page. Using window.location for simplicity.
   // In a real app, you might use a history object from a routing library.
-  window.location.href = "/login";
+  window.location.href = SIGN_IN_URL;
 };
 
 request.interceptors.response.use(

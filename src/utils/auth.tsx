@@ -1,6 +1,7 @@
-import { login, logout } from "@/api/auth/login"; // CORRECTED: Import from the new, correct path
+import { login, logout } from "@/api/auth/login";
+// CORRECTED: Import from the new, correct path
 import { mockSignIn } from "@/mocks/mock-sign-in";
-import { SIGN_IN_URL } from "@/types";
+import { API_REFRESH_TOKEN_URL, SIGN_IN_URL } from "@/types";
 import { post } from "@/utils/request";
 import { getRefreshToken, removeTokens, setAuth } from "@/utils/storage";
 import GlobalConfig from "@config";
@@ -39,7 +40,7 @@ export async function refreshToken() {
   }
 
   try {
-    const response = await post<API.Token>("/auth/token", { refresh_token: refreshToken });
+    const response = await post<API.Token>(API_REFRESH_TOKEN_URL, { refresh_token: refreshToken });
     if (response && response.access_token) {
       setAuth(response);
       return response.access_token || "";
