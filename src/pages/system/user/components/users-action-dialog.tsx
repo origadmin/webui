@@ -63,6 +63,15 @@ interface Props<T> {
   columns?: number;
 }
 
+// Helper function to compare two string arrays
+const areRolesEqual = (a?: string[], b?: string[]): boolean => {
+  if (!a && !b) return true;
+  if (!a || !b || a.length !== b.length) return false;
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+  return sortedA.every((value, index) => value === sortedB[index]);
+};
+
 export function UsersActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.User>) {
   const is_edit = !!currentRow;
 
@@ -99,15 +108,16 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
 
   const onSubmit = async (values: UserForm) => {
     try {
-      // 1. Create a mutable, clean payload by removing the helper field.
+      // Create a mutable copy of the form values.
       const payload = { ...values };
+      // The 'is_edit' field is for frontend logic only and should never be sent.
       delete (payload as Partial<UserForm>).is_edit;
 
       if (!is_edit) {
-        // 2. For creation, pass the flat payload. The adapter will structure it.
+        // For creation, the adapter layer will handle structuring the payload.
         await createUser(payload);
       } else {
-        // 3. For update, create the full object for a proper PUT operation.
+        // For update, create the full object to ensure a proper PUT operation.
         const putPayload = {
           ...currentRow,
           ...payload,
@@ -120,8 +130,14 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
 
         const { role_ids, ...userBasicInfo } = putPayload;
 
-        // 4. Send requests concurrently. The adapter will structure the flat object.
-        await Promise.all([updateUser(userBasicInfo), updateUserRoles(role_ids || [])]);
+        const updatePromises = [updateUser(userBasicInfo)];
+
+        // Only call updateUserRoles if the roles have actually changed.
+        if (!areRolesEqual(role_ids, currentRow?.role_ids)) {
+          updatePromises.push(updateUserRoles(role_ids || []));
+        }
+
+        await Promise.all(updatePromises);
       }
 
       toast({
@@ -147,7 +163,9 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     <Dialog
       open={open}
       onOpenChange={(state) => {
-        form.reset();
+        if (!state) {
+          form.reset();
+        }
         onOpenChange(state);
       }}
     >
