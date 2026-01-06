@@ -2,7 +2,7 @@ import { roles } from "@/mocks/role/roles";
 import { users } from "@/mocks/user/users";
 import { permissions } from "@/mocks/permission/permissions";
 import { views } from "@/mocks/view/views";
-import { mockSignInUser } from "./mock-sign-in";
+import { mockSignInUser, mockToken } from "./mock-sign-in";
 import { resources } from "./resources";
 
 const mockData: Record<string, any> = {
@@ -24,6 +24,22 @@ const mockData: Record<string, any> = {
       fontSize: 20,
     },
   },
+  "/me/profile": {
+    user: mockSignInUser,
+    resources: resources,
+    watermark: {
+      content: [`${mockSignInUser.username}`],
+      fullscreen: true,
+      zIndex: 1000,
+      width: 120,
+      height: 64,
+      gap: [30, 30],
+      fontSize: 20,
+    },
+  },
+  "/me/resources": resources,
+  "/auth/refresh": mockToken,
+  "/auth/logout": { success: true },
 };
 
 const getPaginationData = (data: unknown, params?: API.SearchParams) => {

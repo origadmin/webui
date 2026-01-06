@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { InternalServerError, NotFoundError } from "@/pages/errors";
-import { SIGN_IN_URL, SIGN_UP_URL } from "@/types";
+import { DEFAULT_MAIN_PAGE, SIGN_IN_URL, SIGN_UP_URL } from "@/types";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
@@ -64,9 +64,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     }
 
     // If the user is authenticated and is trying to access an auth page
+    // Check if there's a redirect parameter and use it, otherwise go to DEFAULT_MAIN_PAGE
     if (token && isAuthPage) {
+      const redirectParam = new URLSearchParams(location.search).get("redirect");
       throw redirect({
-        to: "/",
+        to: redirectParam || DEFAULT_MAIN_PAGE,
       });
     }
   },

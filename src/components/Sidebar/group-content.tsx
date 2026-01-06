@@ -39,9 +39,11 @@ const RecursiveMenuItem = ({ item }: { item: API.MenuItem }) => {
               <SidebarMenuItem key={child.id}>
                 <Link to={child.path || "/"}>
                   {({ isActive }) => (
-                    <SidebarMenuSubButton isActive={isActive}>
-                      {child.icon && <TablerIcon name={child.icon} />}
-                      <span>{child.title}</span>
+                    <SidebarMenuSubButton asChild isActive={isActive}>
+                      <span className="flex items-center gap-2">
+                        {child.icon && <TablerIcon name={child.icon} />}
+                        <span className="truncate">{child.title}</span>
+                      </span>
                     </SidebarMenuSubButton>
                   )}
                 </Link>

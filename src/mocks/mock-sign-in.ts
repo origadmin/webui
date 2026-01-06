@@ -11,7 +11,7 @@ export const mockToken = {
     "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzczOTYwMzQsImlzcyI6ImxvY2FsaG9zdCIsInN1YiI6ImFkbWluIn0.nlRp027z2lnX_RtyqYOaUocUcGODvWgMw-N81Evj68XMsMBIjNXS9O9arjbIZkNXU8MFnNdweOmgMQJFhUii6A",
   refresh_token:
     "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg1OTg0MzQsImlzcyI6ImxvY2FsaG9zdCIsInN1YiI6ImFkbWluIn0.EhuqS0I25qLJh2iMgHb-bJpKN6Jn0IOBSqDPjskPYUkNMqMHOnPeTbon_yddaiQ5mQbQie3b4IAjsCoByLmhVQ",
-  expires_at: 1737396034,
+  expiration_time: "2099999999",
   token_type: "Bearer",
 };
 

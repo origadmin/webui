@@ -27,9 +27,9 @@ import { RolesPermissionSelect } from "./roles-permission-select";
 
 const formSchema = z.object({
   name: z.string().min(1, {
-    message: t("Name is required"),
+    message: t("validation.name.required"),
   }),
-  keyword: z.string().min(1, { message: "Keyword is required." }),
+  keyword: z.string().min(1, { message: t("validation.keyword.required") }),
   type: z.number().optional(),
   description: z.string().optional(),
   status: z.number().default(1),

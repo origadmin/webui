@@ -54,6 +54,14 @@ const processQueue = (error: AxiosError | null, token: string | null = null) => 
 };
 
 const handleAuthError = () => {
+  const currentToken = getAccessToken();
+  // Check if we still have a valid token in storage.
+  // This prevents clearing a newly set token from stale requests.
+  if (currentToken) {
+    console.warn("[handleAuthError] Skipping storage clear - token exists. This might be a stale request.");
+    return;
+  }
+
   clearStorage();
   // Redirect to login page. Using window.location for simplicity.
   // In a real app, you might use a history object from a routing library.

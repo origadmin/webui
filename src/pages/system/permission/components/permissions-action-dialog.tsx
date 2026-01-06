@@ -30,8 +30,8 @@ import { ResourceTreeSelect } from "./resource-tree-select";
 import { ViewTreeSelect } from "./view-tree-select";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: t("name.required") }),
-  keyword: z.string().min(1, { message: t("keyword.required") }),
+  name: z.string().min(1, { message: t("validation.name.required") }),
+  keyword: z.string().min(1, { message: t("validation.keyword.required") }),
   description: z.string().optional(),
   view_ids: z.array(z.string()).optional(),
   resource_ids: z.array(z.string()).optional(),
