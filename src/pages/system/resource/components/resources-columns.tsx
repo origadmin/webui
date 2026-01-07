@@ -29,7 +29,7 @@ const methodColors: Record<string, string> = {
 
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
-    accessorKey: "keyword",
+    accessorKey: "name",
     header: ({ column, table }) => (
       <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
         {table.getRowModel().rows.length > 0 && (
@@ -61,7 +61,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
         ) : (
           <span className="w-6 h-6 mr-2 inline-block" /> // Placeholder for alignment
         )}
-        <LongText>{row.original.keyword}</LongText>
+        <LongText>{row.original.name}</LongText>
         {row.original.service_name && (
           <span className="ml-2 text-xs text-muted-foreground">
             ({row.original.service_name})
@@ -73,22 +73,22 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     searchable: true,
   },
   {
-    accessorKey: "operation",
-    header: "Operation",
-    cell: ({ row }) => <LongText>{row.original.operation}</LongText>,
+    accessorKey: "keyword",
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Keyword' />,
+    cell: ({ row }) => <LongText>{row.original.keyword}</LongText>,
     meta: defaultHeaderMeta.meta,
     searchable: true,
   },
   {
     accessorKey: "path",
-    header: "Path",
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Path' />,
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
     meta: defaultHeaderMeta.meta,
     searchable: true,
   },
   {
     accessorKey: "method",
-    header: "Method",
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Method' />,
     cell: ({ row }) => {
       const method = (row.original.method || "").toUpperCase();
       const colorClass = methodColors[method] || "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100";
@@ -98,7 +98,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
   },
   {
     accessorKey: "sync_status",
-    header: "Sync Status",
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Sync Status' />,
     cell: ({ row }) => {
       const status = row.original.sync_status || "Unknown";
       return <Badge className={cn(syncStatusBadges[status])}>{status}</Badge>;

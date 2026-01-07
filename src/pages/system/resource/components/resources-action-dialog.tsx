@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useResourceCreate, useResourceUpdate } from "@/api/system/resource";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,11 +24,14 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
+  name: z.string().min(1, "Name is required."),
   service_name: z.string().min(1, "Service name is required."),
   keyword: z.string().min(1, "Keyword is required."),
   path: z.string().min(1, "Path is required."),
   method: z.string().min(1, "Method is required."),
   operation: z.string().optional(),
+  policy: z.string().optional(),
+  i18n: z.string().optional(),
   description: z.string().optional(),
   status: z.number().default(1),
   parent_id: z.string().nullable().optional(),
@@ -58,21 +62,33 @@ export function ResourcesActionDialog({
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
-    defaultValues: isEditMode
-      ? {
-          ...currentRow,
-        }
-      : {
-          service_name: "",
-          keyword: "",
-          path: "",
-          method: "GET",
-          operation: "",
-          description: "",
-          status: 1,
-          parent_id: parentRow?.id || null,
-        },
+    defaultValues: {
+      name: "",
+      service_name: "",
+      keyword: "",
+      path: "",
+      method: "GET",
+      operation: "",
+      policy: "",
+      i18n: "",
+      description: "",
+      status: 1,
+      parent_id: null,
+    },
   });
+
+  useEffect(() => {
+    if (isEditMode && currentRow) {
+      form.reset(currentRow);
+    } else if (isSubMode && parentRow) {
+      form.reset({
+        ...form.getValues(), // Keep default empty values
+        parent_id: parentRow.id,
+      });
+    } else {
+      form.reset(); // Reset to default empty values for new resource
+    }
+  }, [currentRow, parentRow, isEditMode, isSubMode, form]);
 
   const queryClient = useQueryClient();
   const { mutateAsync: createResource, isPending: isCreatePending } = useResourceCreate(queryClient);
@@ -167,6 +183,9 @@ export function ResourcesActionDialog({
                   <h3 className='text-lg font-medium'>Resource Details</h3>
                   <Separator />
                   <div className='grid grid-cols-2 gap-4 pt-2'>
+                    <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='e.g., Get User Profile' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='policy' render={({ field }) => (<FormItem><FormLabel>Policy</FormLabel><FormControl><Input placeholder='e.g., admin-only' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='i18n' render={({ field }) => (<FormItem><FormLabel>I18n Key</FormLabel><FormControl><Input placeholder='e.g., resource.user.get' {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='service_name' render={({ field }) => (<FormItem><FormLabel>Service Name</FormLabel><FormControl><Input placeholder='e.g., user-service' {...field} disabled={isSyncedResource} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='e.g., user:create' {...field} disabled={isSyncedResource} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='path' render={({ field }) => (<FormItem className="col-span-2"><FormLabel>Path</FormLabel><FormControl><Input placeholder='/api/v1/users' {...field} disabled={isSyncedResource} /></FormControl><FormMessage /></FormItem>)} />
