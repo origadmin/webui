@@ -74,6 +74,19 @@ export const renderFields = (
         />
         <FormField
           control={form.control}
+          name="component"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Component</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., /system/user" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="scope"
           render={({ field }) => (
             <FormItem>

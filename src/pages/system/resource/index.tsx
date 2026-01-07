@@ -1,7 +1,4 @@
-import { useMemo } from "react";
-import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
-import { buildTree } from "@/utils/tree";
 import {
   Card,
   CardContent,
@@ -18,13 +15,11 @@ import { columns } from "./components/resources-columns";
 import { useResourcesQuery } from "@/api/system/resource";
 
 export default function ResourcesPage() {
+  // Standard paginated data fetching
   const { dataSource, total, isLoading, tableProps, searchProps } =
     useDataTable({
-      useQuery: (params) => useResourcesQuery({ ...params, page_size: 1000 }), // Fetch all for tree
+      useQuery: useResourcesQuery,
     });
-
-  // Memoize the tree structure
-  const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
 
   return (
     <ResourceTableProvider>
@@ -39,20 +34,15 @@ export default function ResourcesPage() {
           <CardContent>
             <DataTable<API.System.Resource>
               columns={columns}
-              dataSource={treeData} // Use the tree data
+              dataSource={dataSource} // Use the direct data source
               total={total}
               isLoading={isLoading}
               // Spread all table state and handlers
               {...tableProps}
-              // Static props for tree table
-              useManual={false}
-              showPagination={false} // Pagination is often disabled for tree views
-              // Options for tree table
-              options={{
-                getExpandedRowModel: getExpandedRowModel(),
-                getSubRows: (row: API.System.Resource) => row.children,
-              }}
-              // Toolbar and sub-component props
+              // Standard table configuration
+              useManual
+              showPagination // Enable pagination
+              // Toolbar props
               toolbarPosition="top"
               toolbars={() => <ResourcesPrimaryButtons />}
               props={{

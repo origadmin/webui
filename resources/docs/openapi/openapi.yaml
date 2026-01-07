@@ -97,6 +97,31 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+    /auth/refresh:
+        post:
+            tags:
+                - AuthService
+            description: RefreshToken provides a new access token.
+            operationId: AuthService_RefreshToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.v1.services.auth.RefreshTokenRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.v1.services.auth.RefreshTokenResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/google.rpc.Status'
     /auth/register:
         post:
             tags:
@@ -116,31 +141,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.v1.services.auth.RegisterResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/google.rpc.Status'
-    /auth/token:
-        post:
-            tags:
-                - AuthService
-            description: RefreshToken provides a new access token.
-            operationId: AuthService_RefreshToken
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/api.v1.services.auth.RefreshTokenRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/api.v1.services.auth.RefreshTokenResponse'
                 default:
                     description: Default error response
                     content:
@@ -1017,16 +1017,11 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: id
-                  in: query
-                  description: The resource name of the permission to update.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.types.Permission'
+                            $ref: '#/components/schemas/api.v1.services.system.UpdatePermissionRequest'
                 required: true
             responses:
                 "200":
@@ -1253,6 +1248,10 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: operation
+                  in: query
+                  schema:
+                    type: string
             responses:
                 "200":
                     description: OK
@@ -1355,7 +1354,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.types.Resource'
+                            $ref: '#/components/schemas/api.v1.services.system.UpdateResourceRequest'
                 required: true
             responses:
                 "200":
@@ -1513,16 +1512,11 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: id
-                  in: query
-                  description: The id of the role resource to update.
-                  schema:
-                    type: string
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.types.Role'
+                            $ref: '#/components/schemas/api.v1.services.system.UpdateRoleRequest'
                 required: true
             responses:
                 "200":
@@ -1683,7 +1677,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: string
+                            $ref: '#/components/schemas/api.v1.services.system.ResetUserPasswordRequest'
                 required: true
             responses:
                 "200":
@@ -1785,7 +1779,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
     /sys/users/{user.id}:
-        patch:
+        put:
             tags:
                 - UserService
             operationId: UserService_UpdateUser
@@ -1957,7 +1951,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/api.v1.services.types.View'
+                            $ref: '#/components/schemas/api.v1.services.system.UpdateViewRequest'
                 required: true
             responses:
                 "200":
@@ -2259,6 +2253,8 @@ components:
             type: object
             properties:
                 access_token:
+                    type: string
+                refresh_token:
                     type: string
                 token_type:
                     type: string
@@ -2858,6 +2854,13 @@ components:
                 extra:
                     $ref: '#/components/schemas/google.protobuf.Any'
             description: Response message for ViewService.ListViews.
+        api.v1.services.system.ResetUserPasswordRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                password:
+                    type: string
         api.v1.services.system.ResetUserPasswordResponse:
             type: object
             properties: {}
@@ -2866,6 +2869,16 @@ components:
             properties:
                 department:
                     $ref: '#/components/schemas/api.v1.services.types.Department'
+        api.v1.services.system.UpdatePermissionRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: The resource name of the permission to update.
+                permission:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.Permission'
+                    description: The permission resource which replaces the resource on the server.
         api.v1.services.system.UpdatePermissionResponse:
             type: object
             properties:
@@ -2876,12 +2889,28 @@ components:
             properties:
                 position:
                     $ref: '#/components/schemas/api.v1.services.types.Position'
+        api.v1.services.system.UpdateResourceRequest:
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/api.v1.services.types.Resource'
+            description: Request message for ResourceService.UpdateResource.
         api.v1.services.system.UpdateResourceResponse:
             type: object
             properties:
                 resource:
                     $ref: '#/components/schemas/api.v1.services.types.Resource'
             description: Response message for ResourceService.UpdateResource.
+        api.v1.services.system.UpdateRoleRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: The id of the role resource to update.
+                role:
+                    allOf:
+                        - $ref: '#/components/schemas/api.v1.services.types.Role'
+                    description: The role resource which replaces the resource on the server.
         api.v1.services.system.UpdateRoleResponse:
             type: object
             properties:
@@ -2930,6 +2959,12 @@ components:
         api.v1.services.system.UpdateUserStatusResponse:
             type: object
             properties: {}
+        api.v1.services.system.UpdateViewRequest:
+            type: object
+            properties:
+                view:
+                    $ref: '#/components/schemas/api.v1.services.types.View'
+            description: Request message for ViewService.UpdateView.
         api.v1.services.system.UpdateViewResponse:
             type: object
             properties:
@@ -3065,16 +3100,16 @@ components:
                     items:
                         type: string
                     description: permission.field.resource_ids
-                resources:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/api.v1.services.types.Resource'
-                    description: permission.field.resources
                 view_ids:
                     type: array
                     items:
                         type: string
                     description: permission.field.view_ids
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.v1.services.types.Resource'
+                    description: permission.field.resources
                 views:
                     type: array
                     items:
@@ -3132,9 +3167,9 @@ components:
                 keyword:
                     type: string
                     description: resource.field.keyword
-                i18n_key:
+                i18n:
                     type: string
-                    description: resource.field.i18n_key
+                    description: resource.field.i18n
                 type:
                     type: string
                     description: resource.field.type
@@ -3151,19 +3186,10 @@ components:
                 method:
                     type: string
                     description: resource.field.method
-                component:
-                    type: string
-                    description: resource.field.component
-                icon:
-                    type: string
-                    description: resource.field.icon
                 sequence:
                     type: integer
                     description: resource.field.sequence
                     format: int32
-                visible:
-                    type: boolean
-                    description: resource.field.visible
                 tree_path:
                     type: string
                     description: resource.field.tree_path
@@ -3178,6 +3204,15 @@ components:
                 parent_id:
                     type: string
                     description: resource.field.parent_id
+                sync_status:
+                    type: string
+                    description: resource.field.sync_status
+                service_name:
+                    type: string
+                    description: resource.field.service_name
+                policy:
+                    type: string
+                    description: resource.field.policy
                 children:
                     type: array
                     items:
@@ -3235,9 +3270,6 @@ components:
                     type: integer
                     description: role.field.status
                     format: int32
-                is_types:
-                    type: boolean
-                    description: role.field.is_types
                 views:
                     type: array
                     items:
@@ -3331,24 +3363,29 @@ components:
                 last_login_ip:
                     type: string
                     description: user.field.last_login_ip
+                login_ip:
+                    type: string
+                    description: user.field.login_ip
                 last_login_time:
                     type: string
                     description: user.field.last_login_time
+                    format: date-time
+                login_time:
+                    type: string
+                    description: user.field.login_time
                     format: date-time
                 sanction_date:
                     type: string
                     description: user.field.sanction_date
                     format: date-time
+                department:
+                    type: string
+                    description: user.field.department
                 roles:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.v1.services.types.Role'
-                    description: |-
-                        // user.field.manager_id
-                          int64 manager_id = 21 [json_name = "manager_id"];
-                          // user.field.manager
-                          string manager = 22 [json_name = "manager"];
-                         Roles holds the value of the roles edge.
+                    description: Roles holds the value of the roles edge.
                 role_ids:
                     type: array
                     items:
@@ -3378,9 +3415,9 @@ components:
                 scope:
                     type: string
                     description: Scope holds the value of the "scope" field.
-                i18n_key:
+                i18n:
                     type: string
-                    description: I18nKey holds the value of the "i18n_key" field.
+                    description: I18nKey holds the value of the "i18n" field.
                 description:
                     type: string
                     description: Description holds the value of the "description" field.
@@ -3391,9 +3428,6 @@ components:
                 type:
                     type: string
                     description: Type holds the value of the "type" field.
-                comment:
-                    type: string
-                    description: Comment holds the value of the "comment" field.
                 icon:
                     type: string
                     description: Icon holds the value of the "icon" field.
@@ -3416,9 +3450,9 @@ components:
                 parent_id:
                     type: string
                     description: ParentID holds the value of the "parent_id" field.
-                parent_path:
+                component:
                     type: string
-                    description: ParentPath holds the value of the "parent_path" field.
+                    description: Component holds the value of the "component" field.
                 children:
                     type: array
                     items:

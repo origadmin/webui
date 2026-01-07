@@ -1,11 +1,8 @@
+// import { useDepartmentsQuery } from "@/api/system/department";
 import { useRolesQuery } from "@/api/system/role";
 import { useUpdateUserRoles, useUserCreate, useUserUpdate } from "@/api/system/user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
+import { MultiSelect } from "@/components/MultiSelect";
+import { PasswordInput } from "@/components/password-input";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,10 +15,16 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { MultiSelect } from "@/components/MultiSelect";
-import { PasswordInput } from "@/components/password-input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z
   .object({
@@ -33,6 +36,10 @@ const formSchema = z
     status: z.number().optional(),
     role_ids: z.string().array().optional(),
     allowed_ip: z.string().min(1, { message: "IP is required." }),
+    gender: z.string().optional(),
+    remark: z.string().optional(),
+    avatar: z.string().optional(),
+    // department: z.string().optional(),
     is_edit: z.boolean(),
   })
   .superRefine(({ is_edit, password }, ctx) => {
@@ -95,6 +102,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           allowed_ip: "0.0.0.0",
           status: 1,
           role_ids: [],
+          gender: "unknown",
+          remark: "",
+          avatar: "",
+          // department: "",
           is_edit,
         },
   });
@@ -105,6 +116,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const { mutateAsync: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
 
   const { data: roles = { data: [] } } = useRolesQuery({ page_size: 1000 });
+  // const { data: departments = { departments: [] } } = useDepartmentsQuery({ no_paging: true });
 
   const onSubmit = async (values: UserForm) => {
     try {
@@ -253,6 +265,78 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                           <FormLabel>Phone</FormLabel>
                           <FormControl>
                             <Input placeholder='+123456789' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='gender'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gender</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Select a gender' />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value='male'>Male</SelectItem>
+                              <SelectItem value='female'>Female</SelectItem>
+                              <SelectItem value='unknown'>Unknown</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {/* <FormField
+                      control={form.control}
+                      name='department'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Department</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Select a department' />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {departments.departments?.map((dept) => (
+                                <SelectItem key={dept.id} value={dept.id!}>
+                                  {dept.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    /> */}
+                    <FormField
+                      control={form.control}
+                      name='avatar'
+                      render={({ field }) => (
+                        <FormItem className='col-span-2'>
+                          <FormLabel>Avatar URL</FormLabel>
+                          <FormControl>
+                            <Input placeholder='https://example.com/avatar.png' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='remark'
+                      render={({ field }) => (
+                        <FormItem className='col-span-2'>
+                          <FormLabel>Remark</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder='Add a remark for this user...' {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

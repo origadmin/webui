@@ -2,16 +2,24 @@ import { useState } from "react";
 import { PAGE_SIZE, START_PAGE } from "@/types";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 
+// Helper function to format the sorting state for the API
+const formatSorting = (sorting: SortingState): string | undefined => {
+  if (sorting.length === 0) {
+    return undefined;
+  }
+  const { id, desc } = sorting[0];
+  return `${id},${desc ? "desc" : "asc"}`;
+};
+
 // Defines the standardized query parameters for any data table.
 interface DataTableQuery {
   page: number;
   pageSize: number;
-  sorting?: SortingState;
+  sorting?: string; // Changed to string to match the formatted value
   filters?: ColumnFiltersState;
 }
 
 // Defines the standardized, simple shape of data returned from an API list endpoint.
-// This now includes pagination info returned from the server.
 interface DataTableQueryResult<T> {
   data: T[];
   total: number;
@@ -21,8 +29,6 @@ interface DataTableQueryResult<T> {
 
 // Defines the props for the useDataTable hook.
 interface UseDataTableProps<T> {
-  // The query hook's result must be wrapped in a `data` property by React Query.
-  // The value of that `data` property must be our standardized result shape.
   useQuery: (params: DataTableQuery) => {
     data?: DataTableQueryResult<T>;
     isLoading: boolean;
@@ -30,15 +36,6 @@ interface UseDataTableProps<T> {
   globalFilterKey?: string;
 }
 
-/**
- * A custom hook to manage the state and data fetching for a data table.
- * It enforces a consistent data structure from the API layer.
- *
- * @param useQuery The React Query hook used to fetch data. The hook must return an object
- *                 containing `{ data: T[], total: number, page: number, pageSize: number }`.
- * @param globalFilterKey The key to use for global filtering.
- * @returns An object containing dataSource, total, loading state, and spreadable props for the DataTable.
- */
 export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -48,11 +45,10 @@ export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
-  // `data` from useQuery will be the { data, total, page, pageSize } object.
   const { data, isLoading } = useQuery({
     page: pagination.pageIndex,
     pageSize: pagination.pageSize,
-    sorting: sorting,
+    sorting: formatSorting(sorting), // Use the formatted sorting string
     filters: activeFilters,
   });
 
@@ -79,6 +75,7 @@ export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps
     columnFiltersState: columnFilters,
     onColumnFiltersChange: setColumnFilters,
     globalFilterKey,
+    manualSorting: true, // Explicitly tell the table that sorting is handled by the server
   };
 
   const searchProps = {

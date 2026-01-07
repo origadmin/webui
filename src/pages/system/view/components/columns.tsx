@@ -75,6 +75,12 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
+    accessorKey: "component",
+    header: "Component",
+    cell: ({ row }) => <LongText>{row.original.component}</LongText>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
     accessorKey: "sequence",
     header: "Sequence",
     cell: ({ row }) => <div>{row.original.sequence}</div>,
@@ -84,6 +90,12 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     accessorKey: "visible",
     header: "Visible",
     cell: ({ row }) => <div>{row.original.visible ? "Yes" : "No"}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => <LongText>{row.original.description}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   systemStatusColumn,

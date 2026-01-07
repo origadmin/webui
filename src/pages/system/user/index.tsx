@@ -35,6 +35,10 @@ export default function UserPage() {
         {/* Right Column for other details */}
         <div className='md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4'>
           <div className='space-y-1'>
+            <p className='font-medium text-muted-foreground'>Email</p>
+            <p>{user.email || "-"}</p>
+          </div>
+          <div className='space-y-1'>
             <p className='font-medium text-muted-foreground'>Phone</p>
             <p>{user.phone || "-"}</p>
           </div>
@@ -42,13 +46,25 @@ export default function UserPage() {
             <p className='font-medium text-muted-foreground'>Gender</p>
             <p className='capitalize'>{user.gender || "-"}</p>
           </div>
+          {/* <div className='space-y-1'>
+            <p className='font-medium text-muted-foreground'>Department</p>
+            <p>{user.department || "-"}</p>
+          </div> */}
           <div className='space-y-1'>
             <p className='font-medium text-muted-foreground'>Last Login IP</p>
             <p className='font-mono'>{user.last_login_ip || "-"}</p>
           </div>
           <div className='space-y-1'>
+            <p className='font-medium text-muted-foreground'>Last Login Time</p>
+            <p>{user.last_login_time || "-"}</p>
+          </div>
+          <div className='space-y-1'>
             <p className='font-medium text-muted-foreground'>Create Time</p>
             <p>{user.create_time || "-"}</p>
+          </div>
+          <div className='space-y-1'>
+            <p className='font-medium text-muted-foreground'>Update Time</p>
+            <p>{user.update_time || "-"}</p>
           </div>
           <div className='space-y-1 col-span-full'>
             <p className='font-medium text-muted-foreground'>Roles</p>

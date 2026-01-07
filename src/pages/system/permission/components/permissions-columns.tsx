@@ -34,6 +34,12 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
       ),
     meta: defaultHeaderMeta.meta,
   },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => <LongText>{row.getValue("description")}</LongText>,
+    meta: defaultHeaderMeta.meta,
+  },
   systemStatusColumn,
   {
     accessorKey: "resources",

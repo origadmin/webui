@@ -1,13 +1,10 @@
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 import { defaultHeaderMeta } from "@/types";
 import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { cn } from "@/lib/utils";
 import { ResourceIconRowActions } from "./resources-row-actions";
-import { Button } from "@/components/ui/button";
-import { IconChevronRight, IconChevronDown } from "@tabler/icons-react";
 
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {
@@ -30,37 +27,9 @@ const methodColors: Record<string, string> = {
 export const columns: DataTableColumnType<API.System.Resource>[] = [
   {
     accessorKey: "name",
-    header: ({ column, table }) => (
-      <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
-        {table.getRowModel().rows.length > 0 && (
-          <Checkbox
-            checked={table.getIsAllRowsExpanded() || (table.getIsSomeRowsExpanded() && "indeterminate")}
-            onCheckedChange={(value) => table.toggleAllRowsExpanded(!!value)}
-            aria-label='Toggle All Expanded'
-          />
-        )}
-        <DataTableColumnHeader className='px-2' column={column} title='Name' />
-      </div>
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title='Name' />,
     cell: ({ row }) => (
-      <div
-        className="flex items-center"
-        style={{ paddingLeft: `${row.depth * 1.5}rem` }}
-      >
-        {row.getCanExpand() ? (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6 mr-2"
-            {...{
-              onClick: row.getToggleExpandedHandler(),
-            }}
-          >
-            {row.getIsExpanded() ? <IconChevronDown /> : <IconChevronRight />}
-          </Button>
-        ) : (
-          <span className="w-6 h-6 mr-2 inline-block" /> // Placeholder for alignment
-        )}
+      <div className="flex items-center">
         <LongText>{row.original.name}</LongText>
         {row.original.service_name && (
           <span className="ml-2 text-xs text-muted-foreground">
@@ -94,6 +63,18 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
       const colorClass = methodColors[method] || "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100";
       return <Badge variant='outline' className={cn("font-mono", colorClass)}>{method || "ANY"}</Badge>;
     },
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "sequence",
+    header: "Sequence",
+    cell: ({ row }) => <div>{row.original.sequence}</div>,
+    meta: defaultHeaderMeta.meta,
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => <LongText>{row.original.description}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
   {

@@ -33,6 +33,7 @@ const formSchema = z.object({
   type: z.number().optional(),
   description: z.string().optional(),
   status: z.number().default(1),
+  sequence: z.number().optional(),
   is_edit: z.boolean(),
   permission_ids: z.array(z.string()).optional(),
 });
@@ -64,6 +65,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           type: 1,
           description: "",
           status: 1,
+          sequence: 0,
           is_edit,
           permission_ids: [],
         },
@@ -79,7 +81,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
 
   const onSubmit = async (values: RoleForm) => {
     try {
-      const payload = { ...values };
+      const payload = { ...values, sequence: Number(values.sequence) };
       delete (payload as Partial<RoleForm>).is_edit;
 
       if (!is_edit) {
@@ -158,6 +160,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='Please enter a name' {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='Please enter a keyword' {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='type' render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input {...field} disabled /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='sequence' render={({ field }) => (<FormItem><FormLabel>Sequence</FormLabel><FormControl><Input type="number" placeholder='0' {...field} /></FormControl><FormMessage /></FormItem>)} />
                   </div>
                   <div className='grid grid-cols-1 gap-4 pt-2'>
                     <FormField

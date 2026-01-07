@@ -1,5 +1,5 @@
 import mocks from "@/mocks";
-import { API_REFRESH_TOKEN_URL, HOST, HOST_REQUEST_TIMEOUT, SIGN_IN_URL } from "@/types";
+import { API_LOGIN_URL, API_REFRESH_TOKEN_URL, API_REGISTER_URL, HOST, HOST_REQUEST_TIMEOUT, SIGN_IN_URL } from "@/types";
 import { clearStorage, getRefreshToken, setAuth } from "@/utils/storage";
 import { getAccessToken } from "@/utils/storage";
 import GlobalConfig from "@config";
@@ -75,11 +75,17 @@ request.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-    // Construct the refresh token URL by respecting the global prefix.
-    const refreshTokenUrl = `${GlobalConfig.api.urlPrefix || ""}${API_REFRESH_TOKEN_URL}`;
+    // Construct the full URLs for public endpoints
+    const urlPrefix = GlobalConfig.api.urlPrefix || "";
+    const refreshTokenUrl = `${urlPrefix}${API_REFRESH_TOKEN_URL}`;
+    const loginUrl = `${urlPrefix}${API_LOGIN_URL}`;
+    const registerUrl = `${urlPrefix}${API_REGISTER_URL}`;
 
-    // If the error is not a 401, or it's a 401 from the refresh token endpoint itself, reject immediately.
-    if (error.response?.status !== 401 || originalRequest.url === refreshTokenUrl) {
+    // Define public URLs that should not trigger the refresh logic
+    const publicUrls = [refreshTokenUrl, loginUrl, registerUrl];
+
+    // If the error is not a 401, or it's a 401 from a public URL, reject immediately.
+    if (error.response?.status !== 401 || publicUrls.includes(originalRequest.url || "")) {
       return Promise.reject(error);
     }
 
@@ -150,11 +156,22 @@ async function fetchRequest<T extends object, TData extends object = object>(
   const localVarUrlObj = new URL(url, request.defaults.baseURL);
   const searchParams = new URLSearchParams(localVarUrlObj.search);
 
-  for (const key in options.params) {
-    const value = stringifyParam(options.params[key]);
-    if (value !== undefined) {
-      searchParams.set(key, value);
-    }
+  // Clean and append parameters
+  if (options.params) {
+    Object.entries(options.params).forEach(([key, value]) => {
+      // Skip null, undefined, or empty string values
+      if (value !== null && value !== undefined && value !== "") {
+        // If the value is an array, append each element separately
+        if (Array.isArray(value)) {
+          value.forEach(v => searchParams.append(key, stringifyParam(v)!));
+        } else {
+          const paramValue = stringifyParam(value);
+          if (paramValue !== undefined) {
+            searchParams.set(key, paramValue);
+          }
+        }
+      }
+    });
   }
 
   localVarUrlObj.search = searchParams.toString();
@@ -225,7 +242,7 @@ async function post<T extends object, TData extends object = object>(
 }
 
 async function put<T extends object, TData extends object = object>(
-  url: string,
+  url:string,
   body?: TData,
   options?: Omit<API.RequestOptions, "body">,
 ) {

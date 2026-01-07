@@ -11,13 +11,13 @@ export const formSchema = z.object({
   type: z.string().default("MENU"),
   path: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
+  component: z.string().nullable().optional(),
   sequence: z.number().default(0),
   visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().nullable().optional(),
   parent_id: z.string().nullable().optional(),
   is_edit: z.boolean(),
-  // 'component' is not in the openapi spec for View, so it's removed.
 });
 export type FormType = z.infer<typeof formSchema>;
 

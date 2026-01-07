@@ -55,6 +55,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description RefreshToken provides a new access token. */
+        post: operations["AuthService_RefreshToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/register": {
         parameters: {
             query?: never;
@@ -66,23 +83,6 @@ export interface paths {
         put?: never;
         /** @description Register creates a new user account. */
         post: operations["AuthService_Register"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description RefreshToken provides a new access token. */
-        post: operations["AuthService_RefreshToken"];
         delete?: never;
         options?: never;
         head?: never;
@@ -726,12 +726,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
+        put: operations["UserService_UpdateUser"];
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        patch: operations["UserService_UpdateUser"];
+        patch?: never;
         trace?: never;
     };
     "/sys/views": {
@@ -901,6 +901,7 @@ export interface components {
         /** @description The response message for the RefreshToken RPC. */
         "api.v1.services.auth.RefreshTokenResponse": {
             access_token?: string;
+            refresh_token?: string;
             token_type?: string;
             expires_in?: string;
         };
@@ -1302,9 +1303,19 @@ export interface components {
             next_page_token?: string;
             extra?: components["schemas"]["google.protobuf.Any"];
         };
+        "api.v1.services.system.ResetUserPasswordRequest": {
+            id?: string;
+            password?: string;
+        };
         "api.v1.services.system.ResetUserPasswordResponse": Record<string, never>;
         "api.v1.services.system.UpdateDepartmentResponse": {
             department?: components["schemas"]["api.v1.services.types.Department"];
+        };
+        "api.v1.services.system.UpdatePermissionRequest": {
+            /** @description The resource name of the permission to update. */
+            id?: string;
+            /** @description The permission resource which replaces the resource on the server. */
+            permission?: components["schemas"]["api.v1.services.types.Permission"];
         };
         "api.v1.services.system.UpdatePermissionResponse": {
             permission?: components["schemas"]["api.v1.services.types.Permission"];
@@ -1312,9 +1323,19 @@ export interface components {
         "api.v1.services.system.UpdatePositionResponse": {
             position?: components["schemas"]["api.v1.services.types.Position"];
         };
+        /** @description Request message for ResourceService.UpdateResource. */
+        "api.v1.services.system.UpdateResourceRequest": {
+            resource?: components["schemas"]["api.v1.services.types.Resource"];
+        };
         /** @description Response message for ResourceService.UpdateResource. */
         "api.v1.services.system.UpdateResourceResponse": {
             resource?: components["schemas"]["api.v1.services.types.Resource"];
+        };
+        "api.v1.services.system.UpdateRoleRequest": {
+            /** @description The id of the role resource to update. */
+            id?: string;
+            /** @description The role resource which replaces the resource on the server. */
+            role?: components["schemas"]["api.v1.services.types.Role"];
         };
         "api.v1.services.system.UpdateRoleResponse": {
             role?: components["schemas"]["api.v1.services.types.Role"];
@@ -1345,6 +1366,10 @@ export interface components {
             status?: number;
         };
         "api.v1.services.system.UpdateUserStatusResponse": Record<string, never>;
+        /** @description Request message for ViewService.UpdateView. */
+        "api.v1.services.system.UpdateViewRequest": {
+            view?: components["schemas"]["api.v1.services.types.View"];
+        };
         /** @description Response message for ViewService.UpdateView. */
         "api.v1.services.system.UpdateViewResponse": {
             view?: components["schemas"]["api.v1.services.types.View"];
@@ -1461,10 +1486,10 @@ export interface components {
             };
             /** @description permission.field.resource_ids */
             resource_ids?: string[];
-            /** @description permission.field.resources */
-            resources?: components["schemas"]["api.v1.services.types.Resource"][];
             /** @description permission.field.view_ids */
             view_ids?: string[];
+            /** @description permission.field.resources */
+            resources?: components["schemas"]["api.v1.services.types.Resource"][];
             /** @description permission.field.views */
             views?: components["schemas"]["api.v1.services.types.View"][];
         };
@@ -1511,8 +1536,8 @@ export interface components {
             name?: string;
             /** @description resource.field.keyword */
             keyword?: string;
-            /** @description resource.field.i18n_key */
-            i18n_key?: string;
+            /** @description resource.field.i18n */
+            i18n?: string;
             /** @description resource.field.type */
             type?: string;
             /**
@@ -1526,17 +1551,11 @@ export interface components {
             operation?: string;
             /** @description resource.field.method */
             method?: string;
-            /** @description resource.field.component */
-            component?: string;
-            /** @description resource.field.icon */
-            icon?: string;
             /**
              * Format: int32
              * @description resource.field.sequence
              */
             sequence?: number;
-            /** @description resource.field.visible */
-            visible?: boolean;
             /** @description resource.field.tree_path */
             tree_path?: string;
             /** @description resource.field.properties */
@@ -1547,6 +1566,12 @@ export interface components {
             description?: string;
             /** @description resource.field.parent_id */
             parent_id?: string;
+            /** @description resource.field.sync_status */
+            sync_status?: string;
+            /** @description resource.field.service_name */
+            service_name?: string;
+            /** @description resource.field.policy */
+            policy?: string;
             /** @description Children holds the value of the children edge. */
             children?: components["schemas"]["api.v1.services.types.Resource"][];
             /** @description Parent holds the value of the parent edge. */
@@ -1592,8 +1617,6 @@ export interface components {
              * @description role.field.status
              */
             status?: number;
-            /** @description role.field.is_types */
-            is_types?: boolean;
             /** @description Views holds the value of the views edge. */
             views?: components["schemas"]["api.v1.services.types.View"][];
             /** @description Users holds the value of the users edge. */
@@ -1655,6 +1678,8 @@ export interface components {
             status?: number;
             /** @description user.field.last_login_ip */
             last_login_ip?: string;
+            /** @description user.field.login_ip */
+            login_ip?: string;
             /**
              * Format: date-time
              * @description user.field.last_login_time
@@ -1662,14 +1687,17 @@ export interface components {
             last_login_time?: string;
             /**
              * Format: date-time
+             * @description user.field.login_time
+             */
+            login_time?: string;
+            /**
+             * Format: date-time
              * @description user.field.sanction_date
              */
             sanction_date?: string;
-            /** @description // user.field.manager_id
-             *       int64 manager_id = 21 [json_name = "manager_id"];
-             *       // user.field.manager
-             *       string manager = 22 [json_name = "manager"];
-             *      Roles holds the value of the roles edge. */
+            /** @description user.field.department */
+            department?: string;
+            /** @description Roles holds the value of the roles edge. */
             roles?: components["schemas"]["api.v1.services.types.Role"][];
             /** @description Role Ids holds the value of the role_ids */
             role_ids?: string[];
@@ -1694,8 +1722,8 @@ export interface components {
             name?: string;
             /** @description Scope holds the value of the "scope" field. */
             scope?: string;
-            /** @description I18nKey holds the value of the "i18n_key" field. */
-            i18n_key?: string;
+            /** @description I18nKey holds the value of the "i18n" field. */
+            i18n?: string;
             /** @description Description holds the value of the "description" field. */
             description?: string;
             /**
@@ -1705,8 +1733,6 @@ export interface components {
             sequence?: number;
             /** @description Type holds the value of the "type" field. */
             type?: string;
-            /** @description Comment holds the value of the "comment" field. */
-            comment?: string;
             /** @description Icon holds the value of the "icon" field. */
             icon?: string;
             /** @description Visible holds the value of the "visible" field. */
@@ -1724,8 +1750,8 @@ export interface components {
             status?: number;
             /** @description ParentID holds the value of the "parent_id" field. */
             parent_id?: string;
-            /** @description ParentPath holds the value of the "parent_path" field. */
-            parent_path?: string;
+            /** @description Component holds the value of the "component" field. */
+            component?: string;
             /** @description Children holds the value of the children edge. */
             children?: components["schemas"]["api.v1.services.types.View"][];
             /** @description Parent holds the value of the parent edge. */
@@ -1863,39 +1889,6 @@ export interface operations {
             };
         };
     };
-    AuthService_Register: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["api.v1.services.auth.RegisterRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["api.v1.services.auth.RegisterResponse"];
-                };
-            };
-            /** @description Default error response */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["google.rpc.Status"];
-                };
-            };
-        };
-    };
     AuthService_RefreshToken: {
         parameters: {
             query?: never;
@@ -1916,6 +1909,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["api.v1.services.auth.RefreshTokenResponse"];
+                };
+            };
+            /** @description Default error response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["google.rpc.Status"];
+                };
+            };
+        };
+    };
+    AuthService_Register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["api.v1.services.auth.RegisterRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api.v1.services.auth.RegisterResponse"];
                 };
             };
             /** @description Default error response */
@@ -2950,10 +2976,7 @@ export interface operations {
     };
     PermissionService_UpdatePermission: {
         parameters: {
-            query?: {
-                /** @description The resource name of the permission to update. */
-                id?: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 "permission.id": string;
@@ -2962,7 +2985,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["api.v1.services.types.Permission"];
+                "application/json": components["schemas"]["api.v1.services.system.UpdatePermissionRequest"];
             };
         };
         responses: {
@@ -3179,6 +3202,7 @@ export interface operations {
                 keyword?: string;
                 service_name?: string;
                 sync_status?: string;
+                operation?: string;
             };
             header?: never;
             path?: never;
@@ -3312,7 +3336,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["api.v1.services.types.Resource"];
+                "application/json": components["schemas"]["api.v1.services.system.UpdateResourceRequest"];
             };
         };
         responses: {
@@ -3481,10 +3505,7 @@ export interface operations {
     };
     RoleService_UpdateRole: {
         parameters: {
-            query?: {
-                /** @description The id of the role resource to update. */
-                id?: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 "role.id": string;
@@ -3493,7 +3514,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["api.v1.services.types.Role"];
+                "application/json": components["schemas"]["api.v1.services.system.UpdateRoleRequest"];
             };
         };
         responses: {
@@ -3670,7 +3691,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": string;
+                "application/json": components["schemas"]["api.v1.services.system.ResetUserPasswordRequest"];
             };
         };
         responses: {
@@ -3974,7 +3995,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["api.v1.services.types.View"];
+                "application/json": components["schemas"]["api.v1.services.system.UpdateViewRequest"];
             };
         };
         responses: {

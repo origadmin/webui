@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useResourceCreate, useResourceUpdate } from "@/api/system/resource";
+import { useEffect, useMemo } from "react";
+import { useResourceCreate, useResourceUpdate, useResourcesQuery } from "@/api/system/resource";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { Combobox } from "@/components/ui/combobox";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -33,6 +34,7 @@ const formSchema = z.object({
   policy: z.string().optional(),
   i18n: z.string().optional(),
   description: z.string().optional(),
+  sequence: z.number().optional(),
   status: z.number().default(1),
   parent_id: z.string().nullable().optional(),
 });
@@ -59,6 +61,15 @@ export function ResourcesActionDialog({
   const title = isEditMode ? "Edit Resource" : isSubMode ? "Add Sub Resource" : "Add New Resource";
   const isSyncedResource = isEditMode && !!currentRow?.sync_status;
 
+  // Fetch all resources to extract unique policy names
+  const { data: resourcesData } = useResourcesQuery({ page_size: 1000 });
+  const policies = useMemo(() => {
+    if (!resourcesData?.data) return [];
+    const allPolicies = resourcesData.data.map(res => res.policy).filter(Boolean) as string[];
+    return Array.from(new Set(allPolicies));
+  }, [resourcesData]);
+
+
   const form = useForm<ResourceForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
@@ -72,6 +83,7 @@ export function ResourcesActionDialog({
       policy: "",
       i18n: "",
       description: "",
+      sequence: 0,
       status: 1,
       parent_id: null,
     },
@@ -184,8 +196,32 @@ export function ResourcesActionDialog({
                   <Separator />
                   <div className='grid grid-cols-2 gap-4 pt-2'>
                     <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='e.g., Get User Profile' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='policy' render={({ field }) => (<FormItem><FormLabel>Policy</FormLabel><FormControl><Input placeholder='e.g., admin-only' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='policy'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Policy</FormLabel>
+                          <FormControl>
+                            <Combobox
+                              creatable
+                              value={field.value}
+                              onChange={field.onChange}
+                              options={policies.map((policy) => ({
+                                value: policy,
+                                label: policy,
+                              }))}
+                              placeholder="Select or create a policy..."
+                              searchPlaceholder="Search policies..."
+                              noResultsMessage="No policy found."
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField control={form.control} name='i18n' render={({ field }) => (<FormItem><FormLabel>I18n Key</FormLabel><FormControl><Input placeholder='e.g., resource.user.get' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name='sequence' render={({ field }) => (<FormItem><FormLabel>Sequence</FormLabel><FormControl><Input type="number" placeholder='0' {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='service_name' render={({ field }) => (<FormItem><FormLabel>Service Name</FormLabel><FormControl><Input placeholder='e.g., user-service' {...field} disabled={isSyncedResource} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='e.g., user:create' {...field} disabled={isSyncedResource} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name='path' render={({ field }) => (<FormItem className="col-span-2"><FormLabel>Path</FormLabel><FormControl><Input placeholder='/api/v1/users' {...field} disabled={isSyncedResource} /></FormControl><FormMessage /></FormItem>)} />
