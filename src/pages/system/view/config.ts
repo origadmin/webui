@@ -8,7 +8,7 @@ export const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
   keyword: z.string().min(1, "Keyword is required."),
   scope: z.string().nullable().optional(),
-  type: z.string().default("MENU"),
+  type: z.string().default("M"),
   path: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
   component: z.string().nullable().optional(),
@@ -18,6 +18,19 @@ export const formSchema = z.object({
   description: z.string().nullable().optional(),
   parent_id: z.string().nullable().optional(),
   is_edit: z.boolean(),
+  // Virtual field for Redirect type, will be stored in properties
+  redirect_to: z.string().optional(),
+  // Virtual field for Action Groups, will be stored in properties
+  actions: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Action group name is required."),
+        resource_ids: z.array(z.string()),
+      }),
+    )
+    .optional(),
+  // Actual backend field
+  properties: z.string().optional(),
 });
 export type FormType = z.infer<typeof formSchema>;
 

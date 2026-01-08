@@ -1,5 +1,5 @@
 import mocks from "@/mocks";
-import { API_LOGIN_URL, API_REFRESH_TOKEN_URL, API_REGISTER_URL, HOST, HOST_REQUEST_TIMEOUT, SIGN_IN_URL } from "@/types";
+import { API_REFRESH_TOKEN_URL, HOST, HOST_REQUEST_TIMEOUT, SIGN_IN_URL, SIGN_UP_URL } from "@/types";
 import { clearStorage, getRefreshToken, setAuth } from "@/utils/storage";
 import { getAccessToken } from "@/utils/storage";
 import GlobalConfig from "@config";
@@ -78,8 +78,8 @@ request.interceptors.response.use(
     // Construct the full URLs for public endpoints
     const urlPrefix = GlobalConfig.api.urlPrefix || "";
     const refreshTokenUrl = `${urlPrefix}${API_REFRESH_TOKEN_URL}`;
-    const loginUrl = `${urlPrefix}${API_LOGIN_URL}`;
-    const registerUrl = `${urlPrefix}${API_REGISTER_URL}`;
+    const loginUrl = `${urlPrefix}${SIGN_IN_URL}`;
+    const registerUrl = `${urlPrefix}${SIGN_UP_URL}`;
 
     // Define public URLs that should not trigger the refresh logic
     const publicUrls = [refreshTokenUrl, loginUrl, registerUrl];
