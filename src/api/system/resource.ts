@@ -1,23 +1,13 @@
+import { transformListParams } from "@/utils/api";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
 /**
  * Query resource list GET /sys/resources
- * This is the "smart adapter" function. It adapts params and transforms the response.
  */
 export async function listResource(params: API.DataTableParams, options?: API.RequestOptions) {
-  // 1. Translate frontend params to backend params.
-  const { pageSize, ...rest } = params;
-  const backendParams: API.SearchParams = {
-    ...rest,
-    page: (params.page || 0) + 1,
-    page_size: pageSize,
-  };
-
-  // 2. Call the fetcher with backend-compatible params.
+  const backendParams = transformListParams(params);
   const rawResponse = await get<API.System.ListResourcesResponse>("/sys/resources", backendParams, options);
-
-  // 3. Transform the raw response into the standardized structure expected by useDataTable.
   return {
     items: rawResponse?.resources || [],
     total: rawResponse?.total || 0,
@@ -57,7 +47,7 @@ export async function syncResources(options?: API.RequestOptions) {
   return post<never>("/sys/resources/sync", {}, options);
 }
 
-// --- React Query hooks remain the same ---
+// --- React Query hooks ---
 
 export const useResourcesQuery = (opts?: API.DataTableParams) => {
   return useQuery(

@@ -1,3 +1,4 @@
+import { transformListParams } from "@/utils/api";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
@@ -6,12 +7,7 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
  * Query user list GET /sys/users
  */
 export async function listUsers(params: API.DataTableParams, options?: API.RequestOptions) {
-  const { pageSize, ...rest } = params;
-  const backendParams: API.SearchParams = {
-    ...rest,
-    page: (params.page || 0) + 1,
-    page_size: pageSize,
-  };
+  const backendParams = transformListParams(params);
   const rawResponse = await get<API.System.ListUsersResponse>("/sys/users", backendParams, options);
   return {
     items: rawResponse?.users || [],

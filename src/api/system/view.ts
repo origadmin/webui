@@ -1,23 +1,13 @@
+import { transformListParams } from "@/utils/api";
 import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
+import { QueryClient, useQuery, queryOptions, useMutation, UseQueryOptions } from "@tanstack/react-query";
 
 /**
  * Query view list GET /sys/views
- * This is the "smart adapter" function. It adapts params and transforms the response.
  */
 export async function listViews(params: API.DataTableParams, options?: API.RequestOptions) {
-  // 1. Translate frontend params to backend params.
-  const { pageSize, ...rest } = params;
-  const backendParams: API.SearchParams = {
-    ...rest,
-    page: (params.page || 0) + 1,
-    page_size: pageSize,
-  };
-
-  // 2. Call the fetcher with backend-compatible params.
+  const backendParams = transformListParams(params);
   const rawResponse = await get<API.System.ListViewsResponse>("/sys/views", backendParams, options);
-
-  // 3. Transform the raw response into the standardized structure.
   return {
     items: rawResponse?.views || [],
     total: rawResponse?.total || 0,
@@ -54,13 +44,15 @@ export async function deleteView(id: string, options?: API.RequestOptions) {
 
 // --- React Query hooks ---
 
-export const useViewsQuery = (opts?: API.DataTableParams) => {
-  return useQuery(
-    queryOptions({
-      queryKey: ["/sys/views", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listViews(opts),
-    }),
-  );
+// Correctly typed options for the query hook
+type UseViewsQueryOptions = Omit<UseQueryOptions<Awaited<ReturnType<typeof listViews>>>, "queryKey" | "queryFn">;
+
+export const useViewsQuery = (params?: API.DataTableParams, options?: UseViewsQueryOptions) => {
+  return useQuery({
+    queryKey: ["/sys/views", { ...params }],
+    queryFn: () => listViews(params || {}),
+    ...options, // Spread the standard react-query options
+  });
 };
 
 export const useViewQuery = (id: string) => {

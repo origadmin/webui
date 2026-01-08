@@ -24,43 +24,40 @@ import { Button } from "@/components/ui/button";
 import { IconArrowsSort } from "@tabler/icons-react";
 import { ScopeCombobox } from "./scope-combobox";
 
-// Define ViewType options based on backend enums/view.go
+// Define ViewType options based on backend requirements (full string names)
 const viewTypeOptions = [
-  { value: "T", label: "T - Root (Virtual Node)" },
-  { value: "G", label: "G - Group (Visual Grouping)" },
-  { value: "M", label: "M - Menu (Navigation Item)" },
-  { value: "L", label: "L - Link (External Link)" },
-  { value: "P", label: "P - Page (Content Container)" },
-  { value: "B", label: "B - Button (Action Trigger)" },
-  { value: "E", label: "E - Element (UI Element)" },
-  { value: "R", label: "R - Redirect (Route Redirect)" },
-  { value: "U", label: "U - Unknown (Undefined Type)" },
+  { value: "ROOT", label: "Root (Virtual Node)" },
+  { value: "GROUP", label: "Group (Visual Grouping)" },
+  { value: "MENU", label: "Menu (Navigation Item)" },
+  { value: "LINK", label: "Link (External Link)" },
+  { value: "PAGE", label: "Page (Content Container)" },
+  { value: "BUTTON", label: "Button (Action Trigger)" },
+  { value: "ELEMENT", label: "Element (UI Element)" },
+  { value: "REDIRECT", label: "Redirect (Route Redirect)" },
+  { value: "UNKNOWN", label: "Unknown (Undefined Type)" },
 ];
 
 export const renderFields = (
   form: ReturnType<typeof useForm<FormType>>,
   onSortClick: () => void,
   isSub: boolean = false,
-  currentType: string = "M",
-  isSidebarMissing: boolean = false, // New parameter
+  currentType: string = "MENU",
+  isSidebarMissing: boolean = false,
 ) => {
   // Filter options based on context
   let filteredOptions = viewTypeOptions;
   
   if (isSub) {
-     // Sub-view cannot be Root
-     filteredOptions = viewTypeOptions.filter((opt) => opt.value !== "T");
+     filteredOptions = viewTypeOptions.filter((opt) => opt.value !== "ROOT");
   } else if (isSidebarMissing) {
-     // If no sidebar root, must create Root first
-     filteredOptions = viewTypeOptions.filter((opt) => opt.value === "T");
+     filteredOptions = viewTypeOptions.filter((opt) => opt.value === "ROOT");
   }
-  // Else (Top-level & Sidebar exists): Show all options
 
   // Determine field visibility and state based on Type
-  const showPath = !["T", "G", "B"].includes(currentType);
-  const showComponent = ["M", "P"].includes(currentType);
-  const showIcon = !["T", "R"].includes(currentType);
-  const isScopeDisabled = currentType !== 'T' && currentType !== 'B';
+  const showPath = !["ROOT", "GROUP", "BUTTON"].includes(currentType);
+  const showComponent = ["MENU", "PAGE"].includes(currentType);
+  const showIcon = !["ROOT", "REDIRECT"].includes(currentType);
+  const isScopeDisabled = currentType !== 'ROOT' && currentType !== 'BUTTON';
 
   return (
     <div className='space-y-4'>
@@ -140,59 +137,53 @@ export const renderFields = (
       </div>
 
       {/* Configuration Section */}
-      {(showPath || showComponent || showIcon) && (
-        <div className='space-y-2 pt-4'>
-          <h3 className='text-lg font-medium'>Configuration</h3>
-          <Separator />
-          <div className='grid grid-cols-2 gap-4 pt-2'>
-            {showPath && (
-              <FormField
-                control={form.control}
-                name='path'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{currentType === "L" ? "External URL" : "Path"}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={currentType === "L" ? "https://..." : "/system/user"} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <div className='space-y-2 pt-4'>
+        <h3 className='text-lg font-medium'>Configuration</h3>
+        <Separator />
+        <div className='grid grid-cols-2 gap-4 pt-2'>
+          <FormField
+            control={form.control}
+            name='path'
+            render={({ field }) => (
+              <FormItem className={!showPath ? "hidden" : ""}>
+                <FormLabel>{currentType === "LINK" ? "External URL" : "Path"}</FormLabel>
+                <FormControl>
+                  <Input placeholder={currentType === "LINK" ? "https://..." : "/system/user"} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {showComponent && (
-              <FormField
-                control={form.control}
-                name='component'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Component</FormLabel>
-                    <FormControl>
-                      <Input placeholder='e.g., /system/user' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          />
+          <FormField
+            control={form.control}
+            name='component'
+            render={({ field }) => (
+              <FormItem className={!showComponent ? "hidden" : ""}>
+                <FormLabel>Component</FormLabel>
+                <FormControl>
+                  <Input placeholder='e.g., /system/user' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {showIcon && (
-              <FormField
-                control={form.control}
-                name='icon'
-                render={({ field }) => (
-                  <FormItem className='col-span-2'>
-                    <FormLabel>Icon</FormLabel>
-                    <FormControl>
-                      <IconPicker value={field.value} onValueChange={field.onChange} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-          </div>
+          />
+          {showIcon && (
+            <FormField
+              control={form.control}
+              name='icon'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Icon</FormLabel>
+                  <FormControl>
+                    <IconPicker value={field.value} onValueChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
-      )}
+      </div>
 
       {/* Details Section */}
       <div className='space-y-2 pt-4'>

@@ -37,6 +37,11 @@ declare global {
       export type ListViewsResponse = Schemas["api.v1.services.system.ListViewsResponse"];
       export type GetViewResponse = Schemas["api.v1.services.system.GetViewResponse"];
       export type CreateViewResponse = Schemas["api.v1.services.system.CreateViewResponse"];
+
+      // Added Permission Response Types
+      export type ListPermissionsResponse = Schemas["api.v1.services.system.ListPermissionsResponse"];
+      export type GetPermissionResponse = Schemas["api.v1.services.system.GetPermissionResponse"];
+      export type CreatePermissionResponse = Schemas["api.v1.services.system.CreatePermissionResponse"];
     }
     export type Captcha = Schemas["api.v1.services.auth.GetCaptchaResponse"];
     export type LoginForm = Schemas["api.v1.services.auth.LoginRequest"];

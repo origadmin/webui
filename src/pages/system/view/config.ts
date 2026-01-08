@@ -1,14 +1,14 @@
-import { useViewCreate, useViewDelete, useViewsQuery, useViewUpdate } from "@/api/system/view";
 import { z } from "zod";
-import { DataTableProps } from "@/components/DataTable";
 import { columns as viewColumns } from "./components/columns";
+import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
+import { DataTableProps } from "@/components/DataTable";
 
-// Zod Schema for form validation, aligned with openapi.yaml
+// Zod Schema for form validation
 export const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
   keyword: z.string().min(1, "Keyword is required."),
   scope: z.string().nullable().optional(),
-  type: z.string().default("M"),
+  type: z.string().default("MENU"),
   path: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
   component: z.string().nullable().optional(),
@@ -16,7 +16,7 @@ export const formSchema = z.object({
   visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().nullable().optional(),
-  parent_id: z.number().nullable().optional(), // Corrected type
+  parent_id: z.string().nullable().optional(), // Reverted to string to match API
   is_edit: z.boolean(),
   // Virtual field for Redirect type, will be stored in properties
   redirect_to: z.string().optional(),

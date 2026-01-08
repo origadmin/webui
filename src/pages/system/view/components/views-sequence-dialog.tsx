@@ -25,13 +25,13 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const { data: viewsData, isLoading } = useViewsQuery(
-    { parent_id: parentId, pageSize: 1000, no_paging: true },
+    { parent_id: parentId, no_paging: true },
     { enabled: open }, // Only fetch when the dialog is open
   );
 
   useEffect(() => {
-    if (viewsData?.data) {
-      const sortedViews = [...viewsData.data].sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
+    if (viewsData?.items) {
+      const sortedViews = [...viewsData.items].sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
       setSortableItems(sortedViews);
       if (sortedViews.length > 0 && !selectedItemId) {
         setSelectedItemId(sortedViews[0].id || null);
