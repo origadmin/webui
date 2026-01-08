@@ -41,22 +41,30 @@ export const renderFields = (
   form: ReturnType<typeof useForm<FormType>>,
   onSortClick: () => void,
   isSub: boolean = false,
-  currentType: string = "M", // Added currentType parameter
+  currentType: string = "M",
+  isSidebarMissing: boolean = false, // New parameter
 ) => {
-  // Filter options based on isSub
-  const filteredOptions = isSub
-    ? viewTypeOptions.filter((opt) => opt.value !== "T") // Sub-view cannot be Root
-    : viewTypeOptions; // Root-view can be anything (default to M)
+  // Filter options based on context
+  let filteredOptions = viewTypeOptions;
+  
+  if (isSub) {
+     // Sub-view cannot be Root
+     filteredOptions = viewTypeOptions.filter((opt) => opt.value !== "T");
+  } else if (isSidebarMissing) {
+     // If no sidebar root, must create Root first
+     filteredOptions = viewTypeOptions.filter((opt) => opt.value === "T");
+  }
+  // Else (Top-level & Sidebar exists): Show all options
 
-  // Determine field visibility based on Type
+  // Determine field visibility and state based on Type
   const showPath = !["T", "G", "B"].includes(currentType);
   const showComponent = ["M", "P"].includes(currentType);
   const showIcon = !["T", "R"].includes(currentType);
-  const showScope = true; // Scope is always relevant for layout
+  const isScopeDisabled = currentType !== 'T' && currentType !== 'B';
 
   return (
     <div className='space-y-4'>
-      {/* Type Selection - Moved to Top */}
+      {/* Type & Identity Section */}
       <div className='space-y-2'>
         <h3 className='text-lg font-medium'>Type & Identity</h3>
         <Separator />
@@ -87,6 +95,23 @@ export const renderFields = (
           />
           <FormField
             control={form.control}
+            name='scope'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Scope</FormLabel>
+                <FormControl>
+                  <ScopeCombobox
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={isScopeDisabled}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name='name'
             render={({ field }) => (
               <FormItem>
@@ -111,21 +136,6 @@ export const renderFields = (
               </FormItem>
             )}
           />
-          {showScope && (
-            <FormField
-              control={form.control}
-              name='scope'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Scope</FormLabel>
-                  <FormControl>
-                    <ScopeCombobox value={field.value} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
         </div>
       </div>
 
@@ -201,7 +211,8 @@ export const renderFields = (
                       className='rounded-r-none focus-visible:z-10'
                       placeholder='Click button to sort'
                       value={field.value || 0}
-                      readOnly
+                      type="number"
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
                     />
                   </FormControl>
                   <Button

@@ -15,16 +15,14 @@ const formatSorting = (sorting: SortingState): string | undefined => {
 interface DataTableQuery {
   page: number;
   pageSize: number;
-  sorting?: string; // Changed to string to match the formatted value
+  sorting?: string;
   filters?: ColumnFiltersState;
 }
 
 // Defines the standardized, simple shape of data returned from an API list endpoint.
 interface DataTableQueryResult<T> {
-  data: T[];
+  items: T[];
   total: number;
-  page: number;
-  pageSize: number;
 }
 
 // Defines the props for the useDataTable hook.
@@ -46,9 +44,9 @@ export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps
   const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
   const { data, isLoading } = useQuery({
-    page: pagination.pageIndex,
-    pageSize: pagination.pageSize,
-    sorting: formatSorting(sorting), // Use the formatted sorting string
+    page: pagination.pageIndex, // Using original 'page'
+    pageSize: pagination.pageSize, // Using original 'pageSize'
+    sorting: formatSorting(sorting),
     filters: activeFilters,
   });
 
@@ -75,7 +73,7 @@ export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps
     columnFiltersState: columnFilters,
     onColumnFiltersChange: setColumnFilters,
     globalFilterKey,
-    manualSorting: true, // Explicitly tell the table that sorting is handled by the server
+    manualSorting: true,
   };
 
   const searchProps = {
@@ -84,7 +82,7 @@ export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps
   };
 
   return {
-    dataSource: data?.data ?? [],
+    dataSource: data?.items ?? [],
     total: data?.total ?? 0,
     isLoading,
     tableProps,

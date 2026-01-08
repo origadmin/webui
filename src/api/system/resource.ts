@@ -18,12 +18,10 @@ export async function listResource(params: API.DataTableParams, options?: API.Re
   // 2. Call the fetcher with backend-compatible params.
   const rawResponse = await get<API.System.ListResourcesResponse>("/sys/resources", backendParams, options);
 
-  // 3. Transform the raw response into the standardized structure.
+  // 3. Transform the raw response into the standardized structure expected by useDataTable.
   return {
-    data: rawResponse?.resources || [],
+    items: rawResponse?.resources || [],
     total: rawResponse?.total || 0,
-    page: rawResponse?.page || 1,
-    pageSize: rawResponse?.page_size || 0,
   };
 }
 

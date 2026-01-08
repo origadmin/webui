@@ -16,7 +16,7 @@ export const formSchema = z.object({
   visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().nullable().optional(),
-  parent_id: z.string().nullable().optional(),
+  parent_id: z.number().nullable().optional(), // Corrected type
   is_edit: z.boolean(),
   // Virtual field for Redirect type, will be stored in properties
   redirect_to: z.string().optional(),

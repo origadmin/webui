@@ -32,6 +32,11 @@ declare global {
       export type ListResourcesResponse = Schemas["api.v1.services.system.ListResourcesResponse"];
       export type GetResourceResponse = Schemas["api.v1.services.system.GetResourceResponse"];
       export type CreateResourceResponse = Schemas["api.v1.services.system.CreateResourceResponse"];
+
+      // Added View Response Types
+      export type ListViewsResponse = Schemas["api.v1.services.system.ListViewsResponse"];
+      export type GetViewResponse = Schemas["api.v1.services.system.GetViewResponse"];
+      export type CreateViewResponse = Schemas["api.v1.services.system.CreateViewResponse"];
     }
     export type Captcha = Schemas["api.v1.services.auth.GetCaptchaResponse"];
     export type LoginForm = Schemas["api.v1.services.auth.LoginRequest"];

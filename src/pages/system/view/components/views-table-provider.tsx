@@ -1,6 +1,35 @@
 import { API } from "@/api";
 import createTableContext from "@/components/DataTable/table-privider";
+import { createContext, useContext, useState } from "react";
 
-const { Provider, useTable } = createTableContext<API.System.View>();
+// --- Generic Table Context ---
+const { Provider: TableProvider, useTable } = createTableContext<API.System.View>();
 
-export { Provider as ViewTableProvider, useTable as useViewTable };
+// --- View-Specific Context ---
+interface ViewContextType {
+  sidebarRootId: number | null;
+  setSidebarRootId: (id: number | null) => void;
+}
+
+const ViewContext = createContext<ViewContextType | undefined>(undefined);
+
+export const useViewContext = () => {
+  const context = useContext(ViewContext);
+  if (!context) {
+    throw new Error("useViewContext must be used within a ViewTableProvider");
+  }
+  return context;
+};
+
+// --- Combined Provider ---
+export const ViewTableProvider = ({ children }: { children: React.ReactNode }) => {
+  const [sidebarRootId, setSidebarRootId] = useState<number | null>(null);
+
+  return (
+    <ViewContext.Provider value={{ sidebarRootId, setSidebarRootId }}>
+      <TableProvider>{children}</TableProvider>
+    </ViewContext.Provider>
+  );
+};
+
+export { useTable as useViewTable };

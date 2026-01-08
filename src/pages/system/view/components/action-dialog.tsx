@@ -21,9 +21,7 @@ import { FormType, formSchema, apiHooks, pageConfig } from "../config";
 import { renderFields } from "./fields";
 import { ViewsSequenceDialog } from "./views-sequence-dialog";
 import { ResourceActionManager } from "./resource-selector";
-
-// This should be fetched or from a constant, hardcoded for now
-const SIDEBAR_ROOT_ID = 10; 
+import { useViewContext } from "./views-table-provider";
 
 interface Props {
   currentRow?: API.System.View;
@@ -41,16 +39,19 @@ export function ViewActionDialog({
   className,
 }: Props) {
   const is_edit = !!currentRow;
-  const is_sub = !!parentRow;
+  const is_sub_by_ui = !!parentRow; // Whether the action was triggered from a sub-view button
   const title = is_edit
     ? `Edit ${pageConfig.title}`
-    : is_sub
+    : is_sub_by_ui
       ? `Add Sub ${pageConfig.title}`
       : `Add New ${pageConfig.title}`;
   const description = is_edit
     ? `Update the ${pageConfig.title.toLowerCase()} here.`
     : `Create new ${pageConfig.title.toLowerCase()} here.`;
   const formId = `${pageConfig.title.toLowerCase()}-form`;
+
+  const { sidebarRootId } = useViewContext();
+  const isSidebarMissing = !sidebarRootId && !is_sub_by_ui && !is_edit;
 
   const shape = (formSchema as any).shape;
   const generatedDefaults = shape
@@ -74,17 +75,17 @@ export function ViewActionDialog({
   }
 
   // Determine default values based on context
-  const defaultType = is_edit ? currentRow.type : is_sub ? "M" : "M";
+  const defaultType = is_edit ? currentRow.type : is_sub_by_ui ? "M" : isSidebarMissing ? "T" : "M";
   const defaultScope = is_edit
     ? currentRow.scope
-    : is_sub
+    : is_sub_by_ui
       ? parentRow.scope || "sidebar"
       : "sidebar";
   const defaultParentId = is_edit
     ? currentRow.parent_id
-    : is_sub
+    : is_sub_by_ui
       ? parentRow.id
-      : SIDEBAR_ROOT_ID;
+      : sidebarRootId;
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -109,15 +110,28 @@ export function ViewActionDialog({
         },
   });
 
-  // Watch for type changes to auto-update scope
+  // Watch for type changes to auto-update scope and parent_id
   const currentType = form.watch("type");
   useEffect(() => {
     if (!is_edit && open) {
+      // Auto-update scope for Buttons
       if (currentType === "B" && form.getValues("scope") === "sidebar") {
         form.setValue("scope", "toolbar");
       }
+      
+      // Auto-update parent_id for Root/Non-Root types in top-level add mode
+      if (!is_sub_by_ui) {
+        if (currentType === "T") {
+          form.setValue("parent_id", 0);
+        } else {
+          // When switching back from Root to another type, restore the default parent
+          if (form.getValues("parent_id") === 0) {
+            form.setValue("parent_id", sidebarRootId);
+          }
+        }
+      }
     }
-  }, [currentType, is_edit, open, form]);
+  }, [currentType, is_edit, open, form, is_sub_by_ui, sidebarRootId]);
 
   const queryClient = useQueryClient();
   const { mutateAsync: createItem, isPending: isCreatePending } =
@@ -172,6 +186,10 @@ export function ViewActionDialog({
           is_edit ? "updated" : "created"
         } ${pageConfig.title.toLowerCase()}.`,
       });
+      
+      // Invalidate the query to refetch the list
+      await queryClient.invalidateQueries({ queryKey: ['views'] });
+
       onOpenChange(false);
     } catch (error) {
       toast({
@@ -248,8 +266,8 @@ export function ViewActionDialog({
                       </FormControl>
                     </FormItem>
                   )}
-                  {/* Pass isSub and currentType to renderFields */}
-                  {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType)}
+                  {/* Pass is_sub_by_ui and currentType to renderFields */}
+                  {renderFields(form, () => setSortDialogOpen(true), is_sub_by_ui, currentType, isSidebarMissing)}
 
                   {/* Redirect To Field */}
                   {showRedirectTo && (

@@ -1,10 +1,34 @@
 import { Query } from "@/utils";
-import { del, get, post, put } from "@/utils/request";
-import { QueryClient, queryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import { get, post, put, del } from "@/utils/request";
+import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** Query view list GET /sys/views */
-export async function listView(params: API.SearchParams, options?: API.RequestOptions) {
-  return get<API.System.View[]>("/sys/views", params, options);
+/**
+ * Query view list GET /sys/views
+ * This is the "smart adapter" function. It adapts params and transforms the response.
+ */
+export async function listViews(params: API.DataTableParams, options?: API.RequestOptions) {
+  // 1. Translate frontend params to backend params.
+  const { pageSize, ...rest } = params;
+  const backendParams: API.SearchParams = {
+    ...rest,
+    page: (params.page || 0) + 1,
+    page_size: pageSize,
+  };
+
+  // 2. Call the fetcher with backend-compatible params.
+  const rawResponse = await get<API.System.ListViewsResponse>("/sys/views", backendParams, options);
+
+  // 3. Transform the raw response into the standardized structure.
+  return {
+    items: rawResponse?.views || [],
+    total: rawResponse?.total || 0,
+  };
+}
+
+/** Get view record by ID GET /sys/views/${id} */
+export async function getView(id: string, options?: API.RequestOptions) {
+  const rawResponse = await get<API.System.GetViewResponse>(`/sys/views/${id}`, undefined, options);
+  return rawResponse?.view;
 }
 
 /** Create view record POST /sys/views */
@@ -12,16 +36,12 @@ export async function addView(body: Omit<API.System.View, "id">, options?: API.R
   const requestBody = {
     view: body,
   };
-  return post<API.System.View>("/sys/views", requestBody, options);
-}
-
-/** Get view record by ID GET /sys/views/${id} */
-export async function getView(id: string, options?: API.RequestOptions) {
-  return get<API.System.View>(`/sys/views/${id}`, undefined, options);
+  const rawResponse = await post<API.System.CreateViewResponse>("/sys/views", requestBody, options);
+  return rawResponse?.view;
 }
 
 /** Update view record by ID PUT /sys/views/${id} */
-export async function updateView(id: string, body: Omit<API.System.View, "id">, options?: API.RequestOptions) {
+export async function updateView(id: string, body: Partial<API.System.View>, options?: API.RequestOptions) {
   const requestBody = {
     view: body,
   };
@@ -33,11 +53,13 @@ export async function deleteView(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/views/${id}`, options);
 }
 
-export const useViewsQuery = (opts?: API.SearchParams) => {
+// --- React Query hooks ---
+
+export const useViewsQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/views", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listView(opts),
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listViews(opts),
     }),
   );
 };
@@ -61,7 +83,7 @@ export const useViewCreate = (queryClient: QueryClient) => {
 
 export const useViewUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (view: Omit<API.System.View, "id">) => updateView(id, view),
+    mutationFn: (view: Partial<API.System.View>) => updateView(id, view),
     onSettled: () => Query.invalidateData(queryClient, ["/sys/views"]),
   });
 };
