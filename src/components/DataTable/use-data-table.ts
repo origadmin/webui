@@ -27,6 +27,7 @@ export function useDataTable<TData, TValue>({
     pageIndex: START_PAGE,
   },
   columnFiltersState: initialColumnFiltersState = [],
+  columnVisibilityState: initialColumnVisibilityState = {}, // New prop for initial visibility
   sorting: initialSorting,
   onSortingChange,
   onColumnFiltersChange,
@@ -37,7 +38,7 @@ export function useDataTable<TData, TValue>({
   isLoading,
 }: Omit<DataTableProps<TData, TValue>, "props">) {
   const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibilityState); // Use the new prop
   const [data, setData] = useState<TData[]>([]);
   const [rowCount, setRowCount] = useState(0);
   const [pagination, setPagination] =

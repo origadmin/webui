@@ -42,6 +42,7 @@ interface BehaviorProps {
   useManual?: boolean;
   paginationState?: PaginationState;
   columnFiltersState?: ColumnFiltersState;
+  columnVisibilityState?: VisibilityState; // Add this prop
   sorting?: SortingState;
   globalFilterKey?: string;
   onSortingChange?: OnChangeFn<SortingState>;

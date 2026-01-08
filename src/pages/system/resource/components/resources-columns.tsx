@@ -77,6 +77,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     cell: ({ row }) => <LongText>{row.original.description}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
+  systemStatusColumn,
   {
     accessorKey: "sync_status",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Sync Status' />,
@@ -86,7 +87,6 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     },
     meta: defaultHeaderMeta.meta,
   },
-  systemStatusColumn,
   {
     id: "actions",
     header: "Actions",

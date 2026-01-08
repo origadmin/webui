@@ -21,3 +21,15 @@ export const ViewScopes = {
   TOOLBAR: "toolbar",
   ROW_ACTION: "row_action",
 } as const;
+
+export const scopeOptions = [
+  { value: "sidebar", label: "Sidebar" },
+  { value: "sidebar_header", label: "Sidebar Header" },
+  { value: "sidebar_footer", label: "Sidebar Footer" },
+  { value: "navbar_left", label: "Navbar Left" },
+  { value: "navbar_right", label: "Navbar Right" },
+  { value: "page_fab", label: "Page FAB" },
+  { value: "page_header", label: "Page Header" },
+  { value: "toolbar", label: "Toolbar" },
+  { value: "row_action", label: "Row Action" },
+];

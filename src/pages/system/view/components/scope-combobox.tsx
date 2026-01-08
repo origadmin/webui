@@ -16,18 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-const scopeOptions = [
-  { value: "sidebar", label: "sidebar (Sidebar Menu - Default)" },
-  { value: "sidebar_header", label: "sidebar_header (Sidebar Header)" },
-  { value: "sidebar_footer", label: "sidebar_footer (Sidebar Footer)" },
-  { value: "navbar_left", label: "navbar_left (Navbar Left)" },
-  { value: "navbar_right", label: "navbar_right (Navbar Right)" },
-  { value: "page_fab", label: "page_fab (Page Floating Button)" },
-  { value: "page_header", label: "page_header (Page Header)" },
-  { value: "toolbar", label: "toolbar (Table Toolbar)" },
-  { value: "row_action", label: "row_action (Table Row Action)" },
-];
+import { scopeOptions } from "../constants";
 
 interface ScopeComboboxProps {
   value?: string;

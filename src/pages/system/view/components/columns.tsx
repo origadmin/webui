@@ -9,6 +9,19 @@ import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTab
 import TablerIcon from "@/components/IconPicker/tabler-icon";
 import LongText from "@/components/long-text";
 import { RowActions } from "./row-actions";
+import { scopeOptions } from "../constants";
+import { Input } from "@/components/ui/input";
+import { Column } from "@tanstack/react-table";
+
+// Helper function to create a simple text input filter
+const textInputFilter = (column: Column<any, unknown>, title: string) => (
+  <Input
+    placeholder={`Search ${title}...`}
+    value={(column.getFilterValue() as string) ?? ""}
+    onChange={(event) => column.setFilterValue(event.target.value)}
+    className='h-8 w-[150px] lg:w-[250px]'
+  />
+);
 
 export const columns: DataTableColumnType<API.System.View>[] = [
   {
@@ -43,19 +56,22 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+    filterComponent: (column) => textInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
+    filterComponent: (column) => textInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "scope",
     header: "Scope",
     cell: ({ row }) => {
       const scope = row.original.scope;
-      return <ColorBadge colorKey={scope}>{scope}</ColorBadge>;
+      const label = scopeOptions.find(option => option.value === scope)?.label || scope;
+      return <ColorBadge colorKey={scope}>{label}</ColorBadge>;
     },
     meta: defaultHeaderMeta.meta,
   },

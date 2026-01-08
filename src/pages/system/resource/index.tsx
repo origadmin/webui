@@ -39,6 +39,11 @@ export default function ResourcesPage() {
               isLoading={isLoading}
               // Spread all table state and handlers
               {...tableProps}
+              // Set the initial visibility state for columns
+              columnVisibilityState={{
+                sequence: false,
+                description: false,
+              }}
               // Standard table configuration
               useManual
               showPagination // Enable pagination
