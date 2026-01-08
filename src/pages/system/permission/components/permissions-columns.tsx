@@ -5,23 +5,35 @@ import { permissionTypeBadgeColor } from "@/types/system/permissions";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
+import { Input } from "@/components/ui/input";
+import { Column } from "@tanstack/react-table";
+
+// Helper function to create a simple text input filter
+const textInputFilter = (column: Column<any, unknown>, title: string) => (
+  <Input
+    placeholder={`Search ${title}...`}
+    value={(column.getFilterValue() as string) ?? ""}
+    onChange={(event) => column.setFilterValue(event.target.value)}
+    className='h-8 w-[150px] lg:w-[250px]'
+  />
+);
 
 export const columns: DataTableColumnType<API.System.Permission>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    searchable: true,
     meta: defaultHeaderMeta.meta,
     cell: ({ row }) => <LongText>{row.getValue("name")}</LongText>,
     enableSorting: false,
     enableHiding: false,
+    filterComponent: (column) => textInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: "Keyword",
-    searchable: true,
     cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
+    filterComponent: (column) => textInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "data_scope",
@@ -44,7 +56,6 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
   {
     accessorKey: "resources",
     header: "Resources",
-    searchable: false,
     cell: ({ row }) => (
       <div className='flex flex-wrap gap-1'>
         {row.original.resources && row.original.resources.length > 0 ? (

@@ -5,6 +5,18 @@ import { defaultHeaderMeta } from "@/types";
 import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { cn } from "@/lib/utils";
 import { ResourceIconRowActions } from "./resources-row-actions";
+import { Input } from "@/components/ui/input";
+import { Column } from "@tanstack/react-table";
+
+// Helper function to create a simple text input filter
+const textInputFilter = (column: Column<any, unknown>, title: string) => (
+  <Input
+    placeholder={`Search ${title}...`}
+    value={(column.getFilterValue() as string) ?? ""}
+    onChange={(event) => column.setFilterValue(event.target.value)}
+    className='h-8 w-[150px] lg:w-[250px]'
+  />
+);
 
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {
@@ -39,21 +51,21 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
       </div>
     ),
     meta: defaultHeaderMeta.meta,
-    searchable: true,
+    filterComponent: (column) => textInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Keyword' />,
     cell: ({ row }) => <LongText>{row.original.keyword}</LongText>,
     meta: defaultHeaderMeta.meta,
-    searchable: true,
+    filterComponent: (column) => textInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "path",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Path' />,
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
     meta: defaultHeaderMeta.meta,
-    searchable: true,
+    filterComponent: (column) => textInputFilter(column, "Path"),
   },
   {
     accessorKey: "method",

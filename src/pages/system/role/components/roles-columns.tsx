@@ -4,6 +4,18 @@ import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
+import { Input } from "@/components/ui/input";
+import { Column } from "@tanstack/react-table";
+
+// Helper function to create a simple text input filter
+const textInputFilter = (column: Column<any, unknown>, title: string) => (
+  <Input
+    placeholder={`Search ${title}...`}
+    value={(column.getFilterValue() as string) ?? ""}
+    onChange={(event) => column.setFilterValue(event.target.value)}
+    className='h-8 w-[150px] lg:w-[250px]'
+  />
+);
 
 export const columns: DataTableColumnType<API.System.Role>[] = [
   {
@@ -13,12 +25,14 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     meta: defaultHeaderMeta.meta,
     enableSorting: true,
     enableHiding: false,
+    filterComponent: (column) => textInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
     meta: defaultHeaderMeta.meta,
+    filterComponent: (column) => textInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "type",

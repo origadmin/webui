@@ -6,6 +6,18 @@ import { DataTableColumnType } from "@/components/DataTable";
 import LongText from "@/components/long-text";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Column } from "@tanstack/react-table";
+
+// Helper function to create a simple text input filter
+const textInputFilter = (column: Column<any, unknown>, title: string) => (
+  <Input
+    placeholder={`Search ${title}...`}
+    value={(column.getFilterValue() as string) ?? ""}
+    onChange={(event) => column.setFilterValue(event.target.value)}
+    className='h-8 w-[150px] lg:w-[250px]'
+  />
+);
 
 export const columns: DataTableColumnType<API.System.User>[] = [
   {
@@ -36,21 +48,21 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     header: "Nickname",
     cell: ({ row }) => <LongText>{row.original.nickname}</LongText>,
     meta: defaultHeaderMeta.meta,
-    searchable: true,
+    filterComponent: (column) => textInputFilter(column, "Nickname"),
   },
   {
     accessorKey: "username",
     header: t("pages.system.users.columns.username"),
     cell: ({ row }) => <LongText>{row.original.username}</LongText>,
     meta: defaultHeaderMeta.meta,
-    searchable: true,
+    filterComponent: (column) => textInputFilter(column, "Username"),
   },
   {
     accessorKey: "email",
     header: "Email",
     cell: ({ row }) => <div>{row.original.email}</div>,
     meta: defaultHeaderMeta.meta,
-    searchable: true,
+    filterComponent: (column) => textInputFilter(column, "Email"),
   },
   systemStatusColumn,
   {
