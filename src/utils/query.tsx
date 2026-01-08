@@ -16,7 +16,7 @@ const createQueryOptions = <T extends object, TParam>(
   });
 
 const invalidateData = <TParam,>(queryClient: QueryClient, queryKey: [string, TParam?]) => {
-  queryClient.invalidateQueries({ queryKey: queryKey });
+  queryClient.invalidateQueries({ queryKey: queryKey }).finally();
 };
 
 const createMutationOption = <T extends object, TParam = undefined>(

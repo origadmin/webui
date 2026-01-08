@@ -1,29 +1,20 @@
-import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
 /**
  * Query role list GET /sys/roles
- * This is the "smart adapter" function. It adapts params and transforms the response.
  */
-export async function listRole(params: API.DataTableParams, options?: API.RequestOptions) {
-  // 1. Translate frontend params to backend params.
+export async function listRoles(params: API.DataTableParams, options?: API.RequestOptions) {
   const { pageSize, ...rest } = params;
   const backendParams: API.SearchParams = {
     ...rest,
     page: (params.page || 0) + 1,
     page_size: pageSize,
   };
-
-  // 2. Call the fetcher with backend-compatible params.
   const rawResponse = await get<API.System.ListRolesResponse>("/sys/roles", backendParams, options);
-
-  // 3. Transform the raw response into the standardized structure.
   return {
-    data: rawResponse?.roles || [],
+    items: rawResponse?.roles || [],
     total: rawResponse?.total || 0,
-    page: rawResponse?.page || 1,
-    pageSize: rawResponse?.page_size || 0,
   };
 }
 
@@ -43,7 +34,7 @@ export async function addRole(body: Omit<API.System.Role, "id">, options?: API.R
 }
 
 /** Update role record by ID PUT /sys/roles/${id} */
-export async function updateRole(id: string, body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
+export async function updateRole(id: string, body: Partial<API.System.Role>, options?: API.RequestOptions) {
   const requestBody = {
     role: body,
   };
@@ -55,13 +46,13 @@ export async function deleteRole(id: string, options?: API.RequestOptions) {
   return del<never>(`/sys/roles/${id}`, options);
 }
 
-// --- React Query hooks remain the same ---
+// --- React Query hooks ---
 
 export const useRolesQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/roles", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listRole(opts),
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listRoles(opts),
     }),
   );
 };
@@ -79,20 +70,20 @@ export const useRoleQuery = (id: string) => {
 export const useRoleCreate = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (role: Omit<API.System.Role, "id">) => addRole(role),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/roles"] }),
   });
 };
 
 export const useRoleUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (role: Omit<API.System.Role, "id">) => updateRole(id, role),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+    mutationFn: (role: Partial<API.System.Role>) => updateRole(id, role),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/roles"] }),
   });
 };
 
 export const useRoleDelete = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (id: string) => deleteRole(id),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/roles"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/roles"] }),
   });
 };

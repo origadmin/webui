@@ -1,4 +1,3 @@
-import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
@@ -82,27 +81,27 @@ export const useResourceQuery = (id: string) => {
 export const useResourceCreate = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (resource: Omit<API.System.Resource, "id">) => addResource(resource),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/resources"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/resources"] }),
   });
 };
 
 export const useResourceUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
     mutationFn: (resource: Partial<API.System.Resource>) => updateResource(id, resource),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/resources"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/resources"] }),
   });
 };
 
 export const useResourceDelete = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (id: string) => deleteResource(id),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/resources"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/resources"] }),
   });
 };
 
 export const useSyncResources = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: () => syncResources(),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/resources"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/resources"] }),
   });
 };

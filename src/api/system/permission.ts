@@ -1,25 +1,44 @@
-import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
-/** Query permission list GET /sys/permissions */
-export async function listPermission(params: API.SearchParams, options?: API.RequestOptions) {
-  return get<API.System.Permission[]>("/sys/permissions", params, options);
-}
-
-/** Create permission record POST /sys/permissions */
-export async function addPermission(body: Omit<API.System.Permission, "id">, options?: API.RequestOptions) {
-  return post<API.System.Permission>("/sys/permissions", body, options);
+/**
+ * Query permission list GET /sys/permissions
+ */
+export async function listPermissions(params: API.DataTableParams, options?: API.RequestOptions) {
+  const { pageSize, ...rest } = params;
+  const backendParams: API.SearchParams = {
+    ...rest,
+    page: (params.page || 0) + 1,
+    page_size: pageSize,
+  };
+  const rawResponse = await get<API.System.ListPermissionsResponse>("/sys/permissions", backendParams, options);
+  return {
+    items: rawResponse?.permissions || [],
+    total: rawResponse?.total || 0,
+  };
 }
 
 /** Get permission record by ID GET /sys/permissions/${id} */
 export async function getPermission(id: string, options?: API.RequestOptions) {
-  return get<API.System.Permission>(`/sys/permissions/${id}`, undefined, options);
+  const rawResponse = await get<API.System.GetPermissionResponse>(`/sys/permissions/${id}`, undefined, options);
+  return rawResponse?.permission;
+}
+
+/** Create permission record POST /sys/permissions */
+export async function addPermission(body: Omit<API.System.Permission, "id">, options?: API.RequestOptions) {
+  const requestBody = {
+    permission: body,
+  };
+  const rawResponse = await post<API.System.CreatePermissionResponse>("/sys/permissions", requestBody, options);
+  return rawResponse?.permission;
 }
 
 /** Update permission record by ID PUT /sys/permissions/${id} */
-export async function updatePermission(id: string, body: Omit<API.System.Permission, "id">, options?: API.RequestOptions) {
-  return put<never>(`/sys/permissions/${id}`, body, options);
+export async function updatePermission(id: string, body: Partial<API.System.Permission>, options?: API.RequestOptions) {
+  const requestBody = {
+    permission: body,
+  };
+  return put<never>(`/sys/permissions/${id}`, requestBody, options);
 }
 
 /** Delete permission record by ID DELETE /sys/permissions/${id} */
@@ -27,11 +46,13 @@ export async function deletePermission(id: string, options?: API.RequestOptions)
   return del<never>(`/sys/permissions/${id}`, options);
 }
 
-export const usePermissionsQuery = (opts?: API.SearchParams) => {
+// --- React Query hooks ---
+
+export const usePermissionsQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/permissions", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.SearchParams] }) => listPermission(opts),
+      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listPermissions(opts),
     }),
   );
 };
@@ -49,20 +70,20 @@ export const usePermissionQuery = (id: string) => {
 export const usePermissionCreate = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (permission: Omit<API.System.Permission, "id">) => addPermission(permission),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/permissions"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] }),
   });
 };
 
 export const usePermissionUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (permission: Omit<API.System.Permission, "id">) => updatePermission(id, permission),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/permissions"]),
+    mutationFn: (permission: Partial<API.System.Permission>) => updatePermission(id, permission),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] }),
   });
 };
 
 export const usePermissionDelete = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (id: string) => deletePermission(id),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/permissions"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] }),
   });
 };

@@ -1,4 +1,3 @@
-import { Query } from "@/utils";
 import { get, post, put, del } from "@/utils/request";
 import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
 
@@ -77,20 +76,20 @@ export const useViewQuery = (id: string) => {
 export const useViewCreate = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (view: Omit<API.System.View, "id">) => addView(view),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/views"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };
 
 export const useViewUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
     mutationFn: (view: Partial<API.System.View>) => updateView(id, view),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/views"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };
 
 export const useViewDelete = (queryClient: QueryClient) => {
   return useMutation({
     mutationFn: (id: string) => deleteView(id),
-    onSettled: () => Query.invalidateData(queryClient, ["/sys/views"]),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };
