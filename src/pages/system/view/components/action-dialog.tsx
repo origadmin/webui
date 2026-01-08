@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -17,12 +17,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { apiHooks, formSchema, FormType, pageConfig } from "../config";
-import { ViewScopes, ViewTypes } from "../constants";
+import { FormType, formSchema, apiHooks, pageConfig } from "../config";
 import { renderFields } from "./fields";
-import { ResourceActionManager } from "./resource-selector";
 import { ViewsSequenceDialog } from "./views-sequence-dialog";
+import { ResourceActionManager } from "./resource-selector";
 import { useViewContext } from "./views-table-provider";
+import { ViewScopes, ViewTypes } from "../constants";
 
 interface Props {
   currentRow?: API.System.View;
@@ -32,25 +32,24 @@ interface Props {
   className?: string;
 }
 
-export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, className }: Props) {
+export function ViewActionDialog({
+  currentRow,
+  parentRow,
+  open,
+  onOpenChange,
+  className,
+}: Props) {
   const is_edit = !!currentRow;
   const is_sub = !!parentRow;
   const title = is_edit ? `Edit ${pageConfig.title}` : is_sub ? `Add Sub View` : `Add New View`;
-  const description = is_edit
-    ? `Update the ${pageConfig.title.toLowerCase()} here.`
-    : `Create new ${pageConfig.title.toLowerCase()} here.`;
+  const description = is_edit ? `Update the ${pageConfig.title.toLowerCase()} here.` : `Create new ${pageConfig.title.toLowerCase()} here.`;
   const formId = `${pageConfig.title.toLowerCase()}-form`;
 
   const { sidebarRootId } = useViewContext();
   const isSidebarMissing = !sidebarRootId && !is_sub && !is_edit;
 
   const shape = (formSchema as any).shape;
-  const generatedDefaults = shape
-    ? Object.keys(shape).reduce((acc, key) => {
-        acc[key] = "";
-        return acc;
-      }, {} as any)
-    : {};
+  const generatedDefaults = shape ? Object.keys(shape).reduce((acc, key) => { acc[key] = ""; return acc; }, {} as any) : {};
 
   let parsedActions = [];
   let parsedRedirectTo = "";
@@ -59,26 +58,12 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
       const props = JSON.parse(currentRow.properties);
       if (props.actions) parsedActions = props.actions;
       if (props.redirect_to) parsedRedirectTo = props.redirect_to;
-    } catch (e) {
-      console.error("Failed to parse view properties:", e);
-    }
+    } catch (e) { console.error("Failed to parse view properties:", e); }
   }
 
-  const defaultType = is_edit
-    ? currentRow.type?.toUpperCase()
-    : is_sub
-      ? ViewTypes.MENU
-      : isSidebarMissing
-        ? ViewTypes.ROOT
-        : ViewTypes.MENU;
+  const defaultType = is_edit ? currentRow.type?.toUpperCase() : is_sub ? ViewTypes.MENU : isSidebarMissing ? ViewTypes.ROOT : ViewTypes.MENU;
   const defaultScope = is_edit ? currentRow.scope : is_sub ? parentRow.scope || ViewScopes.SIDEBAR : ViewScopes.SIDEBAR;
-  const defaultParentId = is_edit
-    ? currentRow.parent_id
-    : is_sub
-      ? parentRow.id
-      : isSidebarMissing
-        ? "0"
-        : sidebarRootId;
+  const defaultParentId = is_edit ? currentRow.parent_id : is_sub ? parentRow.id : (isSidebarMissing ? "0" : sidebarRootId);
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -86,22 +71,12 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
     shouldFocusError: true,
     defaultValues: is_edit
       ? { ...currentRow, type: defaultType, is_edit, actions: parsedActions, redirect_to: parsedRedirectTo }
-      : {
-          ...generatedDefaults,
-          status: 1,
-          visible: true,
-          is_edit: false,
-          parent_id: String(defaultParentId),
-          actions: [],
-          type: defaultType,
-          scope: defaultScope,
-        },
+      : { ...generatedDefaults, status: 1, visible: true, is_edit: false, parent_id: String(defaultParentId), actions: [], type: defaultType, scope: defaultScope, sequence: 0 },
   });
 
   const currentType = form.watch("type");
   useEffect(() => {
-    if (!is_edit && !is_sub && open) {
-      // Only for top-level add
+    if (!is_edit && !is_sub && open) { // Only for top-level add
       if (currentType === ViewTypes.ROOT) {
         form.setValue("parent_id", "0");
       } else {
@@ -152,18 +127,11 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
         await updateItem(putPayload);
       }
 
-      toast({
-        title: "Success",
-        description: `Successfully ${is_edit ? "updated" : "created"} ${pageConfig.title.toLowerCase()}.`,
-      });
+      toast({ title: "Success", description: `Successfully ${is_edit ? "updated" : "created"} ${pageConfig.title.toLowerCase()}.` });
       await queryClient.invalidateQueries({ queryKey: ["/sys/views"] });
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: "Operation Failed",
-        description: error instanceof Error ? error.message : "An unexpected error occurred.",
-        variant: "destructive",
-      });
+      toast({ title: "Operation Failed", description: error instanceof Error ? error.message : "An unexpected error occurred.", variant: "destructive" });
     } finally {
       form.reset();
     }
@@ -175,39 +143,21 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
 
   return (
     <>
-      <Dialog
-        open={open}
-        onOpenChange={(state) => {
-          if (!state) {
-            form.reset();
-          }
-          onOpenChange(state);
-        }}
-      >
+      <Dialog open={open} onOpenChange={(state) => { if (!state) { form.reset(); } onOpenChange(state); }}>
         <DialogContent className={cn("sm:max-w-2xl", className)}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description} Click save when you're done.</DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form
-              id={formId}
-              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
-              className='relative space-y-4'
-            >
+            <form id={formId} onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))} className='relative space-y-4'>
               {hasStatus && (
                 <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
-                  <FormField
-                    control={form.control}
-                    name='status'
-                    render={({ field }) => (
+                  <FormField control={form.control} name='status' render={({ field }) => (
                       <FormItem className='flex items-center space-x-2'>
                         <FormLabel>Status</FormLabel>
                         <FormControl>
-                          <Switch
-                            checked={field.value === 1}
-                            onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
-                          />
+                          <Switch checked={field.value === 1} onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)} />
                         </FormControl>
                       </FormItem>
                     )}
@@ -226,14 +176,11 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
                   )}
                   {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing)}
                   {showRedirectTo && (
-                    <FormField
-                      control={form.control}
-                      name='redirect_to'
-                      render={({ field }) => (
+                    <FormField control={form.control} name="redirect_to" render={({ field }) => (
                         <FormItem>
                           <FormLabel>Redirect To</FormLabel>
                           <FormControl>
-                            <Input placeholder='e.g., /system/user' {...field} />
+                            <Input placeholder="e.g., /system/user" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -246,17 +193,11 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
             </form>
           </Form>
           <DialogFooter>
-            <Button type='submit' form={formId} disabled={isCreatePending || isUpdatePending}>
-              Save changes
-            </Button>
+            <Button type='submit' form={formId} disabled={isCreatePending || isUpdatePending}>Save changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <ViewsSequenceDialog
-        parentId={form.getValues("parent_id") || undefined}
-        open={sortDialogOpen}
-        onOpenChange={setSortDialogOpen}
-      />
+      <ViewsSequenceDialog parentId={form.getValues("parent_id") || undefined} open={sortDialogOpen} onOpenChange={setSortDialogOpen} />
     </>
   );
 }

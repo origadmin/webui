@@ -43,11 +43,15 @@ export const renderFields = (
   onSortClick: () => void,
   isSub: boolean = false,
   currentType: string = ViewTypes.MENU,
+  isSidebarMissing: boolean = false,
 ) => {
-  // Simplified logic: Only filter out "ROOT" when adding a sub-view.
-  const filteredOptions = isSub
-    ? viewTypeOptions.filter((opt) => opt.value !== ViewTypes.ROOT)
-    : viewTypeOptions;
+  // Corrected logic: Filter options based on the context.
+  let filteredOptions = viewTypeOptions;
+  if (isSub) {
+    filteredOptions = viewTypeOptions.filter((opt) => opt.value !== ViewTypes.ROOT);
+  } else if (isSidebarMissing) {
+    filteredOptions = viewTypeOptions.filter((opt) => opt.value === ViewTypes.ROOT);
+  }
 
   // Determine field visibility and state based on Type
   const showPath = ![ViewTypes.ROOT, ViewTypes.GROUP, ViewTypes.BUTTON].includes(currentType);

@@ -12,7 +12,7 @@ export const formSchema = z.object({
   path: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
   component: z.string().nullable().optional(),
-  sequence: z.number().optional().nullable().default(0).transform(val => val ?? 0),
+  sequence: z.coerce.number().default(0), // Use z.coerce.number()
   visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().nullable().optional(),
