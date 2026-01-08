@@ -78,7 +78,7 @@ export const renderFields = (
                       <SelectValue placeholder='Select a type' />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent usePortal={false}>
                     {filteredOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}

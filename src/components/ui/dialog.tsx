@@ -29,7 +29,9 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
-const DialogContent = React.forwardRef<
+// 1. Renamed the original DialogContent to BaseDialogContent
+// This is the component that will be updated by shadcn-ui
+const BaseDialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
@@ -51,7 +53,22 @@ const DialogContent = React.forwardRef<
     </DialogPrimitive.Content>
   </DialogPortal>
 ))
-DialogContent.displayName = DialogPrimitive.Content.displayName
+BaseDialogContent.displayName = "BaseDialogContent"
+
+// 2. Created a new DialogContent component that wraps BaseDialogContent
+// This is the component that we will use in our project
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof BaseDialogContent>,
+  React.ComponentPropsWithoutRef<typeof BaseDialogContent>
+>((props, ref) => (
+  <BaseDialogContent
+    ref={ref}
+    onCloseAutoFocus={(e) => e.preventDefault()}
+    {...props}
+  />
+));
+DialogContent.displayName = "DialogContent"
+
 
 const DialogHeader = ({
   className,
@@ -106,7 +123,7 @@ const DialogDescription = React.forwardRef<
     {...props}
   />
 ))
-DialogDescription.displayName = DialogPrimitive.Description.displayName
+DialogDescription.displayName = DialogDescription.displayName
 
 export {
   Dialog,
