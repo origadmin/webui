@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { buildTree } from "@/utils/tree";
 import { getExpandedRowModel } from "@tanstack/react-table";
 import { useDataTable } from "@/hooks/use-data-table";
@@ -12,20 +12,24 @@ import { apiHooks, columns, pageConfig } from "./config";
 
 function ViewPageContent() {
   const { dataSource, total, isLoading, tableProps, searchProps } = useDataTable({
-    // The useQuery hook now returns the correct shape, so no adaptation is needed here.
     useQuery: (params) => apiHooks.useQuery({ ...params, no_paging: true }),
   });
 
   const { setSidebarRootId } = useViewContext();
+  const [sidebarRoot, setSidebarRoot] = useState<API.System.View | null>(null);
 
-  // Find and set the sidebar root id when data is loaded
+  // Find and set the sidebar root object when data is loaded
   useEffect(() => {
     if (dataSource && dataSource.length > 0) {
-      const sidebarRoot = dataSource.find(
-        (view) => view.scope === "sidebar" && view.parent_id === 0
+      const root = dataSource.find(
+        (view) => view.scope === "sidebar" && view.parent_id === "0"
       );
-      if (sidebarRoot) {
-        setSidebarRootId(sidebarRoot.id);
+      if (root) {
+        setSidebarRoot(root);
+        setSidebarRootId(root.id || null); // Use nullish coalescing to convert undefined to null
+      } else {
+        setSidebarRoot(null);
+        setSidebarRootId(null);
       }
     }
   }, [dataSource, setSidebarRootId]);
@@ -43,22 +47,18 @@ function ViewPageContent() {
         <CardContent>
           <DataTable
             columns={columns}
-            dataSource={treeData} // Use the tree data
+            dataSource={treeData}
             total={total}
             isLoading={isLoading}
-            // Spread all table state and handlers
             {...tableProps}
-            // Static props for tree table
             useManual={false}
-            showPagination={false} // Pagination is often disabled for tree views
-            // Options for tree table
+            showPagination={false}
             options={{
               getExpandedRowModel: getExpandedRowModel(),
               getSubRows: (row: API.System.View) => row.children,
             }}
-            // Toolbar and sub-component props
             toolbarPosition='top'
-            toolbars={() => <ViewsPrimaryButtons />}
+            toolbars={() => <ViewsPrimaryButtons sidebarRoot={sidebarRoot} />}
             props={{
               search: searchProps,
             }}

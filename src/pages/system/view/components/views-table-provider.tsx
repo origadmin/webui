@@ -7,8 +7,8 @@ const { Provider: TableProvider, useTable } = createTableContext<API.System.View
 
 // --- View-Specific Context ---
 interface ViewContextType {
-  sidebarRootId: number | null;
-  setSidebarRootId: (id: number | null) => void;
+  sidebarRootId: string | null;
+  setSidebarRootId: (id: string | null) => void;
 }
 
 const ViewContext = createContext<ViewContextType | undefined>(undefined);
@@ -23,7 +23,7 @@ export const useViewContext = () => {
 
 // --- Combined Provider ---
 export const ViewTableProvider = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarRootId, setSidebarRootId] = useState<number | null>(null);
+  const [sidebarRootId, setSidebarRootId] = useState<string | null>(null);
 
   return (
     <ViewContext.Provider value={{ sidebarRootId, setSidebarRootId }}>

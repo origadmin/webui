@@ -12,11 +12,11 @@ export const formSchema = z.object({
   path: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
   component: z.string().nullable().optional(),
-  sequence: z.number().default(0),
+  sequence: z.number().optional().nullable().default(0).transform(val => val ?? 0),
   visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().nullable().optional(),
-  parent_id: z.string().nullable().optional(), // Reverted to string to match API
+  parent_id: z.string().nullable().optional(),
   is_edit: z.boolean(),
   // Virtual field for Redirect type, will be stored in properties
   redirect_to: z.string().optional(),

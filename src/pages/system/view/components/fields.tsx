@@ -23,41 +23,37 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { IconArrowsSort } from "@tabler/icons-react";
 import { ScopeCombobox } from "./scope-combobox";
+import { ViewTypes } from "../constants";
 
-// Define ViewType options based on backend requirements (full string names)
+// Define ViewType options based on constants
 const viewTypeOptions = [
-  { value: "ROOT", label: "Root (Virtual Node)" },
-  { value: "GROUP", label: "Group (Visual Grouping)" },
-  { value: "MENU", label: "Menu (Navigation Item)" },
-  { value: "LINK", label: "Link (External Link)" },
-  { value: "PAGE", label: "Page (Content Container)" },
-  { value: "BUTTON", label: "Button (Action Trigger)" },
-  { value: "ELEMENT", label: "Element (UI Element)" },
-  { value: "REDIRECT", label: "Redirect (Route Redirect)" },
-  { value: "UNKNOWN", label: "Unknown (Undefined Type)" },
+  { value: ViewTypes.ROOT, label: "Root (Virtual Node)" },
+  { value: ViewTypes.GROUP, label: "Group (Visual Grouping)" },
+  { value: ViewTypes.MENU, label: "Menu (Navigation Item)" },
+  { value: ViewTypes.LINK, label: "Link (External Link)" },
+  { value: ViewTypes.PAGE, label: "Page (Content Container)" },
+  { value: ViewTypes.BUTTON, label: "Button (Action Trigger)" },
+  { value: ViewTypes.ELEMENT, label: "Element (UI Element)" },
+  { value: ViewTypes.REDIRECT, label: "Redirect (Route Redirect)" },
+  { value: ViewTypes.UNKNOWN, label: "Unknown (Undefined Type)" },
 ];
 
 export const renderFields = (
   form: ReturnType<typeof useForm<FormType>>,
   onSortClick: () => void,
   isSub: boolean = false,
-  currentType: string = "MENU",
-  isSidebarMissing: boolean = false,
+  currentType: string = ViewTypes.MENU,
 ) => {
-  // Filter options based on context
-  let filteredOptions = viewTypeOptions;
-  
-  if (isSub) {
-     filteredOptions = viewTypeOptions.filter((opt) => opt.value !== "ROOT");
-  } else if (isSidebarMissing) {
-     filteredOptions = viewTypeOptions.filter((opt) => opt.value === "ROOT");
-  }
+  // Simplified logic: Only filter out "ROOT" when adding a sub-view.
+  const filteredOptions = isSub
+    ? viewTypeOptions.filter((opt) => opt.value !== ViewTypes.ROOT)
+    : viewTypeOptions;
 
   // Determine field visibility and state based on Type
-  const showPath = !["ROOT", "GROUP", "BUTTON"].includes(currentType);
-  const showComponent = ["MENU", "PAGE"].includes(currentType);
-  const showIcon = !["ROOT", "REDIRECT"].includes(currentType);
-  const isScopeDisabled = currentType !== 'ROOT' && currentType !== 'BUTTON';
+  const showPath = ![ViewTypes.ROOT, ViewTypes.GROUP, ViewTypes.BUTTON].includes(currentType);
+  const showComponent = [ViewTypes.MENU, ViewTypes.PAGE].includes(currentType);
+  const showIcon = ![ViewTypes.ROOT, ViewTypes.REDIRECT].includes(currentType);
+  const isScopeDisabled = currentType !== ViewTypes.ROOT && currentType !== ViewTypes.BUTTON;
 
   return (
     <div className='space-y-4'>
@@ -145,10 +141,10 @@ export const renderFields = (
             control={form.control}
             name='path'
             render={({ field }) => (
-              <FormItem className={!showPath ? "hidden" : ""}>
-                <FormLabel>{currentType === "LINK" ? "External URL" : "Path"}</FormLabel>
+              <FormItem className={`col-span-2 ${!showPath ? "hidden" : ""}`}>
+                <FormLabel>{currentType === ViewTypes.LINK ? "External URL" : "Path"}</FormLabel>
                 <FormControl>
-                  <Input placeholder={currentType === "LINK" ? "https://..." : "/system/user"} {...field} />
+                  <Input placeholder={currentType === ViewTypes.LINK ? "https://..." : "/system/user"} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -201,9 +197,9 @@ export const renderFields = (
                     <Input
                       className='rounded-r-none focus-visible:z-10'
                       placeholder='Click button to sort'
-                      value={field.value || 0}
                       type="number"
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
                     />
                   </FormControl>
                   <Button
