@@ -91,12 +91,12 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
 
   const renderCaptchaImage = () => {
     if (isLoading) {
-      return <Skeleton className='h-[50px] w-full' />;
+      return <Skeleton className='h-[60px] w-full' />;
     }
     if (hasError) {
       return (
         <div
-          className='flex h-[50px] w-full cursor-pointer flex-col items-center justify-center rounded-l-md'
+          className='flex h-[60px] w-full cursor-pointer flex-col items-center justify-center rounded-l-md'
           onClick={refreshCaptcha}
         >
           <IconAlertCircle className='size-5 text-destructive' />
@@ -109,7 +109,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
         <img
           src={captchaImage}
           alt='CAPTCHA'
-          className='h-[50px] w-full cursor-pointer rounded-l-md'
+          className='h-[60px] w-full cursor-pointer rounded-l-md'
           onClick={refreshCaptcha}
         />
       );
@@ -125,7 +125,7 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
           <DialogDescription>Enter the characters from the image to continue.</DialogDescription>
         </DialogHeader>
         <div className='space-y-2 py-2'>
-          <div className='flex h-[52px] items-center rounded-md border border-input'>
+          <div className='flex h-[62px] items-center rounded-md border border-input'>
             <div className='flex-grow'>{renderCaptchaImage()}</div>
             <div className='h-full w-px bg-border' />
             <div className='flex h-full flex-col items-center justify-center gap-y-1 px-1'>
