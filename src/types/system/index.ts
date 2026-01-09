@@ -1,6 +1,5 @@
 import { Circle, CircleCheck, CircleX } from "lucide-react";
 
-
 /**
  * =================================================================================
  * Universal Badge Color Palette
