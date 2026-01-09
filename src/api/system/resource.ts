@@ -1,17 +1,15 @@
 import { transformListParams } from "@/utils/api";
 import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
+import { QueryClient, useQuery, queryOptions, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 
 /**
  * Query resource list GET /sys/resources
+ * This function is now updated to return the full response for infinite query support.
  */
 export async function listResource(params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
-  const rawResponse = await get<API.System.ListResourcesResponse>("/sys/resources", backendParams, options);
-  return {
-    items: rawResponse?.resources || [],
-    total: rawResponse?.total || 0,
-  };
+  // The raw response is needed to get the next_page_token
+  return get<API.System.ListResourcesResponse>("/sys/resources", backendParams, options);
 }
 
 /** Get resource record by ID GET /sys/resources/${id} */
@@ -49,14 +47,37 @@ export async function syncResources(options?: API.RequestOptions) {
 
 // --- React Query hooks ---
 
+/**
+ * A hook for fetching a paginated list of resources.
+ */
 export const useResourcesQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/resources", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listResource(opts),
+      queryFn: async ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => {
+        const rawResponse = await listResource(opts);
+        return {
+          items: rawResponse?.resources || [],
+          total: rawResponse?.total || 0,
+        };
+      },
     }),
   );
 };
+
+/**
+ * A hook for fetching an infinitely-scrolling list of resources.
+ * Ideal for multi-select components.
+ */
+export const useInfiniteResourcesQuery = (opts?: Omit<API.DataTableParams, "page" | "page_token">) => {
+  return useInfiniteQuery({
+    queryKey: ["/sys/resources/infinite", { ...opts }],
+    queryFn: ({ pageParam }) => listResource({ ...opts, page_token: pageParam }),
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => lastPage.next_page_token,
+  });
+};
+
 
 export const useResourceQuery = (id: string) => {
   return useQuery(

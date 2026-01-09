@@ -97,6 +97,8 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
       e.stopPropagation();
     };
 
+    const commonButtonClasses = "flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1";
+
     return (
       <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger ref={ref} asChild {...props}>
@@ -104,7 +106,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
             (selectedIcon ? (
               <Button
                 variant='outline'
-                className='group flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+                className={cn("group", commonButtonClasses)}
               >
                 <div className="flex items-center gap-2">
                   <TablerIcon name={selectedIcon} />
@@ -123,7 +125,7 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
             ) : (
               <Button
                 variant='outline'
-                className='flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+                className={commonButtonClasses}
               >
                 <span>{triggerPlaceholder}</span>
                 <TablerIcon name='chevron-down' />

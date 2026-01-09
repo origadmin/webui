@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useCallback } from "react";
 import { Check, ChevronsUpDown, X } from "lucide-react";
-import { useResourcesQuery } from "@/api/system/resource";
+import { useInfiniteResourcesQuery } from "@/api/system/resource";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
-  CommandGroup,
   CommandInput,
+  CommandGroup,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -29,16 +29,23 @@ export function ResourceMultiSelect({
   onChange,
 }: ResourceMultiSelectProps) {
   const [open, setOpen] = useState(false);
-  const { data: resourcesData, isLoading } = useResourcesQuery({
-    pageSize: 1000,
-  });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteResourcesQuery({ keyword: searchTerm });
+
+  const allResources = useMemo(() => data?.pages.flatMap((page) => page.resources) || [], [data]);
 
   const { selectedResources, unselectedResources } = useMemo(() => {
-    const allResources = resourcesData?.items || [];
     const selected = allResources.filter((r) => selectedIds.includes(r.id));
     const unselected = allResources.filter((r) => !selectedIds.includes(r.id));
     return { selectedResources: selected, unselectedResources: unselected };
-  }, [resourcesData, selectedIds]);
+  }, [allResources, selectedIds]);
 
   const handleSelect = (resourceId: string) => {
     onChange?.([...selectedIds, resourceId]);
@@ -47,6 +54,15 @@ export function ResourceMultiSelect({
   const handleRemove = (resourceId: string) => {
     onChange?.(selectedIds.filter((id) => id !== resourceId));
   };
+
+  // Infinite scroll logic
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop - clientHeight < 50 && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className='space-y-2'>
@@ -65,9 +81,13 @@ export function ResourceMultiSelect({
         </PopoverTrigger>
         <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
           <Command>
-            <CommandInput placeholder='Search by name or keyword...' />
+            <CommandInput
+              placeholder='Search by name or keyword...'
+              value={searchTerm}
+              onValueChange={setSearchTerm}
+            />
             <ScrollArea className='h-48'>
-              <CommandList>
+              <CommandList ref={scrollRef} onScroll={handleScroll}>
                 <CommandEmpty>No resources found.</CommandEmpty>
                 <CommandGroup>
                   {unselectedResources.map((resource) => (
@@ -92,6 +112,7 @@ export function ResourceMultiSelect({
                       </div>
                     </CommandItem>
                   ))}
+                  {isFetchingNextPage && <CommandItem disabled>Loading more...</CommandItem>}
                 </CommandGroup>
               </CommandList>
             </ScrollArea>

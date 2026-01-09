@@ -12,24 +12,17 @@ export const formSchema = z.object({
   path: z.string().nullable().optional(),
   icon: z.string().nullable().optional(),
   component: z.string().nullable().optional(),
-  sequence: z.coerce.number().default(0), // Use z.coerce.number()
+  sequence: z.coerce.number().default(0),
   visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().nullable().optional(),
   parent_id: z.string().nullable().optional(),
   is_edit: z.boolean(),
-  // Virtual field for Redirect type, will be stored in properties
-  redirect_to: z.string().optional(),
-  // Virtual field for Action Groups, will be stored in properties
-  actions: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Action group name is required."),
-        resource_ids: z.array(z.string()),
-      }),
-    )
-    .optional(),
-  // Actual backend field
+  
+  // This field is now a direct part of the view's data model
+  resource_ids: z.array(z.string()).optional(),
+
+  // Properties can still be used for other metadata
   properties: z.string().optional(),
 });
 export type FormType = z.infer<typeof formSchema>;
