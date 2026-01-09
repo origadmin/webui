@@ -27,7 +27,7 @@ const defaultConfig = {
     },
     middlewares: [
       {
-        beforeRequest: (config: any) => {
+        beforeRequest: (config: unknown) => {
           console.log("beforeRequest", config);
         },
       },

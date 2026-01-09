@@ -40,7 +40,7 @@ request.interceptors.request.use(
 // --- Response Interceptor with Token Refresh Logic ---
 
 let isRefreshing = false;
-let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: any) => void }[] = [];
+let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: unknown) => void }[] = [];
 
 const processQueue = (error: AxiosError | null, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -187,22 +187,30 @@ async function fetchRequest<T extends object, TData extends object = object>(
   return request<T>(finalUrl, config)
     .then((resp: AxiosResponse<T>) => resp.data)
     .catch((err: AxiosError) => {
-      if (err?.response?.data) {
-        const errorData = err.response.data;
-        // Type guard to check if errorData is an object with a message property
-        if (
-          typeof errorData === "object" &&
-          errorData !== null &&
-          "message" in errorData &&
-          typeof errorData.message === "string"
-        ) {
-          throw new Error(errorData.message, { cause: errorData });
-        }
-        if (typeof errorData === "string") {
-          throw new Error(errorData);
-        }
+      const errorData = err?.response?.data;
+
+      // Case 1: Kratos error (API.Error)
+      if (
+        typeof errorData === "object" &&
+        errorData !== null &&
+        "message" in errorData &&
+        typeof (errorData as API.Error).message === "string"
+      ) {
+        throw new Error((errorData as API.Error).message, { cause: errorData as API.Error });
       }
-      throw err;
+
+      // Case 2: String error
+      if (typeof errorData === "string") {
+        throw new Error(errorData);
+      }
+
+      // Case 3: Other Axios errors or network errors
+      if (err.message) {
+        throw new Error(err.message, { cause: err });
+      }
+
+      // Fallback: Unknown error
+      throw new Error("未知错误", { cause: err });
     });
 }
 
@@ -212,7 +220,7 @@ const fillBody = <TData extends object>(body?: TData, options?: Omit<API.Request
   body,
 });
 
-const fillParams = (params?: API.SearchParams, options?: Omit<API.RequestOptions, "body">) => ({
+const fillParams = (params?: API.SP, options?: Omit<API.RequestOptions, "body">) => ({
   ...options,
   params,
 });

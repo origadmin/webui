@@ -28,7 +28,11 @@ export const signIn = async (params: API.LoginForm): Promise<API.Token> => {
     return token;
   }
 
-  const message = (token as any)?.message || "Invalid username or password";
+  // Type guard to safely access the message property
+  let message = "Invalid username or password";
+  if (typeof token === "object" && token !== null && "message" in token && typeof token.message === "string") {
+    message = token.message;
+  }
   throw new Error(message);
 };
 
