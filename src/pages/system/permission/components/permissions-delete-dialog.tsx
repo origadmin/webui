@@ -18,17 +18,31 @@ export function PermissionsDeleteDialog({ open, onOpenChange, currentRow }: Prop
   const [value, setValue] = useState("");
   const queryClient = useQueryClient();
   const { mutate: deletePermission, isPending: isDeletePending } = usePermissionDelete(queryClient);
+
   const handleDelete = () => {
     if (!currentRow.id || value.trim() !== currentRow.keyword) return;
-    deletePermission(currentRow.id);
-    onOpenChange(false);
-    toast({
-      title: "The following permission has been deleted:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(currentRow, null, 2)}</code>
-        </pre>
-      ),
+
+    deletePermission(currentRow.id, {
+      onSuccess: () => {
+        // 1. Invalidate the query to trigger a refetch.
+        queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] });
+        
+        // 2. Close the dialog.
+        onOpenChange(false);
+
+        // 3. Show success toast.
+        toast({
+          title: "Permission Deleted",
+          description: `The permission "${currentRow.keyword}" has been successfully deleted.`,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error Deleting Permission",
+          description: error.message || "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      },
     });
   };
 

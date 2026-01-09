@@ -1,5 +1,5 @@
 import { useRolesQuery } from "@/api/system/role";
-import { useDataTable } from "@/hooks/use-data-table";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { RolesPrimaryButtons } from "@/pages/system/role/components/roles-primary-buttons";
 import {
   Card,
@@ -16,7 +16,7 @@ import { RoleTableProvider } from "./components/roles-table-provider";
 
 export default function RolesPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
-    useDataTable({
+    usePaginatedQuery({
       useQuery: (params) => useRolesQuery(params),
     });
 

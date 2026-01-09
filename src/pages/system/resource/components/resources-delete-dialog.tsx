@@ -18,17 +18,31 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
   const [value, setValue] = useState("");
   const queryClient = useQueryClient();
   const { mutate: deleteResource, isPending: isDeletePending } = useResourceDelete(queryClient);
+
   const handleDelete = () => {
     if (!currentRow.id || value.trim() !== currentRow.keyword) return;
-    deleteResource(currentRow.id);
-    onOpenChange(false);
-    toast({
-      title: "The following resource has been deleted:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(currentRow, null, 2)}</code>
-        </pre>
-      ),
+
+    deleteResource(currentRow.id, {
+      onSuccess: () => {
+        // 1. Invalidate the query to trigger a refetch.
+        queryClient.invalidateQueries({ queryKey: ["/sys/resources"] });
+        
+        // 2. Close the dialog.
+        onOpenChange(false);
+
+        // 3. Show success toast.
+        toast({
+          title: "Resource Deleted",
+          description: `The resource "${currentRow.keyword}" has been successfully deleted.`,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error Deleting Resource",
+          description: error.message || "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      },
     });
   };
 

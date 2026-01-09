@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useRoleDelete } from "@/api/system/role";
 import { IconAlertTriangle } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
@@ -14,18 +16,33 @@ interface Props<T> {
 
 export function RolesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.System.Role>) {
   const [value, setValue] = useState("");
+  const queryClient = useQueryClient();
+  const { mutate: deleteRole, isPending: isDeletePending } = useRoleDelete(queryClient);
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.name) return;
+    if (!currentRow.id || value.trim() !== currentRow.name) return;
 
-    onOpenChange(false);
-    toast({
-      title: "The following role has been deleted:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(currentRow, null, 2)}</code>
-        </pre>
-      ),
+    deleteRole(currentRow.id, {
+      onSuccess: () => {
+        // 1. Invalidate the query to trigger a refetch.
+        queryClient.invalidateQueries({ queryKey: ["/sys/roles"] });
+        
+        // 2. Close the dialog.
+        onOpenChange(false);
+
+        // 3. Show success toast.
+        toast({
+          title: "Role Deleted",
+          description: `The role "${currentRow.name}" has been successfully deleted.`,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error Deleting Role",
+          description: error.message || "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      },
     });
   };
 
@@ -34,7 +51,7 @@ export function RolesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.name}
+      disabled={value.trim() !== currentRow.name || isDeletePending}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle className='mr-1 inline-block stroke-destructive' size={18} /> Delete Role

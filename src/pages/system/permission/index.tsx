@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePermissionsQuery } from "@/api/system/permission";
-import { useDataTable } from "@/hooks/use-data-table";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { PermissionsPrimaryButtons } from "@/pages/system/permission/components/permissions-primary-buttons";
 import {
   Card,
@@ -18,7 +18,7 @@ import { PermissionTableProvider } from "./components/permissions-table-provider
 
 export default function PermissionsPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } =
-    useDataTable({
+    usePaginatedQuery({
       useQuery: (params) => usePermissionsQuery(params),
     });
 

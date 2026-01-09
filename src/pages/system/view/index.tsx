@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { buildTree } from "@/utils/tree";
 import { getExpandedRowModel } from "@tanstack/react-table";
-import { useDataTable } from "@/hooks/use-data-table";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
@@ -11,9 +11,11 @@ import { ViewTableProvider, useViewContext } from "./components/views-table-prov
 import { apiHooks, columns, pageConfig } from "./config";
 
 function ViewPageContent() {
-  const { dataSource, total, isLoading, tableProps, searchProps } = useDataTable({
+  const dataTable = usePaginatedQuery({
     useQuery: (params) => apiHooks.useQuery({ ...params, no_paging: true }),
   });
+
+  const { dataSource, total, isLoading, tableProps, searchProps } = dataTable;
 
   const { setSidebarRootId } = useViewContext();
   const [sidebarRoot, setSidebarRoot] = useState<API.System.View | null>(null);
@@ -26,7 +28,7 @@ function ViewPageContent() {
       );
       if (root) {
         setSidebarRoot(root);
-        setSidebarRootId(root.id || null); // Use nullish coalescing to convert undefined to null
+        setSidebarRootId(root.id || null);
       } else {
         setSidebarRoot(null);
         setSidebarRootId(null);
@@ -65,6 +67,7 @@ function ViewPageContent() {
           />
         </CardContent>
       </Card>
+      <ViewDialogs dataTable={dataTable} />
     </PageContainer>
   );
 }
@@ -73,7 +76,6 @@ export default function ViewPage() {
   return (
     <ViewTableProvider>
       <ViewPageContent />
-      <ViewDialogs />
     </ViewTableProvider>
   );
 }

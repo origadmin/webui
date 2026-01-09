@@ -1,6 +1,6 @@
 import { useUsersQuery } from "@/api/system/user";
 import { Row } from "@tanstack/react-table";
-import { useDataTable } from "@/hooks/use-data-table";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,7 @@ import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
 export default function UserPage() {
-  const { dataSource, total, isLoading, tableProps, searchProps } = useDataTable({
+  const { dataSource, total, isLoading, tableProps, searchProps } = usePaginatedQuery({
     useQuery: (params) => useUsersQuery(params),
   });
 

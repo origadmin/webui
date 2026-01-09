@@ -19,21 +19,31 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
   const id = currentRow?.id || "";
   const queryClient = useQueryClient();
   const { mutate: deleteUser, isPending: isDeletePending } = useUserDelete(queryClient);
+
   const handleDelete = () => {
-    if (value.trim() !== currentRow.username) return;
+    if (!id || value.trim() !== currentRow.username) return;
 
-    if (id !== "") {
-      deleteUser(id);
-    }
+    deleteUser(id, {
+      onSuccess: () => {
+        // 1. Invalidate the query to trigger a refetch.
+        queryClient.invalidateQueries({ queryKey: ["/sys/users"] });
+        
+        // 2. Close the dialog.
+        onOpenChange(false);
 
-    onOpenChange(false);
-    toast({
-      title: "The following user has been deleted:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(currentRow, null, 2)}</code>
-        </pre>
-      ),
+        // 3. Show success toast.
+        toast({
+          title: "User Deleted",
+          description: `The user "${currentRow.username}" has been successfully deleted.`,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Error Deleting User",
+          description: error.message || "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      },
     });
   };
 
@@ -42,7 +52,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props<API.
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.username}
+      disabled={value.trim() !== currentRow.username || isDeletePending}
       isLoading={isDeletePending}
       title={
         <span className='text-destructive'>

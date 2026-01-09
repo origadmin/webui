@@ -1,13 +1,20 @@
 import { Fragment } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useViewTable } from "./views-table-provider";
 import { ViewActionDialog } from "./action-dialog";
 import { DeleteDialog } from "@/templates/crud-page/components/delete-dialog";
 import { apiHooks, pageConfig } from "../config";
 import { useViewContext } from "./views-table-provider";
+import { UsePaginatedQueryReturnType } from "@/hooks/use-paginated-query";
 
-export function ViewDialogs() {
+interface ViewDialogsProps {
+  dataTable: UsePaginatedQueryReturnType<API.System.View>;
+}
+
+export function ViewDialogs({ dataTable }: ViewDialogsProps) {
   const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useViewTable();
   const { sidebarRoot } = useViewContext();
+  const queryClient = useQueryClient();
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
@@ -15,6 +22,16 @@ export function ViewDialogs() {
       setCurrentRow(null);
       setParentRow(null);
     }
+  };
+
+  const handleDeleteSuccess = () => {
+    // Invalidate the query to trigger a refetch.
+    // The fixed useDataTable hook will now correctly pick up the new data,
+    // and the UI will update reactively.
+    queryClient.invalidateQueries({ queryKey: ["/sys/views"] });
+    
+    // Close the dialog immediately.
+    handleOpenChange(false);
   };
 
   return (
@@ -54,6 +71,7 @@ export function ViewDialogs() {
           currentRow={currentRow}
           pageConfig={pageConfig}
           apiHooks={apiHooks}
+          onSuccess={handleDeleteSuccess}
         />
       )}
     </Fragment>

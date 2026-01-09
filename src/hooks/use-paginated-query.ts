@@ -12,7 +12,7 @@ const formatSorting = (sorting: SortingState): string | undefined => {
 };
 
 // Defines the standardized query parameters for any data table.
-interface DataTableQuery {
+interface PaginatedQuery {
   page: number;
   pageSize: number;
   sorting?: string;
@@ -20,21 +20,41 @@ interface DataTableQuery {
 }
 
 // Defines the standardized, simple shape of data returned from an API list endpoint.
-interface DataTableQueryResult<T> {
+interface PaginatedQueryResult<T> {
   items: T[];
   total: number;
 }
 
-// Defines the props for the useDataTable hook.
-interface UseDataTableProps<T> {
-  useQuery: (params: DataTableQuery) => {
-    data?: DataTableQueryResult<T>;
+// Defines the props for the usePaginatedQuery hook.
+interface UsePaginatedQueryProps<T> {
+  useQuery: (params: PaginatedQuery) => {
+    data?: PaginatedQueryResult<T>;
     isLoading: boolean;
   };
   globalFilterKey?: string;
 }
 
-export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps<T>) {
+export type UsePaginatedQueryReturnType<T> = {
+  dataSource: T[];
+  total: number;
+  isLoading: boolean;
+  tableProps: {
+    paginationState: PaginationState;
+    onPaginationChange: React.Dispatch<React.SetStateAction<PaginationState>>;
+    sorting: SortingState;
+    onSortingChange: React.Dispatch<React.SetStateAction<SortingState>>;
+    columnFiltersState: ColumnFiltersState;
+    onColumnFiltersChange: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+    globalFilterKey?: string;
+    manualSorting: boolean;
+  };
+  searchProps: {
+    onSearch: (filters: ColumnFiltersState) => void;
+    onReset: () => void;
+  };
+};
+
+export function usePaginatedQuery<T>({ useQuery, globalFilterKey }: UsePaginatedQueryProps<T>): UsePaginatedQueryReturnType<T> {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: START_PAGE,
@@ -44,8 +64,8 @@ export function useDataTable<T>({ useQuery, globalFilterKey }: UseDataTableProps
   const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
   const { data, isLoading } = useQuery({
-    page: pagination.pageIndex, // Using original 'page'
-    pageSize: pagination.pageSize, // Using original 'pageSize'
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
     sorting: formatSorting(sorting),
     filters: activeFilters,
   });

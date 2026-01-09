@@ -18,6 +18,7 @@ interface Props<T> {
   onOpenChange: (open: boolean) => void;
   pageConfig: PageConfig;
   apiHooks: ApiHooks<T, any>;
+  onSuccess?: () => void; // Add the onSuccess callback prop
 }
 
 export function DeleteDialog<T extends { id?: string }>({
@@ -26,6 +27,7 @@ export function DeleteDialog<T extends { id?: string }>({
   onOpenChange,
   pageConfig,
   apiHooks,
+  onSuccess, // Destructure the new prop
 }: Props<T>) {
   const queryClient = useQueryClient();
   const { mutate: deleteItem, isPending } = apiHooks.useDelete(queryClient);
@@ -38,7 +40,13 @@ export function DeleteDialog<T extends { id?: string }>({
           title: `${pageConfig.title} Deleted`,
           description: `The ${pageConfig.title.toLowerCase()} has been successfully deleted.`,
         });
-        onOpenChange(false);
+        // If a custom onSuccess callback is provided, call it.
+        // Otherwise, just close the dialog.
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          onOpenChange(false);
+        }
       },
       onError: (error: any) => {
         toast({

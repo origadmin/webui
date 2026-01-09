@@ -1,4 +1,4 @@
-import { useDataTable } from "@/hooks/use-data-table";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import {
   Card,
   CardContent,
@@ -17,7 +17,7 @@ import { useResourcesQuery } from "@/api/system/resource";
 export default function ResourcesPage() {
   // Standard paginated data fetching
   const { dataSource, total, isLoading, tableProps, searchProps } =
-    useDataTable({
+    usePaginatedQuery({
       useQuery: useResourcesQuery,
     });
 

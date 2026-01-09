@@ -19,7 +19,7 @@ import { DataTableProps } from ".";
 
 export function useDataTable<TData, TValue>({
   columns,
-  dataSource = [],
+  dataSource = [], // Use dataSource directly from props
   total = 0,
   useManual = true,
   paginationState: initialPaginationState = {
@@ -27,7 +27,7 @@ export function useDataTable<TData, TValue>({
     pageIndex: START_PAGE,
   },
   columnFiltersState: initialColumnFiltersState = [],
-  columnVisibilityState: initialColumnVisibilityState = {}, // New prop for initial visibility
+  columnVisibilityState: initialColumnVisibilityState = {},
   sorting: initialSorting,
   onSortingChange,
   onColumnFiltersChange,
@@ -38,22 +38,13 @@ export function useDataTable<TData, TValue>({
   isLoading,
 }: Omit<DataTableProps<TData, TValue>, "props">) {
   const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibilityState); // Use the new prop
-  const [data, setData] = useState<TData[]>([]);
-  const [rowCount, setRowCount] = useState(0);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibilityState);
   const [pagination, setPagination] =
     useState<PaginationState>(initialPaginationState);
   const [sorting, setSorting] = useState<SortingState>(initialSorting || []);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     initialColumnFiltersState
   );
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (!dataSource || !total) return;
-    setRowCount(total);
-    setData(dataSource);
-  }, [dataSource, isLoading, total]);
 
   const manualProps = {
     manualFiltering: true,
@@ -85,9 +76,9 @@ export function useDataTable<TData, TValue>({
 
   const table = useReactTable({
     ...options,
-    data,
+    data: dataSource, // Pass dataSource directly to useReactTable
     columns,
-    rowCount,
+    rowCount: total, // Use total directly for rowCount
     state: {
       pagination,
       sorting,
@@ -111,5 +102,5 @@ export function useDataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  return { table, rowCount, columnFilters };
+  return { table, rowCount: total, columnFilters };
 }
