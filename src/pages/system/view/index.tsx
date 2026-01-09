@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from "react";
-import { buildTree } from "@/utils/tree";
+import { buildTree, TreeItem } from "@/utils/tree";
 import { getExpandedRowModel } from "@tanstack/react-table";
 import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,26 +18,37 @@ function ViewPageContent() {
   const { dataSource, total, isLoading, tableProps, searchProps } = dataTable;
 
   const { setSidebarRootId } = useViewContext();
-  const [sidebarRoot, setSidebarRoot] = useState<API.System.View | null>(null);
 
   // Find and set the sidebar root object when data is loaded
   useEffect(() => {
-    if (dataSource && dataSource.length > 0) {
-      const root = dataSource.find(
-        (view) => view.scope === "sidebar" && view.parent_id === "0"
-      );
-      if (root) {
-        setSidebarRoot(root);
-        setSidebarRootId(root.id || null);
-      } else {
-        setSidebarRoot(null);
-        setSidebarRootId(null);
-      }
+    if (!dataSource) {
+      return;
+    }
+
+    // Handle the case where all data is deleted
+    if (dataSource.length === 0) {
+      setSidebarRootId(null);
+      return;
+    }
+
+    // Handle the case where data exists
+    const root = dataSource.find((view) => view.scope === "sidebar" && view.parent_id === "0");
+
+    if (root) {
+      setSidebarRootId(root.id || null);
+    } else {
+      // This case handles when data exists but no root is found
+      setSidebarRootId(null);
     }
   }, [dataSource, setSidebarRootId]);
 
-  // Memoize the tree structure
-  const treeData = useMemo(() => buildTree(dataSource), [dataSource]);
+  // Memoize the tree structure with type-safe conversion
+  const treeData = useMemo(() => {
+    const safeDataSource = dataSource
+      .filter((item): item is API.System.View & { id: string } => typeof item.id === "string")
+      .map((item) => item as TreeItem);
+    return buildTree(safeDataSource);
+  }, [dataSource]);
 
   return (
     <PageContainer>
@@ -60,7 +71,7 @@ function ViewPageContent() {
               getSubRows: (row: API.System.View) => row.children,
             }}
             toolbarPosition='top'
-            toolbars={() => <ViewsPrimaryButtons sidebarRoot={sidebarRoot} />}
+            toolbars={() => <ViewsPrimaryButtons />}
             props={{
               search: searchProps,
             }}
