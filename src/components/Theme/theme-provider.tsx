@@ -28,37 +28,50 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
 
-  useEffect(() => {
+  const applyTheme = (themeToApply: Theme) => {
     const root = window.document.documentElement;
+    const body = window.document.body;
 
-    root.classList.remove("light", "dark");
+    // Clear previous theme classes from both html and body
+    root.classList.remove("dark");
+    body.classList.remove("light-mode", "dark-mode");
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      root.classList.add(systemTheme);
-      return;
+    let effectiveTheme = themeToApply;
+    if (themeToApply === "system") {
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
 
-    root.classList.add(theme);
+    if (effectiveTheme === "dark") {
+      root.classList.add("dark"); // For Tailwind's dark: selector
+      body.classList.add("dark-mode");
+    } else {
+      body.classList.add("light-mode");
+    }
+  };
+
+  useEffect(() => {
+    applyTheme(theme);
   }, [theme]);
 
   const value = {
     theme,
     setTheme: (newTheme: Theme) => {
       const body = document.body;
-      
+
       // 1. Add class to disable transitions
       body.classList.add("no-transition");
 
-      // 2. Update theme
+      // 2. Update storage and state
       localStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
 
-      // 3. Remove the class after a short delay, allowing the UI to update instantly
-      // The timeout ensures that the class is removed after the re-render has completed.
+      // 3. Force re-apply theme logic immediately
+      applyTheme(newTheme);
+
+      // 4. Remove the transition-disabling class after a short delay
       setTimeout(() => {
         body.classList.remove("no-transition");
-      }, 100); // 100ms is a safe buffer
+      }, 100);
     },
   };
 

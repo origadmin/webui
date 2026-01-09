@@ -1,11 +1,8 @@
 import { useMemo } from "react";
-import { useAuth } from "@/hooks/use-auth";
-import {
-  SidebarComponent as Sidebar,
-  SidebarProps,
-} from "@/components/Sidebar";
-import { Brand } from "@/components/Brand";
 import { IconSettings, IconUsers } from "@tabler/icons-react";
+import { useAuth } from "@/hooks/use-auth";
+import { SidebarComponent as Sidebar, SidebarProps } from "@/components/Sidebar";
+import { Brand } from "@/components/brand";
 
 export function AppSidebar() {
   const { user, permissions: views } = useAuth();
@@ -19,10 +16,10 @@ export function AppSidebar() {
       // Main Menu Items (with groups and nesting)
       { id: "1", title: "Dashboard", path: "/dashboard/overview", icon: "layout-dashboard", group: "Analytics" },
       { id: "2", title: "Analytics", path: "/dashboard/analytics", icon: "chart-bar", group: "Analytics" },
-      { 
-        id: "3", 
-        title: "System", 
-        icon: "settings", 
+      {
+        id: "3",
+        title: "System",
+        icon: "settings",
         group: "Management",
         children: [
           { id: "3-1", title: "Users", path: "/system/user", icon: "users" },
@@ -30,7 +27,7 @@ export function AppSidebar() {
           { id: "3-3", title: "Permissions", path: "/system/permission", icon: "shield-lock" },
           { id: "3-4", title: "Views", path: "/system/view", icon: "layout-grid" },
           { id: "3-5", title: "Resources", path: "/system/resource", icon: "box" },
-        ]
+        ],
       },
       // Bottom Menu Items
       { id: "6", title: "Tasks", path: "/tasks", icon: "check-check", location: "bottom" },
@@ -38,21 +35,21 @@ export function AppSidebar() {
     ];
 
     // --- Correct Data Filtering ---
-    const mainItems = mockMenuItems.filter(item => !item.location || item.location === 'sidebar');
-    const bottomItems = mockMenuItems.filter(item => item.location === 'bottom');
+    const mainItems = mockMenuItems.filter((item) => !item.location || item.location === "sidebar");
+    const bottomItems = mockMenuItems.filter((item) => item.location === "bottom");
 
     // Process main items for grouping
-    const processedMainItems: (API.MenuItem | { type: 'group-label', label: string })[] = [];
+    const processedMainItems: (API.MenuItem | { type: "group-label"; label: string })[] = [];
     let lastGroup: string | undefined = undefined;
 
-    mainItems.forEach(item => {
+    mainItems.forEach((item) => {
       if (item.group && item.group !== lastGroup) {
-        processedMainItems.push({ type: 'group-label', label: item.group });
+        processedMainItems.push({ type: "group-label", label: item.group });
         lastGroup = item.group;
       }
       processedMainItems.push(item);
     });
-    
+
     const systemMenus = [
       {
         title: "Global Settings",
