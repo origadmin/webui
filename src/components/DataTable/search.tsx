@@ -45,8 +45,9 @@ export function Search<TData, TValue = unknown>({
   }
 
   return (
-    <div className='flex items-center justify-between'>
-      <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
+    <div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
+      {/* Left side: Search Inputs */}
+      <div className='flex flex-1 flex-wrap items-center gap-2'>
         {globalFilterKey && (
           <Input
             placeholder='Search all columns...'
@@ -74,38 +75,34 @@ export function Search<TData, TValue = unknown>({
             </Fragment>
           );
         })}
+      </div>
 
-        <div className='flex w-full text-sm text-muted-foreground' />
-        <div className='flex gap-x-2 text-sm text-muted-foreground'>
-          <div className='flex-1 gap-x-2'>
-            <Button
-              disabled={!isFiltered}
-              variant='destructive'
-              size='sm'
-              onClick={() => {
-                table.resetColumnFilters();
-                onReset();
-              }}
-              className='w-18 h-8 px-2 lg:px-3'
-            >
-              <TablerIcon name='x' className='h-4 w-4' />
-              <span className='pr-1'>Reset</span>
-            </Button>
-          </div>
-          <div className='flex-1'>
-            <Button
-              disabled={!isFiltered}
-              onClick={() => {
-                onSearch(table.getState().columnFilters);
-              }}
-              size='sm'
-              className='w-18 h-8 px-2 lg:px-3'
-            >
-              <TablerIcon name='search' className='h-4 w-4' />
-              <span className='pr-1'>Search</span>
-            </Button>
-          </div>
-        </div>
+      {/* Right side: Action Buttons */}
+      <div className='flex items-center gap-2'>
+        <Button
+          disabled={!isFiltered}
+          variant='destructive'
+          size='sm'
+          onClick={() => {
+            table.resetColumnFilters();
+            onReset();
+          }}
+          className='h-8 px-2 lg:px-3'
+        >
+          <TablerIcon name='x' className='mr-2 h-4 w-4' />
+          Reset
+        </Button>
+        <Button
+          disabled={!isFiltered}
+          onClick={() => {
+            onSearch(table.getState().columnFilters);
+          }}
+          size='sm'
+          className='h-8 px-2 lg:px-3'
+        >
+          <TablerIcon name='search' className='mr-2 h-4 w-4' />
+          Search
+        </Button>
       </div>
     </div>
   );
