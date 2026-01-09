@@ -163,7 +163,7 @@ async function fetchRequest<T extends object, TData extends object = object>(
       if (value !== null && value !== undefined && value !== "") {
         // If the value is an array, append each element separately
         if (Array.isArray(value)) {
-          value.forEach(v => searchParams.append(key, stringifyParam(v)!));
+          value.forEach((v) => searchParams.append(key, stringifyParam(v)!));
         } else {
           const paramValue = stringifyParam(value);
           if (paramValue !== undefined) {
@@ -242,7 +242,7 @@ async function post<T extends object, TData extends object = object>(
 }
 
 async function put<T extends object, TData extends object = object>(
-  url:string,
+  url: string,
   body?: TData,
   options?: Omit<API.RequestOptions, "body">,
 ) {

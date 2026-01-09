@@ -1,4 +1,3 @@
-import { Query } from "@/utils/index";
 import { OmitKeyof, QueryClient, queryOptions, UseQueryOptions } from "@tanstack/react-query";
 
 export type QueryOption = <T extends object, TParam>(
@@ -15,7 +14,7 @@ const createQueryOptions = <T extends object, TParam>(
     queryFn: ({ queryKey: [, params] }) => queryFn(params),
   });
 
-const invalidateData = <TParam,>(queryClient: QueryClient, queryKey: [string, TParam?]) => {
+const invalidateData = <TParam>(queryClient: QueryClient, queryKey: [string, TParam?]) => {
   queryClient.invalidateQueries({ queryKey: queryKey }).finally();
 };
 
@@ -27,7 +26,7 @@ const createMutationOption = <T extends object, TParam = undefined>(
 ) => {
   return {
     mutationFn: (body: Omit<T, "id">) => fn(body, options),
-    onSettled: () => Query.invalidateData(queryClient, params),
+    onSettled: () => invalidateData(queryClient, params),
   };
 };
 
@@ -39,18 +38,18 @@ const updateMutationOption = <T extends object, TParam>(
 ) => {
   return {
     mutationFn: (t: Omit<T, "id">) => fn(id, t),
-    onSettled: () => Query.invalidateData(queryClient, params),
+    onSettled: () => invalidateData(queryClient, params),
   };
 };
 
-const deleteMutationOption = <TParam,>(
+const deleteMutationOption = <TParam>(
   queryClient: QueryClient,
   fn: (id: string) => Promise<never>,
   params: [string, TParam?],
 ) => {
   return {
     mutationFn: (id: string) => fn(id),
-    onSettled: () => Query.invalidateData(queryClient, params),
+    onSettled: () => invalidateData(queryClient, params),
   };
 };
 
