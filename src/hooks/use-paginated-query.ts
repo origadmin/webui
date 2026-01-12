@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { PAGE_SIZE, START_PAGE } from "@/types";
+import { UseQueryResult } from "@tanstack/react-query";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 
 // Helper function to format the sorting state for the API
@@ -20,17 +21,14 @@ interface PaginatedQuery {
 }
 
 // Defines the standardized, simple shape of data returned from an API list endpoint.
-interface PaginatedQueryResult<T> {
+export interface PaginatedQueryResult<T> {
   items: T[];
   total: number;
 }
 
 // Defines the props for the usePaginatedQuery hook.
 interface UsePaginatedQueryProps<T> {
-  useQuery: (params: PaginatedQuery) => {
-    data?: PaginatedQueryResult<T>;
-    isLoading: boolean;
-  };
+  useQuery: (params: PaginatedQuery, options: { enabled: boolean }) => UseQueryResult<PaginatedQueryResult<T>>;
   globalFilterKey?: string;
 }
 
@@ -38,6 +36,7 @@ export type UsePaginatedQueryReturnType<T> = {
   dataSource: T[];
   total: number;
   isLoading: boolean;
+  queryResult: UseQueryResult<PaginatedQueryResult<T>>; // Expose the raw query result
   tableProps: {
     paginationState: PaginationState;
     onPaginationChange: React.Dispatch<React.SetStateAction<PaginationState>>;
@@ -66,12 +65,19 @@ export function usePaginatedQuery<T>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
-  const { data, isLoading } = useQuery({
-    page: pagination.pageIndex,
-    pageSize: pagination.pageSize,
-    sorting: formatSorting(sorting),
-    filters: activeFilters,
-  });
+  const queryResult = useQuery(
+    {
+      page: pagination.pageIndex,
+      pageSize: pagination.pageSize,
+      sorting: formatSorting(sorting),
+      filters: activeFilters,
+    },
+    {
+      enabled: !!pagination.pageSize, // Only fetch when pageSize is a valid, non-zero number
+    },
+  );
+
+  const { data, isLoading } = queryResult;
 
   const handleSearch = (filters: ColumnFiltersState) => {
     setActiveFilters(filters);
@@ -108,6 +114,7 @@ export function usePaginatedQuery<T>({
     dataSource: data?.items ?? [],
     total: data?.total ?? 0,
     isLoading,
+    queryResult, // Return the raw query result
     tableProps,
     searchProps,
   };

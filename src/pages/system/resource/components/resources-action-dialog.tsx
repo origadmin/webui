@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
-import { useResourceCreate, useResourceUpdate, useResourcesQuery } from "@/api/system/resource";
+import { useResourceCreate, useResourceUpdate } from "@/api/system/resource";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
+import { PaginatedQueryResult } from "@/hooks/use-paginated-query";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -47,6 +48,7 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
+  queryResult: UseQueryResult<PaginatedQueryResult<API.System.Resource>>;
 }
 
 export function ResourcesActionDialog({
@@ -55,17 +57,18 @@ export function ResourcesActionDialog({
   open,
   onOpenChange,
   className,
+  queryResult,
 }: Props) {
   const isEditMode = !!currentRow;
   const isSubMode = !!parentRow;
   const title = isEditMode ? "Edit Resource" : isSubMode ? "Add Sub Resource" : "Add New Resource";
   const isSyncedResource = isEditMode && !!currentRow?.sync_status;
 
-  // Fetch all resources to extract unique policy names
-  const { data: resourcesData } = useResourcesQuery({ page_size: 1000 });
+  // Use the passed queryResult instead of fetching again
+  const { data: resourcesData } = queryResult;
   const policies = useMemo(() => {
-    if (!resourcesData?.data) return [];
-    const allPolicies = resourcesData.data.map(res => res.policy).filter(Boolean) as string[];
+    if (!resourcesData?.items) return [];
+    const allPolicies = resourcesData.items.map(res => res.policy).filter(Boolean) as string[];
     return Array.from(new Set(allPolicies));
   }, [resourcesData]);
 

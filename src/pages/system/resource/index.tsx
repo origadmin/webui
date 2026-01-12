@@ -16,7 +16,7 @@ import { useResourcesQuery } from "@/api/system/resource";
 
 export default function ResourcesPage() {
   // Standard paginated data fetching
-  const { dataSource, total, isLoading, tableProps, searchProps } =
+  const { dataSource, total, isLoading, tableProps, searchProps, queryResult } =
     usePaginatedQuery({
       useQuery: useResourcesQuery,
     });
@@ -57,7 +57,7 @@ export default function ResourcesPage() {
           </CardContent>
         </Card>
       </PageContainer>
-      <ResourcesDialogs />
+      <ResourcesDialogs queryResult={queryResult} />
     </ResourceTableProvider>
   );
 }
