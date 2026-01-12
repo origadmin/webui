@@ -25,7 +25,7 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const { data: viewsData, isLoading } = useViewsQuery(
-    { parent_id: parentId, no_paging: true },
+    { parent_id: parentId, pagingMode: "none" },
     { enabled: open }, // Only fetch when the dialog is open
   );
 

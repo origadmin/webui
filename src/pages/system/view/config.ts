@@ -1,24 +1,24 @@
 import { z } from "zod";
-import { columns as viewColumns } from "./components/columns";
-import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
 import { DataTableProps } from "@/components/DataTable";
+import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
+import { columns as viewColumns } from "./components/columns";
 
 // Zod Schema for form validation
 export const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
   keyword: z.string().min(1, "Keyword is required."),
-  scope: z.string().nullable().optional(),
+  scope: z.string().optional(),
   type: z.string().default("MENU"),
-  path: z.string().nullable().optional(),
-  icon: z.string().nullable().optional(),
-  component: z.string().nullable().optional(),
+  path: z.string().optional(),
+  icon: z.string().optional(),
+  component: z.string().optional(),
   sequence: z.coerce.number().default(0),
   visible: z.boolean().default(true),
   status: z.number().default(1),
-  description: z.string().nullable().optional(),
-  parent_id: z.string().nullable().optional(),
+  description: z.string().optional(),
+  parent_id: z.string().optional(),
   is_edit: z.boolean(),
-  
+
   // This field is now a direct part of the view's data model
   resource_ids: z.array(z.string()).optional(),
 

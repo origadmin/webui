@@ -69,12 +69,19 @@ export const useResourcesQuery = (opts?: API.DataTableParams) => {
  * A hook for fetching an infinitely-scrolling list of resources.
  * Ideal for multi-select components.
  */
-export const useInfiniteResourcesQuery = (opts?: Omit<API.DataTableParams, "page" | "page_token">) => {
+export const useInfiniteResourcesQuery = (opts?: Omit<API.DataTableParams, "page" | "pageToken">) => {
   return useInfiniteQuery({
-    queryKey: ["/sys/resources/infinite", { ...opts }],
-    queryFn: ({ pageParam }) => listResource({ ...opts, page_token: pageParam }),
-    initialPageParam: "",
-    getNextPageParam: (lastPage) => lastPage.next_page_token,
+    queryKey: ["/sys/resources/infinite", opts],
+    queryFn: ({ pageParam }) => {
+      const params: API.DataTableParams = {
+        ...opts,
+        pagingMode: "cursor",
+        pageToken: pageParam,
+      };
+      return listResource(params);
+    },
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.next_page_token || null,
   });
 };
 

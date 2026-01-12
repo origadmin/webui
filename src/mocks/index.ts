@@ -1,6 +1,6 @@
+import { permissions } from "@/mocks/permission/permissions";
 import { roles } from "@/mocks/role/roles";
 import { users } from "@/mocks/user/users";
-import { permissions } from "@/mocks/permission/permissions";
 import { views } from "@/mocks/view/views";
 import { mockSignInUser, mockToken } from "./mock-sign-in";
 import { resources } from "./resources";
@@ -43,15 +43,17 @@ const mockData: Record<string, any> = {
 };
 
 const getPaginationData = (data: unknown, params?: API.SearchParams) => {
-  const { current = 1, page_size = 15, no_paging } = params || {};
-  if (no_paging) {
-    return {
-      total: Array.isArray(data) ? data.length : 0,
-      data: data,
-    };
-  }
+  const { page = 1, page_size = 15, paging_mode } = params || {};
+
   if (data && Array.isArray(data)) {
-    const startIndex = (current - 1) * page_size;
+    if (paging_mode === "none") {
+      return {
+        total: data.length,
+        data: data,
+      };
+    }
+
+    const startIndex = (page - 1) * page_size;
     const endIndex = startIndex + page_size;
     const paginatedData = data.slice(startIndex, endIndex);
     return {
@@ -77,7 +79,7 @@ const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
   if (params && data && Array.isArray(data)) {
     // Filter by parent_id if it exists in params
     if (params.parent_id !== undefined) {
-      data = data.filter(item => {
+      data = data.filter((item) => {
         // Handle root items where parent_id can be null, undefined or ""
         if (params.parent_id === null || params.parent_id === "" || params.parent_id === undefined) {
           return item.parent_id === null || item.parent_id === "" || item.parent_id === undefined;

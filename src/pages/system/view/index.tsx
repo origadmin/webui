@@ -12,7 +12,7 @@ import { apiHooks, columns, pageConfig } from "./config";
 
 function ViewPageContent() {
   const dataTable = usePaginatedQuery({
-    useQuery: (params) => apiHooks.useQuery({ ...params, no_paging: true }),
+    useQuery: (params) => apiHooks.useQuery({ ...params, pagingMode: "none" }),
   });
 
   const { dataSource, total, isLoading, tableProps, searchProps } = dataTable;

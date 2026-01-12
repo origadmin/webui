@@ -210,7 +210,7 @@ async function fetchRequest<T extends object, TData extends object = object>(
       }
 
       // Fallback: Unknown error
-      throw new Error("未知错误", { cause: err });
+      throw new Error("Unknown error", { cause: err });
     });
 }
 
@@ -220,7 +220,7 @@ const fillBody = <TData extends object>(body?: TData, options?: Omit<API.Request
   body,
 });
 
-const fillParams = (params?: API.SP, options?: Omit<API.RequestOptions, "body">) => ({
+const fillParams = (params?: API.SearchParams, options?: Omit<API.RequestOptions, "body">) => ({
   ...options,
   params,
 });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { PAGE_SIZE, START_PAGE } from "@/types";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 
@@ -54,7 +54,10 @@ export type UsePaginatedQueryReturnType<T> = {
   };
 };
 
-export function usePaginatedQuery<T>({ useQuery, globalFilterKey }: UsePaginatedQueryProps<T>): UsePaginatedQueryReturnType<T> {
+export function usePaginatedQuery<T>({
+  useQuery,
+  globalFilterKey,
+}: UsePaginatedQueryProps<T>): UsePaginatedQueryReturnType<T> {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: START_PAGE,

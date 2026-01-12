@@ -97,7 +97,7 @@ declare global {
       page_size?: number;
       page_token?: string;
       only_count?: boolean;
-      no_paging?: boolean;
+      paging_mode?: "cursor" | "offset" | "none";
       sort?: string;
     };
 
@@ -110,7 +110,9 @@ declare global {
     type DataTableParams = {
       page?: number; // 0-based page index
       pageSize?: number;
-      [key: string]: any;
+      pagingMode?: "cursor" | "offset" | "none";
+      pageToken?: string | null;
+      [key: string]: unknown;
     };
 
     type BearerAuth = {
@@ -197,6 +199,8 @@ declare global {
       name: string;
       email: string;
       avatar: string;
+      logo: ElementType;
+      plan: string;
     };
 
     type Team = {

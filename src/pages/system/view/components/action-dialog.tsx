@@ -112,16 +112,28 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
 
   const onSubmit = async (values: FormType) => {
     try {
-      const payload = { ...values };
-      delete (payload as Partial<FormType>).is_edit;
-
-      if (payload.parent_id) {
-        payload.parent_id = String(payload.parent_id);
-      }
+      // Explicitly create the payload with the correct API type
+      const payload: Partial<API.System.View> = {
+        name: values.name,
+        keyword: values.keyword,
+        scope: values.scope,
+        type: values.type,
+        path: values.path,
+        icon: values.icon,
+        component: values.component,
+        sequence: values.sequence,
+        visible: values.visible,
+        status: values.status,
+        description: values.description,
+        parent_id: values.parent_id ? String(values.parent_id) : undefined,
+        resource_ids: values.resource_ids,
+        properties: values.properties,
+      };
 
       if (!is_edit) {
         await createItem(payload);
       } else {
+        // For updates, merge with currentRow to ensure all fields are present
         const putPayload = { ...currentRow, ...payload };
         await updateItem(putPayload);
       }
