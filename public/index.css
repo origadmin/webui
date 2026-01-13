@@ -7672,6 +7672,10 @@ body {
   background-color: hsl(var(--muted));
 }
 
+.hover\:bg-muted-foreground\/20:hover {
+  background-color: hsl(var(--muted-foreground) / 0.2);
+}
+
 .hover\:bg-muted\/50:hover {
   background-color: hsl(var(--muted) / 0.5);
 }

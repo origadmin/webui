@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 import { buildTree, TreeItem } from "@/utils/tree";
-import { getExpandedRowModel } from "@tanstack/react-table";
+import { getExpandedRowModel, ExpandedState } from "@tanstack/react-table";
 import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
@@ -16,6 +16,7 @@ function ViewPageContent() {
   });
 
   const { dataSource, total, isLoading, tableProps, searchProps } = dataTable;
+  const [expanded, setExpanded] = useState<ExpandedState>({});
 
   const { setSidebarRootId } = useViewContext();
 
@@ -50,6 +51,23 @@ function ViewPageContent() {
     return buildTree(safeDataSource);
   }, [dataSource]);
 
+  // Default to fully expanded when data loads
+  useEffect(() => {
+    if (treeData.length > 0) {
+      const newExpandedState: ExpandedState = {};
+      const setExpandedRecursively = (nodes: TreeItem[]) => {
+        nodes.forEach(node => {
+          if (node.children && node.children.length > 0) {
+            newExpandedState[node.id] = true;
+            setExpandedRecursively(node.children);
+          }
+        });
+      };
+      setExpandedRecursively(treeData);
+      setExpanded(newExpandedState);
+    }
+  }, [treeData]);
+
   return (
     <PageContainer>
       <Card>
@@ -66,7 +84,10 @@ function ViewPageContent() {
             {...tableProps}
             useManual={false}
             showPagination={false}
+            expandedState={expanded} // Pass expanded state directly
+            onExpandedChange={setExpanded} // Pass the handler directly
             options={{
+              getRowId: (row) => row.id,
               getExpandedRowModel: getExpandedRowModel(),
               getSubRows: (row: API.System.View) => row.children,
             }}

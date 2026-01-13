@@ -54,7 +54,8 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
       }, {} as any)
     : {};
 
-  const defaultResourceIds = currentRow?.resources?.map((r) => r.id) || [];
+  // Safely get resource_ids and ensure they are strings
+  const defaultResourceIds = (currentRow?.resource_ids || []).map(String);
 
   const defaultType = is_edit
     ? currentRow.type?.toUpperCase()
@@ -81,7 +82,6 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
       : {
           ...generatedDefaults,
           status: 1,
-          visible: true,
           is_edit: false,
           parent_id: String(defaultParentId),
           resource_ids: [],
@@ -122,7 +122,6 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
         icon: values.icon,
         component: values.component,
         sequence: values.sequence,
-        visible: values.visible,
         status: values.status,
         description: values.description,
         parent_id: values.parent_id ? String(values.parent_id) : undefined,
@@ -258,23 +257,6 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
                                     <Textarea placeholder='A brief description of this view.' {...field} />
                                   </FormControl>
                                   <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <div className='px-2'>
-                            <FormField
-                              control={form.control}
-                              name='visible'
-                              render={({ field }) => (
-                                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
-                                  <div className='space-y-0.5'>
-                                    <FormLabel className='text-base'>Visible in Menu</FormLabel>
-                                    <FormDescription>This menu will be displayed in the sidebar.</FormDescription>
-                                  </div>
-                                  <FormControl>
-                                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                                  </FormControl>
                                 </FormItem>
                               )}
                             />

@@ -21,18 +21,31 @@ export async function getPermission(id: string, options?: API.RequestOptions) {
 }
 
 /** Create permission record POST /sys/permissions */
-export async function addPermission(body: Omit<API.System.Permission, "id">, options?: API.RequestOptions) {
+export async function addPermission(
+  body: Omit<API.System.Permission, "id"> & { resource_ids?: string[]; view_ids?: string[] },
+  options?: API.RequestOptions,
+) {
+  const { resource_ids, view_ids, ...permissionData } = body;
   const requestBody = {
-    permission: body,
+    permission: permissionData,
+    resource_ids: resource_ids,
+    view_ids: view_ids,
   };
   const rawResponse = await post<API.System.CreatePermissionResponse>("/sys/permissions", requestBody, options);
   return rawResponse?.permission;
 }
 
 /** Update permission record by ID PUT /sys/permissions/${id} */
-export async function updatePermission(id: string, body: Partial<API.System.Permission>, options?: API.RequestOptions) {
+export async function updatePermission(
+  id: string,
+  body: Partial<API.System.Permission> & { resource_ids?: string[]; view_ids?: string[] },
+  options?: API.RequestOptions,
+) {
+  const { resource_ids, view_ids, ...permissionData } = body;
   const requestBody = {
-    permission: body,
+    permission: permissionData,
+    resource_ids: resource_ids,
+    view_ids: view_ids,
   };
   return put<never>(`/sys/permissions/${id}`, requestBody, options);
 }
@@ -65,14 +78,16 @@ export const usePermissionQuery = (id: string) => {
 
 export const usePermissionCreate = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (permission: Omit<API.System.Permission, "id">) => addPermission(permission),
+    mutationFn: (permission: Omit<API.System.Permission, "id"> & { resource_ids?: string[]; view_ids?: string[] }) =>
+      addPermission(permission),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] }),
   });
 };
 
 export const usePermissionUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (permission: Partial<API.System.Permission>) => updatePermission(id, permission),
+    mutationFn: (permission: Partial<API.System.Permission> & { resource_ids?: string[]; view_ids?: string[] }) =>
+      updatePermission(id, permission),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] }),
   });
 };

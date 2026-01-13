@@ -1,6 +1,6 @@
 import { JSX, useMemo } from "react";
 import { Table } from "@tanstack/react-table";
-import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
+import { Toolbar, ToolbarProps } from "@/components/DataTable/toolbar";
 import { ViewOptions } from "./view-options";
 
 export interface TitleBarProps<TData> {
@@ -15,13 +15,7 @@ const renderStatistics = (total: number) => (
   <div className='hidden px-2 flex-1 text-sm text-muted-foreground sm:block'>{total} pieces of data found.</div>
 );
 
-export function TitleBar<TData>({
-  table,
-  toolbar,
-  showOption = true,
-  statistics,
-  total,
-}: TitleBarProps<TData>) {
+export function TitleBar<TData>({ table, toolbar, showOption = true, statistics, total }: TitleBarProps<TData>) {
   total = total || table.getFilteredRowModel().rows.length;
   const selected = table.getSelectedRowModel().rows.length;
   const statisticsRender = statistics ? (typeof statistics === "function" ? statistics : renderStatistics) : undefined;

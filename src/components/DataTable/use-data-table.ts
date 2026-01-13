@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { PAGE_SIZE, START_PAGE } from "@/types";
 import {
   ColumnFiltersState,
-  PaginationState,
-  SortingState,
-  VisibilityState,
-  useReactTable,
+  ExpandedState,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
   OnChangeFn,
-  TableOptions,
+  PaginationState,
+  SortingState,
+  useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table";
-import { PAGE_SIZE, START_PAGE } from "@/types";
 import { DataTableProps } from ".";
 
 export function useDataTable<TData, TValue>({
@@ -28,23 +28,23 @@ export function useDataTable<TData, TValue>({
   },
   columnFiltersState: initialColumnFiltersState = [],
   columnVisibilityState: initialColumnVisibilityState = {},
+  expandedState: initialExpandedState = {},
   sorting: initialSorting,
   onSortingChange,
   onColumnFiltersChange,
   onPaginationChange,
   onRowSelectionChange,
   onColumnVisibilityChange,
+  onExpandedChange,
   options,
   isLoading,
 }: Omit<DataTableProps<TData, TValue>, "props">) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibilityState);
-  const [pagination, setPagination] =
-    useState<PaginationState>(initialPaginationState);
+  const [pagination, setPagination] = useState<PaginationState>(initialPaginationState);
   const [sorting, setSorting] = useState<SortingState>(initialSorting || []);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    initialColumnFiltersState
-  );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(initialColumnFiltersState);
+  const [expanded, setExpanded] = useState<ExpandedState>(initialExpandedState);
 
   const manualProps = {
     manualFiltering: true,
@@ -59,19 +59,21 @@ export function useDataTable<TData, TValue>({
   };
 
   const handlePaginationChange: OnChangeFn<PaginationState> = (updater) => {
-    const newPagination =
-      typeof updater === "function" ? updater(pagination) : updater;
+    const newPagination = typeof updater === "function" ? updater(pagination) : updater;
     setPagination(newPagination);
     onPaginationChange?.(newPagination);
   };
 
-  const handleColumnFiltersChange: OnChangeFn<ColumnFiltersState> = (
-    updater
-  ) => {
-    const newColumnFilters =
-      typeof updater === "function" ? updater(columnFilters) : updater;
+  const handleColumnFiltersChange: OnChangeFn<ColumnFiltersState> = (updater) => {
+    const newColumnFilters = typeof updater === "function" ? updater(columnFilters) : updater;
     setColumnFilters(newColumnFilters);
     onColumnFiltersChange?.(newColumnFilters);
+  };
+
+  const handleExpandedChange: OnChangeFn<ExpandedState> = (updater) => {
+    const newExpanded = typeof updater === "function" ? updater(expanded) : updater;
+    setExpanded(newExpanded);
+    onExpandedChange?.(newExpanded);
   };
 
   const table = useReactTable({
@@ -85,6 +87,7 @@ export function useDataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      expanded,
     },
     ...manualProps,
     enableRowSelection: true,
@@ -94,6 +97,7 @@ export function useDataTable<TData, TValue>({
     onGlobalFilterChange: () => {},
     onColumnVisibilityChange: onColumnVisibilityChange || setColumnVisibility,
     onPaginationChange: useManual ? handlePaginationChange : undefined,
+    onExpandedChange: handleExpandedChange,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: !useManual ? getFilteredRowModel() : undefined,
     getPaginationRowModel: !useManual ? getPaginationRowModel() : undefined,

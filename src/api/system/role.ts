@@ -21,18 +21,33 @@ export async function getRole(id: string, options?: API.RequestOptions) {
 }
 
 /** Create role record POST /sys/roles */
-export async function addRole(body: Omit<API.System.Role, "id">, options?: API.RequestOptions) {
+export async function addRole(
+  body: Omit<API.System.Role, "id"> & { permission_ids?: string[]; resource_ids?: string[]; view_ids?: string[] },
+  options?: API.RequestOptions,
+) {
+  const { permission_ids, resource_ids, view_ids, ...roleData } = body;
   const requestBody = {
-    role: body,
+    role: roleData,
+    permission_ids: permission_ids,
+    resource_ids: resource_ids,
+    view_ids: view_ids,
   };
   const rawResponse = await post<API.System.CreateRoleResponse>("/sys/roles", requestBody, options);
   return rawResponse?.role;
 }
 
 /** Update role record by ID PUT /sys/roles/${id} */
-export async function updateRole(id: string, body: Partial<API.System.Role>, options?: API.RequestOptions) {
+export async function updateRole(
+  id: string,
+  body: Partial<API.System.Role> & { permission_ids?: string[]; resource_ids?: string[]; view_ids?: string[] },
+  options?: API.RequestOptions,
+) {
+  const { permission_ids, resource_ids, view_ids, ...roleData } = body;
   const requestBody = {
-    role: body,
+    role: roleData,
+    permission_ids: permission_ids,
+    resource_ids: resource_ids,
+    view_ids: view_ids,
   };
   return put<never>(`/sys/roles/${id}`, requestBody, options);
 }
@@ -65,14 +80,18 @@ export const useRoleQuery = (id: string) => {
 
 export const useRoleCreate = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (role: Omit<API.System.Role, "id">) => addRole(role),
+    mutationFn: (
+      role: Omit<API.System.Role, "id"> & { permission_ids?: string[]; resource_ids?: string[]; view_ids?: string[] },
+    ) => addRole(role),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/roles"] }),
   });
 };
 
 export const useRoleUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (role: Partial<API.System.Role>) => updateRole(id, role),
+    mutationFn: (
+      role: Partial<API.System.Role> & { permission_ids?: string[]; resource_ids?: string[]; view_ids?: string[] },
+    ) => updateRole(id, role),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/roles"] }),
   });
 };

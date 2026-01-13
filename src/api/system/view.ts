@@ -21,18 +21,31 @@ export async function getView(id: string, options?: API.RequestOptions) {
 }
 
 /** Create view record POST /sys/views */
-export async function addView(body: Omit<API.System.View, "id">, options?: API.RequestOptions) {
+export async function addView(
+  body: Omit<API.System.View, "id"> & { resource_ids?: string[]; role_ids?: string[] }, // Changed to string[]
+  options?: API.RequestOptions,
+) {
+  const { resource_ids, role_ids, ...viewData } = body;
   const requestBody = {
-    view: body,
+    view: viewData,
+    resource_ids: resource_ids,
+    role_ids: role_ids,
   };
   const rawResponse = await post<API.System.CreateViewResponse>("/sys/views", requestBody, options);
   return rawResponse?.view;
 }
 
 /** Update view record by ID PUT /sys/views/${id} */
-export async function updateView(id: string, body: Partial<API.System.View>, options?: API.RequestOptions) {
+export async function updateView(
+  id: string,
+  body: Partial<API.System.View> & { resource_ids?: string[]; role_ids?: string[] }, // Changed to string[]
+  options?: API.RequestOptions,
+) {
+  const { resource_ids, role_ids, ...viewData } = body;
   const requestBody = {
-    view: body,
+    view: viewData,
+    resource_ids: resource_ids,
+    role_ids: role_ids,
   };
   return put<never>(`/sys/views/${id}`, requestBody, options);
 }
@@ -67,14 +80,15 @@ export const useViewQuery = (id: string) => {
 
 export const useViewCreate = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (view: Omit<API.System.View, "id">) => addView(view),
+    mutationFn: (view: Omit<API.System.View, "id"> & { resource_ids?: string[]; role_ids?: string[] }) => addView(view), // Changed to string[]
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };
 
 export const useViewUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (view: Partial<API.System.View>) => updateView(id, view),
+    mutationFn: (view: Partial<API.System.View> & { resource_ids?: string[]; role_ids?: string[] }) =>
+      updateView(id, view), // Changed to string[]
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };

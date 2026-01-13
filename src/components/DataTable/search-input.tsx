@@ -6,10 +6,7 @@ interface DataTableSearchInputProps<TData, TValue> {
   placeholder?: string;
 }
 
-export function DataTableSearchInput<TData, TValue>({
-  column,
-  placeholder,
-}: DataTableSearchInputProps<TData, TValue>) {
+export function DataTableSearchInput<TData, TValue>({ column, placeholder }: DataTableSearchInputProps<TData, TValue>) {
   const columnFilterValue = column.getFilterValue() as string | undefined;
 
   return (

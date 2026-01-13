@@ -1,48 +1,63 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import React, { useMemo } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 import { buildTree, TreeItem } from "@/utils/tree";
-
-type ViewItem = TreeItem & API.System.View;
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ViewTreeSelectProps {
-  views?: ViewItem[];
+  allViews: API.System.View[];
   value?: string[];
-  onChange?: (selectedIds: string[]) => void;
+  onChange?: (ids: string[]) => void;
 }
 
-const ViewTreeNode: React.FC<{
-  node: ViewItem;
-  selectedIds: Set<string>;
-  onSelectionChange: (id: string, checked: boolean) => void;
-}> = ({ node, selectedIds, onSelectionChange }) => {
-  const isSelected = selectedIds.has(node.id);
+interface RecursiveNodeProps {
+  node: TreeItem;
+  level?: number;
+  checkedIds: string[];
+  onToggle: (nodeId: string, checked: boolean) => void;
+  expandedNodeIds: Set<string>;
+  onToggleExpand: (nodeId: string) => void;
+}
 
-  const handleCheckedChange = (checked: boolean | "indeterminate") => {
-    onSelectionChange(node.id, checked === true);
-  };
+const RecursiveNode = ({ node, level = 0, checkedIds, onToggle, expandedNodeIds, onToggleExpand }: RecursiveNodeProps) => {
+  const hasChildren = node.children && node.children.length > 0;
+  const isCurrentNodeExpanded = expandedNodeIds.has(node.id);
 
   return (
-    <div style={{ marginLeft: `${node.depth || 0}rem` }}>
-      <div className="flex items-center space-x-2 py-1">
+    <div style={{ paddingLeft: `${level * 1}rem` }}>
+      <div className="flex items-center space-x-2 p-1 rounded-md">
+        {hasChildren ? (
+          <button
+            type="button"
+            onClick={() => onToggleExpand(node.id)}
+            className="p-0.5 rounded-sm hover:bg-muted-foreground/20"
+          >
+            {isCurrentNodeExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+          </button>
+        ) : (
+          <div className="w-5" />
+        )}
         <Checkbox
-          id={node.id}
-          checked={isSelected}
-          onCheckedChange={handleCheckedChange}
+          id={`view-checkbox-${node.id}`}
+          checked={checkedIds?.includes(node.id)}
+          onCheckedChange={(checked) => onToggle(node.id, !!checked)}
         />
-        <label htmlFor={node.id} className="text-sm font-medium leading-none">
-          {node.name} <span className="text-xs text-muted-foreground">({node.type})</span>
+        <label htmlFor={`view-checkbox-${node.id}`} className="flex-grow cursor-pointer">
+          {node.name}
         </label>
       </div>
-      {node.children && node.children.length > 0 && (
-        <div className="pl-4">
-          {node.children.map((child) => (
-            <ViewTreeNode
+      {isCurrentNodeExpanded && hasChildren && (
+        <div>
+          {node.children.map((child: TreeItem) => (
+            <RecursiveNode
               key={child.id}
-              node={child as ViewItem}
-              selectedIds={selectedIds}
-              onSelectionChange={onSelectionChange}
+              node={child}
+              level={level + 1}
+              checkedIds={checkedIds}
+              onToggle={onToggle}
+              expandedNodeIds={expandedNodeIds}
+              onToggleExpand={onToggleExpand}
             />
           ))}
         </div>
@@ -51,107 +66,82 @@ const ViewTreeNode: React.FC<{
   );
 };
 
-export const ViewTreeSelect: React.FC<ViewTreeSelectProps> = ({
-  views = [],
-  value = [],
-  onChange,
-}) => {
-  const [selectedIds, setSelectedIds] = useState(new Set(value));
+export function ViewTreeSelect({ allViews, value, onChange }: ViewTreeSelectProps) {
+  const [expandedNodeIds, setExpandedNodeIds] = React.useState<Set<string>>(new Set());
 
-  const { treeData, nodeMap, parentMap } = useMemo(() => {
-    const addDepth = (items: ViewItem[], depth = 0): ViewItem[] => {
-      return items.map(item => ({
-        ...item,
-        depth,
-        children: item.children ? addDepth(item.children as ViewItem[], depth + 1) : [],
-      }));
-    };
-    
-    const treeWithDepth = addDepth(buildTree(views));
-    
-    const nMap = new Map<string, ViewItem>();
-    const pMap = new Map<string, string>();
+  const viewTree = useMemo(() => {
+    if (!allViews) return [];
+    const safeViews = allViews.filter((item): item is API.System.View & { id: string } => typeof item.id === "string");
+    return buildTree(safeViews as TreeItem[]);
+  }, [allViews]);
 
-    const traverseForMaps = (items: ViewItem[], parentId?: string) => {
-        items.forEach(item => {
-            nMap.set(item.id, item);
-            if (parentId) {
-                pMap.set(item.id, parentId);
-            }
-            if (item.children) {
-                traverseForMaps(item.children as ViewItem[], item.id);
-            }
-        });
-    };
+  const handleToggle = (viewId: string, checked: boolean) => {
+    const currentIds = value || [];
+    const newIds = checked
+      ? [...currentIds, viewId]
+      : currentIds.filter(id => id !== viewId);
+    onChange?.(newIds);
+  };
 
-    traverseForMaps(treeWithDepth);
-
-    return { treeData: treeWithDepth, nodeMap: nMap, parentMap: pMap };
-  }, [views]);
-
-  useEffect(() => {
-    setSelectedIds(new Set(value));
-  }, [value]);
-
-  const handleSelectionChange = (id: string, checked: boolean) => {
-    const newSelectedIds = new Set(selectedIds);
-
-    const selectNodeAndParents = (nodeId: string) => {
-      if (!nodeId || newSelectedIds.has(nodeId)) return;
-      newSelectedIds.add(nodeId);
-      const parentId = parentMap.get(nodeId);
-      if (parentId) {
-        selectNodeAndParents(parentId);
+  const handleToggleExpand = (nodeId: string) => {
+    setExpandedNodeIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(nodeId)) {
+        newSet.delete(nodeId);
+      } else {
+        newSet.add(nodeId);
       }
+      return newSet;
+    });
+  };
+
+  const expandAll = () => {
+    const allExpandableIds = new Set<string>();
+    const collectExpandableIds = (nodes: TreeItem[]) => {
+      nodes.forEach(node => {
+        if (node.children && node.children.length > 0) {
+          allExpandableIds.add(node.id);
+          collectExpandableIds(node.children);
+        }
+      });
     };
-
-    const deselectNodeAndChildren = (nodeId: string) => {
-      newSelectedIds.delete(nodeId);
-      const node = nodeMap.get(nodeId);
-      node?.children?.forEach(child => deselectNodeAndChildren(child.id));
-    };
-
-    if (checked) {
-      selectNodeAndParents(id);
-    } else {
-      deselectNodeAndChildren(id);
-    }
-
-    setSelectedIds(newSelectedIds);
-    onChange?.(Array.from(newSelectedIds));
+    collectExpandableIds(viewTree);
+    setExpandedNodeIds(allExpandableIds);
   };
 
-  const handleSelectAll = () => {
-    const allIds = Array.from(nodeMap.keys());
-    setSelectedIds(new Set(allIds));
-    onChange?.(allIds);
+  const collapseAll = () => {
+    setExpandedNodeIds(new Set());
   };
 
-  const handleDeselectAll = () => {
-    setSelectedIds(new Set());
-    onChange?.([]);
-  };
+  React.useEffect(() => {
+    const topLevelIds = viewTree.map(node => node.id);
+    setExpandedNodeIds(new Set(topLevelIds));
+  }, [viewTree]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" type="button" onClick={handleSelectAll}>
-          Select All
+    <div className="border rounded-md p-2 h-64">
+      <div className="flex justify-end space-x-2 mb-2">
+        <Button type="button" variant="outline" size="sm" onClick={expandAll}>
+          Expand All
         </Button>
-        <Button variant="outline" size="sm" type="button" onClick={handleDeselectAll}>
-          Deselect All
+        <Button type="button" variant="outline" size="sm" onClick={collapseAll}>
+          Collapse All
         </Button>
       </div>
-      <ScrollArea className="h-64 w-full rounded-md border p-4">
-        {treeData.map((node) => (
-          <ViewTreeNode
-            key={node.id}
-            node={node}
-            selectedIds={selectedIds}
-            onSelectionChange={handleSelectionChange}
-          />
-        ))}
+      <ScrollArea className="h-full">
+        <div className="p-2">
+          {viewTree.map(node => (
+            <RecursiveNode
+              key={node.id}
+              node={node}
+              checkedIds={value || []}
+              onToggle={handleToggle}
+              expandedNodeIds={expandedNodeIds}
+              onToggleExpand={handleToggleExpand}
+            />
+          ))}
+        </div>
       </ScrollArea>
     </div>
   );
-};
+}

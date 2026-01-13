@@ -13,7 +13,6 @@ export const formSchema = z.object({
   icon: z.string().optional(),
   component: z.string().optional(),
   sequence: z.coerce.number().default(0),
-  visible: z.boolean().default(true),
   status: z.number().default(1),
   description: z.string().optional(),
   parent_id: z.string().optional(),

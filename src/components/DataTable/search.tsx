@@ -27,18 +27,14 @@ export function Search<TData, TValue = unknown>({
 }: SearchProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
-  const inlineSearchColumns = useMemo(
-    () => columns.filter((col) => typeof col.renderSearch === "function"),
-    [columns]
-  );
+  const inlineSearchColumns = useMemo(() => columns.filter((col) => typeof col.renderSearch === "function"), [columns]);
 
   const facetedFilterColumns = useMemo(
     () => columns.filter((col) => typeof col.filterComponent === "function"),
-    [columns]
+    [columns],
   );
 
-  const hasFilters =
-    globalFilterKey || inlineSearchColumns.length > 0 || facetedFilterColumns.length > 0;
+  const hasFilters = globalFilterKey || inlineSearchColumns.length > 0 || facetedFilterColumns.length > 0;
 
   if (!hasFilters) {
     return null;
@@ -69,11 +65,7 @@ export function Search<TData, TValue = unknown>({
         {facetedFilterColumns.map((columnDef) => {
           const column = table.getColumn(columnDef.accessorKey as string);
           if (!column) return null;
-          return (
-            <Fragment key={column.id}>
-              {columnDef.filterComponent!(column, table)}
-            </Fragment>
-          );
+          return <Fragment key={column.id}>{columnDef.filterComponent!(column, table)}</Fragment>;
         })}
       </div>
 

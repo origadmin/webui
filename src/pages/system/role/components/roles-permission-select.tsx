@@ -11,8 +11,8 @@ export function RolesPermissionSelect({ value = [], onChange, permissions = [] }
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>(value);
   const transformPermissions = (permissions: API.System.Permission[]): MultiSelectOption[] => {
     return permissions.map((permission) => ({
-      value: permission.id!,
-      label: permission.name!,
+      value: String(permission.id), // Ensure ID is string
+      label: permission.name || '', // Ensure label is string
     }));
   };
 
@@ -34,7 +34,7 @@ export function RolesPermissionSelect({ value = [], onChange, permissions = [] }
         options={treeData}
         defaultValue={treeData
           .map((option) => option.value)
-          .filter((value) => Array.isArray(selectedPermissions) && selectedPermissions.includes(value))}
+          .filter((val) => Array.isArray(selectedPermissions) && selectedPermissions.includes(val))}
         onChange={handlePermissionChange}
       />
     </div>

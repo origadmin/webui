@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { t } from "@/utils/locale";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { ToolbarProps, Toolbar } from "src/components/DataTable/toolbar";
+import { Toolbar, ToolbarProps } from "src/components/DataTable/toolbar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
