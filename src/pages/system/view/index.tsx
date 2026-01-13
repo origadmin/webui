@@ -84,10 +84,10 @@ function ViewPageContent() {
             {...tableProps}
             useManual={false}
             showPagination={false}
-            expandedState={expanded} // Pass expanded state directly
-            onExpandedChange={setExpanded} // Pass the handler directly
+            expandedState={expanded}
+            onExpandedChange={setExpanded}
             options={{
-              getRowId: (row) => row.id,
+              getRowId: (row) => row.id ?? "", // Ensure a string is always returned
               getExpandedRowModel: getExpandedRowModel(),
               getSubRows: (row: API.System.View) => row.children,
             }}

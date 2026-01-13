@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
-  CommandInput,
   CommandGroup,
   CommandItem,
   CommandList,
+  CommandInput, // Import CommandInput
 } from "@/components/ui/command";
 import {
   Popover,
@@ -66,6 +66,11 @@ export function ResourceMultiSelect({
     onChange?.(selectedIds.filter((id) => id !== resourceId));
   };
 
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onChange?.([]);
+  };
+
   // Infinite scroll logic
   const scrollRef = useRef<HTMLDivElement>(null);
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
@@ -81,12 +86,12 @@ export function ResourceMultiSelect({
         <PopoverTrigger asChild>
           <div
             className={cn(
-              "flex flex-wrap gap-2 w-full min-h-[2.5rem] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+              "flex w-full min-h-[2.5rem] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
               "cursor-pointer",
             )}
             onClick={() => setOpen(!open)}
           >
-            <div className='flex flex-wrap gap-2'>
+            <div className='flex flex-wrap gap-2 flex-grow'>
               {selectedResources.length > 0 ? (
                 selectedResources.map((resource) => (
                   <Badge key={resource.id} variant='secondary'>
@@ -106,7 +111,19 @@ export function ResourceMultiSelect({
                 <span className='text-muted-foreground'>Select resources...</span>
               )}
             </div>
-            <ChevronsUpDown className='h-4 w-4 shrink-0 opacity-50' />
+            <div className="flex items-center self-center ml-2">
+              {selectedResources.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-5 w-5"
+                  onClick={handleClear}
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              )}
+              <ChevronsUpDown className='h-4 w-4 shrink-0 opacity-50' />
+            </div>
           </div>
         </PopoverTrigger>
       </div>

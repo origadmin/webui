@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { PAGE_SIZE, START_PAGE } from "@/types";
 import {
   ColumnFiltersState,
+  PaginationState,
+  SortingState,
+  VisibilityState,
   ExpandedState,
+  useReactTable,
   getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   OnChangeFn,
-  PaginationState,
-  SortingState,
-  useReactTable,
-  VisibilityState,
 } from "@tanstack/react-table";
+import { PAGE_SIZE, START_PAGE } from "@/types";
 import { DataTableProps } from ".";
 
 export function useDataTable<TData, TValue>({
   columns,
-  dataSource = [], // Use dataSource directly from props
+  dataSource = [],
   total = 0,
   useManual = true,
   paginationState: initialPaginationState = {
@@ -37,14 +37,18 @@ export function useDataTable<TData, TValue>({
   onColumnVisibilityChange,
   onExpandedChange,
   options,
-  isLoading,
-}: Omit<DataTableProps<TData, TValue>, "props">) {
+}: Omit<DataTableProps<TData, TValue>, "props" | "isLoading">) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(initialColumnVisibilityState);
   const [pagination, setPagination] = useState<PaginationState>(initialPaginationState);
   const [sorting, setSorting] = useState<SortingState>(initialSorting || []);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(initialColumnFiltersState);
   const [expanded, setExpanded] = useState<ExpandedState>(initialExpandedState);
+
+  // Effect to sync initial expanded state from props
+  useState(() => {
+    setExpanded(initialExpandedState);
+  });
 
   const manualProps = {
     manualFiltering: true,
@@ -78,9 +82,9 @@ export function useDataTable<TData, TValue>({
 
   const table = useReactTable({
     ...options,
-    data: dataSource, // Pass dataSource directly to useReactTable
+    data: dataSource,
     columns,
-    rowCount: total, // Use total directly for rowCount
+    rowCount: total,
     state: {
       pagination,
       sorting,

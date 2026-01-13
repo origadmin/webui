@@ -85,7 +85,6 @@ export const useInfiniteResourcesQuery = (opts?: Omit<API.DataTableParams, "page
   });
 };
 
-
 export const useResourceQuery = (id: string) => {
   return useQuery(
     queryOptions({

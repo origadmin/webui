@@ -7,7 +7,9 @@ import { QueryClient, useQuery, queryOptions, useMutation, UseQueryOptions } fro
  */
 export async function listViews(params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
-  const rawResponse = await get<API.System.ListViewsResponse>("/sys/views", backendParams, options);
+  // Add with_resources=true to the parameters sent to the backend
+  const queryParams = { ...backendParams, with_resources: true };
+  const rawResponse = await get<API.System.ListViewsResponse>("/sys/views", queryParams, options);
   return {
     items: rawResponse?.views || [],
     total: rawResponse?.total || 0,
@@ -16,13 +18,14 @@ export async function listViews(params: API.DataTableParams, options?: API.Reque
 
 /** Get view record by ID GET /sys/views/${id} */
 export async function getView(id: string, options?: API.RequestOptions) {
-  const rawResponse = await get<API.System.GetViewResponse>(`/sys/views/${id}`, undefined, options);
+  // Also add with_resources=true here for consistency, in case it's used directly elsewhere
+  const rawResponse = await get<API.System.GetViewResponse>(`/sys/views/${id}`, { with_resources: true }, options);
   return rawResponse?.view;
 }
 
 /** Create view record POST /sys/views */
 export async function addView(
-  body: Omit<API.System.View, "id"> & { resource_ids?: string[]; role_ids?: string[] }, // Changed to string[]
+  body: Omit<API.System.View, "id"> & { resource_ids?: string[]; role_ids?: string[] },
   options?: API.RequestOptions,
 ) {
   const { resource_ids, role_ids, ...viewData } = body;
@@ -38,7 +41,7 @@ export async function addView(
 /** Update view record by ID PUT /sys/views/${id} */
 export async function updateView(
   id: string,
-  body: Partial<API.System.View> & { resource_ids?: string[]; role_ids?: string[] }, // Changed to string[]
+  body: Partial<API.System.View> & { resource_ids?: string[]; role_ids?: string[] },
   options?: API.RequestOptions,
 ) {
   const { resource_ids, role_ids, ...viewData } = body;
@@ -80,7 +83,7 @@ export const useViewQuery = (id: string) => {
 
 export const useViewCreate = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (view: Omit<API.System.View, "id"> & { resource_ids?: string[]; role_ids?: string[] }) => addView(view), // Changed to string[]
+    mutationFn: (view: Omit<API.System.View, "id"> & { resource_ids?: string[]; role_ids?: string[] }) => addView(view),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };
@@ -88,7 +91,7 @@ export const useViewCreate = (queryClient: QueryClient) => {
 export const useViewUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
     mutationFn: (view: Partial<API.System.View> & { resource_ids?: string[]; role_ids?: string[] }) =>
-      updateView(id, view), // Changed to string[]
+      updateView(id, view),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/views"] }),
   });
 };

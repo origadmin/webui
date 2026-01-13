@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
@@ -34,6 +34,12 @@ interface Props {
   className?: string;
 }
 
+// Type guard to check if a view type is one that should show the resource selector.
+function isResourceSelectorType(type: string): type is "MENU" | "PAGE" | "BUTTON" {
+  // Explicitly cast the array elements to string to satisfy TypeScript's strictness
+  return (["MENU", "PAGE", "BUTTON"] as string[]).includes(type);
+}
+
 export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, className }: Props) {
   const is_edit = !!currentRow;
   const is_sub = !!parentRow;
@@ -46,16 +52,8 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
   const { sidebarRootId } = useViewContext();
   const isSidebarMissing = !sidebarRootId && !is_sub && !is_edit;
 
-  const shape = (formSchema as any).shape;
-  const generatedDefaults = shape
-    ? Object.keys(shape).reduce((acc, key) => {
-        acc[key] = "";
-        return acc;
-      }, {} as any)
-    : {};
-
   // Safely get resource_ids and ensure they are strings
-  const defaultResourceIds = (currentRow?.resource_ids || []).map(String);
+  const defaultResourceIds = (currentRow?.resources || []).map((resource) => String(resource.id));
 
   const defaultType = is_edit
     ? currentRow.type?.toUpperCase()
@@ -78,16 +76,22 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
     mode: "onSubmit",
     shouldFocusError: true,
     defaultValues: is_edit
-      ? { ...currentRow, type: defaultType, is_edit, resource_ids: defaultResourceIds }
+      ? { ...currentRow, type: defaultType as FormType["type"], is_edit, resource_ids: defaultResourceIds }
       : {
-          ...generatedDefaults,
-          status: 1,
-          is_edit: false,
-          parent_id: String(defaultParentId),
-          resource_ids: [],
-          type: defaultType,
+          name: "",
+          keyword: "",
           scope: defaultScope,
+          type: defaultType as FormType["type"],
+          path: "",
+          icon: "",
+          component: "",
           sequence: 0,
+          status: 1,
+          description: "",
+          parent_id: String(defaultParentId),
+          is_edit: false,
+          resource_ids: [],
+          properties: "",
         },
   });
 
@@ -112,27 +116,15 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
 
   const onSubmit = async (values: FormType) => {
     try {
-      // Explicitly create the payload with the correct API type
-      const payload: Partial<API.System.View> = {
-        name: values.name,
-        keyword: values.keyword,
-        scope: values.scope,
-        type: values.type,
-        path: values.path,
-        icon: values.icon,
-        component: values.component,
-        sequence: values.sequence,
-        status: values.status,
-        description: values.description,
+      const { is_edit, ...rest } = values;
+      const payload = {
+        ...rest,
         parent_id: values.parent_id ? String(values.parent_id) : undefined,
-        resource_ids: values.resource_ids,
-        properties: values.properties,
       };
 
       if (!is_edit) {
         await createItem(payload);
       } else {
-        // For updates, merge with currentRow to ensure all fields are present
         const putPayload = { ...currentRow, ...payload };
         await updateItem(putPayload);
       }
@@ -154,7 +146,7 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
     }
   };
 
-  const showResourceSelector = [ViewTypes.MENU, ViewTypes.PAGE, ViewTypes.BUTTON].includes(currentType);
+  const showResourceSelector = isResourceSelectorType(currentType);
 
   return (
     <>

@@ -17,7 +17,7 @@ interface PaginatedQuery {
   page: number;
   pageSize: number;
   sorting?: string;
-  filters?: ColumnFiltersState;
+  [key: string]: any; // Allow for additional filter properties
 }
 
 // Defines the standardized, simple shape of data returned from an API list endpoint.
@@ -65,17 +65,21 @@ export function usePaginatedQuery<T>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [activeFilters, setActiveFilters] = useState<ColumnFiltersState>([]);
 
-  const queryResult = useQuery(
-    {
+  const queryParams = React.useMemo(() => {
+    const params: PaginatedQuery = {
       page: pagination.pageIndex,
       pageSize: pagination.pageSize,
       sorting: formatSorting(sorting),
-      filters: activeFilters,
-    },
-    {
-      enabled: !!pagination.pageSize, // Only fetch when pageSize is a valid, non-zero number
-    },
-  );
+    };
+    activeFilters.forEach(filter => {
+      params[filter.id] = filter.value;
+    });
+    return params;
+  }, [pagination, sorting, activeFilters]);
+
+  const queryResult = useQuery(queryParams, {
+    enabled: !!pagination.pageSize, // Only fetch when pageSize is a valid, non-zero number
+  });
 
   const { data, isLoading } = queryResult;
 

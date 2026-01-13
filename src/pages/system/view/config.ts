@@ -2,13 +2,14 @@ import { z } from "zod";
 import { DataTableProps } from "@/components/DataTable";
 import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
 import { columns as viewColumns } from "./components/columns";
+import { ViewTypes } from "./constants";
 
 // Zod Schema for form validation
 export const formSchema = z.object({
   name: z.string().min(1, "Name is required."),
   keyword: z.string().min(1, "Keyword is required."),
   scope: z.string().optional(),
-  type: z.string().default("MENU"),
+  type: z.enum(Object.values(ViewTypes) as [string, ...string[]]).default(ViewTypes.MENU),
   path: z.string().optional(),
   icon: z.string().optional(),
   component: z.string().optional(),
