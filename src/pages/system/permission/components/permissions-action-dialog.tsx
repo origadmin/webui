@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef, useCallback } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useResourcesQuery } from "@/api/system/resource";
 import { useViewsQuery } from "@/api/system/view";
@@ -26,7 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ResourceMultiSelect } from "./resource-multi-select";
-import { ViewTreeSelect } from "./view-tree-select";
+import { ViewTreeSelect, ViewTreeSelectRef } from "./view-tree-select";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: t("validation.name.required") }),
@@ -57,8 +57,8 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
           name: currentRow.name || "",
           keyword: currentRow.keyword || "",
           description: currentRow.description || "",
-          view_ids: (currentRow.view_ids || []).map(String),
-          resource_ids: (currentRow.resource_ids || []).map(String),
+          view_ids: (currentRow.views || []).map(view => String(view.id)),
+          resource_ids: (currentRow.resources || []).map(resource => String(resource.id)),
           data_scope: currentRow.data_scope || "self",
           status: currentRow.status ?? 1,
         }
@@ -85,6 +85,27 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
 
   const selectedViewIds = form.watch("view_ids");
 
+  useEffect(() => {
+    if (!selectedViewIds) return;
+
+    const resourceIdsFromViews = new Set<string>();
+    const selectedViews = allViews.filter(view => selectedViewIds.includes(String(view.id)));
+    for (const view of selectedViews) {
+      if (view.resources) {
+        for (const resource of view.resources) {
+          resourceIdsFromViews.add(String(resource.id));
+        }
+      }
+    }
+
+    const currentResourceIds = new Set(form.getValues("resource_ids") || []);
+    const newResourceIds = Array.from(new Set([...currentResourceIds, ...resourceIdsFromViews]));
+    
+    if (JSON.stringify(newResourceIds.sort()) !== JSON.stringify((form.getValues("resource_ids") || []).sort())) {
+      form.setValue("resource_ids", newResourceIds);
+    }
+  }, [selectedViewIds, allViews, form]);
+
   const displayedResources = useMemo(() => {
     if (!selectedViewIds || selectedViewIds.length === 0) {
       return allResources;
@@ -92,14 +113,16 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
     const resourceIdSet = new Set<string>();
     const selectedViews = allViews.filter(view => selectedViewIds.includes(String(view.id)));
     for (const view of selectedViews) {
-      if (view.resource_ids) {
-        for (const resourceId of view.resource_ids) {
-          resourceIdSet.add(String(resourceId));
+      if (view.resources) {
+        for (const resource of view.resources) {
+          resourceIdSet.add(String(resource.id));
         }
       }
     }
     return allResources.filter(resource => resourceIdSet.has(String(resource.id)));
   }, [selectedViewIds, allViews, allResources]);
+
+  const viewTreeRef = useRef<ViewTreeSelectRef>(null);
 
   const onSubmit = (values: PermissionForm) => {
     if (!is_edit) {
@@ -121,6 +144,15 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
   };
 
   const isLoading = isLoadingViews || isLoadingResources;
+
+  const setRefs = useCallback(
+    (node: ViewTreeSelectRef | null) => {
+      const { ref } = form.register("view_ids");
+      ref(node);
+      viewTreeRef.current = node;
+    },
+    [form],
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -187,19 +219,6 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                         </FormItem>
                       )}
                     />
-                    <FormField
-                      control={form.control}
-                      name='description'
-                      render={({ field }) => (
-                        <FormItem className='col-span-2'>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder='A brief description for this permission.' {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                   </div>
                 </div>
 
@@ -209,9 +228,19 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                     name='view_ids'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Included Pages/Views</FormLabel>
+                        <div className="flex justify-between items-center mb-2">
+                          <FormLabel>Included Pages/Views</FormLabel>
+                          <div className="flex space-x-2">
+                            <Button type="button" variant="outline" size="sm" onClick={() => viewTreeRef.current?.expandAll()}>
+                              Expand All
+                            </Button>
+                            <Button type="button" variant="outline" size="sm" onClick={() => viewTreeRef.current?.collapseAll()}>
+                              Collapse All
+                            </Button>
+                          </div>
+                        </div>
                         <FormControl>
-                          {isLoading ? <div>Loading Views...</div> : <ViewTreeSelect allViews={allViews} {...field} />}
+                          {isLoading ? <div>Loading Views...</div> : <ViewTreeSelect ref={setRefs} allViews={allViews} {...field} />}
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -235,6 +264,19 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                     )}
                   />
                 </div>
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem className='col-span-2'>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder='A brief description for this permission.' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </ScrollArea>
           </form>

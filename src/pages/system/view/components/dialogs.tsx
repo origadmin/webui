@@ -15,6 +15,7 @@ export function ViewDialogs({ dataTable }: ViewDialogsProps) {
   const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useViewTable();
   const { sidebarRoot } = useViewContext();
   const queryClient = useQueryClient();
+  const className = "sm:max-w-3xl";
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
@@ -38,6 +39,7 @@ export function ViewDialogs({ dataTable }: ViewDialogsProps) {
     <Fragment>
       {/* Top-level Add */}
       <ViewActionDialog
+        className={className}
         key='view-add'
         open={open === "add"}
         onOpenChange={handleOpenChange}
@@ -47,6 +49,7 @@ export function ViewDialogs({ dataTable }: ViewDialogsProps) {
       {/* Add Sub-view */}
       {parentRow && (
         <ViewActionDialog
+          className={className}
           key={`view-add-sub-${parentRow.id}`}
           open={open === "add-sub"}
           onOpenChange={handleOpenChange}
@@ -56,6 +59,7 @@ export function ViewDialogs({ dataTable }: ViewDialogsProps) {
       {/* Edit View */}
       {currentRow && (
         <ViewActionDialog
+          className={className}
           key={`view-edit-${currentRow.id}`}
           open={open === "edit"}
           onOpenChange={handleOpenChange}

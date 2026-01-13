@@ -5957,6 +5957,11 @@ body {
       align-self: flex-end;
 }
 
+.self-center {
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
 .overflow-auto {
   overflow: auto;
 }

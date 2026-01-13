@@ -10,7 +10,7 @@ import {
   CommandGroup,
   CommandItem,
   CommandList,
-  CommandInput, // Import CommandInput
+  CommandInput,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -22,6 +22,8 @@ interface ResourceMultiSelectProps {
   value?: string[];
   onChange?: (ids: string[]) => void;
 }
+
+const DISPLAY_LIMIT = 3; // Set a display limit for selected items
 
 export function ResourceMultiSelect({
   value: selectedIds = [],
@@ -35,7 +37,6 @@ export function ResourceMultiSelect({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
   } = useInfiniteResourcesQuery({ keyword: searchTerm });
 
   const allResources = useMemo(() => {
@@ -52,10 +53,8 @@ export function ResourceMultiSelect({
     return Array.from(uniqueResources.values());
   }, [data]);
 
-  const { selectedResources, unselectedResources } = useMemo(() => {
-    const selected = allResources.filter((r) => selectedIds.includes(r.id));
-    const unselected = allResources.filter((r) => !selectedIds.includes(r.id));
-    return { selectedResources: selected, unselectedResources: unselected };
+  const selectedResources = useMemo(() => {
+    return allResources.filter((r) => selectedIds.includes(r.id));
   }, [allResources, selectedIds]);
 
   const handleSelect = (resourceId: string) => {
@@ -71,7 +70,6 @@ export function ResourceMultiSelect({
     onChange?.([]);
   };
 
-  // Infinite scroll logic
   const scrollRef = useRef<HTMLDivElement>(null);
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -93,20 +91,27 @@ export function ResourceMultiSelect({
           >
             <div className='flex flex-wrap gap-2 flex-grow'>
               {selectedResources.length > 0 ? (
-                selectedResources.map((resource) => (
-                  <Badge key={resource.id} variant='secondary'>
-                    {resource.name}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent opening the popover
-                        handleRemove(resource.id);
-                      }}
-                      className='ml-2 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
-                    >
-                      <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
-                    </button>
-                  </Badge>
-                ))
+                <>
+                  {selectedResources.slice(0, DISPLAY_LIMIT).map((resource) => (
+                    <Badge key={resource.id} variant='secondary'>
+                      {resource.name}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemove(resource.id);
+                        }}
+                        className='ml-2 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                      >
+                        <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
+                      </button>
+                    </Badge>
+                  ))}
+                  {selectedResources.length > DISPLAY_LIMIT && (
+                    <Badge variant='outline'>
+                      +{selectedResources.length - DISPLAY_LIMIT} more
+                    </Badge>
+                  )}
+                </>
               ) : (
                 <span className='text-muted-foreground'>Select resources...</span>
               )}
@@ -141,28 +146,35 @@ export function ResourceMultiSelect({
           >
             <CommandEmpty>No resources found.</CommandEmpty>
             <CommandGroup>
-              {unselectedResources.map((resource) => (
-                <CommandItem
-                  key={resource.id}
-                  value={`${resource.name} ${resource.keyword}`}
-                  onSelect={() => handleSelect(resource.id)}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      selectedIds.includes(resource.id)
-                        ? "opacity-100"
-                        : "opacity-0",
-                    )}
-                  />
-                  <div className='flex flex-col'>
-                    <span>{resource.name}</span>
-                    <span className='text-xs text-muted-foreground'>
-                      {resource.keyword}
-                    </span>
-                  </div>
-                </CommandItem>
-              ))}
+              {allResources.map((resource) => {
+                const isSelected = selectedIds.includes(resource.id);
+                return (
+                  <CommandItem
+                    key={resource.id}
+                    value={`${resource.name} ${resource.keyword}`}
+                    onSelect={() => {
+                      if (!isSelected) {
+                        handleSelect(resource.id);
+                      }
+                    }}
+                    disabled={isSelected}
+                    className={cn(isSelected && "text-muted-foreground cursor-not-allowed")}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        isSelected ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                    <div className='flex flex-col'>
+                      <span>{resource.name}</span>
+                      <span className='text-xs text-muted-foreground'>
+                        {resource.keyword}
+                      </span>
+                    </div>
+                  </CommandItem>
+                );
+              })}
               {isFetchingNextPage && <CommandItem disabled>Loading more...</CommandItem>}
             </CommandGroup>
           </CommandList>
