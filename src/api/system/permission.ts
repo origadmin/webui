@@ -7,7 +7,12 @@ import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/reac
  */
 export async function listPermissions(params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
-  const rawResponse = await get<API.System.ListPermissionsResponse>("/sys/permissions", backendParams, options);
+  const finalParams = {
+    ...backendParams,
+    with_resources: true,
+    with_views: true,
+  };
+  const rawResponse = await get<API.System.ListPermissionsResponse>("/sys/permissions", finalParams, options);
   return {
     items: rawResponse?.permissions || [],
     total: rawResponse?.total || 0,

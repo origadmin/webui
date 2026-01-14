@@ -8809,6 +8809,10 @@ body {
     display: table-cell;
   }
 
+  .md\:grid {
+    display: grid;
+  }
+
   .md\:hidden {
     display: none;
   }
@@ -8859,6 +8863,10 @@ body {
 
   .md\:p-2 {
     padding: 0.5rem;
+  }
+
+  .md\:p-8 {
+    padding: 2rem;
   }
 
   .md\:px-2 {
@@ -9018,10 +9026,6 @@ body {
 
   .lg\:max-w-xl {
     max-width: 36rem;
-  }
-
-  .lg\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-3 {
