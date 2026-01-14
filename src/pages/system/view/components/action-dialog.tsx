@@ -25,6 +25,7 @@ import { renderFields } from "./fields";
 import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewsSequenceDialog } from "./views-sequence-dialog";
 import { useViewContext } from "./views-table-provider";
+import { debugToast } from "@/components/debug-toast";
 
 interface Props {
   currentRow?: API.System.View;
@@ -133,6 +134,7 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
         title: "Success",
         description: `Successfully ${is_edit ? "updated" : "created"} ${pageConfig.title.toLowerCase()}.`,
       });
+      debugToast("You submitted the following values:", values);
       await queryClient.invalidateQueries({ queryKey: ["/sys/views"] });
       onOpenChange(false);
     } catch (error) {

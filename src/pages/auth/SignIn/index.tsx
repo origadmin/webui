@@ -5,8 +5,8 @@ import "./index.css";
 function SignInPage() {
   return (
     <>
-      <div className='container background relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
-        <div className='relative hidden h-full flex-col p-10 lg:flex dark:border-r'>
+      <div className='background relative h-svh md:grid md:grid-cols-2'>
+        <div className='relative hidden h-full flex-col p-10 md:flex dark:border-r'>
           <div className='relative z-20 flex items-center text-lg font-medium'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -35,7 +35,7 @@ function SignInPage() {
             </blockquote>
           </div>
         </div>
-        <div className='relative flex h-full items-center justify-center lg:p-8'>
+        <div className='relative flex h-full items-center justify-center md:p-8'>
           <div className='absolute inset-0 bg-zinc-900 bg-opacity-75' />
           <div className='relative z-20 mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[350px]'>
             <div className='flex flex-col space-y-2 text-left'>

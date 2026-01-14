@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useMemo, useEffect, useRef, useCallback } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useViewsQuery } from "@/api/system/view";
 import { t } from "@/utils/locale";
@@ -25,6 +25,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewTreeSelect, ViewTreeSelectRef } from "./view-tree-select";
+import { debugToast } from "@/components/debug-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: t("validation.name.required") }),
@@ -105,22 +106,27 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
   const viewTreeRef = useRef<ViewTreeSelectRef>(null);
 
   const onSubmit = (values: PermissionForm) => {
-    if (!is_edit) {
-      createPermission(values as any);
-    } else {
-      updatePermission(values as any);
-    }
+    const action = is_edit ? "updated" : "created";
+    const mutation = is_edit ? updatePermission : createPermission;
 
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
+    mutation(values, {
+      onSuccess: () => {
+        toast({
+          title: "Success",
+          description: `Permission successfully ${action}.`,
+        });
+        debugToast("You submitted the following values:", values);
+        onOpenChange(false);
+        form.reset();
+      },
+      onError: (error) => {
+        toast({
+          title: "Operation Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
     });
-    onOpenChange(false);
-    form.reset();
   };
 
   const isLoading = isLoadingViews;

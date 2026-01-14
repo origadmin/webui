@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { RolesPermissionSelect } from "./roles-permission-select";
+import { debugToast } from "@/components/debug-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -98,6 +99,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
         title: "Success",
         description: `Role has been successfully ${is_edit ? "updated" : "created"}.`,
       });
+      debugToast("You submitted the following values:", values);
       onOpenChange(false);
     } catch (error) {
       toast({
@@ -110,7 +112,6 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
     }
   };
 
-  const maxWClass = `sm:max-w-${columns * 500}px`;
   return (
     <Dialog
       open={open}
@@ -119,7 +120,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
         onOpenChange(state);
       }}
     >
-      <DialogContent className={cn(`${maxWClass}`, className)}>
+      <DialogContent className={cn("sm:max-w-2xl", className)}>
         <DialogHeader>
           <DialogTitle>{is_edit ? "Edit Role" : "Add New Role"}</DialogTitle>
           <DialogDescription>
