@@ -1,6 +1,5 @@
-import { useMemo, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
-import { useResourcesQuery } from "@/api/system/resource";
 import { useViewsQuery } from "@/api/system/view";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +20,6 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -57,8 +55,8 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
           name: currentRow.name || "",
           keyword: currentRow.keyword || "",
           description: currentRow.description || "",
-          view_ids: (currentRow.views || []).map(view => String(view.id)),
-          resource_ids: (currentRow.resources || []).map(resource => String(resource.id)),
+          view_ids: (currentRow.views || []).map((view) => String(view.id)),
+          resource_ids: (currentRow.resources || []).map((resource) => String(resource.id)),
           data_scope: currentRow.data_scope || "self",
           status: currentRow.status ?? 1,
         }
@@ -78,10 +76,8 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
   const { mutate: updatePermission, isPending: isUpdatePending } = usePermissionUpdate(queryClient, id);
 
   const { data: viewsData, isLoading: isLoadingViews } = useViewsQuery({ pagingMode: "none", with_resources: true });
-  const { data: resourcesData, isLoading: isLoadingResources } = useResourcesQuery({ pagingMode: "none" });
 
   const allViews = viewsData?.items || [];
-  const allResources = resourcesData?.items || [];
 
   const selectedViewIds = form.watch("view_ids");
 
@@ -89,7 +85,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
     if (!selectedViewIds) return;
 
     const resourceIdsFromViews = new Set<string>();
-    const selectedViews = allViews.filter(view => selectedViewIds.includes(String(view.id)));
+    const selectedViews = allViews.filter((view) => selectedViewIds.includes(String(view.id)));
     for (const view of selectedViews) {
       if (view.resources) {
         for (const resource of view.resources) {
@@ -100,27 +96,11 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
 
     const currentResourceIds = new Set(form.getValues("resource_ids") || []);
     const newResourceIds = Array.from(new Set([...currentResourceIds, ...resourceIdsFromViews]));
-    
+
     if (JSON.stringify(newResourceIds.sort()) !== JSON.stringify((form.getValues("resource_ids") || []).sort())) {
       form.setValue("resource_ids", newResourceIds);
     }
   }, [selectedViewIds, allViews, form]);
-
-  const displayedResources = useMemo(() => {
-    if (!selectedViewIds || selectedViewIds.length === 0) {
-      return allResources;
-    }
-    const resourceIdSet = new Set<string>();
-    const selectedViews = allViews.filter(view => selectedViewIds.includes(String(view.id)));
-    for (const view of selectedViews) {
-      if (view.resources) {
-        for (const resource of view.resources) {
-          resourceIdSet.add(String(resource.id));
-        }
-      }
-    }
-    return allResources.filter(resource => resourceIdSet.has(String(resource.id)));
-  }, [selectedViewIds, allViews, allResources]);
 
   const viewTreeRef = useRef<ViewTreeSelectRef>(null);
 
@@ -143,16 +123,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
     form.reset();
   };
 
-  const isLoading = isLoadingViews || isLoadingResources;
-
-  const setRefs = useCallback(
-    (node: ViewTreeSelectRef | null) => {
-      const { ref } = form.register("view_ids");
-      ref(node);
-      viewTreeRef.current = node;
-    },
-    [form],
-  );
+  const isLoading = isLoadingViews;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -228,19 +199,40 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                     name='view_ids'
                     render={({ field }) => (
                       <FormItem>
-                        <div className="flex justify-between items-center mb-2">
+                        <div className='flex justify-between items-center mb-2'>
                           <FormLabel>Included Pages/Views</FormLabel>
-                          <div className="flex space-x-2">
-                            <Button type="button" variant="outline" size="sm" onClick={() => viewTreeRef.current?.expandAll()}>
+                          <div className='flex space-x-2'>
+                            <Button
+                              type='button'
+                              variant='outline'
+                              size='sm'
+                              onClick={() => viewTreeRef.current?.expandAll()}
+                            >
                               Expand All
                             </Button>
-                            <Button type="button" variant="outline" size="sm" onClick={() => viewTreeRef.current?.collapseAll()}>
+                            <Button
+                              type='button'
+                              variant='outline'
+                              size='sm'
+                              onClick={() => viewTreeRef.current?.collapseAll()}
+                            >
                               Collapse All
                             </Button>
                           </div>
                         </div>
                         <FormControl>
-                          {isLoading ? <div>Loading Views...</div> : <ViewTreeSelect ref={setRefs} allViews={allViews} {...field} />}
+                          {isLoading ? (
+                            <div>Loading Views...</div>
+                          ) : (
+                            <ViewTreeSelect
+                              {...field}
+                              ref={(node) => {
+                                field.ref(node);
+                                viewTreeRef.current = node;
+                              }}
+                              allViews={allViews}
+                            />
+                          )}
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -253,11 +245,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                       <FormItem>
                         <FormLabel>Associated APIs (Resources)</FormLabel>
                         <FormControl>
-                          {isLoading ? (
-                            <div>Loading Resources...</div>
-                          ) : (
-                            <ResourceMultiSelect allResources={displayedResources} {...field} />
-                          )}
+                          <ResourceMultiSelect {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

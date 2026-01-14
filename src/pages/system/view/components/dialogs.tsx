@@ -1,11 +1,11 @@
 import { Fragment } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useViewTable } from "./views-table-provider";
-import { ViewActionDialog } from "./action-dialog";
 import { DeleteDialog } from "@/templates/crud-page/components/delete-dialog";
-import { apiHooks, pageConfig } from "../config";
-import { useViewContext } from "./views-table-provider";
+import { useQueryClient } from "@tanstack/react-query";
 import { UsePaginatedQueryReturnType } from "@/hooks/use-paginated-query";
+import { apiHooks, pageConfig } from "../config";
+import { ViewActionDialog } from "./action-dialog";
+import { useViewTable } from "./views-table-provider";
+import { useViewContext } from "./views-table-provider";
 
 interface ViewDialogsProps {
   dataTable: UsePaginatedQueryReturnType<API.System.View>;
@@ -30,7 +30,7 @@ export function ViewDialogs({ dataTable }: ViewDialogsProps) {
     // The fixed useDataTable hook will now correctly pick up the new data,
     // and the UI will update reactively.
     queryClient.invalidateQueries({ queryKey: ["/sys/views"] });
-    
+
     // Close the dialog immediately.
     handleOpenChange(false);
   };
