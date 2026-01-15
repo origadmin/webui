@@ -11,15 +11,15 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-import { GroupContentProps, MenuItem } from "@/components/Sidebar/group-content";
+import type { GroupContentProps } from "@/components/Sidebar/group-content";
 import { TablerIcon } from "../IconPicker";
 
 export type MainContentProps = Omit<GroupContentProps, "seconds">;
 
 export function MainContent({ title, items }: MainContentProps) {
-  function renderIcon(item: MenuItem) {
+  function renderIcon(item: API.MenuItem) {
     return (
-      <a href={item.path}>
+      <a href={item.path ?? "#"}>
         {item.icon && <TablerIcon name={item.icon} />}
         <span>{item.title}</span>
       </a>
@@ -31,8 +31,8 @@ export function MainContent({ title, items }: MainContentProps) {
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items &&
-          items.map((item) => (
-            <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
+          items.map((item: API.MenuItem) => (
+            <Collapsible key={item.id} asChild defaultOpen={item.isActive}>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip={item.title}>
                   {renderIcon(item)}
@@ -47,10 +47,10 @@ export function MainContent({ title, items }: MainContentProps) {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        {item.children?.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
+                        {item.children?.map((subItem: API.MenuItem) => (
+                          <SidebarMenuSubItem key={subItem.id}>
                             <SidebarMenuSubButton asChild>
-                              <a href={subItem.path}>
+                              <a href={subItem.path ?? "#"}>
                                 <span>{subItem.title}</span>
                               </a>
                             </SidebarMenuSubButton>

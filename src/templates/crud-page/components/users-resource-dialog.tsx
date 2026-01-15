@@ -15,6 +15,8 @@ export const UsersResourceDialog = ({ open, onOpenChange, currentRow }: UserReso
   const { data: resources = {}, isLoading } = useUserResourceQuery(id);
   console.log("resources", resources);
 
+  const typedResources = resources as { data?: { id?: string; name?: string }[] } | undefined;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-[650px]'>
@@ -27,9 +29,9 @@ export const UsersResourceDialog = ({ open, onOpenChange, currentRow }: UserReso
             <div>Loading...</div>
           ) : (
             <div>
-              {resources &&
-                Array.isArray(resources.data) &&
-                resources.data?.map((resource) => <Badge key={resource.id}>{resource.name}</Badge>)}
+              {typedResources &&
+                Array.isArray(typedResources.data) &&
+                typedResources.data?.map((resource) => <Badge key={resource.id ?? ""}>{resource.name ?? ""}</Badge>)}
             </div>
           )}
         </div>

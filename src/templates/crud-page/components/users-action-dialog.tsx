@@ -233,7 +233,10 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                     <FormItem className='col-span-6 grid grid-cols-subgrid items-center md:p-2 gap-x-4 gap-y-1 space-y-0'>
                       <FormLabel className='col-span-2 text-left'>Status</FormLabel>
                       <FormControl>
-                        <Switch checked={field.value === 1} onCheckedChange={(checked) => field.onChange(checked ? 1 : 2)} />
+                        <Switch
+                          checked={field.value === 1}
+                          onCheckedChange={(checked) => field.onChange(checked ? 1 : 2)}
+                        />
                       </FormControl>
                     </FormItem>
                   )}

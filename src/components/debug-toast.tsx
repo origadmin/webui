@@ -1,6 +1,6 @@
 import { toast } from "@/hooks/use-toast";
 
-export function debugToast(title: string, data: any) {
+export function debugToast(title: string, data: unknown) {
   if (process.env.NODE_ENV !== "development") {
     return;
   }

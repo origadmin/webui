@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +10,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { toast } from "@/hooks/use-toast";
 import { PageConfig, ApiHooks } from "../types";
 
 interface Props<T> {
@@ -64,8 +64,7 @@ export function DeleteDialog<T extends { id?: string }>({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the
-            selected {pageConfig.title.toLowerCase()}.
+            This action cannot be undone. This will permanently delete the selected {pageConfig.title.toLowerCase()}.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -7,6 +7,7 @@ import Watermark, { WatermarkProps } from "@/components/Watermark";
 import { BreadcrumbProps, Breadcrumbs } from "@/components/breadcrumbs";
 import { Content, ContentBody, ContentHeader, ContentProps, HeaderProps } from "./page-content";
 
+
 interface PageContainerProps {
   children?: React.ReactNode;
   props?: ContentProps;
@@ -30,7 +31,7 @@ function PageContainer({
   scrollable = false,
 }: PageContainerProps) {
   const { className } = props || {};
-  const { initialData } = useAuth();
+  const { initialData } = useAuth() as { initialData: InitialDataConfig };
 
   const watermarkProps = initialWatermarkProps ?? initialData?.watermark;
 

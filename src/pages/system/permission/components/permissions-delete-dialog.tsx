@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
+
 interface Props<T> {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -26,7 +27,7 @@ export function PermissionsDeleteDialog({ open, onOpenChange, currentRow }: Prop
       onSuccess: () => {
         // 1. Invalidate the query to trigger a refetch.
         queryClient.invalidateQueries({ queryKey: ["/sys/permissions"] });
-        
+
         // 2. Close the dialog.
         onOpenChange(false);
 

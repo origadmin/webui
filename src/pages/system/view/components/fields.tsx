@@ -1,27 +1,14 @@
-import { useForm } from "react-hook-form";
-import { FormType } from "../config";
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import IconPicker from "@/components/IconPicker";
-import { Button } from "@/components/ui/button";
 import { IconArrowsSort } from "@tabler/icons-react";
-import { ScopeCombobox } from "./scope-combobox";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import IconPicker from "@/components/IconPicker";
+import { FormType } from "../config";
 import { ViewTypes } from "../constants";
+import { ScopeCombobox } from "./scope-combobox";
 
 const viewTypeOptions = [
   { value: ViewTypes.ROOT, label: "Root (Virtual Node)" },
@@ -43,7 +30,7 @@ export const renderFields = (
   isSub: boolean = false,
   currentType: string = ViewTypes.MENU,
   isSidebarMissing: boolean = false,
-  fieldsToRender: FieldName[]
+  fieldsToRender: FieldName[],
 ) => {
   let filteredOptions = viewTypeOptions;
   if (isSub) {
@@ -122,11 +109,7 @@ export const renderFields = (
           <FormItem>
             <FormLabel>Scope</FormLabel>
             <FormControl>
-              <ScopeCombobox
-                value={field.value}
-                onChange={field.onChange}
-                disabled={isScopeDisabled}
-              />
+              <ScopeCombobox value={field.value} onChange={field.onChange} disabled={isScopeDisabled} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -163,23 +146,21 @@ export const renderFields = (
         )}
       />
     ),
-    icon: (
-      showIcon ? (
-        <FormField
-          control={form.control}
-          name='icon'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Icon</FormLabel>
-              <FormControl>
-                <IconPicker value={field.value} onValueChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      ) : null
-    ),
+    icon: showIcon ? (
+      <FormField
+        control={form.control}
+        name='icon'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Icon</FormLabel>
+            <FormControl>
+              <IconPicker value={field.value} onValueChange={field.onChange} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ) : null,
     sequence: (
       <FormField
         control={form.control}
@@ -192,7 +173,7 @@ export const renderFields = (
                 <Input
                   className='rounded-r-none'
                   placeholder='Click button to sort'
-                  type="number"
+                  type='number'
                   {...field}
                   onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
                 />
@@ -220,15 +201,10 @@ export const renderFields = (
           <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4 col-span-2'>
             <div className='space-y-0.5'>
               <FormLabel className='text-base'>Visible in Menu</FormLabel>
-              <FormDescription>
-                This menu will be displayed in the sidebar.
-              </FormDescription>
+              <FormDescription>This menu will be displayed in the sidebar.</FormDescription>
             </div>
             <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
+              <Switch checked={field.value} onCheckedChange={field.onChange} />
             </FormControl>
           </FormItem>
         )}
@@ -237,5 +213,7 @@ export const renderFields = (
     // Add other fields here as needed
   };
 
-  return fieldsToRender.map(fieldName => allFields[fieldName as FieldName] ? <div key={fieldName}>{allFields[fieldName as FieldName]}</div> : null);
+  return fieldsToRender.map((fieldName) =>
+    allFields[fieldName as FieldName] ? <div key={fieldName}>{allFields[fieldName as FieldName]}</div> : null,
+  );
 };

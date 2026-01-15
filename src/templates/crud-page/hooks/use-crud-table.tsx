@@ -1,5 +1,6 @@
 import { useState, createContext, useContext, ReactNode } from "react";
 
+
 type CrudTableContextType<T> = {
   open: string | null;
   setOpen: (open: string | null) => void;
@@ -7,7 +8,7 @@ type CrudTableContextType<T> = {
   setCurrentRow: (row: T | null) => void;
 };
 
-const CrudTableContext = createContext<CrudTableContextType<any> | undefined>(undefined);
+const CrudTableContext = createContext<CrudTableContextType<unknown> | undefined>(undefined);
 
 export function CrudTableProvider<T>({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState<string | null>(null);

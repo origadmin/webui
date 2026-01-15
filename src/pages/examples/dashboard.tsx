@@ -6,10 +6,11 @@ import { ProductPerformance } from "@/pages/dashboard/Overview/product-performan
 import ReportsContent from "@/pages/dashboard/Overview/reports";
 import { RevenueChart } from "@/pages/dashboard/Overview/revenue-chart";
 import { UserActivityChart } from "@/pages/dashboard/Overview/user-activity-chart";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import PageContainer from "@/components/PageContainer";
+
 
 export default function ExampleDashboardPage() {
   return (

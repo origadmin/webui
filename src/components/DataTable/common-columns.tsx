@@ -2,11 +2,13 @@ import { statusDescriptors } from "@/types/system";
 import { ColorBadge } from "@/components/ui/color-badge";
 import { DataTableColumnType, DataTableFacetedFilter } from "@/components/DataTable";
 
+
 /**
  * A reusable DataTable column definition for a standard 'status' field.
  * It uses the centralized badge system and dynamically generates its filter options.
  */
-export const systemStatusColumn: DataTableColumnType<any> = {
+export const systemStatusColumn = <T,>(): DataTableColumnType<T> => ({
+  id: "status",
   accessorKey: "status",
   header: "Status",
   cell: ({ row }) => {
@@ -36,4 +38,4 @@ export const systemStatusColumn: DataTableColumnType<any> = {
   ),
   enableSorting: false,
   enableHiding: false,
-};
+});

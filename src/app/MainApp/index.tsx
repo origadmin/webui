@@ -1,6 +1,7 @@
+import { router } from "@/router";
 import { RouterProvider } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
-import { router } from "@/router";
+
 
 /**
  * This is the root component for the authenticated part of the app.

@@ -1,22 +1,11 @@
 import { useMemo, useState, useRef, useCallback } from "react";
-import { Check, ChevronsUpDown, X } from "lucide-react";
 import { useInfiniteResourcesQuery } from "@/api/system/resource";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-  CommandInput,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandInput } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface ResourceMultiSelectProps {
   value?: string[];
@@ -25,19 +14,11 @@ interface ResourceMultiSelectProps {
 
 const DISPLAY_LIMIT = 3; // Set a display limit for selected items
 
-export function ResourceMultiSelect({
-  value: selectedIds = [],
-  onChange,
-}: ResourceMultiSelectProps) {
+export function ResourceMultiSelect({ value: selectedIds = [], onChange }: ResourceMultiSelectProps) {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteResourcesQuery({ keyword: searchTerm });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteResourcesQuery({ keyword: searchTerm });
 
   const allResources = useMemo(() => {
     if (!data?.pages) {
@@ -71,12 +52,15 @@ export function ResourceMultiSelect({
   };
 
   const scrollRef = useRef<HTMLDivElement>(null);
-  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    if (scrollHeight - scrollTop - clientHeight < 50 && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+      if (scrollHeight - scrollTop - clientHeight < 50 && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -107,24 +91,17 @@ export function ResourceMultiSelect({
                     </Badge>
                   ))}
                   {selectedResources.length > DISPLAY_LIMIT && (
-                    <Badge variant='outline'>
-                      +{selectedResources.length - DISPLAY_LIMIT} more
-                    </Badge>
+                    <Badge variant='outline'>+{selectedResources.length - DISPLAY_LIMIT} more</Badge>
                   )}
                 </>
               ) : (
                 <span className='text-muted-foreground'>Select resources...</span>
               )}
             </div>
-            <div className="flex items-center self-center ml-2">
+            <div className='flex items-center self-center ml-2'>
               {selectedResources.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-5 w-5"
-                  onClick={handleClear}
-                >
-                  <X className="h-4 w-4 text-muted-foreground" />
+                <Button variant='ghost' size='icon' className='h-5 w-5' onClick={handleClear}>
+                  <X className='h-4 w-4 text-muted-foreground' />
                 </Button>
               )}
               <ChevronsUpDown className='h-4 w-4 shrink-0 opacity-50' />
@@ -134,16 +111,8 @@ export function ResourceMultiSelect({
       </div>
       <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
         <Command>
-          <CommandInput
-            placeholder='Search by name or keyword...'
-            value={searchTerm}
-            onValueChange={setSearchTerm}
-          />
-          <CommandList
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className='max-h-48'
-          >
+          <CommandInput placeholder='Search by name or keyword...' value={searchTerm} onValueChange={setSearchTerm} />
+          <CommandList ref={scrollRef} onScroll={handleScroll} className='max-h-48'>
             <CommandEmpty>No resources found.</CommandEmpty>
             <CommandGroup>
               {allResources.map((resource) => {
@@ -160,17 +129,10 @@ export function ResourceMultiSelect({
                     disabled={isSelected}
                     className={cn(isSelected && "text-muted-foreground cursor-not-allowed")}
                   >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        isSelected ? "opacity-100" : "opacity-0",
-                      )}
-                    />
+                    <Check className={cn("mr-2 h-4 w-4", isSelected ? "opacity-100" : "opacity-0")} />
                     <div className='flex flex-col'>
                       <span>{resource.name}</span>
-                      <span className='text-xs text-muted-foreground'>
-                        {resource.keyword}
-                      </span>
+                      <span className='text-xs text-muted-foreground'>{resource.keyword}</span>
                     </div>
                   </CommandItem>
                 );

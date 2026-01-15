@@ -12,7 +12,7 @@ export function RolesPermissionSelect({ value = [], onChange, permissions = [] }
   const transformPermissions = (permissions: API.System.Permission[]): MultiSelectOption[] => {
     return permissions.map((permission) => ({
       value: String(permission.id), // Ensure ID is string
-      label: permission.name || '', // Ensure label is string
+      label: permission.name || "", // Ensure label is string
     }));
   };
 

@@ -1,13 +1,7 @@
 import { useRolesQuery } from "@/api/system/role";
-import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { RolesPrimaryButtons } from "@/pages/system/role/components/roles-primary-buttons";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 import { columns } from "./components/roles-columns";
@@ -15,10 +9,9 @@ import { RolesDialogs } from "./components/roles-dialogs";
 import { RoleTableProvider } from "./components/roles-table-provider";
 
 export default function RolesPage() {
-  const { dataSource, total, isLoading, tableProps, searchProps } =
-    usePaginatedQuery({
-      useQuery: (params) => useRolesQuery(params),
-    });
+  const { dataSource, total, isLoading, tableProps, searchProps } = usePaginatedQuery({
+    useQuery: (params) => useRolesQuery(params),
+  });
 
   return (
     <RoleTableProvider>
@@ -40,7 +33,7 @@ export default function RolesPage() {
               useManual
               showPagination
               // Toolbar and sub-component props
-              toolbarPosition="top"
+              toolbarPosition='top'
               toolbars={() => <RolesPrimaryButtons />}
               props={{
                 search: searchProps,

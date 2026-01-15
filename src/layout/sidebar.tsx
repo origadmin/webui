@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { ViewScopes, ViewTypes } from "@/pages/system/view/constants";
-import { IconSettings, IconUsers } from "@tabler/icons-react";
+import { Settings, Users } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { SidebarComponent as Sidebar, SidebarProps } from "@/components/Sidebar";
 import { Brand } from "@/components/brand";
+
 
 export function AppSidebar() {
   const { user, views } = useAuth();
@@ -25,12 +26,12 @@ export function AppSidebar() {
     const systemMenus = [
       {
         title: "Global Settings",
-        icon: <IconSettings size={16} />,
+        icon: <Settings size={16} />,
         onClick: () => console.log("Go to Global Settings"),
       },
       {
         title: "Team Members",
-        icon: <IconUsers size={16} />,
+        icon: <Users size={16} />,
         onClick: () => console.log("Go to Team Members"),
       },
     ];

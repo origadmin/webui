@@ -7,6 +7,7 @@ import { getLocaleLanguage } from "@/utils/storage";
 import { FormatXMLElementFn, PrimitiveType } from "intl-messageformat";
 import { createIntl, createIntlCache } from "react-intl";
 
+
 export const messages: {
   [key: string]: Record<string, string>;
 } = {
@@ -75,7 +76,7 @@ export const t = (
       return defaultMessage;
     }
     console.warn(
-      `[@locale] Missing translation for "${id}" in all locales (current: ${currentLocale}, fallback: en-US), using id as fallback.`
+      `[@locale] Missing translation for "${id}" in all locales (current: ${currentLocale}, fallback: en-US), using id as fallback.`,
     );
   }
 

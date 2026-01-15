@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn, FieldErrors } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -17,16 +17,16 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { debugToast } from "@/components/debug-toast";
 import { FormType, formSchema, apiHooks, pageConfig } from "../config";
 import { ViewScopes, ViewTypes } from "../constants";
 import { renderFields } from "./fields";
 import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewsSequenceDialog } from "./views-sequence-dialog";
 import { useViewContext } from "./views-table-provider";
-import { debugToast } from "@/components/debug-toast";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   currentRow?: API.System.View;
@@ -41,6 +41,19 @@ function isResourceSelectorType(type: string): type is "MENU" | "PAGE" | "BUTTON
   return (["MENU", "PAGE", "BUTTON"] as string[]).includes(type);
 }
 
+interface ViewFormProps {
+  is_edit: boolean;
+  is_sub: boolean;
+  form: UseFormReturn<FormType>;
+  formId: string;
+  onSubmit: (values: FormType) => Promise<void>;
+  setSortDialogOpen: (open: boolean) => void;
+  parentRow?: API.System.View;
+  isSidebarMissing: boolean;
+  currentType: FormType["type"];
+  isPending: boolean;
+}
+
 function ViewForm({
   is_edit,
   is_sub,
@@ -52,14 +65,16 @@ function ViewForm({
   isSidebarMissing,
   currentType,
   isPending,
-}: any) {
+}: ViewFormProps) {
   const showResourceSelector = isResourceSelectorType(currentType);
 
   return (
     <Form {...form}>
       <form
         id={formId}
-        onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
+        onSubmit={form.handleSubmit(onSubmit, (errors: FieldErrors<FormType>) =>
+          console.error("Validation failed:", errors),
+        )}
         className='relative space-y-6'
       >
         <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>

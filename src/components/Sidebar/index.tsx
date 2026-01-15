@@ -5,7 +5,6 @@ import { FooterContent, FooterProps } from "./footer-content";
 import { GroupContent, GroupContentProps } from "./group-content";
 import { HeaderContent, HeaderProps } from "./header-content";
 
-
 type SidebarProps = {
   props?: React.ComponentProps<typeof Sidebar>;
   header?: HeaderProps;

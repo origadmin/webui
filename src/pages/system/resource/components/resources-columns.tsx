@@ -1,12 +1,12 @@
-import { Badge } from "@/components/ui/badge";
-import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
-import LongText from "@/components/long-text";
 import { defaultHeaderMeta } from "@/types";
-import { systemStatusColumn } from "@/components/DataTable/common-columns";
-import { cn } from "@/lib/utils";
-import { ResourceIconRowActions } from "./resources-row-actions";
-import { Input } from "@/components/ui/input";
 import { Column } from "@tanstack/react-table";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
+import LongText from "@/components/long-text";
+import { ResourceIconRowActions } from "./resources-row-actions";
 
 // Helper function to create a simple text input filter
 const textInputFilter = (column: Column<any, unknown>, title: string) => (
@@ -41,12 +41,10 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Name' />,
     cell: ({ row }) => (
-      <div className="flex items-center">
+      <div className='flex items-center'>
         <LongText>{row.original.name}</LongText>
         {row.original.service_name && (
-          <span className="ml-2 text-xs text-muted-foreground">
-            ({row.original.service_name})
-          </span>
+          <span className='ml-2 text-xs text-muted-foreground'>({row.original.service_name})</span>
         )}
       </div>
     ),
@@ -73,7 +71,11 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     cell: ({ row }) => {
       const method = (row.original.method || "").toUpperCase();
       const colorClass = methodColors[method] || "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-100";
-      return <Badge variant='outline' className={cn("font-mono", colorClass)}>{method || "ANY"}</Badge>;
+      return (
+        <Badge variant='outline' className={cn("font-mono", colorClass)}>
+          {method || "ANY"}
+        </Badge>
+      );
     },
     meta: defaultHeaderMeta.meta,
   },

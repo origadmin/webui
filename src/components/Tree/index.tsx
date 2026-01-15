@@ -3,6 +3,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
+
 export interface TreeNode {
   id: string;
   name: string;
@@ -32,7 +33,7 @@ export function Tree({ data, className, level = 0, expandAll = false }: TreeProp
     } else {
       setExpandedIds(new Set());
     }
-  }, [expandAll]);
+  }, [expandAll, data]);
 
   const toggleNode = (nodeId: string) => {
     const newExpandedNodes = new Set(expandedIds);

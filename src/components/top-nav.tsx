@@ -2,18 +2,14 @@ import { IconMenu } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 
 type NavMenu = {
   title: string;
   href: string;
   isActive: boolean;
-  search?: Record<string, any>; // Allow passing search params to the Link component
+  search?: Record<string, unknown>; // Allow passing search params to the Link component
 };
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {

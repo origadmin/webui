@@ -1,9 +1,10 @@
 import { Fragment } from "react";
 import { z } from "zod";
 import { useCrudTable } from "../hooks/use-crud-table";
+import { PageConfig, ApiHooks } from "../types";
 import { ActionDialog } from "./action-dialog";
 import { DeleteDialog } from "./delete-dialog";
-import { PageConfig, ApiHooks } from "../types";
+
 
 interface DialogsProps<T, TForm extends z.ZodType<any, any>> {
   pageConfig: PageConfig;

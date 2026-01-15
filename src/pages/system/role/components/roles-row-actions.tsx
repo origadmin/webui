@@ -84,7 +84,7 @@ export function IconRowActions<TData>({ row, setOpen, setCurrentRow, setParentRo
   };
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className='flex items-center space-x-1'>
       <Button className='h-8 w-8' variant='ghost' size='icon' onClick={() => onClick("edit")} title='Edit'>
         <IconEdit size={16} />
       </Button>

@@ -5,6 +5,7 @@ import { t } from "@/utils/locale";
 import { clearStorage, setAuth } from "@/utils/storage";
 import { buildTree } from "@/utils/tree";
 
+
 // Helper function to transform a backend View object into a frontend MenuItem object.
 const transformViewToMenuItem = (view: API.System.View): API.MenuItem | null => {
   if (!view.id) {
@@ -102,17 +103,20 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     initialize();
   }, [initialize]);
 
-  const login = async (token: API.Token) => {
-    setAuth(token);
-    setAuthState((s) => ({
-      ...s,
-      token: token.access_token,
-      loading: true,
-    }));
-    await initialize();
-  };
+  const login = useCallback(
+    async (token: API.Token) => {
+      setAuth(token);
+      setAuthState((s) => ({
+        ...s,
+        token: token.access_token,
+        loading: true,
+      }));
+      await initialize();
+    },
+    [initialize],
+  );
 
-  const logout = () => {
+  const logout = useCallback(() => {
     clearStorage();
     setAuthState({
       user: null,
@@ -120,9 +124,9 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       token: null,
       loading: false,
     });
-  };
+  }, []);
 
-  const isAuthenticated = () => !!authState.token;
+  const isAuthenticated = useCallback(() => !!authState.token, [authState.token]);
 
   const contextValue = useMemo(
     () => ({
@@ -131,7 +135,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       logout,
       isAuthenticated,
     }),
-    [authState],
+    [authState, login, logout, isAuthenticated],
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

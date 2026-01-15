@@ -47,6 +47,7 @@ This project implements the front-end Admin design based on the following techno
    ```bash
    git clone https://github.com/origadmin/shadcn-admin-design
    ```
+
 3. Go to the project directory：
    ```bash
    cd shadcn-admin-design

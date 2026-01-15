@@ -1,14 +1,8 @@
 import { useState } from "react";
 import { usePermissionsQuery } from "@/api/system/permission";
-import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { PermissionsPrimaryButtons } from "@/pages/system/permission/components/permissions-primary-buttons";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs } from "@/components/ui/tabs";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
@@ -17,10 +11,9 @@ import { PermissionsDialogs } from "./components/permissions-dialogs";
 import { PermissionTableProvider } from "./components/permissions-table-provider";
 
 export default function PermissionsPage() {
-  const { dataSource, total, isLoading, tableProps, searchProps } =
-    usePaginatedQuery({
-      useQuery: (params) => usePermissionsQuery(params),
-    });
+  const { dataSource, total, isLoading, tableProps, searchProps } = usePaginatedQuery({
+    useQuery: (params) => usePermissionsQuery(params),
+  });
 
   const [tabsValue, setTabsValue] = useState("all");
 
@@ -28,10 +21,7 @@ export default function PermissionsPage() {
     <PermissionTableProvider>
       <PageContainer>
         <Card>
-          <Tabs
-            value={tabsValue}
-            onValueChange={(value) => setTabsValue(value)}
-          >
+          <Tabs value={tabsValue} onValueChange={(value) => setTabsValue(value)}>
             <CardHeader>
               <CardTitle>Permissions</CardTitle>
               <CardDescription>Manage your permissions here.</CardDescription>
@@ -48,7 +38,7 @@ export default function PermissionsPage() {
                 useManual
                 showPagination
                 // Toolbar and sub-component props
-                toolbarPosition="top"
+                toolbarPosition='top'
                 toolbars={() => <PermissionsPrimaryButtons />}
                 props={{
                   search: searchProps,

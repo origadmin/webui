@@ -227,28 +227,6 @@ function TreeItem({
     onSelect(newSelection);
   };
 
-  const handleAction = (action: string) => {
-    if (onAction) {
-      // Get all selected items, or just this item if none selected
-      const selectedItems =
-        selectedIds.size > 0
-          ? allItems.flatMap((item) => getAllDescendants(item)).filter((item) => selectedIds.has(item.id))
-          : [item];
-      onAction(action, selectedItems);
-    }
-  };
-
-  // Helper function to get all descendants of an item (including the item itself)
-  const getAllDescendants = (item: TreeViewItem): TreeViewItem[] => {
-    const descendants = [item];
-    if (item.children) {
-      item.children.forEach((child) => {
-        descendants.push(...getAllDescendants(child));
-      });
-    }
-    return descendants;
-  };
-
   const handleAccessClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onAccessChange) {

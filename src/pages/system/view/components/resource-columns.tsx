@@ -1,5 +1,6 @@
-import { DataTableProps } from "@/components/DataTable";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DataTableProps } from "@/components/DataTable";
+
 
 export const columns: DataTableProps<API.System.Resource>["columns"] = [
   {

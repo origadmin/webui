@@ -1,5 +1,6 @@
-import { http, HttpResponse } from "msw";
 import { faker } from "@faker-js/faker";
+import { http, HttpResponse } from "msw";
+
 
 export interface NotificationItem {
   id: string;
@@ -48,7 +49,7 @@ export const notificationHandlers = [
     notifications.forEach((n) => (n.read = true));
     return HttpResponse.json({ success: true });
   }),
-  
+
   // Clear all
   http.delete("/api/v1/notifications", () => {
     notifications = [];

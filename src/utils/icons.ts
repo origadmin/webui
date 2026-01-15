@@ -1,5 +1,6 @@
-import * as icons from "@tabler/icons-react";
 import { ComponentType } from "react";
+import * as icons from "@tabler/icons-react";
+
 
 // Define a more specific type for the icons module
 type IconModule = {

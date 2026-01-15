@@ -6,6 +6,7 @@ import { Task } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 
+
 export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
@@ -29,6 +30,7 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
+    id: "id",
     accessorKey: "id",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Task' />,
     cell: ({ row }) => <div className='w-[80px]'>{row.getValue("id")}</div>,
@@ -36,6 +38,7 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
+    id: "title",
     accessorKey: "title",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Title' />,
     cell: ({ row }) => {
@@ -50,6 +53,7 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
+    id: "status",
     accessorKey: "status",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Status' />,
     cell: ({ row }) => {
@@ -72,6 +76,7 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
+    id: "priority",
     accessorKey: "priority",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Priority' />,
     cell: ({ row }) => {

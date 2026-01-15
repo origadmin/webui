@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import TablerIcon from "../IconPicker/tabler-icon";
 
+
 interface FileUploadProps {
   onFilesChange?: (files: File[]) => void;
   multiple?: boolean;
@@ -29,20 +30,20 @@ export function FileUpload({ onFilesChange, multiple = true, accept = "*" }: Fil
         progress: 0,
         preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
       }));
-      // setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-      // if (onFilesChange) {
-      //   onFilesChange([...files, ...newFiles]);
-      // }
-      // simulateUpload(newFiles);
+      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      if (onFilesChange) {
+        onFilesChange([...files, ...newFiles]);
+      }
+      simulateUpload(newFiles);
     }
   };
 
   const simulateUpload = (filesToUpload: UploadingFile[]) => {
     filesToUpload.forEach((file) => {
       const interval = setInterval(() => {
-        // setFiles((prevFiles) =>
-        //   prevFiles.map((f) => (f.id === file.id ? { ...f, progress: Math.min(f.progress + 10, 100) } : f)),
-        // );
+        setFiles((prevFiles) =>
+          prevFiles.map((f) => (f.id === file.id ? { ...f, progress: Math.min(f.progress + 10, 100) } : f)),
+        );
         if (file.progress >= 100) {
           clearInterval(interval);
         }

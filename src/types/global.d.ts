@@ -4,6 +4,7 @@ import { TablerIcon } from "@tabler/icons-react";
 import { RouteObject } from "@tanstack/react-router";
 import { AxiosRequestConfig, AxiosBasicCredentials } from "axios";
 import { LucideIcon } from "lucide-react";
+import { WatermarkProps } from "@/components/Watermark";
 import { components } from "./schema";
 
 
@@ -266,6 +267,27 @@ declare global {
       export type ListPermissionsResponse = Schemas["api.v1.services.system.ListPermissionsResponse"];
       export type GetPermissionResponse = Schemas["api.v1.services.system.GetPermissionResponse"];
       export type CreatePermissionResponse = Schemas["api.v1.services.system.CreatePermissionResponse"];
+
+      // Added Department Response Types
+      export type ListDepartmentsResponse = {
+        departments?: Array<{
+          id?: string;
+          name?: string;
+          parent_id?: string;
+          created_at?: string;
+          updated_at?: string;
+          children?: any[];
+        }>;
+        total?: number;
+      };
+      export type Department = {
+        id?: string;
+        name?: string;
+        parent_id?: string;
+        created_at?: string;
+        updated_at?: string;
+        children?: any[];
+      };
     }
 
     // Added Auth Namespace
@@ -322,5 +344,6 @@ declare global {
 
   type InitialDataConfig = {
     [key: string]: any;
+    watermark?: WatermarkProps;
   };
 }

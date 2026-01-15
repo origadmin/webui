@@ -1,17 +1,18 @@
 "use client";
 
 import { defaultHeaderMeta } from "@/types";
+import { Column } from "@tanstack/react-table";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColorBadge } from "@/components/ui/color-badge";
+import { Input } from "@/components/ui/input";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
 import LongText from "@/components/long-text";
-import { RowActions } from "./row-actions";
 import { scopeOptions } from "../constants";
-import { Input } from "@/components/ui/input";
-import { Column } from "@tanstack/react-table";
+import { RowActions } from "./row-actions";
+
 
 // Helper function to create a simple text input filter
 const textInputFilter = (column: Column<any, unknown>, title: string) => (
@@ -25,6 +26,7 @@ const textInputFilter = (column: Column<any, unknown>, title: string) => (
 
 export const columns: DataTableColumnType<API.System.View>[] = [
   {
+    id: "name",
     accessorKey: "name",
     header: ({ column, table }) => (
       <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
@@ -59,6 +61,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     filterComponent: (column) => textInputFilter(column, "Name"),
   },
   {
+    id: "keyword",
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
@@ -66,16 +69,18 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     filterComponent: (column) => textInputFilter(column, "Keyword"),
   },
   {
+    id: "scope",
     accessorKey: "scope",
     header: "Scope",
     cell: ({ row }) => {
       const scope = row.original.scope;
-      const label = scopeOptions.find(option => option.value === scope)?.label || scope;
+      const label = scopeOptions.find((option) => option.value === scope)?.label || scope;
       return <ColorBadge colorKey={scope}>{label}</ColorBadge>;
     },
     meta: defaultHeaderMeta.meta,
   },
   {
+    id: "type",
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => {
@@ -85,6 +90,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
+    id: "path",
     accessorKey: "path",
     header: "Path",
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,

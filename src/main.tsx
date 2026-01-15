@@ -1,11 +1,12 @@
 import { StrictMode } from "react";
 import { queryClient, router } from "@/router";
 import { QueryClientProvider } from "@tanstack/react-query";
-import ReactDOM from "react-dom/client";
-import { ThemeProvider } from "@/components/Theme/theme-provider";
-import AuthProvider, { useAuth } from "@/hooks/use-auth";
 import { RouterProvider } from "@tanstack/react-router";
+import ReactDOM from "react-dom/client";
+import AuthProvider, { useAuth } from "@/hooks/use-auth";
+import { ThemeProvider } from "@/components/Theme/theme-provider";
 import "./main.css";
+
 
 const rootElement = document.getElementById("root");
 

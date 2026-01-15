@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { buildTree, TreeItem } from "@/utils/tree";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { buildTree, TreeItem } from "@/utils/tree";
 
 type ResourceItem = TreeItem & API.System.Resource;
 
@@ -25,18 +25,14 @@ const ResourceTreeNode: React.FC<{
 
   return (
     <div style={{ marginLeft: `${node.depth || 0}rem` }}>
-      <div className="flex items-center space-x-2 py-1">
-        <Checkbox
-          id={node.id}
-          checked={isSelected}
-          onCheckedChange={handleCheckedChange}
-        />
-        <label htmlFor={node.id} className="text-sm font-medium leading-none">
-          {node.name} <span className="text-xs text-muted-foreground">({node.type})</span>
+      <div className='flex items-center space-x-2 py-1'>
+        <Checkbox id={node.id} checked={isSelected} onCheckedChange={handleCheckedChange} />
+        <label htmlFor={node.id} className='text-sm font-medium leading-none'>
+          {node.name} <span className='text-xs text-muted-foreground'>({node.type})</span>
         </label>
       </div>
       {node.children && node.children.length > 0 && (
-        <div className="pl-4">
+        <div className='pl-4'>
           {node.children.map((child) => (
             <ResourceTreeNode
               key={child.id}
@@ -51,37 +47,33 @@ const ResourceTreeNode: React.FC<{
   );
 };
 
-export const ResourceTreeSelect: React.FC<ResourceTreeSelectProps> = ({
-  resources = [],
-  value = [],
-  onChange,
-}) => {
+export const ResourceTreeSelect: React.FC<ResourceTreeSelectProps> = ({ resources = [], value = [], onChange }) => {
   const [selectedIds, setSelectedIds] = useState(new Set(value));
 
   const { treeData, nodeMap, parentMap } = useMemo(() => {
     const addDepth = (items: ResourceItem[], depth = 0): ResourceItem[] => {
-      return items.map(item => ({
+      return items.map((item) => ({
         ...item,
         depth,
         children: item.children ? addDepth(item.children as ResourceItem[], depth + 1) : [],
       }));
     };
-    
+
     const treeWithDepth = addDepth(buildTree(resources));
-    
+
     const nMap = new Map<string, ResourceItem>();
     const pMap = new Map<string, string>();
 
     const traverseForMaps = (items: ResourceItem[], parentId?: string) => {
-        items.forEach(item => {
-            nMap.set(item.id, item);
-            if (parentId) {
-                pMap.set(item.id, parentId);
-            }
-            if (item.children) {
-                traverseForMaps(item.children as ResourceItem[], item.id);
-            }
-        });
+      items.forEach((item) => {
+        nMap.set(item.id, item);
+        if (parentId) {
+          pMap.set(item.id, parentId);
+        }
+        if (item.children) {
+          traverseForMaps(item.children as ResourceItem[], item.id);
+        }
+      });
     };
 
     traverseForMaps(treeWithDepth);
@@ -108,7 +100,7 @@ export const ResourceTreeSelect: React.FC<ResourceTreeSelectProps> = ({
     const deselectNodeAndChildren = (nodeId: string) => {
       newSelectedIds.delete(nodeId);
       const node = nodeMap.get(nodeId);
-      node?.children?.forEach(child => deselectNodeAndChildren(child.id));
+      node?.children?.forEach((child) => deselectNodeAndChildren(child.id));
     };
 
     if (checked) {
@@ -133,16 +125,16 @@ export const ResourceTreeSelect: React.FC<ResourceTreeSelectProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" type="button" onClick={handleSelectAll}>
+    <div className='flex flex-col gap-2'>
+      <div className='flex items-center gap-2'>
+        <Button variant='outline' size='sm' type='button' onClick={handleSelectAll}>
           Select All
         </Button>
-        <Button variant="outline" size="sm" type="button" onClick={handleDeselectAll}>
+        <Button variant='outline' size='sm' type='button' onClick={handleDeselectAll}>
           Deselect All
         </Button>
       </div>
-      <ScrollArea className="h-64 w-full rounded-md border p-4">
+      <ScrollArea className='h-64 w-full rounded-md border p-4'>
         {treeData.map((node) => (
           <ResourceTreeNode
             key={node.id}

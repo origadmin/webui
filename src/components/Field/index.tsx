@@ -1,5 +1,6 @@
 import { JSX } from "react";
 
+
 export type ValueType =
   | "string"
   | "number"
@@ -39,6 +40,6 @@ export type FieldProps = {
   valueType: ValueType;
   mode: "read" | "update" | "edit";
   plain: boolean;
-  renderForm: (props: any) => JSX.Element;
-  render: (props: any) => JSX.Element;
+  renderForm: (props: unknown) => JSX.Element;
+  render: (props: unknown) => JSX.Element;
 };

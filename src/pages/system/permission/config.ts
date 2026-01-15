@@ -1,8 +1,13 @@
-import { z } from "zod";
-import { usePermissionsQuery, usePermissionCreate, usePermissionUpdate, usePermissionDelete } from "@/api/system/permission";
-import { columns as permissionColumns } from "./components/permissions-columns";
-import { DataTableProps } from "@/components/DataTable";
+import {
+  usePermissionsQuery,
+  usePermissionCreate,
+  usePermissionUpdate,
+  usePermissionDelete,
+} from "@/api/system/permission";
 import { t } from "@/utils/locale";
+import { z } from "zod";
+import { DataTableProps } from "@/components/DataTable";
+import { columns as permissionColumns } from "./components/permissions-columns";
 
 export const formSchema = z.object({
   name: z.string().min(1, {

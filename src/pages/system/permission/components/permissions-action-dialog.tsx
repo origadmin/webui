@@ -9,23 +9,17 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { debugToast } from "@/components/debug-toast";
 import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewTreeSelect, ViewTreeSelectRef } from "./view-tree-select";
-import { debugToast } from "@/components/debug-toast";
+
 
 const formSchema = z.object({
   name: z.string().min(1, { message: t("validation.name.required") }),

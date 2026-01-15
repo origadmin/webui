@@ -1,6 +1,7 @@
-import { useCrudTable } from "../hooks/use-crud-table";
 import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { useCrudTable } from "../hooks/use-crud-table";
+
 
 export function PrimaryButtons() {
   const { setOpen } = useCrudTable();

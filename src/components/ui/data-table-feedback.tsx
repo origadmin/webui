@@ -1,7 +1,6 @@
 import { IconMoodSad, IconLoader } from "@tabler/icons-react";
 import { TableRow, TableCell } from "@/components/ui/table";
 
-
 export const NoResults = ({ colSpan }: { colSpan: number }) => (
   <TableRow>
     <TableCell colSpan={colSpan} className='h-24 text-center text-muted-foreground font-medium'>

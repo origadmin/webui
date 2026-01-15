@@ -11,24 +11,6 @@ interface ModelContextType {
   deleteMenu?: (id: string) => void;
 }
 
-class Dispatcher {
-  callbacks: Record<string, Set<any>> = {};
-  data: Record<string, unknown> = {};
-  update = (name: string) => {
-    if (this.callbacks[name]) {
-      this.callbacks[name].forEach((cb) => {
-        try {
-          const data = this.data[name];
-          cb(data);
-        } catch (e) {
-          console.error(e);
-          cb(undefined);
-        }
-      });
-    }
-  };
-}
-
 const ModelContext = createContext<ModelContextType>({
   addMenu: () => {},
   updateMenu: () => {},
@@ -42,12 +24,6 @@ export const useModel = () => {
   }
   return model;
 };
-
-const dispatcher = new Dispatcher();
-
-interface ProviderProps {
-  value: unknown;
-}
 
 export function Provider(props: { models: Record<string, string>; children: React.ReactNode }) {
   return (

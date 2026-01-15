@@ -111,7 +111,7 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
                   <FormLabel>Roles</FormLabel>
                   <FormControl>
                     <MultiSelect
-                      placeholder="Select roles..."
+                      placeholder='Select roles...'
                       options={roleOptions}
                       value={field.value}
                       onChange={field.onChange}
@@ -129,7 +129,7 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
           </DialogClose>
           <Button type='submit' form='user-invite-form' disabled={isPending}>
             {isPending ? "Sending..." : "Send Invitation"}
-            <IconSend className="ml-2 h-4 w-4" />
+            <IconSend className='ml-2 h-4 w-4' />
           </Button>
         </DialogFooter>
       </DialogContent>

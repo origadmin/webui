@@ -3,19 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const profileFormSchema = z.object({
   username: z
@@ -36,7 +27,7 @@ const profileFormSchema = z.object({
     .array(
       z.object({
         value: z.string().url({ message: "Please enter a valid URL." }),
-      })
+      }),
     )
     .optional(),
 });
@@ -46,10 +37,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 // This can be set to a default user from your API
 const defaultValues: Partial<ProfileFormValues> = {
   bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
+  urls: [{ value: "https://shadcn.com" }, { value: "http://twitter.com/shadcn" }],
 };
 
 export function ProfileForm() {
@@ -84,8 +72,8 @@ export function ProfileForm() {
                 <Input placeholder='shadcn' {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                This is your public display name. It can be your real name or a pseudonym. You can only change this once
+                every 30 days.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -100,9 +88,7 @@ export function ProfileForm() {
               <FormControl>
                 <Input placeholder='your.email@example.com' {...field} />
               </FormControl>
-              <FormDescription>
-                You can manage verified email addresses in your email settings.
-              </FormDescription>
+              <FormDescription>You can manage verified email addresses in your email settings.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

@@ -106,7 +106,7 @@ export function ViewsSequenceDialog({ parentId, open, onOpenChange }: Props) {
         </div>
 
         <DialogFooter>
-          <Button type='button' onClick={handleSave} >
+          <Button type='button' onClick={handleSave}>
             Save Order
           </Button>
         </DialogFooter>

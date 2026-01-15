@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { FormType } from "../config";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { FormType } from "../config";
+
 
 // This function renders the specific form fields for the User module.
 // It can be replaced with a different function for other modules.

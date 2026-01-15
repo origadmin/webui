@@ -78,5 +78,4 @@ function GroupContent({ items = [] }: GroupContentProps) {
   );
 }
 
-export type { GroupContentProps };
 export { GroupContent };

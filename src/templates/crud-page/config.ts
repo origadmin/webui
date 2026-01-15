@@ -1,8 +1,9 @@
-import { z } from "zod";
 import { useUsersQuery, useUserCreate, useUserUpdate, useUserDelete } from "@/api/system/user";
+import { z } from "zod";
 // NOTE: The columns import is removed because the template's config should not depend on a specific implementation.
 // import { columns as userColumns } from "./components/columns";
 import { DataTableProps } from "@/components/DataTable";
+
 
 // This file serves as an EXAMPLE configuration for a CRUD page.
 // When creating a new CRUD page (e.g., for 'roles'), you would copy this template
@@ -28,7 +29,7 @@ export const apiHooks = {
 };
 
 // 4. Define the columns for the data table. This will be defined in the actual page's directory.
-export const columns: DataTableProps<any>["columns"] = [];
+export const columns: DataTableProps<unknown>["columns"] = [];
 
 // 5. Define a title for the page.
 export const pageConfig = {

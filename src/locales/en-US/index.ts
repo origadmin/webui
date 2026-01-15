@@ -1,6 +1,7 @@
+import common from "./common";
 import components from "./components";
 import pages from "./pages";
-import common from "./common";
+
 
 export default {
   "pages.not_found.title": "Oops! Page Not Found!",

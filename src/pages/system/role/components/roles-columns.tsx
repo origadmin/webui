@@ -1,11 +1,12 @@
 import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
 import { defaultHeaderMeta } from "@/types";
-import { systemStatusColumn } from "@/components/DataTable/common-columns";
-import { Badge } from "@/components/ui/badge";
-import { DataTableColumnType } from "@/components/DataTable";
-import LongText from "@/components/long-text";
-import { Input } from "@/components/ui/input";
 import { Column } from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { DataTableColumnType } from "@/components/DataTable";
+import { systemStatusColumn } from "@/components/DataTable/common-columns";
+import LongText from "@/components/long-text";
+
 
 // Helper function to create a simple text input filter
 const textInputFilter = (column: Column<any, unknown>, title: string) => (

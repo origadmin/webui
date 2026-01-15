@@ -1,47 +1,20 @@
-import { useDataTable } from "@/hooks/use-data-table";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DataTable, DataTableProps } from "@/components/DataTable";
+import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
-import { CrudTableProvider } from "./hooks/use-crud-table";
 import { Dialogs } from "./components/dialogs";
-import { PrimaryButtons } from "./components/primary-buttons"; // Assuming a generic primary-buttons component
+import { PrimaryButtons } from "./components/primary-buttons";
+// Assuming a generic primary-buttons component
 import { columns, apiHooks, pageConfig } from "./config";
+import { CrudTableProvider } from "./hooks/use-crud-table";
 
 export default function CrudPage() {
-  const {
-    sorting,
-    pagination,
-    columnFilters,
-    isLoading,
-    data,
-    setSorting,
-    setPagination,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
-  } = useDataTable({
-    useQuery: (params) => apiHooks.useQuery(params),
+  const queryResult = apiHooks.useQuery({
+    pageIndex: 0,
+    pageSize: 10,
   });
 
-  const tableProps: Omit<DataTableProps<any>, "isLoading" | "dataSource" | "total"> = {
-    columns,
-    useManual: true,
-    showPagination: true,
-    sorting,
-    onSortingChange: setSorting,
-    paginationState: pagination,
-    onPaginationChange: setPagination,
-    columnFiltersState: columnFilters,
-    onColumnFiltersChange: setColumnFilters,
-    toolbarPosition: "top",
-    toolbars: isLoading ? undefined : () => <PrimaryButtons />,
-    props: {
-      search: {
-        onSearch: handleSearch,
-        onReset: handleReset,
-      },
-    },
-  };
+  const data = queryResult.data as { items?: unknown[]; total?: number } | undefined;
+  const isLoading = queryResult.isLoading;
 
   return (
     <CrudTableProvider>
@@ -53,10 +26,15 @@ export default function CrudPage() {
           </CardHeader>
           <CardContent>
             <DataTable
-              {...tableProps}
+              columns={columns}
+              dataSource={data?.items ?? []}
+              total={data?.total ?? 0}
               isLoading={isLoading}
-              dataSource={data?.data}
-              total={data?.total}
+              useManual={true}
+              showPagination={true}
+              toolbarPosition='top'
+              toolbars={isLoading ? undefined : () => <PrimaryButtons />}
+              props={{}}
             />
           </CardContent>
         </Card>

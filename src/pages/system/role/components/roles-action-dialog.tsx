@@ -23,8 +23,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { RolesPermissionSelect } from "./roles-permission-select";
 import { debugToast } from "@/components/debug-toast";
+import { RolesPermissionSelect } from "./roles-permission-select";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -134,7 +134,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
             onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
             className='relative space-y-4'
           >
-            <div className="absolute top-0 right-12 z-10 bg-background p-2 rounded-lg">
+            <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
               <FormField
                 control={form.control}
                 name='status'
@@ -152,16 +152,64 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
               />
             </div>
             <ScrollArea className='h-[26.25rem] w-full'>
-              <div className="space-y-4 p-4">
+              <div className='space-y-4 p-4'>
                 {/* Base Info Section */}
                 <div className='space-y-2'>
                   <h3 className='text-lg font-medium'>Base Info</h3>
                   <Separator />
                   <div className='grid grid-cols-2 gap-4 pt-2'>
-                    <FormField control={form.control} name='name' render={({ field }) => (<FormItem><FormLabel>Name</FormLabel><FormControl><Input placeholder='Please enter a name' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='keyword' render={({ field }) => (<FormItem><FormLabel>Keyword</FormLabel><FormControl><Input placeholder='Please enter a keyword' {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='type' render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input {...field} disabled /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name='sequence' render={({ field }) => (<FormItem><FormLabel>Sequence</FormLabel><FormControl><Input type="number" placeholder='0' {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField
+                      control={form.control}
+                      name='name'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Please enter a name' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='keyword'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Keyword</FormLabel>
+                          <FormControl>
+                            <Input placeholder='Please enter a keyword' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='type'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Type</FormLabel>
+                          <FormControl>
+                            <Input {...field} disabled />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='sequence'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Sequence</FormLabel>
+                          <FormControl>
+                            <Input type='number' placeholder='0' {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                   <div className='grid grid-cols-1 gap-4 pt-2'>
                     <FormField
@@ -191,7 +239,11 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <RolesPermissionSelect value={field.value} onChange={field.onChange} permissions={treeData} />
+                            <RolesPermissionSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              permissions={treeData}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

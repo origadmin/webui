@@ -1,6 +1,7 @@
-import { useViewTable } from "./views-table-provider";
 import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { useViewTable } from "./views-table-provider";
+
 
 export function ViewsPrimaryButtons() {
   const { setOpen } = useViewTable();

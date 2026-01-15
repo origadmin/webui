@@ -3,6 +3,7 @@ import { PAGE_SIZE, START_PAGE } from "@/types";
 import { UseQueryResult } from "@tanstack/react-query";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 
+
 // Helper function to format the sorting state for the API
 const formatSorting = (sorting: SortingState): string | undefined => {
   if (sorting.length === 0) {
@@ -17,7 +18,7 @@ interface PaginatedQuery {
   page: number;
   pageSize: number;
   sorting?: string;
-  [key: string]: any; // Allow for additional filter properties
+  [key: string]: unknown; // Allow for additional filter properties
 }
 
 // Defines the standardized, simple shape of data returned from an API list endpoint.
@@ -71,7 +72,7 @@ export function usePaginatedQuery<T>({
       pageSize: pagination.pageSize,
       sorting: formatSorting(sorting),
     };
-    activeFilters.forEach(filter => {
+    activeFilters.forEach((filter) => {
       params[filter.id] = filter.value;
     });
     return params;
