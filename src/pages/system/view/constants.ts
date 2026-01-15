@@ -1,13 +1,13 @@
 export const ViewTypes = {
-  ROOT: "ROOT",
-  GROUP: "GROUP",
-  MENU: "MENU",
-  LINK: "LINK",
-  PAGE: "PAGE",
-  BUTTON: "BUTTON",
-  ELEMENT: "ELEMENT",
-  REDIRECT: "REDIRECT",
-  UNKNOWN: "UNKNOWN",
+  ROOT: "Root",
+  GROUP: "Group",
+  MENU: "Menu",
+  LINK: "Link",
+  PAGE: "Page",
+  BUTTON: "Button",
+  ELEMENT: "Element",
+  REDIRECT: "Redirect",
+  UNKNOWN: "Unknown",
 } as const;
 
 export const ViewScopes = {

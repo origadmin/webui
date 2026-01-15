@@ -17,11 +17,15 @@ export const messages: {
 };
 
 const cache = createIntlCache();
+
+// This function is now the single source of truth for creating an intl instance.
 export const getCreatedIntl = (locale = defaultLocale) => {
+  // Fallback to default locale if the given locale is not supported
+  const effectiveLocale = messages[locale] ? locale : defaultLocale;
   return createIntl(
     {
-      locale,
-      messages: messages[locale],
+      locale: effectiveLocale,
+      messages: messages[effectiveLocale],
       onError: (err) => {
         if (err.code === "MISSING_TRANSLATION") {
           return;
@@ -33,52 +37,30 @@ export const getCreatedIntl = (locale = defaultLocale) => {
   );
 };
 
+// The global `intl` instance, useful for non-component logic, but it's static.
 export const intl = getCreatedIntl(getLocaleLanguage());
 
-// 创建英语回退的 intl 实例
-const enIntl = createIntl(
-  {
-    locale: "en-US",
-    messages: messages["en-US"],
-    onError: (err) => {
-      if (err.code === "MISSING_TRANSLATION") {
-        return;
-      }
-      console.error(err);
-    },
-  },
-  cache,
-);
-
+// The dynamic translation function `t` that should be used everywhere.
 export const t = (id: string, values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>) => {
-  // Start by trying the user language
-  try {
-    const message = intl.formatMessage({ id }, values);
-    // If the returned value is the id itself, no translation was found
-    if (message === id) {
-      // Revert to English
-      try {
-        const enMessage = enIntl.formatMessage({ id }, values);
-        // If the English language is not found either, return the id and output the warning
-        if (enMessage === id) {
-          console.warn(
-            `[@locale] Missing translation for "${id}" in all locales (user language and en-US), using id as fallback`,
-          );
-          return id;
-        }
-        return enMessage;
-      } catch {
-        return id;
-      }
-    }
-    return message;
-  } catch {
-    // If formatting is wrong, try English
-    try {
-      const enMessage = enIntl.formatMessage({ id }, values);
-      return enMessage;
-    } catch {
-      return id;
-    }
+  // 1. Get the current language dynamically on each call.
+  const currentLocale = getLocaleLanguage();
+  const currentIntl = getCreatedIntl(currentLocale);
+
+  // 2. Try to format the message with the current locale.
+  let message = currentIntl.formatMessage({ id, defaultMessage: id }, values);
+
+  // 3. If translation is missing in the current locale, fall back to English.
+  if (message === id && currentLocale !== "en-US") {
+    const enIntl = getCreatedIntl("en-US");
+    message = enIntl.formatMessage({ id, defaultMessage: id }, values);
   }
+
+  // 4. If still missing, warn and return the ID.
+  if (message === id) {
+    console.warn(
+      `[@locale] Missing translation for "${id}" in all locales (current: ${currentLocale}, fallback: en-US), using id as fallback.`
+    );
+  }
+
+  return message;
 };

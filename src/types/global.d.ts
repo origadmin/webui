@@ -6,6 +6,7 @@ import { AxiosRequestConfig, AxiosBasicCredentials } from "axios";
 import { LucideIcon } from "lucide-react";
 import { components } from "./schema";
 
+
 type Schemas = components["schemas"];
 
 declare global {
@@ -166,7 +167,7 @@ declare global {
     };
 
     type MenuItem = {
-      id?: string;
+      id: string; // ID is mandatory for a menu item.
       name?: string;
       keyword?: string;
       title: string;

@@ -30,12 +30,13 @@ export const buildTree = <T extends TreeItem<T>>(items?: T[]): T[] => {
 
   // Second pass: build the tree by linking children to their parents.
   items.forEach((item) => {
-    if (item.parent_id && map.has(item.parent_id)) {
+    // A node is a child if it has a valid parent_id (not "0") that exists in the map.
+    if (item.parent_id && item.parent_id !== "0" && map.has(item.parent_id)) {
       const parent = map.get(item.parent_id);
       // The 'parent.children' is guaranteed to be T[] here because we initialized it.
       parent?.children?.push(item);
     } else {
-      // If an item has no parent_id or its parent is not in the map, it's a root.
+      // Otherwise, it's a root node.
       roots.push(item);
     }
   });

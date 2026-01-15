@@ -26,6 +26,7 @@ import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewsSequenceDialog } from "./views-sequence-dialog";
 import { useViewContext } from "./views-table-provider";
 import { debugToast } from "@/components/debug-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   currentRow?: API.System.View;
@@ -37,8 +38,135 @@ interface Props {
 
 // Type guard to check if a view type is one that should show the resource selector.
 function isResourceSelectorType(type: string): type is "MENU" | "PAGE" | "BUTTON" {
-  // Explicitly cast the array elements to string to satisfy TypeScript's strictness
   return (["MENU", "PAGE", "BUTTON"] as string[]).includes(type);
+}
+
+function ViewForm({
+  is_edit,
+  is_sub,
+  form,
+  formId,
+  onSubmit,
+  setSortDialogOpen,
+  parentRow,
+  isSidebarMissing,
+  currentType,
+  isPending,
+}: any) {
+  const showResourceSelector = isResourceSelectorType(currentType);
+
+  return (
+    <Form {...form}>
+      <form
+        id={formId}
+        onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
+        className='relative space-y-6'
+      >
+        <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
+          <FormField
+            control={form.control}
+            name='status'
+            render={({ field }) => (
+              <FormItem className='flex items-center space-x-2'>
+                <FormLabel>Status</FormLabel>
+                <FormControl>
+                  <Switch checked={field.value === 1} onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
+        <ScrollArea className='h-[32rem] w-full'>
+          <div className='p-4 space-y-6'>
+            {parentRow && (
+              <FormItem>
+                <FormLabel>Parent View</FormLabel>
+                <FormControl>
+                  <Input readOnly disabled value={parentRow.name} />
+                </FormControl>
+              </FormItem>
+            )}
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing, [
+                "name",
+                "keyword",
+                "type",
+                "scope",
+                "path",
+                "component",
+              ])}
+            </div>
+
+            {showResourceSelector && (
+              <FormField
+                control={form.control}
+                name='resource_ids'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Associated Resources</FormLabel>
+                    <FormControl>
+                      <ResourceMultiSelect value={field.value} onChange={field.onChange} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <Accordion type='single' collapsible className='w-full' defaultValue='advanced-settings'>
+              <AccordionItem value='advanced-settings'>
+                <AccordionTrigger className='text-base font-medium hover:no-underline px-2 py-3'>
+                  Advanced Settings
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className='space-y-4 pt-4 border-t'>
+                    <div className='grid grid-cols-2 gap-4 px-2'>
+                      {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing, [
+                        "icon",
+                        "sequence",
+                      ])}
+                    </div>
+                    <div className='px-2'>
+                      <FormField
+                        control={form.control}
+                        name='description'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea placeholder='A brief description of this view.' {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </ScrollArea>
+      </form>
+    </Form>
+  );
+}
+
+function FormSkeleton() {
+  return (
+    <div className='space-y-6 p-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        <Skeleton className='h-10 w-full' />
+        <Skeleton className='h-10 w-full' />
+        <Skeleton className='h-10 w-full' />
+        <Skeleton className='h-10 w-full' />
+        <Skeleton className='h-10 w-full' />
+        <Skeleton className='h-10 w-full' />
+      </div>
+      <Skeleton className='h-24 w-full' />
+    </div>
+  );
 }
 
 export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, className }: Props) {
@@ -53,32 +181,33 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
   const { sidebarRootId } = useViewContext();
   const isSidebarMissing = !sidebarRootId && !is_sub && !is_edit;
 
-  // Safely get resource_ids and ensure they are strings
-  const defaultResourceIds = (currentRow?.resources || []).map((resource) => String(resource.id));
-
-  const defaultType = is_edit
-    ? currentRow.type?.toUpperCase()
-    : is_sub
-      ? ViewTypes.MENU
-      : isSidebarMissing
-        ? ViewTypes.ROOT
-        : ViewTypes.MENU;
-  const defaultScope = is_edit ? currentRow.scope : is_sub ? parentRow.scope || ViewScopes.SIDEBAR : ViewScopes.SIDEBAR;
-  const defaultParentId = is_edit
-    ? currentRow.parent_id
-    : is_sub
-      ? parentRow.id
-      : isSidebarMissing
-        ? "0"
-        : sidebarRootId;
+  const { data: viewData, isLoading: isViewLoading } = apiHooks.useViewQuery(currentRow?.id || "", {
+    enabled: is_edit && open, // Only fetch when the dialog is open for editing
+  });
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
     shouldFocusError: true,
-    defaultValues: is_edit
-      ? { ...currentRow, type: defaultType as FormType["type"], is_edit, resource_ids: defaultResourceIds }
-      : {
+  });
+
+  useEffect(() => {
+    if (open) {
+      if (is_edit) {
+        if (viewData) {
+          const defaultResourceIds = (viewData.resources || []).map((resource) => String(resource.id));
+          form.reset({
+            ...viewData,
+            type: viewData.type?.toUpperCase() as FormType["type"],
+            is_edit: true,
+            resource_ids: defaultResourceIds,
+          });
+        }
+      } else {
+        const defaultType = is_sub ? ViewTypes.MENU : isSidebarMissing ? ViewTypes.ROOT : ViewTypes.MENU;
+        const defaultScope = is_sub ? parentRow?.scope || ViewScopes.SIDEBAR : ViewScopes.SIDEBAR;
+        const defaultParentId = is_sub ? parentRow?.id : isSidebarMissing ? "0" : sidebarRootId;
+        form.reset({
           name: "",
           keyword: "",
           scope: defaultScope,
@@ -93,8 +222,10 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
           is_edit: false,
           resource_ids: [],
           properties: "",
-        },
-  });
+        });
+      }
+    }
+  }, [open, is_edit, viewData, form, is_sub, parentRow, isSidebarMissing, sidebarRootId]);
 
   const currentType = form.watch("type");
   useEffect(() => {
@@ -148,8 +279,6 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
     }
   };
 
-  const showResourceSelector = isResourceSelectorType(currentType);
-
   return (
     <>
       <Dialog
@@ -166,105 +295,24 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description} Click save when you're done.</DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-            <form
-              id={formId}
-              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
-              className='relative space-y-6'
-            >
-              <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
-                <FormField
-                  control={form.control}
-                  name='status'
-                  render={({ field }) => (
-                    <FormItem className='flex items-center space-x-2'>
-                      <FormLabel>Status</FormLabel>
-                      <FormControl>
-                        <Switch
-                          checked={field.value === 1}
-                          onCheckedChange={(checked) => field.onChange(checked ? 1 : 0)}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <ScrollArea className='h-[32rem] w-full'>
-                <div className='p-4 space-y-6'>
-                  {parentRow && (
-                    <FormItem>
-                      <FormLabel>Parent View</FormLabel>
-                      <FormControl>
-                        <Input readOnly disabled value={parentRow.name} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-
-                  <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                    {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing, [
-                      "name",
-                      "keyword",
-                      "type",
-                      "scope",
-                      "path",
-                      "component",
-                    ])}
-                  </div>
-
-                  {showResourceSelector && (
-                    <FormField
-                      control={form.control}
-                      name='resource_ids'
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Associated Resources</FormLabel>
-                          <FormControl>
-                            <ResourceMultiSelect value={field.value} onChange={field.onChange} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  )}
-
-                  <Accordion type='single' collapsible className='w-full' defaultValue='advanced-settings'>
-                    <AccordionItem value='advanced-settings'>
-                      <AccordionTrigger className='text-base font-medium hover:no-underline px-2 py-3'>
-                        Advanced Settings
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className='space-y-4 pt-4 border-t'>
-                          <div className='grid grid-cols-2 gap-4 px-2'>
-                            {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing, [
-                              "icon",
-                              "sequence",
-                            ])}
-                          </div>
-                          <div className='px-2'>
-                            <FormField
-                              control={form.control}
-                              name='description'
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Description</FormLabel>
-                                  <FormControl>
-                                    <Textarea placeholder='A brief description of this view.' {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-              </ScrollArea>
-            </form>
-          </Form>
+          {is_edit && isViewLoading ? (
+            <FormSkeleton />
+          ) : (
+            <ViewForm
+              is_edit={is_edit}
+              is_sub={is_sub}
+              form={form}
+              formId={formId}
+              onSubmit={onSubmit}
+              setSortDialogOpen={setSortDialogOpen}
+              parentRow={parentRow}
+              isSidebarMissing={isSidebarMissing}
+              currentType={currentType}
+              isPending={isCreatePending || isUpdatePending}
+            />
+          )}
           <DialogFooter>
-            <Button type='submit' form={formId} disabled={isCreatePending || isUpdatePending}>
+            <Button type='submit' form={formId} disabled={isCreatePending || isUpdatePending || isViewLoading}>
               Save changes
             </Button>
           </DialogFooter>

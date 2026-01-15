@@ -3,8 +3,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarGroupLabel,
-  SidebarSeparator,
   SidebarMenuSub,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
@@ -13,10 +11,8 @@ import TablerIcon from "@/components/IconPicker/tabler-icon";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 
-type ProcessedItem = API.MenuItem | { type: 'group-label', label: string };
-
 export type GroupContentProps = {
-  items?: ProcessedItem[];
+  items?: API.MenuItem[];
 };
 
 // Recursive component to render menu items and their children
@@ -71,25 +67,13 @@ const RecursiveMenuItem = ({ item }: { item: API.MenuItem }) => {
 
 function GroupContent({ items = [] }: GroupContentProps) {
   return (
-    // This section is now the main scrollable area
     <SidebarContent className="flex-1 overflow-y-auto">
       <SidebarMenu className="p-2">
-        {items.map((item, index) => {
-          if ('type' in item) {
-            if (item.type === 'group-label') {
-              return <SidebarGroupLabel key={`group-${item.label}-${index}`}>{item.label}</SidebarGroupLabel>;
-            }
-            // Separators can be handled if needed, but grouping implies separation
-            return null;
-          }
-
-          const menuItem = item as API.MenuItem;
-          return (
-            <SidebarMenuItem key={menuItem.id}>
-              <RecursiveMenuItem item={menuItem} />
-            </SidebarMenuItem>
-          );
-        })}
+        {items.map((item) => (
+          <SidebarMenuItem key={item.id}>
+            <RecursiveMenuItem item={item} />
+          </SidebarMenuItem>
+        ))}
       </SidebarMenu>
     </SidebarContent>
   );

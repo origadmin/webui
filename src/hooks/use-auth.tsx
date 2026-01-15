@@ -44,11 +44,10 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     }
 
     try {
-      // Fetch user profile and views in parallel.
-      // The API functions now return the data directly.
+      // Fetch user profile and all available views in parallel.
       const [user, views] = await Promise.all([
         getProfile(),
-        listMyViews({ scope: "sidebar" }), // Fetch sidebar views by default
+        listMyViews(), // No parameters needed anymore
       ]);
 
       setAuthState((s) => ({

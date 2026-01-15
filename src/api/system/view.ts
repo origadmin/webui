@@ -1,25 +1,25 @@
 import { transformListParams } from "@/utils/api";
-import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation, UseQueryOptions } from "@tanstack/react-query";
+import { del, get, post, put } from "@/utils/request";
+import { QueryClient, queryOptions, useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 /**
- * Query view list GET /sys/views
+ * Query view list GET /sys/views. This is a lightweight query for list pages.
  */
 export async function listViews(params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
-  // Add with_resources=true to the parameters sent to the backend
-  const queryParams = { ...backendParams, with_resources: true };
-  const rawResponse = await get<API.System.ListViewsResponse>("/sys/views", queryParams, options);
+  const rawResponse = await get<API.System.ListViewsResponse>("/sys/views", backendParams, options);
   return {
     items: rawResponse?.views || [],
     total: rawResponse?.total || 0,
   };
 }
 
-/** Get view record by ID GET /sys/views/${id} */
+/**
+ * Get view record by ID GET /sys/views/${id}. This is a detailed query for edit pages.
+ * The backend will always include relations like children and resources.
+ */
 export async function getView(id: string, options?: API.RequestOptions) {
-  // Also add with_resources=true here for consistency, in case it's used directly elsewhere
-  const rawResponse = await get<API.System.GetViewResponse>(`/sys/views/${id}`, { with_resources: true }, options);
+  const rawResponse = await get<API.System.GetViewResponse>(`/sys/views/${id}`, undefined, options);
   return rawResponse?.view;
 }
 
