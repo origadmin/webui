@@ -3,6 +3,7 @@ import { getProfile, listMyViews } from "@/api/auth/me";
 import { noop, Storage } from "@/utils";
 import { clearStorage, setAuth } from "@/utils/storage";
 
+
 type AuthState = {
   user: API.System.User | null;
   views: API.System.View[] | null;
