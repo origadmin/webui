@@ -73,7 +73,7 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     ),
     meta: defaultHeaderMeta.meta,
   },
-  systemStatusColumn,
+  systemStatusColumn(),
   {
     id: "actions",
     header: "Actions",

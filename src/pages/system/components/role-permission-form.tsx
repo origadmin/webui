@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+
 export const formSchema = z.object({
   name: z.string().min(2, "名称至少2个字符"),
   keyword: z.string().regex(/^[A-Z_]+$/, "关键字必须大写字母和下划线"),
@@ -15,7 +16,13 @@ export const formSchema = z.object({
 
 type PermissionForm = z.infer<typeof formSchema>;
 
-export const RolePermissionForm = ({ initialValues, onSubmit, onDelete }) => {
+type RolePermissionFormProps = {
+  initialValues?: Partial<PermissionForm>;
+  onSubmit: (data: PermissionForm) => void;
+  onDelete?: () => void;
+};
+
+export const RolePermissionForm = ({ initialValues, onSubmit, onDelete }: RolePermissionFormProps) => {
   const form = useForm<PermissionForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
@@ -25,12 +32,9 @@ export const RolePermissionForm = ({ initialValues, onSubmit, onDelete }) => {
       description: "",
       data_scope: "role",
       data_rules: {},
+      ...initialValues,
     },
   });
-  
-  const onSubmit = (data: PermissionForm) => {
-    // form.handleSubmit(onSubmit)(data);
-  }
 
   return (
     <Form {...form}>

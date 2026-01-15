@@ -5,7 +5,6 @@ import { PageConfig, ApiHooks } from "../types";
 import { ActionDialog } from "./action-dialog";
 import { DeleteDialog } from "./delete-dialog";
 
-
 interface DialogsProps<T, TForm extends z.ZodType<any, any>> {
   pageConfig: PageConfig;
   formSchema: TForm;

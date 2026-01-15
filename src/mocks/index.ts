@@ -5,7 +5,7 @@ import { views } from "@/mocks/view/views";
 import { mockSignInUser, mockToken } from "./mock-sign-in";
 import { resources } from "./resources";
 
-const mockData: Record<string, any> = {
+const mockData: Record<string, unknown> = {
   "/sys/users": users,
   "/sys/roles": roles,
   "/sys/permissions": permissions,
@@ -72,6 +72,10 @@ const sortData = (mockData: unknown, params?: API.SearchParams) => {
   return mockData;
 };
 
+interface ItemWithParentId {
+  parent_id?: string | null;
+}
+
 const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
   let data = mockData[path];
 
@@ -80,11 +84,12 @@ const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
     // Filter by parent_id if it exists in params
     if (params.parent_id !== undefined) {
       data = data.filter((item) => {
+        const typedItem = item as ItemWithParentId;
         // Handle root items where parent_id can be null, undefined or ""
         if (params.parent_id === null || params.parent_id === "" || params.parent_id === undefined) {
-          return item.parent_id === null || item.parent_id === "" || item.parent_id === undefined;
+          return typedItem.parent_id === null || typedItem.parent_id === "" || typedItem.parent_id === undefined;
         }
-        return item.parent_id === params.parent_id;
+        return typedItem.parent_id === params.parent_id;
       });
     }
   }

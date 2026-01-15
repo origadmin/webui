@@ -2,7 +2,6 @@ import { router } from "@/router";
 import { RouterProvider } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
 
-
 /**
  * This is the root component for the authenticated part of the app.
  * It assumes it is rendered within an AuthProvider and all data is ready.

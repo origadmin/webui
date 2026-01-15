@@ -1,4 +1,5 @@
 import { useUserResourceQuery } from "@/api/system/user";
+import { type Resource } from "@/types/system/resources";
 import { Badge } from "@/components/ui/badge";
 import {
   Drawer,
@@ -36,7 +37,7 @@ export const PermissionDrawer = ({ currentRow, open, onOpenChange }: PermissionD
             <div>
               {resources &&
                 Array.isArray(resources.data) &&
-                resources.data?.map((resource) => <Badge key={resource.id}>{resource.name}</Badge>)}
+                (resources.data as Resource[])?.map((resource) => <Badge key={resource.id}>{resource.name}</Badge>)}
             </div>
           )}
         </div>

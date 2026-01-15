@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { API } from "@/types/api";
 
+
 const generateViews = (): API.System.View[] => {
   const views: API.System.View[] = [];
   const numViews = 50;
@@ -39,11 +40,13 @@ const generateViews = (): API.System.View[] => {
     if (i >= 5 && views.length > 0) {
       // Assign a random parent from the views created so far.
       const parentView = faker.helpers.arrayElement(views);
-      view.parent_id = parentView.id;
-      // A button should not have a path or icon
-      if (view.type === "BUTTON") {
-        view.path = undefined;
-        view.icon = undefined;
+      if (parentView) {
+        view.parent_id = parentView.id;
+        // A button should not have a path or icon
+        if (view.type === "BUTTON") {
+          view.path = undefined;
+          view.icon = undefined;
+        }
       }
     }
 

@@ -1,7 +1,6 @@
 import { ComponentType } from "react";
 import * as icons from "@tabler/icons-react";
 
-
 // Define a more specific type for the icons module
 type IconModule = {
   [key: string]: ComponentType<icons.TablerIconsProps>;

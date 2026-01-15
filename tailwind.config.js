@@ -3,6 +3,7 @@
 import daisyui from "daisyui";
 import tailwindcssAnimate from "tailwindcss-animate";
 
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   darkMode: ["selector", "class"],

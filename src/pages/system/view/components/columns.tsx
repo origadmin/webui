@@ -26,7 +26,6 @@ const textInputFilter = (column: Column<any, unknown>, title: string) => (
 
 export const columns: DataTableColumnType<API.System.View>[] = [
   {
-    id: "name",
     accessorKey: "name",
     header: ({ column, table }) => (
       <div className='flex items-center gap-1.5 min-w-[100px] overflow-x-auto no-scrollbar'>
@@ -61,7 +60,6 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     filterComponent: (column) => textInputFilter(column, "Name"),
   },
   {
-    id: "keyword",
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
@@ -69,7 +67,6 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     filterComponent: (column) => textInputFilter(column, "Keyword"),
   },
   {
-    id: "scope",
     accessorKey: "scope",
     header: "Scope",
     cell: ({ row }) => {
@@ -80,7 +77,6 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
-    id: "type",
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => {
@@ -90,7 +86,6 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     meta: defaultHeaderMeta.meta,
   },
   {
-    id: "path",
     accessorKey: "path",
     header: "Path",
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
@@ -120,7 +115,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
   //   cell: ({ row }) => <LongText>{row.original.description}</LongText>,
   //   meta: defaultHeaderMeta.meta,
   // },
-  systemStatusColumn,
+  systemStatusColumn(),
   {
     id: "actions",
     header: "Actions",

@@ -7,7 +7,6 @@ import AuthProvider, { useAuth } from "@/hooks/use-auth";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import "./main.css";
 
-
 const rootElement = document.getElementById("root");
 
 function App() {

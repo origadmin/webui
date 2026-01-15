@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
-
 interface Props<T> {
   open: boolean;
   onOpenChange: (open: boolean) => void;

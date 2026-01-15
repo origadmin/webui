@@ -211,7 +211,7 @@ const prettierPluginConfig = {
 
 export default tseslint.config([
   {
-    ignores: ["dist/", "node_modules/"],
+    ignores: ["coverage/", "public/", "dist/", "node_modules/", "src/mocks/"],
   },
   eslint.configs.recommended,
   eslintConfig,

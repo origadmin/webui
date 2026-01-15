@@ -1,6 +1,25 @@
-import { IconBarrierBlock, IconBrowserCheck, IconBug, IconChecklist, IconError404, IconHelp, IconLayoutDashboard, IconLock, IconLockAccess, IconMessages, IconNotification, IconPackages, IconPalette, icons, IconServerOff, IconSettings, IconTool, IconUserCog, IconUserOff } from "@tabler/icons-react";
+import {
+  IconBarrierBlock,
+  IconBrowserCheck,
+  IconBug,
+  IconChecklist,
+  IconError404,
+  IconHelp,
+  IconLayoutDashboard,
+  IconLock,
+  IconLockAccess,
+  IconMessages,
+  IconNotification,
+  IconPackages,
+  IconPalette,
+  icons,
+  IconServerOff,
+  IconSettings,
+  IconTool,
+  IconUserCog,
+  IconUserOff,
+} from "@tabler/icons-react";
 import { uuid } from "@/lib/crypto";
-
 
 export type Product = {
   photo_path: string;

@@ -1,6 +1,5 @@
 import { useState, createContext, useContext, ReactNode } from "react";
 
-
 type CrudTableContextType<T> = {
   open: string | null;
   setOpen: (open: string | null) => void;

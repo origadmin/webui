@@ -1,6 +1,5 @@
 import { JSX } from "react";
 
-
 export type ValueType =
   | "string"
   | "number"

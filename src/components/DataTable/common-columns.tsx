@@ -1,3 +1,4 @@
+import { defaultHeaderMeta } from "@/types";
 import { statusDescriptors } from "@/types/system";
 import { ColorBadge } from "@/components/ui/color-badge";
 import { DataTableColumnType, DataTableFacetedFilter } from "@/components/DataTable";
@@ -8,7 +9,6 @@ import { DataTableColumnType, DataTableFacetedFilter } from "@/components/DataTa
  * It uses the centralized badge system and dynamically generates its filter options.
  */
 export const systemStatusColumn = <T,>(): DataTableColumnType<T> => ({
-  id: "status",
   accessorKey: "status",
   header: "Status",
   cell: ({ row }) => {
@@ -36,6 +36,7 @@ export const systemStatusColumn = <T,>(): DataTableColumnType<T> => ({
       }))}
     />
   ),
+  meta: defaultHeaderMeta.meta,
   enableSorting: false,
   enableHiding: false,
 });

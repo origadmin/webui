@@ -4,7 +4,6 @@ import { z } from "zod";
 // import { columns as userColumns } from "./components/columns";
 import { DataTableProps } from "@/components/DataTable";
 
-
 // This file serves as an EXAMPLE configuration for a CRUD page.
 // When creating a new CRUD page (e.g., for 'roles'), you would copy this template
 // and replace the user-specific imports and definitions with role-specific ones.

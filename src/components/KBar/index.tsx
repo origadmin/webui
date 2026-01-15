@@ -5,7 +5,6 @@ import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } fr
 import RenderResults from "./render-result";
 import useThemeSwitching from "./use-theme-switching";
 
-
 export default function KBar({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
 

@@ -10,7 +10,6 @@ import { ViewsPrimaryButtons } from "./components/views-primary-buttons";
 import { ViewTableProvider, useViewContext } from "./components/views-table-provider";
 import { apiHooks, columns, pageConfig } from "./config";
 
-
 function ViewPageContent() {
   const dataTable = usePaginatedQuery({
     useQuery: (params) => apiHooks.useQuery({ ...params, pagingMode: "none" }),

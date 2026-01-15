@@ -1,15 +1,15 @@
-import { ReactNode } from "react";
+import React, { JSX, ReactNode, useState } from "react";
 import { UseQueryResult } from "@tanstack/react-query";
-import { useDataTable } from "@/hooks/use-data-table";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable, DataTableProps } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
 
 interface SystemManagementPageProps<T> {
   title: string;
   description: string;
-  columns: any[];
-  useQuery: (params: any) => UseQueryResult<API.PageResult<T>>;
+  columns: DataTableProps<T>["columns"];
+  useQuery: (params: API.DataTableParams) => UseQueryResult<API.Result<T>>;
   PrimaryButtons: () => JSX.Element;
   Dialogs: () => JSX.Element;
   TableProvider: React.FC<{ children: ReactNode }>;
@@ -24,20 +24,43 @@ export function SystemManagementPage<T>({
   Dialogs,
   TableProvider,
 }: SystemManagementPageProps<T>) {
-  const {
-    sorting,
-    pagination,
-    columnFilters,
-    isLoading,
-    data = {},
-    setSorting,
-    setPagination,
-    setColumnFilters,
-    handleSearch,
-    handleReset,
-  } = useDataTable({
-    useQuery,
-  });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 15 });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  const queryParams: API.DataTableParams = {
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    // Add sorting parameters
+    ...(sorting.length > 0 && {
+      sortField: sorting[0].id,
+      sortOrder: sorting[0].desc ? "desc" : "asc",
+    }),
+    // Add column filters as dynamic properties
+    ...columnFilters.reduce(
+      (acc, filter) => {
+        if (filter.value) {
+          acc[filter.id] = filter.value;
+        }
+        return acc;
+      },
+      {} as Record<string, unknown>,
+    ),
+  };
+
+  const { data: queryResult, isLoading }: UseQueryResult<API.Result<T>> = useQuery(queryParams);
+
+  const data = queryResult || { items: [], total: 0 };
+
+  const handleSearch = () => {
+    // Implement search logic if needed, or rely on query re-fetch
+  };
+
+  const handleReset = () => {
+    setColumnFilters([]);
+    setSorting([]);
+    setPagination({ pageIndex: 0, pageSize: 15 });
+  };
 
   const tableProps: Omit<DataTableProps<T>, "isLoading" | "dataSource" | "total"> = {
     columns,
@@ -69,7 +92,12 @@ export function SystemManagementPage<T>({
           </CardHeader>
           <CardContent>
             <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-              <DataTable<T> {...tableProps} isLoading={isLoading} dataSource={data.data} total={data.total} />
+              <DataTable<T>
+                {...tableProps}
+                isLoading={isLoading}
+                dataSource={data?.items || []}
+                total={data?.total || 0}
+              />
             </div>
           </CardContent>
         </Card>

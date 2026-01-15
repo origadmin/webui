@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import TablerIcon from "../IconPicker/tabler-icon";
 
-
 interface FileUploadProps {
   onFilesChange?: (files: File[]) => void;
   multiple?: boolean;

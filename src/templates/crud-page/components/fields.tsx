@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { FormType } from "../config";
 
-
 // This function renders the specific form fields for the User module.
 // It can be replaced with a different function for other modules.
 export const renderUserFields = (form: ReturnType<typeof useForm<FormType>>) => {

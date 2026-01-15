@@ -13,7 +13,6 @@ import { PinInput, PinInputField } from "@/components/custom/pin-input";
 import { Search } from "@/components/search";
 import { UserNav } from "@/components/user-nav";
 
-
 export default function ExtraComponents() {
   const items = [{ title: "Extra Components", href: "/extra-components" }, { title: "Breadcrumb" }].map(
     ({ href, title }) => (

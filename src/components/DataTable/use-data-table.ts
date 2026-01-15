@@ -17,7 +17,6 @@ import {
 } from "@tanstack/react-table";
 import { DataTableProps } from ".";
 
-
 export function useDataTable<TData, TValue>({
   columns,
   dataSource = [],

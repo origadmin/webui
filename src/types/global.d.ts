@@ -147,7 +147,7 @@ declare global {
 
     type Result<T> = {
       success?: boolean;
-      data?: T;
+      items?: T[];
       total?: number;
       error?: Error;
     };

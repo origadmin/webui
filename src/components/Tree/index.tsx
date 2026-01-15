@@ -3,7 +3,6 @@ import { IconChevronRight } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
-
 export interface TreeNode {
   id: string;
   name: string;

@@ -8,6 +8,7 @@ import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import LongText from "@/components/long-text";
 import { ResourceIconRowActions } from "./resources-row-actions";
 
+
 // Helper function to create a simple text input filter
 const textInputFilter = (column: Column<any, unknown>, title: string) => (
   <Input
@@ -91,7 +92,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     cell: ({ row }) => <LongText>{row.original.description}</LongText>,
     meta: defaultHeaderMeta.meta,
   },
-  systemStatusColumn,
+  systemStatusColumn(),
   {
     accessorKey: "sync_status",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Sync Status' />,

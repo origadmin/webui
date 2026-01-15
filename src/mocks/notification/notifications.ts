@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, type RestHandler } from "msw";
 
 
 export interface NotificationItem {
@@ -24,7 +24,7 @@ const generateNotifications = (count: number): NotificationItem[] => {
 
 let notifications = generateNotifications(15);
 
-export const notificationHandlers = [
+export const notificationHandlers: RestHandler[] = [
   // Get all notifications
   http.get("/api/v1/notifications", () => {
     return HttpResponse.json({

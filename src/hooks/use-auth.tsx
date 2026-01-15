@@ -5,7 +5,6 @@ import { t } from "@/utils/locale";
 import { clearStorage, setAuth } from "@/utils/storage";
 import { buildTree } from "@/utils/tree";
 
-
 // Helper function to transform a backend View object into a frontend MenuItem object.
 const transformViewToMenuItem = (view: API.System.View): API.MenuItem | null => {
   if (!view.id) {

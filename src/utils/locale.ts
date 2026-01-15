@@ -7,7 +7,6 @@ import { getLocaleLanguage } from "@/utils/storage";
 import { FormatXMLElementFn, PrimitiveType } from "intl-messageformat";
 import { createIntl, createIntlCache } from "react-intl";
 
-
 export const messages: {
   [key: string]: Record<string, string>;
 } = {

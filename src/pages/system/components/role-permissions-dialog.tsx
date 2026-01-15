@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { usePermissionCreate, usePermissionsQuery, usePermissionDelete } from "@/api/system/permission";
+import { usePermissionCreate, usePermissionsQuery } from "@/api/system/permission";
 import { RolePermissionForm } from "@/pages/system/components/role-permission-form";
 import { useQueryClient } from "@tanstack/react-query";
+import { type Permission } from "@/types/system/permissions";
 import { Button } from "@/components/ui/button";
 import { DialogHeader, DialogTitle, DialogContent, DialogFooter, Dialog } from "@/components/ui/dialog";
 
@@ -11,23 +12,20 @@ interface Props {
 }
 
 export function RolePermissionsDialog({ open, onOpenChange }: Props) {
-  const [editingPermission, setEditingPermission] = useState<API.System.Permission | null>(null);
+  const [editingPermission, setEditingPermission] = useState<Permission | null>(null);
   const { data: permissions, refetch } = usePermissionsQuery();
   const queryClient = useQueryClient();
-  const { mutate: createPermission, isPending: isCreatePending } = usePermissionCreate(queryClient);
-  // const updateMutation = usePermissionUpdate(queryClient, editingPermission?.id || "");
-  const { mutate: deletePermission, isPending: isDeletePending } = usePermissionDelete(queryClient);
+  const { mutate: createPermission } = usePermissionCreate(queryClient);
 
-  const handleSubmit = async (formData: API.System.Permission) => {
+  const handleSubmit = async (formData: Permission) => {
     if (!editingPermission) {
-      createPermission(formData);
-    } else {
+      createPermission(formData as Omit<Permission, "id"> & { resource_ids?: string[]; view_ids?: string[] });
     }
     refetch();
     onOpenChange(false);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     // await deleteMutation.mutateAsync(id);
     refetch();
   };
@@ -40,15 +38,15 @@ export function RolePermissionsDialog({ open, onOpenChange }: Props) {
         </DialogHeader>
 
         <RolePermissionForm
-          initialValues={editingPermission}
+          initialValues={editingPermission || undefined}
           onSubmit={handleSubmit}
-          onDelete={editingPermission ? () => handleDelete("") : undefined}
+          onDelete={editingPermission ? () => handleDelete() : undefined}
         />
 
         <div className='mt-4 border-t pt-4'>
           <h3 className='text-lg font-semibold'>现有权限列表</h3>
           <div className='space-y-2 max-h-60 overflow-y-auto'>
-            {permissions?.data?.map((permission) => (
+            {(permissions?.items as Permission[])?.map((permission) => (
               <div key={permission.id} className='flex items-center justify-between p-2 border rounded'>
                 <div>
                   <span className='font-medium'>{permission.name}</span>

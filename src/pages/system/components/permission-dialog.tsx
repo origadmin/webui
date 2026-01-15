@@ -6,7 +6,8 @@ import { usePermissionsQuery, usePermissionCreate, usePermissionDelete } from "@
 import { useResourcesQuery } from "@/api/system/resource";
 import { useQueryClient } from "@tanstack/react-query";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
-import { permissionTypeBadgeColor } from "@/types/system/permissions";
+import { permissionTypeBadgeColor, type Permission } from "@/types/system/permissions";
+import { type Resource } from "@/types/system/resources";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,21 +37,21 @@ interface PermissionDialogProps {
 
 export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPermission, setCurrentPermission] = useState<API.System.Permission>({});
+  const [currentPermission, setCurrentPermission] = useState<Partial<Permission>>({});
   const [isEditMode, setIsEditMode] = useState(false);
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
   const [selectedResources, setSelectedResources] = useState<string[]>([]);
 
   // React Query hooks
-  const { data: permissions = {}, isLoading: isLoadingPermissions } = usePermissionsQuery();
-  const { data: resources = {}, isLoading: isLoadingResources } = useResourcesQuery({ page_size: 1000 });
+  const { data: permissions, isLoading: isLoadingPermissions } = usePermissionsQuery();
+  const { data: resources, isLoading: isLoadingResources } = useResourcesQuery({ page_size: 1000 });
   const queryClient = useQueryClient();
   const { mutate: savePermission, isPending: isSaving } = usePermissionCreate(queryClient);
   const { mutate: deletePermission, isPending: isDeleting } = usePermissionDelete(queryClient);
 
   // Filter permissions based on search query
   const filteredPermissions =
-    permissions?.data?.filter(
+    (permissions?.items as Permission[])?.filter(
       (permission) =>
         permission.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         permission.keyword?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -72,32 +73,29 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
   };
 
   // Handle editing a permission
-  const handleEditPermission = (permission: API.System.Permission) => {
+  const handleEditPermission = (permission: Permission) => {
     setCurrentPermission({ ...permission });
-    setSelectedResources(permission.resources?.map((r) => r.id || "").filter((v) => v !== "") || []);
+    setSelectedResources(permission.resources?.map((r) => r.id!).filter((v) => v) || []);
     setIsEditMode(true);
     setIsFormDialogOpen(true);
   };
 
   // Handle deleting a permission
-  const handleDeletePermission = (id?: string) => {
+  const handleDeletePermission = (id?: string | number) => {
     if (!id) return;
-    deletePermission(id);
+    deletePermission(id as string);
   };
 
   // Handle saving a permission (add or edit)
   const handleSavePermission = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Add selected resources to the permission
-    const selectedResourceObjects = resources?.data?.filter((r) => r.id && selectedResources.includes(r.id));
-
-    const permissionToSave: API.System.Permission = {
+    const permissionToSave = {
       ...currentPermission,
-      resources: selectedResourceObjects,
+      resource_ids: selectedResources,
     };
 
-    savePermission(permissionToSave);
+    savePermission(permissionToSave as Omit<Permission, "id"> & { resource_ids?: string[]; view_ids?: string[] });
     // setIsDialogOpen(false);
   };
 
@@ -132,8 +130,6 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
   if (isLoadingPermissions || isLoadingResources) {
     return <div className='flex justify-center items-center h-64'>Loading...</div>;
   }
-
-  console.log("permissions", permissions);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -339,14 +335,12 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
                     </div>
                     <div className='border rounded-md p-4 h-[300px] overflow-y-auto'>
                       <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-                        {resources?.data?.map((resource) => (
+                        {(resources?.items as Resource[])?.map((resource) => (
                           <div key={resource.id} className='flex items-start space-x-2'>
                             <Checkbox
                               id={`resource-${resource.id}`}
-                              checked={!!resource.id && selectedResources.includes(resource.id)}
-                              onCheckedChange={(checked) =>
-                                handleResourceSelection(resource.id || "", checked === true)
-                              }
+                              checked={selectedResources.includes(resource.id!)}
+                              onCheckedChange={(checked) => handleResourceSelection(resource.id!, checked === true)}
                             />
                             <div className='grid gap-1.5'>
                               <Label
@@ -375,17 +369,17 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
                           <Input
                             value={key}
                             onChange={(e) => {
-                              const newRules = { ...currentPermission.data_rules } as { [key: string]: string };
-                              const oldValue = newRules[key];
-                              delete newRules[key];
-                              newRules[e.target.value] = oldValue;
+                              const newRules = { ...(currentPermission.data_rules || {}) };
+                              const oldValue = newRules[key as keyof typeof newRules];
+                              delete newRules[key as keyof typeof newRules];
+                              (newRules as { [key: string]: string })[e.target.value] = oldValue;
                               setCurrentPermission({ ...currentPermission, data_rules: newRules });
                             }}
                             placeholder='Key'
                             className='flex-1'
                           />
                           <Input
-                            value={value}
+                            value={value as string}
                             onChange={(e) => handleDataRuleChange(key, e.target.value)}
                             placeholder='Value'
                             className='flex-1'
@@ -395,8 +389,8 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
                             variant='ghost'
                             size='icon'
                             onClick={() => {
-                              const newRules = { ...currentPermission.data_rules } as { [key: string]: string };
-                              delete newRules[key];
+                              const newRules = { ...(currentPermission.data_rules || {}) };
+                              delete newRules[key as keyof typeof newRules];
                               setCurrentPermission({ ...currentPermission, data_rules: newRules });
                             }}
                           >
@@ -409,8 +403,8 @@ export function PermissionDialog({ open, onOpenChange }: PermissionDialogProps) 
                         variant='outline'
                         size='sm'
                         onClick={() => {
-                          const newRules = { ...currentPermission.data_rules } as { [key: string]: string };
-                          newRules[`key${Object.keys(newRules).length + 1}`] = "";
+                          const newRules = { ...(currentPermission.data_rules || {}) };
+                          (newRules as { [key: string]: string })[`key${Object.keys(newRules).length + 1}`] = "";
                           setCurrentPermission({ ...currentPermission, data_rules: newRules });
                         }}
                       >

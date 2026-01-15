@@ -5,7 +5,6 @@ import { ResourcesActionDialog } from "./resources-action-dialog";
 import { ResourcesDeleteDialog } from "./resources-delete-dialog";
 import { useResourceTable } from "./resources-table-provider";
 
-
 interface ResourcesDialogsProps {
   queryResult: UseQueryResult<PaginatedQueryResult<API.System.Resource>>;
 }

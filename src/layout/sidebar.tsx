@@ -5,7 +5,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { SidebarComponent as Sidebar, SidebarProps } from "@/components/Sidebar";
 import { Brand } from "@/components/brand";
 
-
 export function AppSidebar() {
   const { user, views } = useAuth();
 
