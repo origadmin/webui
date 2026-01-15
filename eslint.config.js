@@ -8,6 +8,7 @@ import tailwindcss from "eslint-plugin-tailwindcss";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
+
 const reactConfig = {
   ...reactPlugin.configs.flat.recommended,
   files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
