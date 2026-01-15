@@ -1,5 +1,6 @@
 import { get } from "@/utils/request";
 
+
 const API_ME_URL = "/me";
 
 /**
@@ -20,7 +21,7 @@ export const getProfile = async (): Promise<API.System.User | null> => {
  * @param params - The parameters for the request, including the 'scope'.
  * @returns A promise that resolves with the user's view tree.
  */
-export const listMyViews = async (params: { scope: string }): Promise<API.System.View[]> => {
+export const listMyViews = async (params?: API.SearchParams): Promise<API.System.View[]> => {
   const response = await get<API.Auth.ListMyViewsResponse>(`${API_ME_URL}/views`, params);
   return response?.views || [];
 };

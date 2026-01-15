@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { DataTableProps } from "@/components/DataTable";
-import { useViewsQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
+import { useViewsQuery, useViewQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
 import { columns as viewColumns } from "./components/columns";
 import { ViewTypes } from "./constants";
 
@@ -29,6 +29,7 @@ export type FormType = z.infer<typeof formSchema>;
 
 export const apiHooks = {
   useQuery: useViewsQuery,
+  useViewQuery: useViewQuery, // Add the missing hook
   useCreate: useViewCreate,
   useUpdate: useViewUpdate,
   useDelete: useViewDelete,

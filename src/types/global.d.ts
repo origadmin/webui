@@ -178,7 +178,7 @@ declare global {
       external?: boolean;
       shortcut?: [string, string];
       icon?: string;
-      label?: string;
+      scope?: string;
       description?: string;
       isActive?: boolean;
       children?: MenuItem[];

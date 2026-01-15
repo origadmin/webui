@@ -1,12 +1,32 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { getProfile, listMyViews } from "@/api/auth/me";
 import { noop, Storage } from "@/utils";
+import { t } from "@/utils/locale";
 import { clearStorage, setAuth } from "@/utils/storage";
+import { buildTree } from "@/utils/tree";
 
+// Helper function to transform a backend View object into a frontend MenuItem object.
+const transformViewToMenuItem = (view: API.System.View): API.MenuItem | null => {
+  if (!view.id) {
+    return null;
+  }
+  return {
+    id: view.id,
+    title: view.i18n ? t(view.i18n) : view.name || "",
+    path: view.path,
+    icon: view.icon,
+    type: view.type,
+    scope: view.scope,
+    parent_id: view.parent_id,
+    children: view.children
+      ? view.children.map(transformViewToMenuItem).filter((v): v is API.MenuItem => v !== null)
+      : [],
+  };
+};
 
 type AuthState = {
   user: API.System.User | null;
-  views: API.System.View[] | null;
+  views: API.MenuItem[]; // The single source of truth: the full, structured view tree.
   token: string | null;
   loading: boolean;
 };
@@ -21,7 +41,7 @@ type AuthContextType = AuthState & AuthActions;
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  views: null,
+  views: [],
   token: null,
   loading: true,
   login: async () => {},
@@ -45,16 +65,18 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     }
 
     try {
-      // Fetch user profile and all available views in parallel.
-      const [user, views] = await Promise.all([
-        getProfile(),
-        listMyViews(), // No parameters needed anymore
-      ]);
+      const [user, flatViews] = await Promise.all([getProfile(), listMyViews()]);
+
+      let viewTree: API.MenuItem[] = [];
+      if (flatViews) {
+        const menuItems = flatViews.map(transformViewToMenuItem).filter((v): v is API.MenuItem => v !== null);
+        viewTree = buildTree(menuItems);
+      }
 
       setAuthState((s) => ({
         ...s,
         user: user || null,
-        views: views || [],
+        views: viewTree,
         loading: false,
         token,
       }));
@@ -74,9 +96,9 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     setAuthState((s) => ({
       ...s,
       token: token.access_token,
-      loading: true, // Set loading to true while re-initializing
+      loading: true,
     }));
-    await initialize(); // Re-fetch user data after login
+    await initialize();
   };
 
   const logout = () => {
