@@ -1,21 +1,8 @@
 import { useState } from "react";
-import {
-  ColumnFiltersState,
-  PaginationState,
-  SortingState,
-  VisibilityState,
-  ExpandedState,
-  useReactTable,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  OnChangeFn,
-} from "@tanstack/react-table";
 import { PAGE_SIZE, START_PAGE } from "@/types";
+import { ColumnFiltersState, PaginationState, SortingState, VisibilityState, ExpandedState, useReactTable, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, getFacetedRowModel, getFacetedUniqueValues, OnChangeFn } from "@tanstack/react-table";
 import { DataTableProps } from ".";
+
 
 export function useDataTable<TData, TValue>({
   columns,

@@ -1,6 +1,6 @@
+import { useViewsQuery, useViewQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
 import { z } from "zod";
 import { DataTableProps } from "@/components/DataTable";
-import { useViewsQuery, useViewQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
 import { columns as viewColumns } from "./components/columns";
 import { ViewTypes } from "./constants";
 

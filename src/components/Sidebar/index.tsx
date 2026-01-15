@@ -1,9 +1,10 @@
 import * as React from "react";
 import { SidebarRail, Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { BottomContent, BottomContentProps } from "./bottom-content";
 import { FooterContent, FooterProps } from "./footer-content";
 import { GroupContent, GroupContentProps } from "./group-content";
 import { HeaderContent, HeaderProps } from "./header-content";
-import { BottomContent, BottomContentProps } from "./bottom-content";
+
 
 type SidebarProps = {
   props?: React.ComponentProps<typeof Sidebar>;

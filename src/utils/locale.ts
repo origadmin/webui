@@ -41,7 +41,21 @@ export const getCreatedIntl = (locale = defaultLocale) => {
 export const intl = getCreatedIntl(getLocaleLanguage());
 
 // The dynamic translation function `t` that should be used everywhere.
-export const t = (id: string, values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>) => {
+export const t = (
+  id: string,
+  defaultMessageOrValues?: string | Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+  maybeValues?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+) => {
+  let defaultMessage: string | undefined;
+  let values: Record<string, PrimitiveType | FormatXMLElementFn<string, string>> | undefined;
+
+  if (typeof defaultMessageOrValues === "string") {
+    defaultMessage = defaultMessageOrValues;
+    values = maybeValues;
+  } else {
+    values = defaultMessageOrValues;
+  }
+
   // 1. Get the current language dynamically on each call.
   const currentLocale = getLocaleLanguage();
   const currentIntl = getCreatedIntl(currentLocale);
@@ -57,6 +71,9 @@ export const t = (id: string, values?: Record<string, PrimitiveType | FormatXMLE
 
   // 4. If still missing, warn and return the ID.
   if (message === id) {
+    if (defaultMessage !== undefined) {
+      return defaultMessage;
+    }
     console.warn(
       `[@locale] Missing translation for "${id}" in all locales (current: ${currentLocale}, fallback: en-US), using id as fallback.`
     );

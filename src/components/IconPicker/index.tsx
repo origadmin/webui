@@ -97,47 +97,42 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
       e.stopPropagation();
     };
 
-    const commonButtonClasses = "flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1";
+    const commonButtonClasses =
+      "flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1";
 
     return (
       <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger ref={ref} asChild {...props}>
           {children ||
             (selectedIcon ? (
-              <Button
-                variant='outline'
-                className={cn("group", commonButtonClasses)}
-              >
-                <div className="flex items-center gap-2">
+              <Button variant='outline' className={cn("group", commonButtonClasses)}>
+                <div className='flex items-center gap-2'>
                   <TablerIcon name={selectedIcon} />
                   <span>{selectedIcon}</span>
                 </div>
                 <div
-                  className="opacity-50 group-hover:opacity-100 cursor-pointer p-0.5 hover:bg-muted rounded-sm transition-opacity z-10 relative"
+                  className='opacity-50 group-hover:opacity-100 cursor-pointer p-0.5 hover:bg-muted rounded-sm transition-opacity z-10 relative'
                   onClick={(e) => {
                     e.stopPropagation();
                     handleValueChange(undefined);
                   }}
                 >
-                  <TablerIcon name="x" className="h-4 w-4 text-muted-foreground" />
+                  <TablerIcon name='x' className='h-4 w-4 text-muted-foreground' />
                 </div>
               </Button>
             ) : (
-              <Button
-                variant='outline'
-                className={commonButtonClasses}
-              >
+              <Button variant='outline' className={commonButtonClasses}>
                 <span>{triggerPlaceholder}</span>
                 <TablerIcon name='chevron-down' />
               </Button>
             ))}
         </PopoverTrigger>
-        <PopoverContent 
-          className='w-full p-2' 
+        <PopoverContent
+          className='w-full p-2'
           style={{ width: "var(--radix-popover-trigger-width)" }}
           onCloseAutoFocus={(e) => e.preventDefault()}
         >
-          <div className="flex items-center gap-2 mb-2">
+          <div className='flex items-center gap-2 mb-2'>
             {searchable && (
               <Input
                 placeholder={searchPlaceholder}
@@ -147,15 +142,15 @@ const IconPicker = React.forwardRef<React.ComponentRef<typeof PopoverTrigger>, I
               />
             )}
             <Button
-              variant="ghost"
-              size="icon"
+              variant='ghost'
+              size='icon'
               onClick={() => {
                 handleValueChange(undefined);
                 setIsOpen(false);
               }}
-              title="Clear selection"
+              title='Clear selection'
             >
-              <TablerIcon name="x" />
+              <TablerIcon name='x' />
             </Button>
           </div>
           <div

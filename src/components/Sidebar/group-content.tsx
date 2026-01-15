@@ -1,3 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { ChevronsUpDown } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarContent,
   SidebarMenu,
@@ -6,10 +9,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronsUpDown } from "lucide-react";
 
 export type GroupContentProps = {
   items?: API.MenuItem[];
@@ -26,19 +26,19 @@ const RecursiveMenuItem = ({ item }: { item: API.MenuItem }) => {
           <SidebarMenuButton>
             {item.icon && <TablerIcon name={item.icon} />}
             <span>{item.title}</span>
-            <ChevronsUpDown className="ml-auto size-4" />
+            <ChevronsUpDown className='ml-auto size-4' />
           </SidebarMenuButton>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {item.children?.map(child => (
+            {item.children?.map((child) => (
               <SidebarMenuItem key={child.id}>
                 <Link to={child.path || "/"}>
                   {({ isActive }) => (
                     <SidebarMenuSubButton asChild isActive={isActive}>
-                      <span className="flex items-center gap-2">
+                      <span className='flex items-center gap-2'>
                         {child.icon && <TablerIcon name={child.icon} />}
-                        <span className="truncate">{child.title}</span>
+                        <span className='truncate'>{child.title}</span>
                       </span>
                     </SidebarMenuSubButton>
                   )}
@@ -64,11 +64,10 @@ const RecursiveMenuItem = ({ item }: { item: API.MenuItem }) => {
   );
 };
 
-
 function GroupContent({ items = [] }: GroupContentProps) {
   return (
-    <SidebarContent className="flex-1 overflow-y-auto">
-      <SidebarMenu className="p-2">
+    <SidebarContent className='flex-1 overflow-y-auto'>
+      <SidebarMenu className='p-2'>
         {items.map((item) => (
           <SidebarMenuItem key={item.id}>
             <RecursiveMenuItem item={item} />

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { badgeColorPalette, semanticColorKeyMap } from "@/types/system";
+import { cn } from "@/lib/utils";
 import { Badge, BadgeProps } from "@/components/ui/badge";
 
 interface ColorBadgeProps extends BadgeProps {
@@ -11,7 +11,7 @@ const ColorBadge = React.forwardRef<HTMLDivElement, ColorBadgeProps>(
   ({ className, colorKey, children, ...props }, ref) => {
     let colorId: number;
 
-    if (typeof colorKey === 'string') {
+    if (typeof colorKey === "string") {
       // If the key is a string, look it up in the semantic map to get the color ID.
       // Default to gray (ID 3) if not found.
       colorId = semanticColorKeyMap.get(colorKey) ?? 3;
@@ -25,16 +25,11 @@ const ColorBadge = React.forwardRef<HTMLDivElement, ColorBadgeProps>(
     const colorClass = badgeColorPalette.get(colorId) ?? badgeColorPalette.get(3);
 
     return (
-      <Badge
-        ref={ref}
-        variant='outline'
-        className={cn("capitalize", colorClass, className)}
-        {...props}
-      >
+      <Badge ref={ref} variant='outline' className={cn("capitalize", colorClass, className)} {...props}>
         {children}
       </Badge>
     );
-  }
+  },
 );
 
 ColorBadge.displayName = "ColorBadge";

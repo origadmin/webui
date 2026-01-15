@@ -10,11 +10,13 @@ const transformViewToMenuItem = (view: API.System.View): API.MenuItem | null => 
   if (!view.id) {
     return null;
   }
+
+  const title = view.i18n ? t(view.i18n, view.name || view.i18n) : view.name || "";
+
   return {
     id: view.id,
-    title: view.i18n ? t(view.i18n) : view.name || "",
+    title,
     path: view.path,
-    icon: view.icon,
     type: view.type,
     scope: view.scope,
     parent_id: view.parent_id,
@@ -65,7 +67,16 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     }
 
     try {
-      const [user, flatViews] = await Promise.all([getProfile(), listMyViews()]);
+      // const currentLang = Storage.getLanguage() || 'zh-CN';
+      const [user, flatViews /*, remoteLocales */] = await Promise.all([
+        getProfile(),
+        listMyViews(),
+        // getRemoteTranslations(currentLang)
+      ]);
+
+      // if (remoteLocales) {
+      //   i18n.addResourceBundle(currentLang, 'translation', remoteLocales, true, true);
+      // }
 
       let viewTree: API.MenuItem[] = [];
       if (flatViews) {

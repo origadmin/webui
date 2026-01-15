@@ -1,4 +1,3 @@
-import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { Settings, ChevronsUpDown } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,6 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 
 type FooterProps = {
   version?: string;
@@ -48,7 +48,7 @@ function FooterContent(props: FooterProps) {
               align='end'
               sideOffset={4}
             >
-              <DropdownMenuLabel className="text-xs text-muted-foreground">System Settings</DropdownMenuLabel>
+              <DropdownMenuLabel className='text-xs text-muted-foreground'>System Settings</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {props.menus?.map((menu, index) => (
                 <DropdownMenuItem key={index} onClick={menu.onClick}>

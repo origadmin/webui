@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useTheme } from "@/components/Theme";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/Theme";
+
 
 export interface WatermarkProps {
   className?: string;

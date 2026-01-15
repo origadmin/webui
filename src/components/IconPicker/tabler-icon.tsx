@@ -1,5 +1,6 @@
-import { getIcon } from "@/utils/icons";
 import { ForwardRefExoticComponent, ImgHTMLAttributes, RefAttributes } from "react";
+import { getIcon } from "@/utils/icons";
+
 
 type IconProps = {
   name: string;

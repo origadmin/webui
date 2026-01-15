@@ -1,4 +1,5 @@
 import { useMemo, ReactNode } from "react";
+import { PAGE_SIZE_OPTIONS } from "@/types";
 import {
   PaginationState,
   ColumnFiltersState,
@@ -10,21 +11,17 @@ import {
   Row,
 } from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
+import { LoadingRow, NoResults } from "@/components/ui/data-table-feedback";
 import { Table, TableBody, TableHeader } from "@/components/ui/table";
 import { ToolbarProps, Toolbar } from "@/components/DataTable/toolbar";
 import { ColumnHeader, ColumnHeaderProps } from "./column-header";
+import { DataTableFacetedFilter } from "./faceted-filter";
 import { Pagination, PaginationProps } from "./pagination";
 import { Search, SearchProps } from "./search";
-import { ViewOptions, ViewOptionsProps } from "./view-options";
-import { ColumnType } from "./types";
 import { renderCell, renderRow } from "./table-renderer";
+import { ColumnType } from "./types";
 import { useDataTable } from "./use-data-table";
-import {
-  LoadingRow,
-  NoResults,
-} from "@/components/ui/data-table-feedback";
-import { PAGE_SIZE_OPTIONS } from "@/types";
-import { DataTableFacetedFilter } from "./faceted-filter";
+import { ViewOptions, ViewOptionsProps } from "./view-options";
 
 interface DataProps<TData, TValue> {
   columns: ColumnType<TData, TValue>[];
@@ -56,14 +53,8 @@ interface BehaviorProps {
 }
 
 interface ComponentProps<TData, TValue> {
-  search?: Omit<
-    SearchProps<TData, TValue>,
-    "table" | "columns" | "columnFilters" | "globalFilterKey"
-  >;
-  pagination?: Omit<
-    PaginationProps<TData>,
-    "table" | "toolbars" | "sizeOptions"
-  >;
+  search?: Omit<SearchProps<TData, TValue>, "table" | "columns" | "columnFilters" | "globalFilterKey">;
+  pagination?: Omit<PaginationProps<TData>, "table" | "toolbars" | "sizeOptions">;
   title?: Omit<TitleBarProps<TData>, "table" | "toolbars">;
   toolbar?: Omit<ToolbarProps<TData>, "table" | "children" | "render">;
 }
@@ -97,24 +88,20 @@ function DataTable<TData, TValue = unknown>({
   });
 
   const { search, title, pagination, toolbar } = props;
-  const toolbarProps: Omit<ToolbarProps<TData>, "table"> =
-    typeof toolbars === "function"
-      ? {
-          ...toolbar,
-          render: toolbars,
-        }
-      : {
-          ...toolbar,
-          children: toolbars,
-        };
+  const toolbarProps: Omit<ToolbarProps<TData>, "table"> = typeof toolbars === "function"
+    ? {
+        ...toolbar,
+        render: toolbars,
+      }
+    : {
+        ...toolbar,
+        children: toolbars,
+      };
 
-  const searchFields = useMemo(
-    () => columns.filter((col) => !col.hiddenInSearch && !col.searchComponent),
-    [columns]
-  );
+  const searchFields = useMemo(() => columns.filter((col) => !col.hiddenInSearch && !col.searchComponent), [columns]);
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       <Search
         {...search}
         table={table}
@@ -129,8 +116,8 @@ function DataTable<TData, TValue = unknown>({
         statistics={showStatistics}
         total={rowCount}
       />
-      <div className="rounded-md border">
-        <Table className="w-full">
+      <div className='rounded-md border'>
+        <Table className='w-full'>
           <TableHeader>{renderRow(table.getHeaderGroups())}</TableHeader>
           <TableBody>
             {isLoading ? (
@@ -151,7 +138,7 @@ function DataTable<TData, TValue = unknown>({
           toolbar={toolbarPosition === "bottom" ? toolbarProps : undefined}
         />
       ) : toolbarPosition === "bottom" ? (
-        <div className="flex items-center justify-between overflow-auto px-2 gap-4">
+        <div className='flex items-center justify-between overflow-auto px-2 gap-4'>
           <Toolbar {...toolbarProps} table={table} />
         </div>
       ) : null}
