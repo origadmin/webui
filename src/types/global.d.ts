@@ -266,6 +266,16 @@ declare global {
       export type GetPermissionResponse = Schemas["api.v1.services.system.GetPermissionResponse"];
       export type CreatePermissionResponse = Schemas["api.v1.services.system.CreatePermissionResponse"];
     }
+
+    // Added Auth Namespace
+    namespace Auth {
+      export type GetProfileResponse = Schemas["api.v1.services.auth.GetProfileResponse"];
+      export type ListMyViewsResponse = Schemas["api.v1.services.auth.ListMyViewsResponse"];
+      export type GetCaptchaResponse = Schemas["api.v1.services.auth.GetCaptchaResponse"];
+      export type LoginRequest = Schemas["api.v1.services.auth.LoginRequest"];
+      export type LoginResponse = Schemas["api.v1.services.auth.LoginResponse"];
+    }
+
     export type Captcha = Schemas["api.v1.services.auth.GetCaptchaResponse"];
     export type LoginForm = Schemas["api.v1.services.auth.LoginRequest"];
     export type LoginToken = Schemas["api.v1.services.auth.LoginResponse"];

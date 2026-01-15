@@ -1,7 +1,7 @@
 import { Outlet } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/toaster";
-import { SidebarInset, SidebarProvider } from "@/components/Sidebar";
 import KBar from "@/components/KBar";
+import { SidebarInset, SidebarProvider } from "@/components/Sidebar";
 import { AppFooter } from "./footer";
 import { AppHeader } from "./header";
 import { AppSidebar } from "./sidebar";

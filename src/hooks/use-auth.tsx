@@ -1,11 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { getProfile, listPersonalResources } from "@/api/auth/personal";
+import { getProfile, listMyViews } from "@/api/auth/me";
 import { noop, Storage } from "@/utils";
 import { clearStorage, setAuth } from "@/utils/storage";
 
 type AuthState = {
   user: API.System.User | null;
-  permissions: API.System.Resource[] | null;
+  views: API.System.View[] | null;
   token: string | null;
   loading: boolean;
 };
@@ -20,7 +20,7 @@ type AuthContextType = AuthState & AuthActions;
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  permissions: null,
+  views: null,
   token: null,
   loading: true,
   login: async () => {},
@@ -31,7 +31,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
-    permissions: [], // Default to an empty array to prevent render errors
+    views: [],
     token: Storage.getAccessToken(),
     loading: true,
   });
@@ -39,26 +39,29 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   const initialize = useCallback(async () => {
     const token = Storage.getAccessToken();
     if (!token) {
-      setAuthState((s) => ({ ...s, loading: false, user: null, token: null, permissions: [] }));
+      setAuthState((s) => ({ ...s, loading: false, user: null, token: null, views: [] }));
       return;
     }
 
     try {
-      // Fetch user profile and resources in parallel
-      // The API functions now handle unwrapping, so we get the data directly.
-      const [user, permissions] = await Promise.all([getProfile(), listPersonalResources()]);
+      // Fetch user profile and views in parallel.
+      // The API functions now return the data directly.
+      const [user, views] = await Promise.all([
+        getProfile(),
+        listMyViews({ scope: "sidebar" }), // Fetch sidebar views by default
+      ]);
 
       setAuthState((s) => ({
         ...s,
         user: user || null,
-        permissions: permissions || [],
+        views: views || [],
         loading: false,
         token,
       }));
     } catch (error) {
       console.error("Initialization failed:", error);
       clearStorage();
-      setAuthState({ user: null, token: null, permissions: [], loading: false });
+      setAuthState({ user: null, token: null, views: [], loading: false });
     }
   }, []);
 
@@ -80,7 +83,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     clearStorage();
     setAuthState({
       user: null,
-      permissions: [],
+      views: [],
       token: null,
       loading: false,
     });
