@@ -43,19 +43,34 @@ function ViewPageContent() {
     }
   }, [dataSource, setSidebarRootId]);
 
-  // Memoize the tree structure with type-safe conversion
+  // Memoize the tree structure with a fully type-safe approach.
   const treeData = useMemo(() => {
-    const safeDataSource = dataSource
-      .filter((item): item is API.System.View & { id: string } => typeof item.id === "string")
-      .map((item) => item as TreeItem);
-    return buildTree(safeDataSource);
+    if (!dataSource) {
+      return [];
+    }
+    // 1. Filter out items that don't have a valid string ID.
+    const safeDataSource = dataSource.filter(
+      (item): item is API.System.View & { id: string } => typeof item.id === "string",
+    );
+
+    // 2. Create a new array of objects, omitting the original `children` property.
+    // This is necessary to satisfy the strict generic constraints of `buildTree`.
+    // The `no-unused-vars` rule is disabled for this line because destructuring
+    // is the cleanest way to omit a property, and it unavoidably creates an
+    // unused variable in the process.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const compatibleItems = safeDataSource.map(({ children, ...rest }) => rest);
+
+    // 3. Pass the transformed, type-safe data to `buildTree`.
+    return buildTree(compatibleItems);
   }, [dataSource]);
 
   // Default to fully expanded when data loads
   useEffect(() => {
     if (treeData.length > 0) {
       const newExpandedState: ExpandedState = {};
-      const setExpandedRecursively = (nodes: TreeItem[]) => {
+      // Use a generic function to handle the tree structure safely.
+      const setExpandedRecursively = <T extends TreeItem<T>>(nodes: T[]) => {
         nodes.forEach((node) => {
           if (node.children && node.children.length > 0) {
             newExpandedState[node.id] = true;
@@ -87,9 +102,10 @@ function ViewPageContent() {
             expandedState={expanded}
             onExpandedChange={setExpanded}
             options={{
-              getRowId: (row) => row.id ?? "", // Ensure a string is always returned
+              getRowId: (row) => row.id!, // Assert that row.id is definitely a string here
               getExpandedRowModel: getExpandedRowModel(),
-              getSubRows: (row: API.System.View) => row.children,
+              // The 'row' type is inferred from 'treeData' and is compatible with API.System.View
+              getSubRows: (row) => row.children,
             }}
             toolbarPosition='top'
             toolbars={() => <ViewsPrimaryButtons />}

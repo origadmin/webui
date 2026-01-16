@@ -1,6 +1,15 @@
 import { ReactNode, useMemo } from "react";
 import { PAGE_SIZE_OPTIONS } from "@/types";
-import { ColumnFiltersState, ExpandedState, OnChangeFn, PaginationState, Row, SortingState, TableOptions, VisibilityState } from "@tanstack/react-table";
+import {
+  ColumnFiltersState,
+  ExpandedState,
+  OnChangeFn,
+  PaginationState,
+  Row,
+  SortingState,
+  TableOptions,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { TitleBar, TitleBarProps } from "src/components/DataTable/title-bar";
 import { LoadingRow, NoResults } from "@/components/ui/data-table-feedback";
 import { Table, TableBody, TableHeader } from "@/components/ui/table";
@@ -13,7 +22,6 @@ import { renderCell, renderRow } from "./table-renderer";
 import { ColumnType } from "./types";
 import { useDataTable } from "./use-data-table";
 import { ViewOptions, ViewOptionsProps } from "./view-options";
-
 
 interface DataProps<TData, TValue> {
   columns: ColumnType<TData, TValue>[];

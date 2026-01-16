@@ -22,6 +22,8 @@ export function AppSidebar() {
     // 3. Separate items into main content and bottom items based on their own scope property.
     const mainItems = sidebarItems.filter((item) => !item.scope || item.scope === ViewScopes.SIDEBAR);
     const bottomItems = sidebarItems.filter((item) => item.scope === ViewScopes.SIDEBAR_FOOTER);
+    console.log("Sidebar main items:", mainItems);
+    console.log("Sidebar bottom items:", bottomItems);
     const systemMenus = [
       {
         title: "Global Settings",

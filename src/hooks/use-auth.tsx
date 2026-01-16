@@ -20,6 +20,7 @@ const transformViewToMenuItem = (view: API.System.View): API.MenuItem | null => 
     type: view.type,
     scope: view.scope,
     parent_id: view.parent_id,
+    icon: view.icon,
     children: view.children
       ? view.children.map(transformViewToMenuItem).filter((v): v is API.MenuItem => v !== null)
       : [],
