@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/Theme";
 
+
 export interface WatermarkProps {
   className?: string;
   style?: React.CSSProperties;
@@ -31,14 +32,15 @@ const Watermark: React.FC<WatermarkProps> = (props) => {
     height = 64,
     gap = [100, 100],
     offset,
-    fontSize = 16,
+    fontSize = 18, // Increased font size
     fontWeight = "normal",
     fontFamily = "sans-serif",
     fontColor,
   } = props;
 
   const { theme } = useTheme();
-  const color = fontColor || (theme === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)");
+  // Increased opacity for dark mode
+  const color = fontColor || (theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.15)");
 
   const [base64Url, setBase64Url] = useState("");
 

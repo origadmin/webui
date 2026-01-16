@@ -2,7 +2,7 @@
 
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColorBadge } from "@/components/ui/color-badge";
+import { ColorBadge } from "@/components/color-badge";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
 import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { headerMeta } from "@/components/DataTable/column-defaults";

@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
-import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { headerMeta } from "@/components/DataTable/column-defaults";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
 import { ResourceIconRowActions } from "./resources-row-actions";
+
 
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {

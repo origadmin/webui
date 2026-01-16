@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
 import { CellContext } from "@tanstack/react-table";
 import { statusDescriptors } from "@/types/system";
-import { ColorBadge } from "@/components/ui/color-badge";
 import { DataTableColumnType, DataTableFacetedFilter } from "@/components/DataTable";
+import { ColorBadge } from "@/components/color-badge";
 import { headerMeta } from "./column-defaults";
+
 
 /**
  * A reusable DataTable column definition for a standard 'status' field.

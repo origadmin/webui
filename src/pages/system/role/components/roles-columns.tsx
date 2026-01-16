@@ -1,10 +1,11 @@
 import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnType } from "@/components/DataTable";
-import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { headerMeta } from "@/components/DataTable/column-defaults";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
+
 
 export const columns: DataTableColumnType<API.System.Role>[] = [
   {

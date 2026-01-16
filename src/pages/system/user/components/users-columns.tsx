@@ -3,10 +3,11 @@ import { t } from "@/utils/locale";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnType } from "@/components/DataTable";
-import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { headerMeta } from "@/components/DataTable/column-defaults";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
+
 
 export const columns: DataTableColumnType<API.System.User>[] = [
   {

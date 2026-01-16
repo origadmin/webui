@@ -1,5 +1,4 @@
 import React, { Fragment, JSX } from "react";
-// Import Fragment
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -30,9 +29,16 @@ function PageContainer({
   scrollable = false,
 }: PageContainerProps) {
   const { className } = props || {};
-  const { initialData } = useAuth() as { initialData: InitialDataConfig };
+  const { user } = useAuth();
 
-  const watermarkProps = initialWatermarkProps ?? initialData?.watermark;
+  // Construct watermark props based on the authenticated user.
+  // The watermark will only be displayed if the user exists and has a nickname or username.
+  const watermarkProps: WatermarkProps | null = user
+    ? {
+        content: user.nickname || user.username || "",
+        ...initialWatermarkProps, // Allow overriding with props passed to the container
+      }
+    : null;
 
   const renderScrollArea = (content: React.ReactNode) => {
     return scrollable ? (
@@ -46,8 +52,8 @@ function PageContainer({
 
   return (
     <Fragment>
-      {/* Render Watermark as a sibling, not a parent */}
-      {watermarkProps && <Watermark {...watermarkProps} />}
+      {/* Render Watermark only if props are available and content is not empty */}
+      {watermarkProps && watermarkProps.content && <Watermark {...watermarkProps} />}
       <Content {...props} fixed>
         <ContentHeader className='gap-2 justify-between shadow-none ease-linear'>
           <div className='px-8 flex flex-col'>{headerProps.showBreadcrumbs && <Breadcrumbs />}</div>
