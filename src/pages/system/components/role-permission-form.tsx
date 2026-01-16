@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-
 export const formSchema = z.object({
   name: z.string().min(2, "名称至少2个字符"),
   keyword: z.string().regex(/^[A-Z_]+$/, "关键字必须大写字母和下划线"),

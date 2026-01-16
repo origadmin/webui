@@ -107,5 +107,6 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
     header: "Actions",
     cell: ({ row }) => <ResourceIconRowActions row={row} />,
     meta: defaultHeaderMeta.meta,
+    pin: "right",
   },
 ];

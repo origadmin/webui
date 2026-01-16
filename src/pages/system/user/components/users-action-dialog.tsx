@@ -26,7 +26,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/MultiSelect";
 import { PasswordInput } from "@/components/password-input";
 
-
 const formSchema = z
   .object({
     nickname: z.string().min(1, { message: "Nickname is required." }),

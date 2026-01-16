@@ -9,6 +9,7 @@ import { DataTableColumnType } from "@/components/DataTable";
 import { systemStatusColumn } from "@/components/DataTable/common-columns";
 import LongText from "@/components/long-text";
 
+
 // Helper function to create a simple text input filter
 const textInputFilter = (column: Column<any, unknown>, title: string) => (
   <Input
@@ -61,5 +62,6 @@ export const columns: DataTableColumnType<API.System.User>[] = [
     header: "Actions",
     cell: ({ row }) => <UserIconRowActions row={row} />,
     meta: defaultHeaderMeta.meta,
+    pin: "right",
   },
 ];

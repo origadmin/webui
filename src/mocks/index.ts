@@ -102,7 +102,7 @@ const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
     if (data) {
       return {
         success: true,
-        data: data as T,
+        items: data as T[],
       };
     }
   }
@@ -110,7 +110,7 @@ const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
   if (pageData) {
     return {
       success: true,
-      data: pageData.data as T,
+      items: pageData.data as T[],
       total: pageData.total,
     };
   }
@@ -118,7 +118,7 @@ const mocks = <T>(path: string, params?: API.SearchParams): API.Result<T> => {
   if (data) {
     return {
       success: true,
-      data: data as T,
+      items: data as T[],
     };
   }
 

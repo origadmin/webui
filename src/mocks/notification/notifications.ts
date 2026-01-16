@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { http, HttpResponse, type RestHandler } from "msw";
 
-
 export interface NotificationItem {
   id: string;
   title: string;

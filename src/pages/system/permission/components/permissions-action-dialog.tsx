@@ -27,7 +27,6 @@ import { debugToast } from "@/components/debug-toast";
 import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewTreeSelect, ViewTreeSelectRef } from "./view-tree-select";
 
-
 const formSchema = z.object({
   name: z.string().min(1, { message: t("validation.name.required") }),
   keyword: z.string().min(1, { message: t("validation.keyword.required") }),

@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { API } from "@/types/api";
 
 
 const generateViews = (): API.System.View[] => {
@@ -11,8 +10,7 @@ const generateViews = (): API.System.View[] => {
     const isMenu = i < 5 || (i > 5 && faker.datatype.boolean({ probability: 0.5 })); // First 5 are menus, others have a chance
 
     const view: API.System.View = {
-      // Proto 定义 id 为 int64，Mock 应该生成数字 (或数字字符串，视生成的类型而定)
-      id: faker.number.int({ min: 1, max: 100000 }),
+      id: faker.string.uuid(),
       create_time: faker.date.past().toISOString(),
       update_time: faker.date.recent().toISOString(),
       keyword: faker.helpers.slugify(viewName).toLowerCase(),
@@ -26,7 +24,6 @@ const generateViews = (): API.System.View[] => {
       icon: isMenu
         ? faker.helpers.arrayElement(["IconHome", "IconUser", "IconSettings", "IconTool", "IconDatabase", "IconBox"])
         : undefined,
-      visible: true,
       status: faker.helpers.arrayElement([0, 1]),
       sequence: i + 1,
       description: faker.lorem.sentence(),

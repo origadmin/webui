@@ -79,5 +79,6 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
     header: "Actions",
     cell: ({ row }) => <RoleIconRowActions row={row} />,
     meta: defaultHeaderMeta.meta,
+    pin: "right",
   },
 ];

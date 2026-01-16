@@ -94,5 +94,6 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
       </div>
     ),
     meta: defaultHeaderMeta.meta,
+    pin: "right",
   },
 ];

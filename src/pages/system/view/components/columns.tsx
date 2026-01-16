@@ -121,5 +121,6 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     header: "Actions",
     cell: ({ row }) => <RowActions row={row} />,
     meta: defaultHeaderMeta.meta,
+    pin: "right",
   },
 ];

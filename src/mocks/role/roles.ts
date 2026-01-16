@@ -11,6 +11,5 @@ export const roles = Array.from({ length: 1000 }, (): API.System.Role => {
     type: faker.number.int({ min: 1, max: 3 }),
     sequence: faker.number.int({ min: 1, max: 100 }),
     status: faker.helpers.arrayElement([1, 2]),
-    is_system: faker.helpers.arrayElement([true, false]),
   };
 });

@@ -17,7 +17,6 @@ import {
 import { labels } from "../data/data";
 import { taskSchema } from "../data/schema";
 
-
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }

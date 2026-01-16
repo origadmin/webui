@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, CSSProperties } from "react";
 import { Column, flexRender, HeaderContext, HeaderGroup, Renderable, Row } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { TableCell, TableHead, TableRow } from "@/components/ui/table";
@@ -17,8 +17,20 @@ export const renderRow = <TData,>(groups: HeaderGroup<TData>[]) => {
   return groups.map((headerGroup) => (
     <TableRow key={headerGroup.id} className='group/row'>
       {headerGroup.headers.map((header) => {
+        const columnDef = header.column.columnDef as ColumnType<TData>;
+        const style: CSSProperties = {};
+        if (columnDef.pin === "right") {
+          style.position = "sticky";
+          style.right = 0;
+          style.backgroundColor = "hsl(var(--background))";
+        }
         return (
-          <TableHead key={header.id} colSpan={header.colSpan} className={header.column.columnDef.meta?.className ?? ""}>
+          <TableHead
+            key={header.id}
+            colSpan={header.colSpan}
+            className={cn(columnDef.meta?.className)}
+            style={style}
+          >
             {header.isPlaceholder ? null : flexRender(renderHeader(header.column), header.getContext())}
           </TableHead>
         );
@@ -44,11 +56,20 @@ export const renderCell = <TData,>(
   return rows.map((row) => (
     <Fragment key={row.id}>
       <TableRow data-state={dataState(row)} className='group/row'>
-        {row.getVisibleCells().map((cell) => (
-          <TableCell key={cell.id} className={cn("px-4", cell.column.columnDef.meta?.className)}>
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          </TableCell>
-        ))}
+        {row.getVisibleCells().map((cell) => {
+          const columnDef = cell.column.columnDef as ColumnType<TData>;
+          const style: CSSProperties = {};
+          if (columnDef.pin === "right") {
+            style.position = "sticky";
+            style.right = 0;
+            style.backgroundColor = "hsl(var(--background))";
+          }
+          return (
+            <TableCell key={cell.id} className={cn("px-4", columnDef.meta?.className)} style={style}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          );
+        })}
       </TableRow>
       {row.getIsExpanded() && renderSubComponent && (
         <TableRow>

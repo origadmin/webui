@@ -142,7 +142,20 @@ function ViewForm({
                         "sequence",
                       ])}
                     </div>
-                    <div className='px-2'>
+                    <div className='px-2 space-y-4'>
+                      <FormField
+                        control={form.control}
+                        name='properties'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Properties</FormLabel>
+                            <FormControl>
+                              <Textarea placeholder='Enter properties as JSON' {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                       <FormField
                         control={form.control}
                         name='description'
