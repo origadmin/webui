@@ -1,6 +1,6 @@
 import { transformListParams } from "@/utils/api";
 import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
+import { QueryClient, useQuery, queryOptions, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 
 /**
  * Query role list GET /sys/roles
@@ -11,6 +11,7 @@ export async function listRoles(params: API.DataTableParams, options?: API.Reque
   return {
     items: rawResponse?.roles || [],
     total: rawResponse?.total || 0,
+    next_page_token: rawResponse?.next_page_token,
   };
 }
 
@@ -66,6 +67,20 @@ export const useRolesQuery = (opts?: API.DataTableParams) => {
       queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listRoles(opts),
     }),
   );
+};
+
+export const useInfiniteRolesQuery = (opts: { keyword?: string }) => {
+  return useInfiniteQuery({
+    queryKey: ["/sys/roles", opts],
+    queryFn: ({ pageParam }) =>
+      listRoles({
+        paging_mode: "page_token",
+        page_token: pageParam as string,
+        keyword: opts.keyword,
+      }),
+    initialPageParam: "",
+    getNextPageParam: (lastPage) => lastPage.next_page_token,
+  });
 };
 
 export const useRoleQuery = (id: string) => {

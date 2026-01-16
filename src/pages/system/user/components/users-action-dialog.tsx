@@ -1,14 +1,20 @@
-// import { useDepartmentsQuery } from "@/api/system/department";
-import { useRolesQuery } from "@/api/system/role";
-import { useUpdateUserRoles, useUserCreate, useUserUpdate } from "@/api/system/user";
+import { useEffect } from "react";
+import { getUser, useUpdateUserRoles, useUserCreate, useUserUpdate } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -16,8 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { MultiSelect } from "@/components/MultiSelect";
-
+import { RoleMultiSelect } from "./RoleMultiSelect";
 
 const formSchema = z.object({
   nickname: z.string().min(1, { message: "Nickname is required." }),
@@ -30,7 +35,6 @@ const formSchema = z.object({
   gender: z.string().optional(),
   remark: z.string().optional(),
   avatar: z.string().optional(),
-  // department: z.string().optional(),
   is_edit: z.boolean(),
 });
 
@@ -55,65 +59,86 @@ const areRolesEqual = (a?: string[], b?: string[]): boolean => {
 
 export function UsersActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.User>) {
   const is_edit = !!currentRow;
+  const id = currentRow?.id || "";
+
+  const { data: fullUserData, isFetching: isUserDataFetching } = useQuery(
+    queryOptions({
+      queryKey: ["/sys/users", id],
+      queryFn: () => getUser(id),
+      enabled: is_edit && open && !!id,
+    }),
+  );
 
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
     shouldFocusError: false,
-    defaultValues: is_edit
-      ? {
-          ...currentRow,
-          role_ids: currentRow.role_ids || [],
-          is_edit,
-        }
-      : {
-          nickname: "",
-          username: "",
-          email: "",
-          phone: "",
-          allowed_ip: "0.0.0.0",
-          status: 1,
-          role_ids: [],
-          gender: "unknown",
-          remark: "",
-          avatar: "",
-          // department: "",
-          is_edit,
-        },
+    defaultValues: {
+      nickname: "",
+      username: "",
+      email: "",
+      phone: "",
+      allowed_ip: "0.0.0.0",
+      status: 1,
+      role_ids: [],
+      gender: "unknown",
+      remark: "",
+      avatar: "",
+      is_edit,
+    },
   });
-  const id = currentRow?.id || "";
+
+  useEffect(() => {
+    if (is_edit && fullUserData) {
+      const roleIds = Array.isArray(fullUserData.roles)
+        ? fullUserData.roles.map((role) => role.id).filter((id): id is string => !!id)
+        : [];
+
+      form.reset({
+        ...fullUserData,
+        role_ids: roleIds,
+        is_edit: true,
+      });
+    } else if (!is_edit) {
+      form.reset({
+        nickname: "",
+        username: "",
+        email: "",
+        phone: "",
+        allowed_ip: "0.0.0.0",
+        status: 1,
+        role_ids: [],
+        gender: "unknown",
+        remark: "",
+        avatar: "",
+        is_edit: false,
+      });
+    }
+  }, [is_edit, fullUserData, form]);
+
   const queryClient = useQueryClient();
   const { mutateAsync: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
   const { mutateAsync: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
   const { mutateAsync: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
 
-  const { data: roles = { data: [] } } = useRolesQuery({ page_size: 1000 });
-  // const { data: departments = { departments: [] } } = useDepartmentsQuery({ no_paging: true });
-
   const onSubmit = async (values: UserForm) => {
     try {
-      // Create a mutable copy of the form values.
+      // Create a mutable copy and delete the `is_edit` property to avoid the `no-unused-vars` ESLint error.
       const payload = { ...values };
-      // The 'is_edit' field is for frontend logic only and should never be sent.
       delete (payload as Partial<UserForm>).is_edit;
 
       if (!is_edit) {
-        // For creation, the adapter layer will handle structuring the payload.
         await createUser(payload);
       } else {
-        // For update, create the full object to ensure a proper PUT operation.
-        const putPayload = {
-          ...currentRow,
-          ...payload,
-        };
-
-        const { role_ids, ...userBasicInfo } = putPayload;
-
+        const { role_ids, ...userBasicInfo } = payload;
         const updatePromises = [updateUser(userBasicInfo)];
 
-        // Only call updateUserRoles if the roles have actually changed.
-        if (!areRolesEqual(role_ids, currentRow?.role_ids)) {
-          updatePromises.push(updateUserRoles(role_ids || []));
+        const existingRoleIds = Array.isArray(fullUserData?.roles)
+          ? fullUserData.roles.map((role) => role.id).filter((id): id is string => !!id)
+          : [];
+
+        if (!areRolesEqual(role_ids, existingRoleIds)) {
+          updatePromises.push(updateUserRoles({ role_ids: role_ids || [] }));
         }
 
         await Promise.all(updatePromises);
@@ -135,16 +160,14 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     }
   };
 
-  const isPending = isCreatePending || isUpdatePending || isRolesUpdatePending;
-
+  const isPending = isCreatePending || isUpdatePending || isRolesUpdatePending || (is_edit && isUserDataFetching);
   const maxWClass = `sm:max-w-${columns * 500}px`;
+
   return (
     <Dialog
       open={open}
       onOpenChange={(state) => {
-        if (!state) {
-          form.reset();
-        }
+        if (!state) form.reset();
         onOpenChange(state);
       }}
     >
@@ -161,6 +184,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
             onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
             className='relative space-y-4'
           >
+            {isPending && <div className='absolute inset-0 bg-background/50 z-10' />}
             <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
               <FormField
                 control={form.control}
@@ -259,30 +283,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                         </FormItem>
                       )}
                     />
-                    {/* <FormField
-                      control={form.control}
-                      name='department'
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Department</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder='Select a department' />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {departments.departments?.map((dept) => (
-                                <SelectItem key={dept.id} value={dept.id!}>
-                                  {dept.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    /> */}
                     <FormField
                       control={form.control}
                       name='avatar'
@@ -345,22 +345,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                         <FormItem>
                           <FormLabel>Roles</FormLabel>
                           <FormControl>
-                            <MultiSelect
-                              defaultValue={field.value}
-                              value={field.value}
-                              onChange={field.onChange}
-                              placeholder='Select roles'
-                              options={
-                                roles.data
-                                  ? roles.data
-                                      .filter(({ id, name }) => !!id && !!name)
-                                      .map(({ id, name }) => ({
-                                        value: id || "",
-                                        label: name || "",
-                                      }))
-                                  : []
-                              }
-                            />
+                            <RoleMultiSelect value={field.value} onChange={field.onChange} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
