@@ -1,7 +1,9 @@
-import { defaultHeaderMeta } from "@/types";
+import { ReactNode } from "react";
+import { CellContext } from "@tanstack/react-table";
 import { statusDescriptors } from "@/types/system";
 import { ColorBadge } from "@/components/ui/color-badge";
 import { DataTableColumnType, DataTableFacetedFilter } from "@/components/DataTable";
+import { headerMeta } from "./column-defaults";
 
 /**
  * A reusable DataTable column definition for a standard 'status' field.
@@ -35,7 +37,19 @@ export const systemStatusColumn = <T,>(): DataTableColumnType<T> => ({
       }))}
     />
   ),
-  meta: defaultHeaderMeta.meta,
+  ...headerMeta(),
   enableSorting: false,
   enableHiding: false,
+});
+
+/**
+ * A reusable DataTable column definition for a standard 'actions' column.
+ * It is pinned to the right and has a fixed width.
+ */
+export const actionsColumn = <T,>(cell: (props: CellContext<T, unknown>) => ReactNode): DataTableColumnType<T> => ({
+  id: "actions",
+  header: "Actions",
+  cell,
+  ...headerMeta("w-[100px]"),
+  pin: "right",
 });

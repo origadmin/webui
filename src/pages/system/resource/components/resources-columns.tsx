@@ -1,23 +1,11 @@
-import { defaultHeaderMeta } from "@/types";
-import { Column } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
-import { systemStatusColumn } from "@/components/DataTable/common-columns";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
+import { headerMeta } from "@/components/DataTable/column-defaults";
+import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
 import { ResourceIconRowActions } from "./resources-row-actions";
-
-
-// Helper function to create a simple text input filter
-const textInputFilter = (column: Column<any, unknown>, title: string) => (
-  <Input
-    placeholder={`Search ${title}...`}
-    value={(column.getFilterValue() as string) ?? ""}
-    onChange={(event) => column.setFilterValue(event.target.value)}
-    className='h-8 w-[150px] lg:w-[250px]'
-  />
-);
 
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {
@@ -49,22 +37,22 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
         )}
       </div>
     ),
-    meta: defaultHeaderMeta.meta,
-    filterComponent: (column) => textInputFilter(column, "Name"),
+    ...headerMeta(),
+    filterComponent: (column) => TextInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Keyword' />,
     cell: ({ row }) => <LongText>{row.original.keyword}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    filterComponent: (column) => textInputFilter(column, "Keyword"),
+    ...headerMeta(),
+    filterComponent: (column) => TextInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "path",
     header: ({ column }) => <DataTableColumnHeader column={column} title='Path' />,
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    filterComponent: (column) => textInputFilter(column, "Path"),
+    ...headerMeta(),
+    filterComponent: (column) => TextInputFilter(column, "Path"),
   },
   {
     accessorKey: "method",
@@ -78,19 +66,19 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
         </Badge>
       );
     },
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "sequence",
     header: "Sequence",
     cell: ({ row }) => <div>{row.original.sequence}</div>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "description",
     header: "Description",
     cell: ({ row }) => <LongText>{row.original.description}</LongText>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   systemStatusColumn(),
   {
@@ -100,13 +88,7 @@ export const columns: DataTableColumnType<API.System.Resource>[] = [
       const status = row.original.sync_status || "Unknown";
       return <Badge className={cn(syncStatusBadges[status])}>{status}</Badge>;
     },
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => <ResourceIconRowActions row={row} />,
-    meta: defaultHeaderMeta.meta,
-    pin: "right",
-  },
+  actionsColumn(({ row }) => <ResourceIconRowActions row={row} />),
 ];

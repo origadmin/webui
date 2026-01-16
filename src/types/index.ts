@@ -1,5 +1,4 @@
 // If HOST is empty, it will use the proxy target defined in config/proxy.ts.
-import { cn } from "@/lib/utils";
 
 export const HOST = "";
 export const HOST_REQUEST_TIMEOUT = 30000;
@@ -26,12 +25,3 @@ export const API_REFRESH_TOKEN_URL = `/auth/refresh`;
 
 // the system default values
 export const defaultLocale = "en-US";
-export const defaultHeaderMeta = {
-  meta: {
-    className: cn(
-      "p-2 drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
-      "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-      "whitespace-nowrap sticky md:table-cell",
-    ),
-  },
-};

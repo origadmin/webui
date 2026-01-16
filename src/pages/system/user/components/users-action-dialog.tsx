@@ -8,14 +8,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -24,42 +17,23 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/MultiSelect";
-import { PasswordInput } from "@/components/password-input";
 
-const formSchema = z
-  .object({
-    nickname: z.string().min(1, { message: "Nickname is required." }),
-    username: z.string().min(1, { message: "Username is required." }),
-    phone: z.string().min(1, { message: "Phone number is required." }),
-    email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
-    password: z.string().optional(),
-    status: z.number().optional(),
-    role_ids: z.string().array().optional(),
-    allowed_ip: z.string().min(1, { message: "IP is required." }),
-    gender: z.string().optional(),
-    remark: z.string().optional(),
-    avatar: z.string().optional(),
-    // department: z.string().optional(),
-    is_edit: z.boolean(),
-  })
-  .superRefine(({ is_edit, password }, ctx) => {
-    // In create mode, password is required
-    if (!is_edit && (!password || password.trim() === "")) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Initial password is required.",
-        path: ["password"],
-      });
-    }
-    // If a password is provided (in either mode), it must be at least 8 chars
-    if (password && password.length < 8) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Password must be at least 8 characters long.",
-        path: ["password"],
-      });
-    }
-  });
+
+const formSchema = z.object({
+  nickname: z.string().min(1, { message: "Nickname is required." }),
+  username: z.string().min(1, { message: "Username is required." }),
+  phone: z.string().min(1, { message: "Phone number is required." }),
+  email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
+  status: z.number().optional(),
+  role_ids: z.string().array().optional(),
+  allowed_ip: z.string().min(1, { message: "IP is required." }),
+  gender: z.string().optional(),
+  remark: z.string().optional(),
+  avatar: z.string().optional(),
+  // department: z.string().optional(),
+  is_edit: z.boolean(),
+});
+
 type UserForm = z.infer<typeof formSchema>;
 
 interface Props<T> {
@@ -90,7 +64,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
       ? {
           ...currentRow,
           role_ids: currentRow.role_ids || [],
-          password: "", // Always start with an empty password field in edit mode
           is_edit,
         }
       : {
@@ -98,7 +71,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           username: "",
           email: "",
           phone: "",
-          password: "",
           allowed_ip: "0.0.0.0",
           status: 1,
           role_ids: [],
@@ -134,11 +106,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
           ...currentRow,
           ...payload,
         };
-
-        // If password field is empty, don't include it in the update payload.
-        if (!putPayload.password || putPayload.password.trim() === "") {
-          delete putPayload.password;
-        }
 
         const { role_ids, ...userBasicInfo } = putPayload;
 
@@ -350,22 +317,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                   <h3 className='text-lg font-medium'>Security Settings</h3>
                   <Separator />
                   <div className='grid grid-cols-2 gap-4 pt-2 items-start'>
-                    <FormField
-                      control={form.control}
-                      name='password'
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{is_edit ? "New Password" : "Initial Password"}</FormLabel>
-                          <FormControl>
-                            <PasswordInput
-                              placeholder={is_edit ? "Leave blank to keep unchanged" : "Enter password"}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                     <FormField
                       control={form.control}
                       name='allowed_ip'

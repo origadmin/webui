@@ -1,5 +1,6 @@
 import { uuid } from "@/lib/crypto";
 
+
 export type Product = {
   photo_path: string;
   name: string;

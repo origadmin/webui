@@ -1,57 +1,45 @@
 import { RoleIconRowActions } from "@/pages/system/role/components/roles-row-actions";
-import { defaultHeaderMeta } from "@/types";
-import { Column } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { DataTableColumnType } from "@/components/DataTable";
-import { systemStatusColumn } from "@/components/DataTable/common-columns";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
+import { headerMeta } from "@/components/DataTable/column-defaults";
+import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
-
-
-// Helper function to create a simple text input filter
-const textInputFilter = (column: Column<any, unknown>, title: string) => (
-  <Input
-    placeholder={`Search ${title}...`}
-    value={(column.getFilterValue() as string) ?? ""}
-    onChange={(event) => column.setFilterValue(event.target.value)}
-    className='h-8 w-[150px] lg:w-[250px]'
-  />
-);
 
 export const columns: DataTableColumnType<API.System.Role>[] = [
   {
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => <LongText>{row.getValue("name")}</LongText>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
     enableSorting: true,
     enableHiding: false,
-    filterComponent: (column) => textInputFilter(column, "Name"),
+    filterComponent: (column) => TextInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText>{row.getValue("keyword")}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    filterComponent: (column) => textInputFilter(column, "Keyword"),
+    ...headerMeta(),
+    filterComponent: (column) => TextInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => <div>{row.getValue("type")}</div>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "sequence",
     header: "Sequence",
     cell: ({ row }) => <div>{row.getValue("sequence")}</div>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "description",
     header: "Description",
     cell: ({ row }) => <LongText>{row.getValue("description")}</LongText>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "permission_ids",
@@ -71,14 +59,8 @@ export const columns: DataTableColumnType<API.System.Role>[] = [
         ) : null}
       </div>
     ),
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   systemStatusColumn(),
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => <RoleIconRowActions row={row} />,
-    meta: defaultHeaderMeta.meta,
-    pin: "right",
-  },
+  actionsColumn(({ row }) => <RoleIconRowActions row={row} />),
 ];

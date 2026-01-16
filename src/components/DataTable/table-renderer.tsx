@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, CSSProperties } from "react";
+import { CSSProperties, Fragment, ReactNode } from "react";
 import { Column, flexRender, HeaderContext, HeaderGroup, Renderable, Row } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { TableCell, TableHead, TableRow } from "@/components/ui/table";
@@ -25,12 +25,7 @@ export const renderRow = <TData,>(groups: HeaderGroup<TData>[]) => {
           style.backgroundColor = "hsl(var(--background))";
         }
         return (
-          <TableHead
-            key={header.id}
-            colSpan={header.colSpan}
-            className={cn(columnDef.meta?.className)}
-            style={style}
-          >
+          <TableHead key={header.id} colSpan={header.colSpan} className={cn(columnDef.meta?.className)} style={style}>
             {header.isPlaceholder ? null : flexRender(renderHeader(header.column), header.getContext())}
           </TableHead>
         );

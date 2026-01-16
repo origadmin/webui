@@ -1,6 +1,6 @@
 import { Fragment, useMemo } from "react";
 import { noop } from "@/utils";
-import { ColumnFiltersState, OnChangeFn, Table } from "@tanstack/react-table";
+import { Column, ColumnFiltersState, OnChangeFn, Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableColumnType } from "@/components/DataTable";
@@ -54,7 +54,7 @@ export function Search<TData, TValue = unknown>({
         )}
 
         {inlineSearchColumns.map((columnDef, index) => {
-          const key = (columnDef.accessorKey as string) ?? `search-${index}`;
+          const key = columnDef.id ?? columnDef.accessorKey ?? `search-${index}`;
           return (
             <Fragment key={key}>
               <div className='flex gap-x-2'>{columnDef.renderSearch!(columnDef, index, table)}</div>
@@ -63,9 +63,15 @@ export function Search<TData, TValue = unknown>({
         })}
 
         {facetedFilterColumns.map((columnDef) => {
-          const column = table.getColumn(columnDef.accessorKey as string);
+          const columnId = columnDef.id ?? columnDef.accessorKey;
+
+          if (!columnId) return null;
+
+          const column = table.getColumn(columnId);
           if (!column) return null;
-          return <Fragment key={column.id}>{columnDef.filterComponent!(column, table)}</Fragment>;
+          return (
+            <Fragment key={column.id}>{columnDef.filterComponent!(column as Column<TData, TValue>, table)}</Fragment>
+          );
         })}
       </div>
 

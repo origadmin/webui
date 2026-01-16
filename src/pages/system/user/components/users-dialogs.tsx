@@ -2,12 +2,20 @@ import { Fragment } from "react";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 import { UsersInviteDialog } from "./users-invite-dialog";
+import { UsersResetPasswordDialog } from "./users-reset-password-dialog";
 import { UsersResourceDialog } from "./users-resource-dialog";
 import { useUserTable } from "./users-table-provider";
 
 export function UsersDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useUserTable();
   const className = "sm:max-w-3xl";
+
+  const handleClose = (dialogType: string) => {
+    setOpen(dialogType);
+    setTimeout(() => {
+      setCurrentRow(null);
+    }, 500);
+  };
 
   return (
     <Fragment>
@@ -37,12 +45,7 @@ export function UsersDialogs() {
           className={className}
           key={`user-edit-${currentRow.id}`}
           open={open === "edit"}
-          onOpenChange={() => {
-            setOpen("edit");
-            setTimeout(() => {
-              setCurrentRow(null);
-            }, 500);
-          }}
+          onOpenChange={() => handleClose("edit")}
           currentRow={currentRow}
         />
       )}
@@ -50,13 +53,16 @@ export function UsersDialogs() {
         <UsersDeleteDialog
           key={`user-delete-${currentRow.id}`}
           open={open === "delete"}
-          onOpenChange={() => {
-            setOpen("delete");
-            setTimeout(() => {
-              setCurrentRow(null);
-            }, 500);
-          }}
+          onOpenChange={() => handleClose("delete")}
           currentRow={currentRow}
+        />
+      )}
+      {currentRow && (
+        <UsersResetPasswordDialog
+          key={`user-reset-password-${currentRow.id}`}
+          open={open === "resetPassword"}
+          onOpenChange={() => handleClose("resetPassword")}
+          user={currentRow}
         />
       )}
     </Fragment>

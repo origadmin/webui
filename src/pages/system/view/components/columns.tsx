@@ -1,28 +1,16 @@
 "use client";
 
-import { defaultHeaderMeta } from "@/types";
-import { Column } from "@tanstack/react-table";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColorBadge } from "@/components/ui/color-badge";
-import { Input } from "@/components/ui/input";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
-import { systemStatusColumn } from "@/components/DataTable/common-columns";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
+import { headerMeta } from "@/components/DataTable/column-defaults";
+import { TextInputFilter } from "@/components/DataTable/filters";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
 import LongText from "@/components/long-text";
 import { scopeOptions } from "../constants";
 import { RowActions } from "./row-actions";
-
-
-// Helper function to create a simple text input filter
-const textInputFilter = (column: Column<any, unknown>, title: string) => (
-  <Input
-    placeholder={`Search ${title}...`}
-    value={(column.getFilterValue() as string) ?? ""}
-    onChange={(event) => column.setFilterValue(event.target.value)}
-    className='h-8 w-[150px] lg:w-[250px]'
-  />
-);
 
 export const columns: DataTableColumnType<API.System.View>[] = [
   {
@@ -39,7 +27,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
         <DataTableColumnHeader className='px-2' column={column} title='Name' />
       </div>
     ),
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
     cell: ({ row }) => (
       <div className='flex items-center min-w-24' style={{ paddingLeft: `${row.depth}rem` }}>
         {row.getCanExpand() ? (
@@ -57,14 +45,14 @@ export const columns: DataTableColumnType<API.System.View>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    filterComponent: (column) => textInputFilter(column, "Name"),
+    filterComponent: (column) => TextInputFilter(column, "Name"),
   },
   {
     accessorKey: "keyword",
     header: "Keyword",
     cell: ({ row }) => <LongText className='max-w-60'>{row.getValue("keyword")}</LongText>,
-    meta: defaultHeaderMeta.meta,
-    filterComponent: (column) => textInputFilter(column, "Keyword"),
+    ...headerMeta(),
+    filterComponent: (column) => TextInputFilter(column, "Keyword"),
   },
   {
     accessorKey: "scope",
@@ -74,7 +62,7 @@ export const columns: DataTableColumnType<API.System.View>[] = [
       const label = scopeOptions.find((option) => option.value === scope)?.label || scope;
       return <ColorBadge colorKey={scope}>{label}</ColorBadge>;
     },
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "type",
@@ -83,13 +71,13 @@ export const columns: DataTableColumnType<API.System.View>[] = [
       const type = row.original.type;
       return <ColorBadge colorKey={type}>{type}</ColorBadge>;
     },
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   {
     accessorKey: "path",
     header: "Path",
     cell: ({ row }) => <LongText>{row.original.path}</LongText>,
-    meta: defaultHeaderMeta.meta,
+    ...headerMeta(),
   },
   // {
   //   accessorKey: "component",
@@ -116,11 +104,5 @@ export const columns: DataTableColumnType<API.System.View>[] = [
   //   meta: defaultHeaderMeta.meta,
   // },
   systemStatusColumn(),
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => <RowActions row={row} />,
-    meta: defaultHeaderMeta.meta,
-    pin: "right",
-  },
+  actionsColumn(({ row }) => <RowActions row={row} />),
 ];

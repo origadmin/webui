@@ -50,9 +50,14 @@ export async function inviteUser(body: { email: string; roles: string[] }, optio
   return post<never>("/sys/users/invite", body, options);
 }
 
-/** Reset user password POST /sys/users/${id}/reset-password */
+/** Reset user password (send email) POST /sys/users/${id}/reset-password */
 export async function resetUserPassword(id: string, options?: API.RequestOptions) {
   return post<never>(`/sys/users/${id}/reset-password`, {}, options);
+}
+
+/** Admin reset user password (direct set) POST /sys/users/${id}/admin-reset-password */
+export async function adminResetUserPassword(id: string, password: string, options?: API.RequestOptions) {
+  return post<never>(`/sys/users/${id}/admin-reset-password`, { password }, options);
 }
 
 /** Update user roles PUT /sys/users/${id}/roles */
@@ -63,7 +68,7 @@ export async function updateUserRoles(id: string, body: { role_ids: string[] }, 
 /** Get user resources GET /sys/users/${id}/resources */
 export async function listUserResources(id: string, options?: API.RequestOptions) {
   const rawResponse = await get<API.System.ListUserResourcesResponse>(`/sys/users/${id}/resources`, undefined, options);
-  return rawResponse;
+  return rawResponse.resources;
 }
 // #endregion
 
@@ -129,6 +134,13 @@ export const useInviteUser = (queryClient: QueryClient) => {
 export const useResetUserPassword = (queryClient: QueryClient, id: string) => {
   return useMutation({
     mutationFn: () => resetUserPassword(id),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+  });
+};
+
+export const useAdminResetUserPassword = (queryClient: QueryClient, id: string) => {
+  return useMutation({
+    mutationFn: (password: string) => adminResetUserPassword(id, password),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
   });
 };
