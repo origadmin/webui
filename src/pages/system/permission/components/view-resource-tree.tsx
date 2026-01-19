@@ -54,13 +54,7 @@ const RecursiveNode = ({ node, level = 0, checkedIds, onToggle }: RecursiveNodeP
       {isOpen && hasChildren && (
         <div>
           {node.children!.map((child) => (
-            <RecursiveNode
-              key={child.id}
-              node={child}
-              level={level + 1}
-              checkedIds={checkedIds}
-              onToggle={onToggle}
-            />
+            <RecursiveNode key={child.id} node={child} level={level + 1} checkedIds={checkedIds} onToggle={onToggle} />
           ))}
         </div>
       )}
@@ -79,13 +73,7 @@ export function ViewTree({ allViews, checkedIds, onToggle }: ViewTreeProps) {
     <ScrollArea className='h-full w-full rounded-md border p-2'>
       <div className='px-2'>
         {viewTree.map((node) => (
-          <RecursiveNode
-            key={node.id}
-            node={node}
-            level={0}
-            checkedIds={checkedIds}
-            onToggle={onToggle}
-          />
+          <RecursiveNode key={node.id} node={node} level={0} checkedIds={checkedIds} onToggle={onToggle} />
         ))}
       </div>
     </ScrollArea>

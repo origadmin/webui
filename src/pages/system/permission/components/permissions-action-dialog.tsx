@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
 import { useViewsQuery } from "@/api/system/view";
 import { t } from "@/utils/locale";
@@ -5,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useMemo } from "react";
-
+import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,9 +23,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
-
 import { ResourceMultiSelect } from "./resource-multi-select";
 import { ViewTree } from "./view-resource-tree";
 
@@ -121,11 +119,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            id='permission-form'
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='relative space-y-4'
-          >
+          <form id='permission-form' onSubmit={form.handleSubmit(onSubmit)} className='relative space-y-4'>
             <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
               <FormField
                 control={form.control}
@@ -185,11 +179,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                     {isLoadingViews ? (
                       <div>Loading Menus...</div>
                     ) : (
-                      <ViewTree
-                        allViews={allViews}
-                        checkedIds={form.watch("view_ids")}
-                        onToggle={handleViewToggle}
-                      />
+                      <ViewTree allViews={allViews} checkedIds={form.watch("view_ids")} onToggle={handleViewToggle} />
                     )}
                   </div>
                   <div className='space-y-2 pt-4'>
@@ -201,10 +191,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                       render={({ field }) => (
                         <FormItem className='pt-2'>
                           <FormControl>
-                            <ResourceMultiSelect
-                              value={field.value || []}
-                              onChange={field.onChange}
-                            />
+                            <ResourceMultiSelect value={field.value || []} onChange={field.onChange} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
