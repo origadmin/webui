@@ -10,13 +10,17 @@ interface ResourcesDialogsProps {
 }
 
 export function ResourcesDialogs({ queryResult }: ResourcesDialogsProps) {
+  // TODO(lint-fix): @typescript-eslint/no-unsafe-assignment - This line has a persistent linting error that could not be automatically resolved.
   const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = useResourceTable();
   const className = "sm:max-w-3xl";
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
+      // TODO(lint-fix): @typescript-eslint/no-unsafe-call - This line has a persistent linting error that could not be automatically resolved.
       setOpen(null);
+      // TODO(lint-fix): @typescript-eslint/no-unsafe-call - This line has a persistent linting error that could not be automatically resolved.
       setCurrentRow(null);
+      // TODO(lint-fix): @typescript-eslint/no-unsafe-call - This line has a persistent linting error that could not be automatically resolved.
       setParentRow(null);
     }
   };
@@ -30,6 +34,7 @@ export function ResourcesDialogs({ queryResult }: ResourcesDialogsProps) {
         onOpenChange={handleOpenChange}
         queryResult={queryResult}
       />
+      {/* TODO(lint-fix): @typescript-eslint/no-unsafe-member-access - This line has a persistent linting error that could not be automatically resolved. */}
       {parentRow && (
         <ResourcesActionDialog
           className={className}
@@ -40,6 +45,7 @@ export function ResourcesDialogs({ queryResult }: ResourcesDialogsProps) {
           queryResult={queryResult}
         />
       )}
+      {/* TODO(lint-fix): @typescript-eslint/no-unsafe-member-access - This line has a persistent linting error that could not be automatically resolved. */}
       {currentRow && (
         <ResourcesActionDialog
           className={className}
@@ -50,6 +56,7 @@ export function ResourcesDialogs({ queryResult }: ResourcesDialogsProps) {
           queryResult={queryResult}
         />
       )}
+      {/* TODO(lint-fix): @typescript-eslint/no-unsafe-member-access - This line has a persistent linting error that could not be automatically resolved. */}
       {currentRow && (
         <ResourcesDeleteDialog
           key={`resource-delete-${currentRow.id}`}

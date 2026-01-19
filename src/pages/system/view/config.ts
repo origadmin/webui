@@ -4,7 +4,6 @@ import { DataTableProps } from "@/components/DataTable";
 import { columns as viewColumns } from "./components/columns";
 import { ViewTypes } from "./constants";
 
-
 // Zod Schema for form validation
 export const formSchema = z.object({
   name: z.string().min(1, "Name is required."),

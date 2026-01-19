@@ -1,18 +1,19 @@
-"use client";
-
 import { IconPencil, IconTrash, IconPlus } from "@tabler/icons-react";
 import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { useViewTable } from "./views-table-provider";
 
-interface RowActionsProps<TData> {
-  row: Row<TData>;
+// The component is specifically for View rows, so we remove the generic <TData>
+// and use the concrete type API.System.View.
+interface RowActionsProps {
+  row: Row<API.System.View>;
 }
 
-export function RowActions<TData>({ row }: RowActionsProps<TData>) {
+export function RowActions({ row }: RowActionsProps) {
   const { setOpen, setCurrentRow, setParentRow } = useViewTable();
 
   const handleAddSub = () => {
+    // Now `row.original` is correctly typed as API.System.View, satisfying the setter.
     setParentRow(row.original);
     setOpen("add-sub");
   };

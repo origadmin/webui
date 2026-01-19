@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useAdminResetUserPassword } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconRefresh } from "@tabler/icons-react";
@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { PasswordInput } from "@/components/password-input";
-
 
 // Function to generate a random password
 const generatePassword = (length = 12) => {
@@ -54,15 +53,15 @@ export function UsersResetPasswordDialog({ user, open, onOpenChange }: Props) {
     mode: "onSubmit",
   });
 
-  const handleGeneratePassword = () => {
+  const handleGeneratePassword = useCallback(() => {
     form.setValue("password", generatePassword());
-  };
+  }, [form]);
 
   useEffect(() => {
     if (open) {
       handleGeneratePassword(); // Generate a new password when the dialog opens
     }
-  }, [open]);
+  }, [open, handleGeneratePassword]);
 
   const onSubmit = async (values: ResetPasswordForm) => {
     if (!user) return;

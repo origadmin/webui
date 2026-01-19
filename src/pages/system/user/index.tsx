@@ -3,11 +3,11 @@ import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
+import { UserDetailRow } from "./components/user-detail-row";
 import { columns } from "./components/users-columns";
 import { UsersDialogs } from "./components/users-dialogs";
 import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
-import { UserDetailRow } from "./components/user-detail-row";
 
 export default function UserPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } = usePaginatedQuery({

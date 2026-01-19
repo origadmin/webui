@@ -1,5 +1,6 @@
-import { useMemo, useEffect, useRef, useCallback } from "react";
+import { useMemo } from "react";
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
+import { useResourcesQuery } from "@/api/system/resource";
 import { useViewsQuery } from "@/api/system/view";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,8 +25,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { debugToast } from "@/components/debug-toast";
-import { ResourceMultiSelect } from "./resource-multi-select";
-import { ViewTreeSelect, ViewTreeSelectRef } from "./view-tree-select";
+import { ViewResourceTree } from "./view-resource-tree";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: t("validation.name.required") }),
@@ -76,34 +76,12 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
   const { mutate: createPermission, isPending: isCreatePending } = usePermissionCreate(queryClient);
   const { mutate: updatePermission, isPending: isUpdatePending } = usePermissionUpdate(queryClient, id);
 
+  // Fetch all views and resources for the tree selector
   const { data: viewsData, isLoading: isLoadingViews } = useViewsQuery({ pagingMode: "none", with_resources: true });
+  const { data: resourcesData, isLoading: isLoadingResources } = useResourcesQuery({ pagingMode: "none" });
 
-  const allViews = viewsData?.items || [];
-
-  const selectedViewIds = form.watch("view_ids");
-
-  useEffect(() => {
-    if (!selectedViewIds) return;
-
-    const resourceIdsFromViews = new Set<string>();
-    const selectedViews = allViews.filter((view) => selectedViewIds.includes(String(view.id)));
-    for (const view of selectedViews) {
-      if (view.resources) {
-        for (const resource of view.resources) {
-          resourceIdsFromViews.add(String(resource.id));
-        }
-      }
-    }
-
-    const currentResourceIds = new Set(form.getValues("resource_ids") || []);
-    const newResourceIds = Array.from(new Set([...currentResourceIds, ...resourceIdsFromViews]));
-
-    if (JSON.stringify(newResourceIds.sort()) !== JSON.stringify((form.getValues("resource_ids") || []).sort())) {
-      form.setValue("resource_ids", newResourceIds);
-    }
-  }, [selectedViewIds, allViews, form]);
-
-  const viewTreeRef = useRef<ViewTreeSelectRef>(null);
+  const allViews = useMemo(() => viewsData?.items || [], [viewsData]);
+  const allResources = useMemo(() => resourcesData?.items || [], [resourcesData]);
 
   const onSubmit = (values: PermissionForm) => {
     const action = is_edit ? "updated" : "created";
@@ -129,11 +107,20 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
     });
   };
 
-  const isLoading = isLoadingViews;
+  const isLoading = isLoadingViews || isLoadingResources;
+
+  // Helper to handle tree changes
+  const handleTreeChange = (value: { view_ids: string[]; resource_ids: string[] }) => {
+    form.setValue("view_ids", value.view_ids);
+    form.setValue("resource_ids", value.resource_ids);
+  };
+
+  const currentViewIds = form.watch("view_ids") || [];
+  const currentResourceIds = form.watch("resource_ids") || [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
-      <DialogContent className={cn("sm:max-w-2xl", className)}>
+      <DialogContent className={cn("sm:max-w-4xl", className)}>
         <DialogHeader>
           <DialogTitle>{is_edit ? "Edit Permission" : "Add New Permission"}</DialogTitle>
           <DialogDescription>
@@ -164,7 +151,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                 )}
               />
             </div>
-            <ScrollArea className='h-[32rem] w-full'>
+            <ScrollArea className='h-[40rem] w-full'>
               <div className='space-y-4 p-4'>
                 <div className='space-y-2'>
                   <h3 className='text-lg font-medium'>Core Details</h3>
@@ -200,64 +187,24 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                 </div>
 
                 <div className='space-y-4 pt-4'>
-                  <FormField
-                    control={form.control}
-                    name='view_ids'
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className='flex justify-between items-center mb-2'>
-                          <FormLabel>Included Pages/Views</FormLabel>
-                          <div className='flex space-x-2'>
-                            <Button
-                              type='button'
-                              variant='outline'
-                              size='sm'
-                              onClick={() => viewTreeRef.current?.expandAll()}
-                            >
-                              Expand All
-                            </Button>
-                            <Button
-                              type='button'
-                              variant='outline'
-                              size='sm'
-                              onClick={() => viewTreeRef.current?.collapseAll()}
-                            >
-                              Collapse All
-                            </Button>
-                          </div>
-                        </div>
-                        <FormControl>
-                          {isLoading ? (
-                            <div>Loading Views...</div>
-                          ) : (
-                            <ViewTreeSelect
-                              {...field}
-                              ref={(node) => {
-                                field.ref(node);
-                                viewTreeRef.current = node;
-                              }}
-                              allViews={allViews}
-                            />
-                          )}
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='resource_ids'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Associated APIs (Resources)</FormLabel>
-                        <FormControl>
-                          <ResourceMultiSelect {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className='flex justify-between items-center mb-2'>
+                    <FormLabel className='text-base font-medium'>Permissions Configuration</FormLabel>
+                  </div>
+                  {isLoading ? (
+                    <div className='flex items-center justify-center h-64 border rounded-md'>Loading Data...</div>
+                  ) : (
+                    <ViewResourceTree
+                      allViews={allViews}
+                      allResources={allResources}
+                      value={{
+                        view_ids: currentViewIds,
+                        resource_ids: currentResourceIds,
+                      }}
+                      onChange={handleTreeChange}
+                    />
+                  )}
                 </div>
+
                 <FormField
                   control={form.control}
                   name='description'

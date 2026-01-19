@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,37 +21,40 @@ export function ResourceTree({ resources = [], selectedResources = [], onSelecte
   const [treeData, setTreeData] = useState<TreeNode[]>([]);
 
   // 构建树形结构
-  const buildTree = (items: API.System.Resource[]) => {
-    const map = new Map<string, TreeNode>();
-    const roots: TreeNode[] = [];
+  const buildTree = useCallback(
+    (items: API.System.Resource[]) => {
+      const map = new Map<string, TreeNode>();
+      const roots: TreeNode[] = [];
 
-    // 创建节点映射
-    items.forEach((item) => {
-      if (!item.id) return;
-      map.set(item.id, { ...item, children: [], checked: selectedResources.includes(item.id) });
-    });
+      // 创建节点映射
+      items.forEach((item) => {
+        if (!item.id) return;
+        map.set(item.id, { ...item, children: [], checked: selectedResources.includes(item.id) });
+      });
 
-    // 构建树形结构
-    items.forEach((item) => {
-      if (!item.id) return;
-      const node = map.get(item.id);
-      if (!node) return;
+      // 构建树形结构
+      items.forEach((item) => {
+        if (!item.id) return;
+        const node = map.get(item.id);
+        if (!node) return;
 
-      if (!item.parent_id) {
-        roots.push(node);
-      } else {
-        const parent = map.get(item.parent_id);
-        if (parent && parent.children) {
-          parent.children.push(node);
+        if (!item.parent_id) {
+          roots.push(node);
+        } else {
+          const parent = map.get(item.parent_id);
+          if (parent && parent.children) {
+            parent.children.push(node);
+          }
         }
-      }
-    });
+      });
 
-    return roots;
-  };
+      return roots;
+    },
+    [selectedResources],
+  );
 
   // 更新节点状态
-  const updateNodeState = (nodes: TreeNode[]) => {
+  const updateNodeState = useCallback((nodes: TreeNode[]) => {
     nodes.forEach((node) => {
       if (node.children && node.children.length > 0) {
         updateNodeState(node.children);
@@ -64,7 +67,7 @@ export function ResourceTree({ resources = [], selectedResources = [], onSelecte
           indeterminateChildren.length > 0;
       }
     });
-  };
+  }, []);
 
   // 收集选中的资源ID
   const collectSelectedResources = (nodes: TreeNode[]): string[] => {
@@ -171,7 +174,7 @@ export function ResourceTree({ resources = [], selectedResources = [], onSelecte
     const tree = buildTree(resources);
     updateNodeState(tree);
     setTreeData(tree);
-  }, [resources, selectedResources]);
+  }, [resources, selectedResources, buildTree, updateNodeState]);
 
   return (
     <ScrollArea className='h-[400px] w-full border rounded-md'>

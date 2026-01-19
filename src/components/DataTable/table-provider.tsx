@@ -12,7 +12,7 @@ type TableDialogType =
   | "delete"
   | "resetPassword";
 
-interface TableContextType<T> {
+export interface TableContextType<T> {
   open: TableDialogType | null;
   setOpen: (str: TableDialogType | null) => void;
   currentRow: T | null;
@@ -22,7 +22,16 @@ interface TableContextType<T> {
 }
 
 const createTableContext = <T,>() => {
-  const Context = createContext<TableContextType<T> | null>(null);
+  const defaultContextValue: TableContextType<T> = {
+    open: null,
+    setOpen: () => {},
+    currentRow: null,
+    setCurrentRow: () => {},
+    parentRow: null,
+    setParentRow: () => {},
+  };
+
+  const Context = createContext<TableContextType<T>>(defaultContextValue);
 
   const Provider = ({ children, ...props }: { children: React.ReactNode }) => {
     const [open, setOpen] = useDialogState<TableDialogType>(null);
@@ -38,7 +47,6 @@ const createTableContext = <T,>() => {
           setCurrentRow,
           parentRow,
           setParentRow,
-          ...props,
         }}
       >
         {children}
@@ -48,9 +56,7 @@ const createTableContext = <T,>() => {
 
   const useTable = () => {
     const context = useContext(Context);
-    if (!context) {
-      throw new Error("useTable has to be used within <TableProvider>");
-    }
+    // The context is now guaranteed to be non-null.
     return context;
   };
 

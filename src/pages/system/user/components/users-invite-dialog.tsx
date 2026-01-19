@@ -8,18 +8,11 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RoleMultiSelect } from "./role-multi-select";
+
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
@@ -69,7 +62,7 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
         onOpenChange(false);
         form.reset();
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           title: "Failed to Send Invitation",
           description: error.message || "An unexpected error occurred.",

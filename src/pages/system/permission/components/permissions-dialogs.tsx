@@ -4,7 +4,7 @@ import { PermissionsDeleteDialog } from "./permissions-delete-dialog";
 import { usePermissionTable } from "./permissions-table-provider";
 
 export function PermissionsDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow, parentRow, setParentRow } = usePermissionTable();
+  const { open, setOpen, currentRow, setCurrentRow, setParentRow } = usePermissionTable();
   const className = "sm:max-w-3xl";
 
   const handleOpenChange = (isOpen: boolean) => {

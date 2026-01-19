@@ -1,13 +1,18 @@
+// TODO(lint-fix): @typescript-eslint/no-unsafe-* - This file has a large number of persistent linting errors that could not be automatically resolved.
 import React, { useState, useMemo, useEffect } from "react";
 import { buildTree, TreeItem } from "@/utils/tree";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-type ResourceItem = TreeItem & API.System.Resource;
+// Define ResourceItem to be compatible with TreeItem and enforce id as string
+interface ResourceItem extends Omit<API.System.Resource, "id" | "children">, TreeItem<ResourceItem> {
+  id: string;
+  children?: ResourceItem[];
+}
 
 interface ResourceTreeSelectProps {
-  resources?: ResourceItem[];
+  resources?: API.System.Resource[];
   value?: string[];
   onChange?: (selectedIds: string[]) => void;
 }
@@ -36,7 +41,7 @@ const ResourceTreeNode: React.FC<{
           {node.children.map((child) => (
             <ResourceTreeNode
               key={child.id}
-              node={child as ResourceItem}
+              node={child}
               selectedIds={selectedIds}
               onSelectionChange={onSelectionChange}
             />
@@ -51,15 +56,18 @@ export const ResourceTreeSelect: React.FC<ResourceTreeSelectProps> = ({ resource
   const [selectedIds, setSelectedIds] = useState(new Set(value));
 
   const { treeData, nodeMap, parentMap } = useMemo(() => {
+    // Filter out resources without ID and cast to ResourceItem
+    const validResources = resources.filter((r): r is ResourceItem => !!r.id);
+
     const addDepth = (items: ResourceItem[], depth = 0): ResourceItem[] => {
       return items.map((item) => ({
         ...item,
         depth,
-        children: item.children ? addDepth(item.children as ResourceItem[], depth + 1) : [],
+        children: item.children ? addDepth(item.children, depth + 1) : [],
       }));
     };
 
-    const treeWithDepth = addDepth(buildTree(resources));
+    const treeWithDepth = addDepth(buildTree<ResourceItem>(validResources));
 
     const nMap = new Map<string, ResourceItem>();
     const pMap = new Map<string, string>();
@@ -71,7 +79,7 @@ export const ResourceTreeSelect: React.FC<ResourceTreeSelectProps> = ({ resource
           pMap.set(item.id, parentId);
         }
         if (item.children) {
-          traverseForMaps(item.children as ResourceItem[], item.id);
+          traverseForMaps(item.children, item.id);
         }
       });
     };

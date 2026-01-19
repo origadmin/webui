@@ -14,13 +14,13 @@ interface Props<T> {
   currentRow: T;
 }
 
-export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.Resource>) {
+export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<API.System.Resource>) {
   const [value, setValue] = useState("");
   const queryClient = useQueryClient();
   const { mutate: deleteResource, isPending: isDeletePending } = useResourceDelete(queryClient);
 
   const handleDelete = () => {
-    if (!currentRow.id || value.trim() !== currentRow.keyword) return;
+    if (!currentRow.id || !currentRow.keyword || value.trim() !== currentRow.keyword) return;
 
     deleteResource(currentRow.id, {
       onSuccess: () => {
@@ -33,7 +33,7 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
         // 3. Show success toast.
         toast({
           title: "Resource Deleted",
-          description: `The resource "${currentRow.keyword}" has been successfully deleted.`,
+          description: `The resource "${currentRow.keyword || "resource"}" has been successfully deleted.`,
         });
       },
       onError: (error) => {
@@ -51,7 +51,7 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.keyword || isDeletePending}
+      disabled={value.trim() !== (currentRow.keyword || "") || isDeletePending}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle className='mr-1 inline-block stroke-destructive' size={18} /> Delete Resource
@@ -60,11 +60,11 @@ export function ResourcesDeleteDialog({ open, onOpenChange, currentRow }: Props<
       desc={
         <div className='space-y-4'>
           <p className='mb-2'>
-            Are you sure you want to delete <span className='font-bold'>{currentRow.keyword}</span>?
+            Are you sure you want to delete <span className='font-bold'>{currentRow.keyword || "resource"}</span>?
             <br />
             This action will permanently remove the resource with the resource of{" "}
-            <span className='font-bold'>{currentRow.keyword?.toUpperCase()}</span> from the system. This cannot be
-            undone.
+            <span className='font-bold'>{currentRow.keyword?.toUpperCase() || "RESOURCE".toUpperCase()}</span> from the
+            system. This cannot be undone.
           </p>
 
           <Label className='my-2'>

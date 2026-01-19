@@ -1,5 +1,4 @@
-import { useUserResourceQuery } from "@/api/system/user";
-import { type Resource } from "@/types/system/resources";
+import { useUserResourcesQuery } from "@/api/system/user";
 import { Badge } from "@/components/ui/badge";
 import {
   Drawer,
@@ -20,8 +19,13 @@ export type PermissionDrawerProps<T> = {
 export const PermissionDrawer = ({ currentRow, open, onOpenChange }: PermissionDrawerProps<API.System.User>) => {
   console.log("currentRow", currentRow);
   const id = currentRow?.id ?? "";
-  // if (!open || !id) return null;
-  const { data: resources = {}, isLoading } = useUserResourceQuery(id);
+  const {
+    data: resourceResult,
+    isLoading,
+  }: { data: { items: API.System.Resource[]; total: number } | undefined; isLoading: boolean } = useUserResourcesQuery(
+    id,
+    { enabled: !!id },
+  );
 
   return (
     <Drawer direction='right' open={open} onOpenChange={onOpenChange}>
@@ -35,9 +39,9 @@ export const PermissionDrawer = ({ currentRow, open, onOpenChange }: PermissionD
             <div>Loading...</div>
           ) : (
             <div>
-              {resources &&
-                Array.isArray(resources.data) &&
-                (resources.data as Resource[])?.map((resource) => <Badge key={resource.id}>{resource.name}</Badge>)}
+              {(resourceResult?.items || [])?.map((resource: API.System.Resource) => (
+                <Badge key={resource.id}>{resource.name}</Badge>
+              ))}
             </div>
           )}
         </div>

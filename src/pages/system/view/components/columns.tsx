@@ -1,13 +1,11 @@
-"use client";
-
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColorBadge } from "@/components/color-badge";
 import { DataTableColumnHeader, DataTableColumnType } from "@/components/DataTable";
-import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { headerMeta } from "@/components/DataTable/column-defaults";
+import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common-columns";
 import { TextInputFilter } from "@/components/DataTable/filters";
 import TablerIcon from "@/components/IconPicker/tabler-icon";
+import { ColorBadge } from "@/components/color-badge";
 import LongText from "@/components/long-text";
 import { scopeOptions } from "../constants";
 import { RowActions } from "./row-actions";

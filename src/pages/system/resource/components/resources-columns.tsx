@@ -7,7 +7,6 @@ import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
 import { ResourceIconRowActions } from "./resources-row-actions";
 
-
 // Maps sync_status to badge variants
 const syncStatusBadges: Record<string, string> = {
   Synced: "bg-green-500",

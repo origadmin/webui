@@ -5,6 +5,7 @@ import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { useResourceTable } from "./resources-table-provider";
 
+
 export function ResourcesPrimaryButtons() {
   const { setOpen } = useResourceTable();
   const queryClient = useQueryClient();
@@ -22,7 +23,7 @@ export function ResourcesPrimaryButtons() {
           description: "Resource synchronization process has been initiated.",
         });
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast({
           title: "Sync Failed",
           description: error.message || "An unexpected error occurred.",
