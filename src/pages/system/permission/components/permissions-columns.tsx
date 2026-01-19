@@ -44,7 +44,7 @@ export const columns: DataTableColumnType<API.System.Permission>[] = [
   systemStatusColumn(),
   {
     accessorKey: "resources",
-    header: "Resources",
+    header: "Associated Resources",
     cell: ({ row }) => (
       <div className='flex flex-wrap gap-1'>
         {row.original.resources && row.original.resources.length > 0 ? (

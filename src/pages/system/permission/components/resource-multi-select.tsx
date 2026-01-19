@@ -1,4 +1,5 @@
 import { useMemo, useState, useRef, useCallback } from "react";
+import * as React from "react";
 import { useInfiniteResourcesQuery } from "@/api/system/resource";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ export function ResourceMultiSelect({ value: selectedIds = [], onChange }: Resou
     const flattenedResources = data.pages.flatMap((page) => page.resources || []);
     const uniqueResources = new Map<string, API.System.Resource>();
     for (const resource of flattenedResources) {
+      // Ensure resource.id is a string before adding to uniqueResources
       if (resource?.id) {
         uniqueResources.set(resource.id, resource);
       }
@@ -35,7 +37,8 @@ export function ResourceMultiSelect({ value: selectedIds = [], onChange }: Resou
   }, [data]);
 
   const selectedResources = useMemo(() => {
-    return allResources.filter((r) => selectedIds.includes(r.id));
+    // Filter based on selectedIds, ensuring resource.id is a string
+    return allResources.filter((r) => r.id && selectedIds.includes(r.id));
   }, [allResources, selectedIds]);
 
   const handleSelect = (resourceId: string) => {
@@ -56,7 +59,7 @@ export function ResourceMultiSelect({ value: selectedIds = [], onChange }: Resou
     (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
       if (scrollHeight - scrollTop - clientHeight < 50 && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
+        void fetchNextPage(); // Explicitly ignore the Promise
       }
     },
     [hasNextPage, isFetchingNextPage, fetchNextPage],
@@ -82,7 +85,10 @@ export function ResourceMultiSelect({ value: selectedIds = [], onChange }: Resou
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleRemove(resource.id);
+                          // Ensure resource.id is a string before passing to handleRemove
+                          if (resource.id) {
+                            handleRemove(resource.id);
+                          }
                         }}
                         className='ml-2 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
                       >
@@ -116,14 +122,18 @@ export function ResourceMultiSelect({ value: selectedIds = [], onChange }: Resou
             <CommandEmpty>No resources found.</CommandEmpty>
             <CommandGroup>
               {allResources.map((resource) => {
-                const isSelected = selectedIds.includes(resource.id);
+                // Ensure resource.id is a string before using it
+                const resourceId = resource.id;
+                if (!resourceId) return null; // Skip resources without an ID
+
+                const isSelected = selectedIds.includes(resourceId);
                 return (
                   <CommandItem
-                    key={resource.id}
+                    key={resourceId}
                     value={`${resource.name} ${resource.keyword}`}
                     onSelect={() => {
                       if (!isSelected) {
-                        handleSelect(resource.id);
+                        handleSelect(resourceId);
                       }
                     }}
                     disabled={isSelected}
