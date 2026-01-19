@@ -8,6 +8,7 @@ import { FormType } from "../config";
 import { ViewTypes } from "../constants";
 import { ScopeCombobox } from "./scope-combobox";
 
+
 const viewTypeOptions = [
   { value: ViewTypes.ROOT, label: "Root (Virtual Node)" },
   { value: ViewTypes.GROUP, label: "Group (Visual Grouping)" },

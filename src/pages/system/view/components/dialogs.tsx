@@ -28,12 +28,7 @@ export function ViewDialogs() {
   return (
     <Fragment>
       {/* Top-level Add */}
-      <ViewActionDialog
-        className={className}
-        key='view-add'
-        open={open === "add"}
-        onOpenChange={handleOpenChange}
-      />
+      <ViewActionDialog className={className} key='view-add' open={open === "add"} onOpenChange={handleOpenChange} />
       {/* Add Sub-view */}
       {parentRow && (
         <ViewActionDialog

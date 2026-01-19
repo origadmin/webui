@@ -345,11 +345,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
               }}
               onKeyDown={handleInputKeyDown}
             />
-            <CommandList
-              onWheel={handleWheel}
-              onScroll={(e) => handleScroll(e)}
-              ref={scrollRef}
-            >
+            <CommandList onWheel={handleWheel} onScroll={(e) => handleScroll(e)} ref={scrollRef}>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 <CommandItem key='all' onSelect={toggleAll}>
@@ -383,7 +379,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                   );
                 })}
                 {isFetchingNextPage && (
-                  <div className="p-2 text-center text-sm text-muted-foreground">Loading more...</div>
+                  <div className='p-2 text-center text-sm text-muted-foreground'>Loading more...</div>
                 )}
               </CommandGroup>
               <CommandSeparator />

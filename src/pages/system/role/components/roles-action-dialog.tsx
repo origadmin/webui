@@ -46,10 +46,9 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   className?: string;
-  columns?: number;
 }
 
-export function RolesActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props) {
+export function RolesActionDialog({ currentRow, open, onOpenChange, className }: Props) {
   const is_edit = !!currentRow;
   const id = currentRow?.id || "";
 

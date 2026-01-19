@@ -10,11 +10,14 @@ export function UsersDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useUserTable();
   const className = "sm:max-w-3xl";
 
-  const handleClose = (dialogType: string) => {
-    setOpen(dialogType);
-    setTimeout(() => {
-      setCurrentRow(null);
-    }, 500);
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setOpen(null);
+      // Delay clearing currentRow to allow the dialog close animation to finish
+      setTimeout(() => {
+        setCurrentRow(null);
+      }, 200);
+    }
   };
 
   return (
@@ -24,20 +27,15 @@ export function UsersDialogs() {
           key={`user-resource-${currentRow.id}`}
           currentRow={currentRow}
           open={open === "preview"}
-          onOpenChange={() => setOpen("preview")}
+          onOpenChange={handleOpenChange}
         />
       )}
-      <UsersActionDialog
-        className={className}
-        key='user-add'
-        open={open === "add"}
-        onOpenChange={() => setOpen("add")}
-      />
+      <UsersActionDialog className={className} key='user-add' open={open === "add"} onOpenChange={handleOpenChange} />
       <UsersInviteDialog
         className={className}
         key='user-invite'
         open={open === "invite"}
-        onOpenChange={() => setOpen("invite")}
+        onOpenChange={handleOpenChange}
       />
 
       {currentRow && (
@@ -45,7 +43,7 @@ export function UsersDialogs() {
           className={className}
           key={`user-edit-${currentRow.id}`}
           open={open === "edit"}
-          onOpenChange={() => handleClose("edit")}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
         />
       )}
@@ -53,7 +51,7 @@ export function UsersDialogs() {
         <UsersDeleteDialog
           key={`user-delete-${currentRow.id}`}
           open={open === "delete"}
-          onOpenChange={() => handleClose("delete")}
+          onOpenChange={handleOpenChange}
           currentRow={currentRow}
         />
       )}
@@ -61,7 +59,7 @@ export function UsersDialogs() {
         <UsersResetPasswordDialog
           key={`user-reset-password-${currentRow.id}`}
           open={open === "resetPassword"}
-          onOpenChange={() => handleClose("resetPassword")}
+          onOpenChange={handleOpenChange}
           user={currentRow}
         />
       )}
