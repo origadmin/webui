@@ -9,6 +9,7 @@ import { UsersDialogs } from "./components/users-dialogs";
 import { UsersPrimaryButtons } from "./components/users-primary-buttons";
 import { UserTableProvider } from "./components/users-table-provider";
 
+
 export default function UserPage() {
   const { dataSource, total, isLoading, tableProps, searchProps } = usePaginatedQuery({
     useQuery: (params) => useUsersQuery(params),

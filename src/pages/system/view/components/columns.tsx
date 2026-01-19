@@ -10,6 +10,7 @@ import LongText from "@/components/long-text";
 import { scopeOptions } from "../constants";
 import { RowActions } from "./row-actions";
 
+
 export const columns: DataTableColumnType<API.System.View>[] = [
   {
     accessorKey: "name",

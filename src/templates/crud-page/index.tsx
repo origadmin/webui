@@ -1,45 +1,49 @@
+import { usePaginatedQuery } from "@/hooks/use-paginated-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DataTable } from "@/components/DataTable";
+import { DataTable, DataTableColumnType } from "@/components/DataTable";
 import PageContainer from "@/components/PageContainer";
-import { Dialogs } from "./components/dialogs";
 import { PrimaryButtons } from "./components/primary-buttons";
-// Assuming a generic primary-buttons component
-import { columns, apiHooks, pageConfig } from "./config";
-import { CrudTableProvider } from "./hooks/use-crud-table";
+import { ApiHooks, PageConfig } from "./types";
 
-export default function CrudPage() {
-  const queryResult = apiHooks.useQuery({
-    pageIndex: 0,
-    pageSize: 10,
+interface CrudPageProps<TData, TFormValues> {
+  pageConfig: PageConfig;
+  apiHooks: ApiHooks<TData, TFormValues>;
+  columns: DataTableColumnType<TData>[];
+}
+
+export default function CrudPage<TData, TFormValues>({
+  pageConfig,
+  apiHooks,
+  columns,
+}: CrudPageProps<TData, TFormValues>) {
+  const { dataSource, total, isLoading, tableProps, searchProps } = usePaginatedQuery({
+    useQuery: apiHooks.useQuery,
   });
 
-  const data = queryResult.data as { items?: unknown[]; total?: number } | undefined;
-  const isLoading = queryResult.isLoading;
-
   return (
-    <CrudTableProvider>
-      <PageContainer>
-        <Card>
-          <CardHeader>
-            <CardTitle>{pageConfig.title} List</CardTitle>
-            <CardDescription>{pageConfig.description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DataTable
-              columns={columns}
-              dataSource={data?.items ?? []}
-              total={data?.total ?? 0}
-              isLoading={isLoading}
-              useManual={true}
-              showPagination={true}
-              toolbarPosition='top'
-              toolbars={isLoading ? undefined : () => <PrimaryButtons />}
-              props={{}}
-            />
-          </CardContent>
-        </Card>
-      </PageContainer>
-      <Dialogs />
-    </CrudTableProvider>
+    <PageContainer>
+      <Card>
+        <CardHeader>
+          <CardTitle>{pageConfig.title} List</CardTitle>
+          <CardDescription>{pageConfig.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DataTable
+            columns={columns}
+            dataSource={dataSource}
+            total={total}
+            isLoading={isLoading}
+            {...tableProps}
+            useManual={true}
+            showPagination={true}
+            toolbarPosition='top'
+            toolbars={() => <PrimaryButtons />}
+            props={{
+              search: searchProps,
+            }}
+          />
+        </CardContent>
+      </Card>
+    </PageContainer>
   );
 }

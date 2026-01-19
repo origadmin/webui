@@ -1,37 +1,92 @@
-import { useUsersQuery, useUserCreate, useUserUpdate, useUserDelete } from "@/api/system/user";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-// NOTE: The columns import is removed because the template's config should not depend on a specific implementation.
-// import { columns as userColumns } from "./components/columns";
-import { DataTableProps } from "@/components/DataTable";
+import { DataTableColumnType } from "@/components/DataTable";
+import { ApiHooks } from "./types";
 
-// This file serves as an EXAMPLE configuration for a CRUD page.
-// When creating a new CRUD page (e.g., for 'roles'), you would copy this template
-// and replace the user-specific imports and definitions with role-specific ones.
+// =================================================================================
+// INSTRUCTIONS:
+// This is a simple, concrete example. To use it:
+// 1. Find all instances of "Product" and replace them with your entity.
+// 2. Update the schema, hooks, and columns with your actual logic.
+// =================================================================================
 
-// 1. Define the Zod schema for form validation.
+/**
+ * STEP 1: Define your data type.
+ */
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  status: "active" | "draft";
+}
+
+/**
+ * STEP 2: Define your form validation schema.
+ */
 export const formSchema = z.object({
-  // Example schema, replace with actual fields for the module
-  name: z.string().min(1, "Name is required."),
-  status: z.number().default(1),
+  name: z.string().min(1, "Name is required"),
+  price: z.coerce.number().min(0, "Price must be positive"),
+  status: z.enum(["active", "draft"]).default("active"),
 });
 
-// 2. Define the TypeScript type for the form.
 export type FormType = z.infer<typeof formSchema>;
 
-// 3. Define the API hooks required for the CRUD operations.
-// This is an example using user hooks. Replace with the actual module's hooks.
-export const apiHooks = {
-  useQuery: useUsersQuery,
-  useCreate: useUserCreate,
-  useUpdate: useUserUpdate,
-  useDelete: useUserDelete,
+/**
+ * STEP 3: Provide your API hooks.
+ * This object explicitly implements the `ApiHooks` interface, ensuring type safety.
+ */
+export const apiHooks: ApiHooks<Product, FormType> = {
+  useQuery: (params, options) => {
+    return useQuery({
+      queryKey: ["mock-products", params],
+      queryFn: (): Promise<{ items: Product[]; total: number }> => {
+        console.log("Fetching products with params:", params);
+        return Promise.resolve({ items: [], total: 0 });
+      },
+      ...options,
+    });
+  },
+  useItemQuery: (id) => {
+    return useQuery({
+      queryKey: ["mock-product", id],
+      queryFn: (): Promise<Product | undefined> => {
+        console.log("Fetching product with id:", id);
+        return Promise.resolve(undefined);
+      },
+    });
+  },
+  useCreate: () =>
+    useMutation({
+      mutationFn: async (data: FormType) => {
+        console.log("Creating item:", data);
+        return Promise.resolve();
+      },
+    }),
+  useUpdate: () =>
+    useMutation({
+      mutationFn: async (data: FormType & { id: string }) => {
+        console.log("Updating item:", data);
+        return Promise.resolve();
+      },
+    }),
+  useDelete: () =>
+    useMutation({
+      mutationFn: async (id: string) => {
+        console.log("Deleting item with id:", id);
+        return Promise.resolve();
+      },
+    }),
 };
 
-// 4. Define the columns for the data table. This will be defined in the actual page's directory.
-export const columns: DataTableProps<unknown>["columns"] = [];
+/**
+ * STEP 4: Define your table columns.
+ */
+export const columns: DataTableColumnType<Product>[] = [];
 
-// 5. Define a title for the page.
+/**
+ * STEP 5: Define your page's title and description.
+ */
 export const pageConfig = {
-  title: "Item",
-  description: "Manage your items here.",
+  title: "Products",
+  description: "Manage your products here.",
 };

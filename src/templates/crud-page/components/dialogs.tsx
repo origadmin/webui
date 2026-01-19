@@ -1,24 +1,24 @@
 import { Fragment } from "react";
 import { z } from "zod";
 import { useCrudTable } from "../hooks/use-crud-table";
-import { PageConfig, ApiHooks } from "../types";
+import { PageConfig, ApiHooks, CrudDataItem } from "../types";
 import { ActionDialog } from "./action-dialog";
 import { DeleteDialog } from "./delete-dialog";
 
-interface DialogsProps<T, TForm extends z.ZodType<any, any>> {
+interface DialogsProps<TData extends CrudDataItem, TFormValues> {
   pageConfig: PageConfig;
-  formSchema: TForm;
-  apiHooks: ApiHooks<T, TForm>;
+  formSchema: z.ZodType<TFormValues>;
+  apiHooks: ApiHooks<TData, TFormValues>;
   renderFields: (form: any) => React.ReactNode;
 }
 
-export function Dialogs<T extends { id?: string }, TForm extends z.ZodType<any, any>>({
+export function Dialogs<TData extends CrudDataItem, TFormValues>({
   pageConfig,
   formSchema,
   apiHooks,
   renderFields,
-}: DialogsProps<T, TForm>) {
-  const { open, setOpen, currentRow, setCurrentRow } = useCrudTable<T>();
+}: DialogsProps<TData, TFormValues>) {
+  const { open, setOpen, currentRow, setCurrentRow } = useCrudTable<TData>();
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {

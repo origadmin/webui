@@ -1,8 +1,9 @@
-import { useViewsQuery, useViewQuery, useViewCreate, useViewUpdate, useViewDelete } from "@/api/system/view";
+import { useViewCreate, useViewDelete, useViewQuery, useViewsQuery, useViewUpdate } from "@/api/system/view";
 import { z } from "zod";
 import { DataTableProps } from "@/components/DataTable";
 import { columns as viewColumns } from "./components/columns";
 import { ViewTypes } from "./constants";
+
 
 // Zod Schema for form validation
 export const formSchema = z.object({
@@ -29,7 +30,7 @@ export type FormType = z.infer<typeof formSchema>;
 
 export const apiHooks = {
   useQuery: useViewsQuery,
-  useViewQuery: useViewQuery, // Add the missing hook
+  useViewQuery: useViewQuery,
   useCreate: useViewCreate,
   useUpdate: useViewUpdate,
   useDelete: useViewDelete,
