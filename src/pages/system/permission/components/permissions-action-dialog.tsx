@@ -1,11 +1,12 @@
 import { usePermissionCreate, usePermissionUpdate } from "@/api/system/permission";
+import { useViewsQuery } from "@/api/system/view";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
+import { useMemo } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,15 +22,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { debugToast } from "@/components/debug-toast";
+import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+
 import { ResourceMultiSelect } from "./resource-multi-select";
+import { ViewTree } from "./view-resource-tree";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: t("validation.name.required") }),
   keyword: z.string().min(1, { message: t("validation.keyword.required") }),
   description: z.string().optional(),
-  // view_ids: z.array(z.string()).optional(), // No longer needed if not using ViewResourceTree
-  resource_ids: z.array(z.string()).optional(), // Keep this for the form data
+  view_ids: z.array(z.string()).optional(),
+  resource_ids: z.array(z.string()).optional(),
   data_scope: z.string().optional(),
   data_rules: z.object({}).optional(),
   status: z.number().default(1),
@@ -53,7 +57,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
           name: currentRow.name || "",
           keyword: currentRow.keyword || "",
           description: currentRow.description || "",
-          // view_ids: (currentRow.views || []).map((view) => String(view.id)), // No longer needed
+          view_ids: (currentRow.views || []).map((view) => String(view.id)),
           resource_ids: (currentRow.resources || []).map((resource) => String(resource.id)),
           data_scope: currentRow.data_scope || "self",
           status: currentRow.status ?? 1,
@@ -62,7 +66,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
           name: "",
           keyword: "",
           description: "",
-          // view_ids: [], // No longer needed
+          view_ids: [],
           resource_ids: [],
           data_scope: "self",
           status: 1,
@@ -73,9 +77,9 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
   const { mutate: createPermission, isPending: isCreatePending } = usePermissionCreate(queryClient);
   const { mutate: updatePermission, isPending: isUpdatePending } = usePermissionUpdate(queryClient, id);
 
-  // Fetch all resources for the multi-select component (ResourceMultiSelect handles its own fetching)
-  // const { data: resourcesData, isLoading: isLoadingResources } = useResourcesQuery({ pagingMode: "none" });
-  // const allResources = useMemo(() => resourcesData?.items || [], [resourcesData]);
+  const { data: viewsData, isLoading: isLoadingViews } = useViewsQuery({ pagingMode: "none" });
+
+  const allViews = useMemo(() => viewsData?.items || [], [viewsData]);
 
   const onSubmit = (values: PermissionForm) => {
     const action = is_edit ? "updated" : "created";
@@ -87,7 +91,6 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
           title: "Success",
           description: `Permission successfully ${action}.`,
         });
-        debugToast("You submitted the following values:", values);
         onOpenChange(false);
         form.reset();
       },
@@ -101,20 +104,15 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
     });
   };
 
-  // const isLoading = isLoadingViews || isLoadingResources; // No longer needed
-
-  // Helper to handle tree changes (No longer needed)
-  // const handleTreeChange = (value: { view_ids: string[]; resource_ids: string[] }) => {
-  //   form.setValue("view_ids", value.view_ids);
-  //   form.setValue("resource_ids", value.resource_ids);
-  // };
-
-  // const currentViewIds = form.watch("view_ids") || []; // No longer needed
-  // const currentResourceIds = form.watch("resource_ids") || []; // No longer needed
+  const handleViewToggle = (viewId: string, checked: boolean) => {
+    const currentViewIds = form.getValues("view_ids") || [];
+    const newViewIds = checked ? [...currentViewIds, viewId] : currentViewIds.filter((id) => id !== viewId);
+    form.setValue("view_ids", newViewIds);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
-      <DialogContent className={cn("sm:max-w-2xl", className)}>
+      <DialogContent className={cn("sm:max-w-4xl", className)}>
         <DialogHeader>
           <DialogTitle>{is_edit ? "Edit Permission" : "Add New Permission"}</DialogTitle>
           <DialogDescription>
@@ -125,7 +123,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
         <Form {...form}>
           <form
             id='permission-form'
-            onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
+            onSubmit={form.handleSubmit(onSubmit)}
             className='relative space-y-4'
           >
             <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
@@ -145,7 +143,7 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                 )}
               />
             </div>
-            <ScrollArea className='h-[30rem] w-full'>
+            <ScrollArea className='h-[40rem] w-full'>
               <div className='space-y-4 p-4'>
                 <div className='space-y-2'>
                   <h3 className='text-lg font-medium'>Core Details</h3>
@@ -180,21 +178,39 @@ export function PermissionsActionDialog({ currentRow, open, onOpenChange, classN
                   </div>
                 </div>
 
-                <div className='space-y-2 pt-4'>
-                  <h3 className='text-lg font-medium'>Associated Resources</h3>
-                  <Separator />
-                  <FormField
-                    control={form.control}
-                    name='resource_ids'
-                    render={({ field }) => (
-                      <FormItem className='pt-2'>
-                        <FormControl>
-                          <ResourceMultiSelect value={field.value || []} onChange={field.onChange} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                <div className='space-y-4 pt-4'>
+                  <div className='space-y-2'>
+                    <h3 className='text-lg font-medium'>Associated Menus</h3>
+                    <Separator />
+                    {isLoadingViews ? (
+                      <div>Loading Menus...</div>
+                    ) : (
+                      <ViewTree
+                        allViews={allViews}
+                        checkedIds={form.watch("view_ids")}
+                        onToggle={handleViewToggle}
+                      />
                     )}
-                  />
+                  </div>
+                  <div className='space-y-2 pt-4'>
+                    <h3 className='text-lg font-medium'>Associated APIs</h3>
+                    <Separator />
+                    <FormField
+                      control={form.control}
+                      name='resource_ids'
+                      render={({ field }) => (
+                        <FormItem className='pt-2'>
+                          <FormControl>
+                            <ResourceMultiSelect
+                              value={field.value || []}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
 
                 <FormField
