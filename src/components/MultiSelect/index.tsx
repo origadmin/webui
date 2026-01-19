@@ -113,6 +113,26 @@ export interface MultiSelectProps
    * Optional, defaults to 1000.
    */
   count?: number;
+
+  /**
+   * Callback function triggered when the list is scrolled.
+   */
+  onListScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
+
+  /**
+   * Ref for the scrollable list element.
+   */
+  scrollRef?: React.Ref<HTMLDivElement>;
+
+  /**
+   * Whether the next page is being fetched.
+   */
+  isFetchingNextPage?: boolean;
+
+  /**
+   * Callback function triggered when the popover open state changes.
+   */
+  onOpenChange?: (open: boolean) => void;
 }
 
 export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
@@ -129,6 +149,10 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       count = 1000,
       className,
       badgeClassName,
+      onListScroll,
+      scrollRef,
+      isFetchingNextPage,
+      onOpenChange,
       ...props
     },
     ref,
@@ -142,13 +166,25 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       setDisplayCount(count);
     }, [count]);
 
+    useEffect(() => {
+      if (JSON.stringify(selectedValues) !== JSON.stringify(defaultValue)) {
+        setSelectedValues(defaultValue);
+      }
+    }, [defaultValue]);
+
+    const handleOpenChange = (open: boolean) => {
+      setIsPopoverOpen(open);
+      if (onOpenChange) {
+        onOpenChange(open);
+      }
+    };
+
     const displayedOptions = useMemo(() => options.slice(0, displayCount), [options, displayCount]);
 
     const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-      console.log("event", event);
       event.stopPropagation();
       if (event.key === "Enter") {
-        setIsPopoverOpen(true);
+        handleOpenChange(true);
       } else if (event.key === "Backspace" && !event.currentTarget.value) {
         const newSelectedValues = [...selectedValues];
         newSelectedValues.pop();
@@ -158,7 +194,6 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     };
 
     const toggleOption = (option: string) => {
-      console.log("option", option);
       const newSelectedValues = selectedValues.includes(option)
         ? selectedValues.filter((value) => value !== option)
         : [...selectedValues, option];
@@ -167,26 +202,22 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     };
 
     const handleClear = () => {
-      console.log("handleClear");
       setSelectedValues([]);
       onChange([]);
     };
 
     const handleTogglePopover = (e: React.MouseEvent) => {
-      console.log("handleTogglePopover");
       e.stopPropagation();
-      setIsPopoverOpen((prev) => !prev);
+      handleOpenChange(!isPopoverOpen);
     };
 
     const clearExtraOptions = () => {
-      console.log("clearExtraOptions");
       const newSelectedValues = selectedValues.slice(0, maxCount);
       setSelectedValues(newSelectedValues);
       onChange(newSelectedValues);
     };
 
     const toggleAll = () => {
-      console.log("toggleAll");
       if (selectedValues.length === options.length) {
         handleClear();
       } else {
@@ -201,16 +232,18 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       if (scrollHeight - scrollTop - clientHeight < count) {
         setDisplayCount((prev) => Math.min(prev + count, displayedOptions.length));
       }
+      if (onListScroll) {
+        onListScroll(e);
+      }
     };
 
     const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-      console.log("handleWheel");
       e.currentTarget.scrollTop += e.deltaY;
       e.stopPropagation();
     };
 
     return (
-      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={modalPopover}>
+      <Popover open={isPopoverOpen} onOpenChange={handleOpenChange} modal={modalPopover}>
         <PopoverTrigger asChild>
           <Button
             ref={ref}
@@ -246,7 +279,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                         style={{ animationDuration: `${animation}s` }}
                       >
                         {IconComponent && <IconComponent className='h-4 w-4 mr-2' />}
-                        {option?.label}
+                        {option?.label || value}
                         <IconCircleX
                           className='ml-2 h-4 w-4'
                           onClick={(event) => {
@@ -298,9 +331,8 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         <PopoverContent
           className='w-[--radix-popover-trigger-width] p-0'
           align='start'
-          onEscapeKeyDown={() => setIsPopoverOpen(false)}
+          onEscapeKeyDown={() => handleOpenChange(false)}
           onOpenAutoFocus={(e) => {
-            console.log("onOpenAutoFocus", e.target, e.currentTarget);
             e.preventDefault();
             e.stopPropagation();
           }}
@@ -308,16 +340,16 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           <Command className='h-full'>
             <CommandInput
               placeholder='Search...'
-              onClick={(e) => {
-                console.log("handleMouseClick", e.target, e.currentTarget);
-              }}
               onFocus={(e) => {
-                console.log("handleFocus", e.target);
                 e.target.select();
               }}
               onKeyDown={handleInputKeyDown}
             />
-            <CommandList onWheel={handleWheel} onScroll={(e) => handleScroll(e)}>
+            <CommandList
+              onWheel={handleWheel}
+              onScroll={(e) => handleScroll(e)}
+              ref={scrollRef}
+            >
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 <CommandItem key='all' onSelect={toggleAll}>
@@ -350,6 +382,9 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                     </CommandItem>
                   );
                 })}
+                {isFetchingNextPage && (
+                  <div className="p-2 text-center text-sm text-muted-foreground">Loading more...</div>
+                )}
               </CommandGroup>
               <CommandSeparator />
               <CommandGroup>
@@ -362,7 +397,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                       <Separator orientation='vertical' className='flex min-h-6 h-full' />
                     </>
                   )}
-                  <CommandItem onSelect={() => setIsPopoverOpen(false)} className='flex-1 justify-center max-w-full'>
+                  <CommandItem onSelect={() => handleOpenChange(false)} className='flex-1 justify-center max-w-full'>
                     Close
                   </CommandItem>
                 </div>

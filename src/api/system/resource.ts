@@ -1,14 +1,20 @@
 import { transformListParams } from "@/utils/api";
 import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useQuery,
+  queryOptions,
+  useMutation,
+  infiniteQueryOptions,
+  QueryKey,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 
 /**
  * Query resource list GET /sys/resources
- * This function is now updated to return the full response for infinite query support.
  */
 export async function listResource(params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
-  // The raw response is needed to get the next_page_token
   return get<API.System.ListResourcesResponse>("/sys/resources", backendParams, options);
 }
 
@@ -47,9 +53,6 @@ export async function syncResources(options?: API.RequestOptions) {
 
 // --- React Query hooks ---
 
-/**
- * A hook for fetching a paginated list of resources.
- */
 export const useResourcesQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
@@ -65,12 +68,16 @@ export const useResourcesQuery = (opts?: API.DataTableParams) => {
   );
 };
 
-/**
- * A hook for fetching an infinitely-scrolling list of resources.
- * Ideal for multi-select components.
- */
-export const useInfiniteResourcesQuery = (opts?: Omit<API.DataTableParams, "page" | "pageToken">) => {
-  return useInfiniteQuery({
+export const infiniteResourcesQueryOptions = (
+  opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">,
+) => {
+  return infiniteQueryOptions<
+    API.System.ListResourcesResponse,
+    Error,
+    API.System.ListResourcesResponse,
+    QueryKey,
+    string | null
+  >({
     queryKey: ["/sys/resources/infinite", opts],
     queryFn: ({ pageParam }) => {
       const params: API.DataTableParams = {
@@ -80,9 +87,15 @@ export const useInfiniteResourcesQuery = (opts?: Omit<API.DataTableParams, "page
       };
       return listResource(params);
     },
-    initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) => lastPage.next_page_token || null,
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.next_page_token || undefined,
   });
+};
+
+export const useInfiniteResourcesQuery = (
+  opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">,
+) => {
+  return useInfiniteQuery(infiniteResourcesQueryOptions(opts));
 };
 
 export const useResourceQuery = (id: string) => {

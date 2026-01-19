@@ -1,9 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { usePermissionsQuery } from "@/api/system/permission";
-import { useRoleCreate, useRoleUpdate } from "@/api/system/role";
+import { getRole, useRoleCreate, useRoleUpdate } from "@/api/system/role";
 import { t } from "@/utils/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -49,33 +49,64 @@ interface Props {
   columns?: number;
 }
 
-export function RolesActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props) {
+export function RolesActionDialog({ currentRow, open, onOpenChange, className }: Props) {
   const is_edit = !!currentRow;
+  const id = currentRow?.id || "";
+
+  // Fetch full role data when editing
+  const { data: fullRoleData, isFetching: isRoleDataFetching } = useQuery(
+    queryOptions({
+      queryKey: ["/sys/roles", id],
+      queryFn: () => getRole(id),
+      enabled: is_edit && open && !!id,
+    }),
+  );
+
   const form = useForm<RoleForm>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
-    defaultValues: is_edit
-      ? {
-          ...currentRow,
-          is_edit,
-          permission_ids: (currentRow.permission_ids || []).map(String), // Ensure IDs are strings
-        }
-      : {
-          name: "",
-          keyword: "",
-          type: 1,
-          description: "",
-          status: 1,
-          sequence: 0,
-          is_edit,
-          permission_ids: [],
-        },
+    defaultValues: {
+      name: "",
+      keyword: "",
+      type: 1,
+      description: "",
+      status: 1,
+      sequence: 0,
+      is_edit,
+      permission_ids: [],
+    },
   });
 
-  const { data: permissions = { data: [] } } = usePermissionsQuery({ page_size: 1000 });
-  const treeData = useMemo(() => permissions.data, [permissions.data]);
+  useEffect(() => {
+    if (is_edit && fullRoleData) {
+      // Extract permission IDs from the permissions object array
+      // Based on proto definition, 'permissions' is the only field containing permission info.
+      const permissionIds = Array.isArray(fullRoleData.permissions)
+        ? fullRoleData.permissions.map((p) => String(p.id))
+        : [];
 
-  const id = currentRow?.id || "";
+      form.reset({
+        ...fullRoleData,
+        permission_ids: permissionIds,
+        is_edit: true,
+      });
+    } else if (!is_edit) {
+      form.reset({
+        name: "",
+        keyword: "",
+        type: 1,
+        description: "",
+        status: 1,
+        sequence: 0,
+        is_edit: false,
+        permission_ids: [],
+      });
+    }
+  }, [is_edit, fullRoleData, form]);
+
+  const { data: permissions = { items: [] } } = usePermissionsQuery({ page_size: 1000 });
+  const treeData = useMemo(() => permissions.items, [permissions.items]);
+
   const queryClient = useQueryClient();
   const { mutateAsync: createRole, isPending: isCreatePending } = useRoleCreate(queryClient);
   const { mutateAsync: updateRole, isPending: isUpdatePending } = useRoleUpdate(queryClient, id);
@@ -112,11 +143,13 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
     }
   };
 
+  const isPending = isCreatePending || isUpdatePending || (is_edit && isRoleDataFetching);
+
   return (
     <Dialog
       open={open}
       onOpenChange={(state) => {
-        form.reset();
+        if (!state) form.reset();
         onOpenChange(state);
       }}
     >
@@ -134,6 +167,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
             onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation failed:", errors))}
             className='relative space-y-4'
           >
+            {isPending && <div className='absolute inset-0 bg-background/50 z-10' />}
             <div className='absolute top-0 right-12 z-10 bg-background p-2 rounded-lg'>
               <FormField
                 control={form.control}
@@ -256,7 +290,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className, c
           </form>
         </Form>
         <DialogFooter>
-          <Button type='submit' form='role-form' disabled={isCreatePending || isUpdatePending}>
+          <Button type='submit' form='role-form' disabled={isPending}>
             Save changes
           </Button>
         </DialogFooter>

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { getUser, useUpdateUserRoles, useUserCreate, useUserUpdate } from "@/api/system/user";
+import { useInfiniteRolesQuery } from "@/api/system/role";
+import { getUser, useUserCreate, useUserUpdate } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -22,7 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { RoleMultiSelect } from "./RoleMultiSelect";
+import { RoleMultiSelect } from "./role-multi-select";
 
 const formSchema = z.object({
   nickname: z.string().min(1, { message: "Nickname is required." }),
@@ -48,19 +49,11 @@ interface Props<T> {
   columns?: number;
 }
 
-// Helper function to compare two string arrays
-const areRolesEqual = (a?: string[], b?: string[]): boolean => {
-  if (!a && !b) return true;
-  if (!a || !b || a.length !== b.length) return false;
-  const sortedA = [...a].sort();
-  const sortedB = [...b].sort();
-  return sortedA.every((value, index) => value === sortedB[index]);
-};
-
 export function UsersActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props<API.System.User>) {
   const is_edit = !!currentRow;
   const id = currentRow?.id || "";
 
+  // Fetch full user data only when editing and dialog is open
   const { data: fullUserData, isFetching: isUserDataFetching } = useQuery(
     queryOptions({
       queryKey: ["/sys/users", id],
@@ -68,6 +61,23 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
       enabled: is_edit && open && !!id,
     }),
   );
+
+  // Fetch roles with infinite scrolling
+  const {
+    data: rolesData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteRolesQuery(
+    {
+      pageSize: 20, // Adjust page size as needed
+    },
+    {
+      enabled: open, // Only fetch when dialog is open
+    },
+  );
+
+  const roles = rolesData?.pages.flatMap((page) => page.roles || []) || [];
 
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
@@ -119,7 +129,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
   const queryClient = useQueryClient();
   const { mutateAsync: createUser, isPending: isCreatePending } = useUserCreate(queryClient);
   const { mutateAsync: updateUser, isPending: isUpdatePending } = useUserUpdate(queryClient, id);
-  const { mutateAsync: updateUserRoles, isPending: isRolesUpdatePending } = useUpdateUserRoles(queryClient, id);
 
   const onSubmit = async (values: UserForm) => {
     try {
@@ -130,18 +139,8 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
       if (!is_edit) {
         await createUser(payload);
       } else {
-        const { role_ids, ...userBasicInfo } = payload;
-        const updatePromises = [updateUser(userBasicInfo)];
-
-        const existingRoleIds = Array.isArray(fullUserData?.roles)
-          ? fullUserData.roles.map((role) => role.id).filter((id): id is string => !!id)
-          : [];
-
-        if (!areRolesEqual(role_ids, existingRoleIds)) {
-          updatePromises.push(updateUserRoles({ role_ids: role_ids || [] }));
-        }
-
-        await Promise.all(updatePromises);
+        // Directly update user with all fields including role_ids
+        await updateUser(payload);
       }
 
       toast({
@@ -160,7 +159,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
     }
   };
 
-  const isPending = isCreatePending || isUpdatePending || isRolesUpdatePending || (is_edit && isUserDataFetching);
+  const isPending = isCreatePending || isUpdatePending || (is_edit && isUserDataFetching);
   const maxWClass = `sm:max-w-${columns * 500}px`;
 
   return (
@@ -345,7 +344,14 @@ export function UsersActionDialog({ currentRow, open, onOpenChange, className, c
                         <FormItem>
                           <FormLabel>Roles</FormLabel>
                           <FormControl>
-                            <RoleMultiSelect value={field.value} onChange={field.onChange} />
+                            <RoleMultiSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              roles={roles}
+                              fetchNextPage={fetchNextPage}
+                              hasNextPage={hasNextPage}
+                              isFetchingNextPage={isFetchingNextPage}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

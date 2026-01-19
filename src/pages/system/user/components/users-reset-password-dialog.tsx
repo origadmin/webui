@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAdminResetUserPassword } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconRefresh } from "@tabler/icons-react";

@@ -1,4 +1,4 @@
-import { useRolesQuery } from "@/api/system/role";
+import { useInfiniteRolesQuery } from "@/api/system/role";
 import { useInviteUser } from "@/api/system/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconMailPlus, IconSend } from "@tabler/icons-react";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { MultiSelect } from "@/components/MultiSelect";
+import { RoleMultiSelect } from "./role-multi-select";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Email is required." }).email({ message: "Email is invalid." }),
@@ -41,13 +41,23 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
 
   const queryClient = useQueryClient();
   const { mutate: inviteUser, isPending } = useInviteUser(queryClient);
-  const { data: rolesData } = useRolesQuery({ page_size: 1000 });
 
-  const roleOptions =
-    rolesData?.data?.map((role) => ({
-      value: role.id,
-      label: role.name,
-    })) || [];
+  // Fetch roles with infinite scrolling
+  const {
+    data: rolesData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteRolesQuery(
+    {
+      pageSize: 20, // Adjust page size as needed
+    },
+    {
+      enabled: open, // Only fetch when dialog is open
+    },
+  );
+
+  const roles = rolesData?.pages.flatMap((page) => page.roles || []) || [];
 
   const onSubmit = (values: UserInviteForm) => {
     inviteUser(values, {
@@ -110,11 +120,13 @@ export function UsersInviteDialog({ open, onOpenChange, className }: Props) {
                 <FormItem>
                   <FormLabel>Roles</FormLabel>
                   <FormControl>
-                    <MultiSelect
-                      placeholder='Select roles...'
-                      options={roleOptions}
+                    <RoleMultiSelect
                       value={field.value}
                       onChange={field.onChange}
+                      roles={roles}
+                      fetchNextPage={fetchNextPage}
+                      hasNextPage={hasNextPage}
+                      isFetchingNextPage={isFetchingNextPage}
                     />
                   </FormControl>
                   <FormMessage />

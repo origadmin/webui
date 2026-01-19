@@ -3,7 +3,6 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import TablerIcon from "@/components/IconPicker/tabler-icon";
 
 interface ResourceTreeProps {
   resources: API.System.Resource[];
@@ -157,7 +156,6 @@ export function ResourceTree({ resources = [], selectedResources = [], onSelecte
               onCheckedChange={(checked) => handleNodeCheck(node, checked as boolean)}
               className='mr-2'
             />
-            {node.icon && <TablerIcon name={node.icon} className='mr-2' />}
             <span className='text-sm'>{node.name}</span>
           </div>
         </div>

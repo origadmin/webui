@@ -6,7 +6,6 @@ import { actionsColumn, systemStatusColumn } from "@/components/DataTable/common
 import { TextInputFilter } from "@/components/DataTable/filters";
 import LongText from "@/components/long-text";
 
-
 export const columns: DataTableColumnType<API.System.Role>[] = [
   {
     accessorKey: "name",

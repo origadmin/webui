@@ -1,6 +1,13 @@
 import { transformListParams } from "@/utils/api";
-import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
+import { del, get, post, put } from "@/utils/request";
+import {
+  infiniteQueryOptions,
+  QueryClient,
+  QueryKey,
+  queryOptions,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 
 /**
  * Query permission list GET /sys/permissions
@@ -12,11 +19,7 @@ export async function listPermissions(params: API.DataTableParams, options?: API
     with_resources: true,
     with_views: true,
   };
-  const rawResponse = await get<API.System.ListPermissionsResponse>("/sys/permissions", finalParams, options);
-  return {
-    items: rawResponse?.permissions || [],
-    total: rawResponse?.total || 0,
-  };
+  return get<API.System.ListPermissionsResponse>("/sys/permissions", finalParams, options);
 }
 
 /** Get permission record by ID GET /sys/permissions/${id} */
@@ -66,9 +69,39 @@ export const usePermissionsQuery = (opts?: API.DataTableParams) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/permissions", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listPermissions(opts),
+      queryFn: async ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => {
+        const rawResponse = await listPermissions(opts);
+        return {
+          items: rawResponse?.permissions || [],
+          total: rawResponse?.total || 0,
+        };
+      },
     }),
   );
+};
+
+export const infinitePermissionsQueryOptions = (
+  opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">,
+) => {
+  return infiniteQueryOptions<
+    API.System.ListPermissionsResponse,
+    Error,
+    API.System.ListPermissionsResponse,
+    QueryKey,
+    string | null
+  >({
+    queryKey: ["/sys/permissions/infinite", opts],
+    queryFn: ({ pageParam }) => {
+      const params: API.DataTableParams = {
+        ...opts,
+        pagingMode: "cursor",
+        pageToken: pageParam,
+      };
+      return listPermissions(params);
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.next_page_token || undefined,
+  });
 };
 
 export const usePermissionQuery = (id: string) => {

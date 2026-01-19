@@ -1,6 +1,6 @@
 import { transformListParams } from "@/utils/api";
-import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation } from "@tanstack/react-query";
+import { del, get, post, put } from "@/utils/request";
+import { QueryClient, queryOptions, useMutation, useQuery } from "@tanstack/react-query";
 
 // #region User CRUD
 /**
@@ -16,24 +16,35 @@ export async function listUsers(params: API.DataTableParams, options?: API.Reque
 }
 
 /** Get user record by ID GET /sys/users/${id} */
-export async function getUser(id: string, options?: API.RequestOptions) {
-  const rawResponse = await get<API.System.GetUserResponse>(`/sys/users/${id}`, undefined, options);
+export async function getUser(id: string, params?: { with_roles?: boolean }, options?: API.RequestOptions) {
+  const rawResponse = await get<API.System.GetUserResponse>(`/sys/users/${id}`, params, options);
   return rawResponse?.user;
 }
 
 /** Create user record POST /sys/users */
-export async function addUser(body: Omit<API.System.User, "id">, options?: API.RequestOptions) {
+export async function addUser(
+  body: Omit<API.System.User, "id"> & { role_ids?: string[] },
+  options?: API.RequestOptions,
+) {
+  const { role_ids, ...userData } = body;
   const requestBody = {
-    user: body,
+    user: userData,
+    role_ids: role_ids,
   };
   const rawResponse = await post<API.System.CreateUserResponse>("/sys/users", requestBody, options);
   return rawResponse?.user;
 }
 
 /** Update user record by ID PUT /sys/users/${id} */
-export async function updateUser(id: string, body: Partial<API.System.User>, options?: API.RequestOptions) {
+export async function updateUser(
+  id: string,
+  body: Partial<API.System.User> & { role_ids?: string[] },
+  options?: API.RequestOptions,
+) {
+  const { role_ids, ...userData } = body;
   const requestBody = {
-    user: body,
+    user: userData,
+    role_ids: role_ids,
   };
   return put<never>(`/sys/users/${id}`, requestBody, options);
 }
@@ -46,7 +57,7 @@ export async function deleteUser(id: string, options?: API.RequestOptions) {
 
 // #region User extended actions
 /** Invite user POST /sys/users/invite */
-export async function inviteUser(body: { email: string; roles: string[] }, options?: API.RequestOptions) {
+export async function inviteUser(body: { email: string; role_ids: string[] }, options?: API.RequestOptions) {
   return post<never>("/sys/users/invite", body, options);
 }
 
@@ -60,15 +71,25 @@ export async function adminResetUserPassword(id: string, password: string, optio
   return post<never>(`/sys/users/${id}/admin-reset-password`, { password }, options);
 }
 
-/** Update user roles PUT /sys/users/${id}/roles */
-export async function updateUserRoles(id: string, body: { role_ids: string[] }, options?: API.RequestOptions) {
-  return put<never>(`/sys/users/${id}/roles`, body, options);
-}
-
-/** Get user resources GET /sys/users/${id}/resources */
-export async function listUserResources(id: string, options?: API.RequestOptions) {
-  const rawResponse = await get<API.System.ListUserResourcesResponse>(`/sys/users/${id}/resources`, undefined, options);
-  return rawResponse.resources;
+/**
+ * Retrieves the list of resources associated with a specific user.
+ * GET /sys/users/${id}/resources
+ * @param id The ID of the user.
+ * @param params Data table parameters for pagination, sorting, and filtering.
+ * @param options Optional request options.
+ * @returns A promise that resolves to the list of resources.
+ */
+export async function listUserResources(
+  id: string,
+  params: API.DataTableParams,
+  options?: API.RequestOptions,
+) {
+  const backendParams = transformListParams(params);
+  const rawResponse = await get<API.System.ListResourcesResponse>(`/sys/users/${id}/resources`, backendParams, options);
+  return {
+    items: rawResponse?.resources || [],
+    total: rawResponse?.total || 0,
+  };
 }
 // #endregion
 
@@ -83,21 +104,27 @@ export const useUsersQuery = (opts?: API.DataTableParams) => {
   );
 };
 
-export const useUserQuery = (id: string) => {
+export const useUserQuery = (id: string, params?: { with_roles?: boolean }) => {
   return useQuery(
     queryOptions({
-      queryKey: ["/sys/users", id],
-      queryFn: ({ queryKey: [, id] }) => getUser(id),
+      queryKey: ["/sys/users", id, params],
+      queryFn: () => getUser(id, params),
       enabled: !!id,
     }),
   );
 };
 
-export const useUserResourceQuery = (id: string) => {
+/**
+ * Hook for fetching resources associated with a user.
+ * @param id The ID of the user.
+ * @param opts Data table parameters.
+ * @returns The result of the query.
+ */
+export const useUserResourcesQuery = (id: string, opts: API.DataTableParams = {}) => {
   return useQuery(
     queryOptions({
-      queryKey: ["/sys/users", id, "resources"],
-      queryFn: () => listUserResources(id),
+      queryKey: ["/sys/users", id, "resources", { ...opts }],
+      queryFn: () => listUserResources(id, opts),
       enabled: !!id,
     }),
   );
@@ -105,14 +132,21 @@ export const useUserResourceQuery = (id: string) => {
 
 export const useUserCreate = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (user: Omit<API.System.User, "id">) => addUser(user),
+    mutationFn: (user: Omit<API.System.User, "id"> & { role_ids?: string[] }) => addUser(user),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
   });
 };
 
 export const useUserUpdate = (queryClient: QueryClient, id: string) => {
   return useMutation({
-    mutationFn: (user: Partial<API.System.User>) => updateUser(id, user),
+    mutationFn: (user: Partial<API.System.User> & { role_ids?: string[] }) => updateUser(id, user),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
+  });
+};
+
+export const useUpdateUserRoles = (queryClient: QueryClient, id: string) => {
+  return useMutation({
+    mutationFn: (data: { role_ids: string[] }) => updateUser(id, data),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
   });
 };
@@ -126,7 +160,7 @@ export const useUserDelete = (queryClient: QueryClient) => {
 
 export const useInviteUser = (queryClient: QueryClient) => {
   return useMutation({
-    mutationFn: (data: { email: string; roles: string[] }) => inviteUser(data),
+    mutationFn: (data: { email: string; role_ids: string[] }) => inviteUser(data),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
   });
 };
@@ -141,13 +175,6 @@ export const useResetUserPassword = (queryClient: QueryClient, id: string) => {
 export const useAdminResetUserPassword = (queryClient: QueryClient, id: string) => {
   return useMutation({
     mutationFn: (password: string) => adminResetUserPassword(id, password),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
-  });
-};
-
-export const useUpdateUserRoles = (queryClient: QueryClient, id: string) => {
-  return useMutation({
-    mutationFn: (data: { role_ids: string[] }) => updateUserRoles(id, data),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["/sys/users"] }),
   });
 };

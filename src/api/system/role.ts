@@ -1,18 +1,22 @@
 import { transformListParams } from "@/utils/api";
-import { get, post, put, del } from "@/utils/request";
-import { QueryClient, useQuery, queryOptions, useMutation, useInfiniteQuery } from "@tanstack/react-query";
+import { del, get, post, put } from "@/utils/request";
+import {
+  InfiniteData,
+  infiniteQueryOptions,
+  QueryClient,
+  queryOptions,
+  useInfiniteQuery,
+  UseInfiniteQueryResult,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 
 /**
  * Query role list GET /sys/roles
  */
 export async function listRoles(params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
-  const rawResponse = await get<API.System.ListRolesResponse>("/sys/roles", backendParams, options);
-  return {
-    items: rawResponse?.roles || [],
-    total: rawResponse?.total || 0,
-    next_page_token: rawResponse?.next_page_token,
-  };
+  return get<API.System.ListRolesResponse>("/sys/roles", backendParams, options);
 }
 
 /** Get role record by ID GET /sys/roles/${id} */
@@ -60,26 +64,45 @@ export async function deleteRole(id: string, options?: API.RequestOptions) {
 
 // --- React Query hooks ---
 
-export const useRolesQuery = (opts?: API.DataTableParams) => {
+export const useRolesQuery = (opts?: API.DataTableParams, options?: { enabled?: boolean }) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/roles", { ...opts }],
-      queryFn: ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => listRoles(opts),
+      queryFn: async ({ queryKey: [, opts] }: { queryKey: [string, API.DataTableParams] }) => {
+        const rawResponse = await listRoles(opts);
+        return {
+          items: rawResponse?.roles || [],
+          total: rawResponse?.total || 0,
+        };
+      },
+      enabled: options?.enabled,
     }),
   );
 };
 
-export const useInfiniteRolesQuery = (opts: { keyword?: string }) => {
+export const infiniteRolesQueryOptions = (opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">) => {
+  return infiniteQueryOptions({
+    queryKey: ["/sys/roles/infinite", opts],
+    queryFn: ({ pageParam }) => {
+      const params: API.DataTableParams = {
+        ...opts,
+        pagingMode: "cursor",
+        pageToken: pageParam as string | undefined,
+      };
+      return listRoles(params);
+    },
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => lastPage.next_page_token || undefined,
+  });
+};
+
+export const useInfiniteRolesQuery = (
+  opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">,
+  options?: { enabled?: boolean },
+): UseInfiniteQueryResult<InfiniteData<API.System.ListRolesResponse>, Error> => {
   return useInfiniteQuery({
-    queryKey: ["/sys/roles", opts],
-    queryFn: ({ pageParam }) =>
-      listRoles({
-        paging_mode: "page_token",
-        page_token: pageParam as string,
-        keyword: opts.keyword,
-      }),
-    initialPageParam: "",
-    getNextPageParam: (lastPage) => lastPage.next_page_token,
+    ...infiniteRolesQueryOptions(opts),
+    enabled: options?.enabled,
   });
 };
 
