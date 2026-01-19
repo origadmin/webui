@@ -1,9 +1,10 @@
+import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import * as React from "react";
 import { useForm, FieldValues, DefaultValues } from "react-hook-form";
 import { z } from "zod";
-
+import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,9 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
-
 import { ApiHooks, PageConfig } from "../types";
 
 interface Props<TData, TFormValues extends FieldValues> {
@@ -31,10 +29,7 @@ interface Props<TData, TFormValues extends FieldValues> {
   renderFields: (form: ReturnType<typeof useForm<TFormValues>>) => React.ReactNode;
 }
 
-export function ActionDialog<
-  TFormValues extends FieldValues,
-  TData extends TFormValues & { id?: string },
->({
+export function ActionDialog<TFormValues extends FieldValues, TData extends TFormValues & { id?: string }>({
   currentRow,
   open,
   onOpenChange,

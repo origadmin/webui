@@ -5,6 +5,7 @@ import { PageConfig, ApiHooks, CrudDataItem } from "../types";
 import { ActionDialog } from "./action-dialog";
 import { DeleteDialog } from "./delete-dialog";
 
+
 interface DialogsProps<TData extends CrudDataItem, TFormValues> {
   pageConfig: PageConfig;
   formSchema: z.ZodType<TFormValues>;
