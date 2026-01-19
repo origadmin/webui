@@ -1,10 +1,8 @@
-import { IconArrowsSort } from "@tabler/icons-react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import IconPicker from "@/components/IconPicker";
 import { FormType } from "../config";
 import { ViewTypes } from "../constants";
@@ -26,9 +24,8 @@ type FieldName = keyof FormType;
 
 export const renderFields = (
   form: ReturnType<typeof useForm<FormType>>,
-  onSortClick: () => void,
   isSub: boolean = false,
-  currentType: string = ViewTypes.MENU,
+  currentType: FormType["type"] = ViewTypes.MENU,
   isSidebarMissing: boolean = false,
   fieldsToRender: FieldName[],
 ) => {
@@ -39,12 +36,18 @@ export const renderFields = (
     filteredOptions = viewTypeOptions.filter((opt) => opt.value === ViewTypes.ROOT);
   }
 
-  const showPath = ![ViewTypes.ROOT, ViewTypes.GROUP, ViewTypes.BUTTON].includes(currentType);
-  const showComponent = [ViewTypes.MENU, ViewTypes.PAGE].includes(currentType);
-  const showIcon = ![ViewTypes.ROOT, ViewTypes.REDIRECT].includes(currentType);
+  // Explicitly type arrays as string[] to satisfy the .includes() method.
+  const pathExclusionTypes: string[] = [ViewTypes.ROOT, ViewTypes.GROUP, ViewTypes.BUTTON];
+  const componentInclusionTypes: string[] = [ViewTypes.MENU, ViewTypes.PAGE];
+  const iconExclusionTypes: string[] = [ViewTypes.ROOT, ViewTypes.REDIRECT];
+
+  const showPath = !pathExclusionTypes.includes(currentType);
+  const showComponent = componentInclusionTypes.includes(currentType);
+  const showIcon = !iconExclusionTypes.includes(currentType);
   const isScopeDisabled = currentType !== ViewTypes.ROOT && currentType !== ViewTypes.BUTTON;
 
-  const allFields: Record<FieldName, React.ReactNode> = {
+  // Use Partial<Record<...>> to indicate that not all keys of FormType are present.
+  const allFields: Partial<Record<FieldName, React.ReactNode>> = {
     name: (
       <FormField
         control={form.control}
@@ -168,49 +171,20 @@ export const renderFields = (
         render={({ field }) => (
           <FormItem>
             <FormLabel>Sequence</FormLabel>
-            <div className='flex relative'>
-              <FormControl>
-                <Input
-                  className='rounded-r-none'
-                  placeholder='Click button to sort'
-                  type='number'
-                  {...field}
-                  onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
-                />
-              </FormControl>
-              <Button
-                type='button'
-                variant='outline'
-                onClick={onSortClick}
-                className='h-9 w-12 gap-0 px-0 rounded-l-none -ml-px'
-                size='icon'
-              >
-                <IconArrowsSort className='h-5 w-5' />
-              </Button>
-            </div>
+            <FormControl>
+              <Input
+                type='number'
+                placeholder='0'
+                min='0'
+                {...field}
+                onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+              />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     ),
-    visible: (
-      <FormField
-        control={form.control}
-        name='visible'
-        render={({ field }) => (
-          <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4 col-span-2'>
-            <div className='space-y-0.5'>
-              <FormLabel className='text-base'>Visible in Menu</FormLabel>
-              <FormDescription>This menu will be displayed in the sidebar.</FormDescription>
-            </div>
-            <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
-            </FormControl>
-          </FormItem>
-        )}
-      />
-    ),
-    // Add other fields here as needed
   };
 
   return fieldsToRender.map((fieldName) =>

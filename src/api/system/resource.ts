@@ -6,8 +6,9 @@ import {
   queryOptions,
   useMutation,
   infiniteQueryOptions,
-  QueryKey,
   useInfiniteQuery,
+  UseInfiniteQueryResult,
+  InfiniteData,
 } from "@tanstack/react-query";
 
 /**
@@ -71,31 +72,29 @@ export const useResourcesQuery = (opts?: API.DataTableParams) => {
 export const infiniteResourcesQueryOptions = (
   opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">,
 ) => {
-  return infiniteQueryOptions<
-    API.System.ListResourcesResponse,
-    Error,
-    API.System.ListResourcesResponse,
-    QueryKey,
-    string | null
-  >({
+  return infiniteQueryOptions({
     queryKey: ["/sys/resources/infinite", opts],
     queryFn: ({ pageParam }) => {
       const params: API.DataTableParams = {
         ...opts,
         pagingMode: "cursor",
-        pageToken: pageParam,
+        pageToken: pageParam as string | undefined,
       };
       return listResource(params);
     },
-    initialPageParam: null,
+    initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.next_page_token || undefined,
   });
 };
 
 export const useInfiniteResourcesQuery = (
   opts?: Omit<API.DataTableParams, "page" | "pageToken" | "pagingMode">,
-) => {
-  return useInfiniteQuery(infiniteResourcesQueryOptions(opts));
+  options?: { enabled?: boolean },
+): UseInfiniteQueryResult<InfiniteData<API.System.ListResourcesResponse>, Error> => {
+  return useInfiniteQuery({
+    ...infiniteResourcesQueryOptions(opts),
+    enabled: options?.enabled,
+  });
 };
 
 export const useResourceQuery = (id: string) => {

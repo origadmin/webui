@@ -2,6 +2,7 @@ import { transformListParams } from "@/utils/api";
 import { del, get, post, put } from "@/utils/request";
 import { QueryClient, queryOptions, useMutation, useQuery } from "@tanstack/react-query";
 
+
 // #region User CRUD
 /**
  * Query user list GET /sys/users
@@ -79,11 +80,7 @@ export async function adminResetUserPassword(id: string, password: string, optio
  * @param options Optional request options.
  * @returns A promise that resolves to the list of resources.
  */
-export async function listUserResources(
-  id: string,
-  params: API.DataTableParams,
-  options?: API.RequestOptions,
-) {
+export async function listUserResources(id: string, params: API.DataTableParams, options?: API.RequestOptions) {
   const backendParams = transformListParams(params);
   const rawResponse = await get<API.System.ListResourcesResponse>(`/sys/users/${id}/resources`, backendParams, options);
   return {

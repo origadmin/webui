@@ -71,12 +71,12 @@ export const useViewsQuery = (params?: API.DataTableParams, options?: UseViewsQu
   });
 };
 
-export const useViewQuery = (id: string) => {
+export const useViewQuery = (id: string, options?: { enabled?: boolean }) => {
   return useQuery(
     queryOptions({
       queryKey: ["/sys/views", id],
       queryFn: ({ queryKey: [, id] }) => getView(id),
-      enabled: !!id,
+      enabled: !!id && (options?.enabled ?? true),
     }),
   );
 };

@@ -115,7 +115,7 @@ function ViewPageContent() {
           />
         </CardContent>
       </Card>
-      <ViewDialogs dataTable={dataTable} />
+      <ViewDialogs />
     </PageContainer>
   );
 }

@@ -34,7 +34,7 @@ const formSchema = z.object({
   type: z.number().optional(),
   description: z.string().optional(),
   status: z.number().default(1),
-  sequence: z.number().optional(),
+  sequence: z.coerce.number().min(0, { message: "Sequence cannot be negative." }).optional(),
   is_edit: z.boolean(),
   permission_ids: z.array(z.string()).optional(),
 });
@@ -49,7 +49,7 @@ interface Props {
   columns?: number;
 }
 
-export function RolesActionDialog({ currentRow, open, onOpenChange, className }: Props) {
+export function RolesActionDialog({ currentRow, open, onOpenChange, className, columns = 2 }: Props) {
   const is_edit = !!currentRow;
   const id = currentRow?.id || "";
 
@@ -238,7 +238,7 @@ export function RolesActionDialog({ currentRow, open, onOpenChange, className }:
                         <FormItem>
                           <FormLabel>Sequence</FormLabel>
                           <FormControl>
-                            <Input type='number' placeholder='0' {...field} />
+                            <Input type='number' placeholder='0' min='0' {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

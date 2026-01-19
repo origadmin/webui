@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm, UseFormReturn, FieldErrors } from "react-hook-form";
@@ -25,7 +25,6 @@ import { FormType, formSchema, apiHooks, pageConfig } from "../config";
 import { ViewScopes, ViewTypes } from "../constants";
 import { renderFields } from "./fields";
 import { ResourceMultiSelect } from "./resource-multi-select";
-import { ViewsSequenceDialog } from "./views-sequence-dialog";
 import { useViewContext } from "./views-table-provider";
 
 interface Props {
@@ -42,30 +41,16 @@ function isResourceSelectorType(type: string): type is "MENU" | "PAGE" | "BUTTON
 }
 
 interface ViewFormProps {
-  is_edit: boolean;
   is_sub: boolean;
   form: UseFormReturn<FormType>;
   formId: string;
   onSubmit: (values: FormType) => Promise<void>;
-  setSortDialogOpen: (open: boolean) => void;
   parentRow?: API.System.View;
   isSidebarMissing: boolean;
   currentType: FormType["type"];
-  isPending: boolean;
 }
 
-function ViewForm({
-  is_edit,
-  is_sub,
-  form,
-  formId,
-  onSubmit,
-  setSortDialogOpen,
-  parentRow,
-  isSidebarMissing,
-  currentType,
-  isPending,
-}: ViewFormProps) {
+function ViewForm({ is_sub, form, formId, onSubmit, parentRow, isSidebarMissing, currentType }: ViewFormProps) {
   const showResourceSelector = isResourceSelectorType(currentType);
 
   return (
@@ -103,7 +88,7 @@ function ViewForm({
             )}
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing, [
+              {renderFields(form, is_sub, currentType, isSidebarMissing, [
                 "name",
                 "keyword",
                 "type",
@@ -137,10 +122,7 @@ function ViewForm({
                 <AccordionContent>
                   <div className='space-y-4 pt-4 border-t'>
                     <div className='grid grid-cols-2 gap-4 px-2'>
-                      {renderFields(form, () => setSortDialogOpen(true), is_sub, currentType, isSidebarMissing, [
-                        "icon",
-                        "sequence",
-                      ])}
+                      {renderFields(form, is_sub, currentType, isSidebarMissing, ["icon", "sequence"])}
                     </div>
                     <div className='px-2 space-y-4'>
                       <FormField
@@ -272,8 +254,6 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
   const { mutateAsync: createItem, isPending: isCreatePending } = apiHooks.useCreate(queryClient);
   const { mutateAsync: updateItem, isPending: isUpdatePending } = apiHooks.useUpdate(queryClient, currentRow?.id || "");
 
-  const [sortDialogOpen, setSortDialogOpen] = useState(false);
-
   const onSubmit = async (values: FormType) => {
     try {
       const { is_edit, ...rest } = values;
@@ -327,16 +307,13 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
             <FormSkeleton />
           ) : (
             <ViewForm
-              is_edit={is_edit}
               is_sub={is_sub}
               form={form}
               formId={formId}
               onSubmit={onSubmit}
-              setSortDialogOpen={setSortDialogOpen}
               parentRow={parentRow}
               isSidebarMissing={isSidebarMissing}
               currentType={currentType}
-              isPending={isCreatePending || isUpdatePending}
             />
           )}
           <DialogFooter>
@@ -346,11 +323,6 @@ export function ViewActionDialog({ currentRow, parentRow, open, onOpenChange, cl
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <ViewsSequenceDialog
-        parentId={form.getValues("parent_id") || undefined}
-        open={sortDialogOpen}
-        onOpenChange={setSortDialogOpen}
-      />
     </>
   );
 }

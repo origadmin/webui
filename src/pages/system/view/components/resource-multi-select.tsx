@@ -18,23 +18,22 @@ export function ResourceMultiSelect({ value: selectedIds = [], onChange }: Resou
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteResourcesQuery({ keyword: searchTerm });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteResourcesQuery(
+    { keyword: searchTerm },
+    { enabled: open },
+  );
 
   const allResources = useMemo(() => {
     if (!data?.pages) {
       return [];
     }
     const flattenedResources = data.pages.flatMap((page) => page.resources || []);
-    const uniqueResources = new Map<string, API.System.Resource>();
-    for (const resource of flattenedResources) {
-      if (resource?.id) {
-        uniqueResources.set(resource.id, resource);
-      }
-    }
-    return Array.from(uniqueResources.values());
+    // Filter out resources without a valid ID to ensure type safety.
+    return flattenedResources.filter((resource): resource is API.System.Resource & { id: string } => !!resource.id);
   }, [data]);
 
   const selectedResources = useMemo(() => {
+    // Now `r.id` is guaranteed to be a string, so `includes` is safe.
     return allResources.filter((r) => selectedIds.includes(r.id));
   }, [allResources, selectedIds]);
 

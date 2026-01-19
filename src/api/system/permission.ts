@@ -9,6 +9,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 
+
 /**
  * Query permission list GET /sys/permissions
  */

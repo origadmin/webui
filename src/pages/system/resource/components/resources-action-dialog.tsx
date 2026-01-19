@@ -35,7 +35,7 @@ const formSchema = z.object({
   policy: z.string().optional(),
   i18n: z.string().optional(),
   description: z.string().optional(),
-  sequence: z.number().optional(),
+  sequence: z.coerce.number().min(0, "Sequence cannot be negative.").optional(),
   status: z.number().default(1),
   parent_id: z.string().nullable().optional(),
 });
@@ -243,7 +243,7 @@ export function ResourcesActionDialog({ currentRow, parentRow, open, onOpenChang
                         <FormItem>
                           <FormLabel>Sequence</FormLabel>
                           <FormControl>
-                            <Input type='number' placeholder='0' {...field} />
+                            <Input type='number' placeholder='0' min='0' {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
