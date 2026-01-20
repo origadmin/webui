@@ -1,7 +1,6 @@
-import { z } from "zod";
-import { ColumnDef } from "@tanstack/react-table";
-import { createColumns } from "@/templates/crud-page/components/columns";
 import { DataTableRowActions } from "@/templates/crud-page/components/row-actions";
+import { ColumnDef } from "@tanstack/react-table";
+import { z } from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
 
 // 1. Define the data shape
@@ -59,7 +58,7 @@ export const columns: ColumnDef<Product>[] = [
         style: "currency",
         currency: "USD",
       }).format(amount);
-      return <div className="font-medium">{formatted}</div>;
+      return <div className='font-medium'>{formatted}</div>;
     },
   },
   {

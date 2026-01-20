@@ -5,7 +5,6 @@ import { DataTableColumnType, DataTableFacetedFilter } from "@/components/DataTa
 import { ColorBadge } from "@/components/color-badge";
 import { headerMeta } from "./column-defaults";
 
-
 /**
  * A reusable DataTable column definition for a standard 'status' field.
  * It uses the centralized badge system and dynamically generates its filter options.

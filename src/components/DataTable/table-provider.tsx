@@ -33,7 +33,7 @@ const createTableContext = <T,>() => {
 
   const Context = createContext<TableContextType<T>>(defaultContextValue);
 
-  const Provider = ({ children, ...props }: { children: React.ReactNode }) => {
+  const Provider = ({ children }: { children: React.ReactNode }) => {
     const [open, setOpen] = useDialogState<TableDialogType>(null);
     const [currentRow, setCurrentRow] = useState<T | null>(null);
     const [parentRow, setParentRow] = useState<T | null>(null);
