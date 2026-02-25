@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { getCaptcha } from "@/api/auth/login";
 import { IconAlertCircle, IconRefresh, IconVolume } from "@tabler/icons-react";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,11 +27,13 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
   const [captchaCode, setCaptchaCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [dialogError, setDialogError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const refreshCaptcha = useCallback(async () => {
     setIsLoading(true);
     setHasError(false);
+    setDialogError(null);
     try {
       const response = await getCaptcha({ captcha_type: "digit" });
       if (response && response.captcha_data) {
@@ -60,16 +63,16 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
         const audio = new Audio(response.captcha_data);
         audio.play().catch((e) => {
           console.error("Audio playback failed:", e);
-          toast({ variant: "destructive", description: "Failed to play audio." });
+          setDialogError("Failed to play audio.");
         });
       } else {
         // Directly handle the error case instead of throwing
-        toast({ variant: "destructive", description: "Failed to load audio. Please try again." });
+        setDialogError("Failed to load audio. Please try again.");
       }
     } catch {
-      toast({ variant: "destructive", description: "Failed to load audio. Please try again." });
+      setDialogError("Failed to load audio. Please try again.");
     }
-  }, [captchaId, toast]);
+  }, [captchaId]);
 
   useEffect(() => {
     if (open) {
@@ -78,12 +81,13 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
       setCaptchaCode("");
       setCaptchaId(undefined);
       setCaptchaImage(null);
+      setDialogError(null);
     }
   }, [open, refreshCaptcha]);
 
   const handleSubmit = async () => {
     if (!captchaId || !captchaCode) {
-      toast({ variant: "destructive", description: "Please enter the captcha code." });
+      setDialogError("Please enter the captcha code.");
       return;
     }
     onVerifySuccess(captchaId, captchaCode);
@@ -137,10 +141,18 @@ export function CaptchaDialog({ open, onOpenChange, onVerifySuccess }: CaptchaDi
               </Button>
             </div>
           </div>
+          {dialogError && (
+            <Alert variant='destructive' className='py-1.5 px-3'>
+              <AlertDescription className='text-xs'>{dialogError}</AlertDescription>
+            </Alert>
+          )}
           <Input
             id='captcha-code'
             value={captchaCode}
-            onChange={(e) => setCaptchaCode(e.target.value)}
+            onChange={(e) => {
+              setCaptchaCode(e.target.value);
+              setDialogError(null);
+            }}
             placeholder='Please enter the characters'
             onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           />

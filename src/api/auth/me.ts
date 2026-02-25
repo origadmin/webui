@@ -10,7 +10,8 @@ const API_ME_URL = "/me";
  */
 export const getProfile = async (): Promise<API.System.User | null> => {
   const response = await get<API.Auth.GetProfileResponse>(`${API_ME_URL}/profile`);
-  return response?.user || null;
+  // Fallback to profile field if user is not present
+  return (response as any)?.user || (response as any)?.profile || null;
 };
 
 /**

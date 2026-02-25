@@ -92,10 +92,16 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         loading: false,
         token,
       }));
-    } catch (error) {
+    } catch (error: any) {
       console.error("Initialization failed:", error);
-      clearStorage();
-      setAuthState({ user: null, token: null, views: [], loading: false });
+      // Only clear storage and logout if it's explicitly an authentication error (401)
+      if (error?.cause?.response?.status === 401 || error?.message?.includes("401")) {
+        clearStorage();
+        setAuthState({ user: null, token: null, views: [], loading: false });
+      } else {
+        // Otherwise, just stop loading and keep current token (might be a transient server error)
+        setAuthState((s) => ({ ...s, loading: false }));
+      }
     }
   }, []);
 

@@ -1,5 +1,6 @@
 import { HTMLAttributes, useState, useTransition } from "react";
 import { signIn } from "@/utils/auth";
+import { DEFAULT_MAIN_PAGE } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -7,6 +8,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingButton } from "@/components/LoadingButton";
@@ -31,12 +33,13 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isCaptchaDialogOpen, setCaptchaDialogOpen] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const [submitting, startTransition] = useTransition();
   const { toast } = useToast();
   const navigate = useNavigate();
   const auth = useAuth();
   const urlParams = new URLSearchParams(location.search);
-  const redirectUrl = urlParams.get("redirect") || "/";
+  const redirectUrl = urlParams.get("redirect") || DEFAULT_MAIN_PAGE;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -50,6 +53,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const handleLoginWithCaptcha = (captchaId: string, captchaCode: string) => {
     console.log("[UserAuthForm] handleLoginWithCaptcha called with:", { captchaId, captchaCode });
     const values = form.getValues();
+    setLoginError(null);
     startTransition(async () => {
       try {
         console.log("[UserAuthForm] Submitting with:", { ...values, captchaId, captchaCode });
@@ -64,16 +68,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         navigate({ to: redirectUrl, replace: true });
       } catch (err) {
         console.error("[UserAuthForm] SignIn Error:", err);
-        toast({
-          variant: "destructive",
-          description: err instanceof Error ? err.message : "Login failed. Please try again.",
-        });
+        setLoginError(err instanceof Error ? err.message : "Login failed. Please try again.");
+        setCaptchaDialogOpen(false);
       }
     });
   };
 
   const handleLoginClick = async () => {
     console.log("[UserAuthForm] handleLoginClick called");
+    setLoginError(null);
     const isValid = await form.trigger(["username", "password"]);
     console.log("[UserAuthForm] Form validation result:", isValid);
     if (!isValid) {
@@ -118,6 +121,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
+            {loginError && (
+              <Alert variant='destructive' className='py-2 px-3'>
+                <AlertDescription className='text-xs'>{loginError}</AlertDescription>
+              </Alert>
+            )}
             <LoadingButton type='button' className='mt-2' loading={submitting} onClick={handleLoginClick}>
               Login
             </LoadingButton>
